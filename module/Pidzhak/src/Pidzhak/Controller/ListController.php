@@ -6,7 +6,7 @@
  * Time: 14:41
  */
 
-namespace Blog\Controller;
+namespace Pidzhak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 

@@ -3,16 +3,15 @@
  * Created by PhpStorm.
  * User: abu.andabekov
  * Date: 05.04.2015
- * Time: 14:34
+ * Time: 14:30
  */
-
 
 namespace Pidzhak;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
-class Pidzhak implements AutoloaderProviderInterface, ConfigProviderInterface
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
 
     public function getAutoloaderConfig()

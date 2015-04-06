@@ -14,7 +14,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Pidzhak\Controller\Index' => 'Pidzhak\Controller\IndexController'
+            'Pidzhak\Controller\List' => 'Pidzhak\Controller\ListController'
         )
     ),
     // This lines opens the configuration for the RouteManager
@@ -31,7 +31,7 @@ return array(
                     'route'    => '/pidzhak',
                     // Define default controller and action to be called when this route is matched
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Index',
+                        'controller' => 'Pidzhak\Controller\List',
                         'action'     => 'index',
                     )
                 )

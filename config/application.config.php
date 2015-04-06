@@ -4,7 +4,6 @@ return array(
     'modules' => array(
         'Application',
         'Album',
-        'Blog',
         'Pidzhak'
     ),
 
