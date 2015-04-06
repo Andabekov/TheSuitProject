@@ -15,12 +15,27 @@ $form->setAttribute('action', $this->url('album', array('action' => 'add')));
 $form->prepare();
 
 echo $this->form()->openTag($form);
-echo $this->formCollection($form);
+//echo $this->formCollection($form);
+?>
+<table>
+    <tr>
+        <td>
+            <?php echo $this->formHidden($form->get('id')); ?>
+            <?php echo $this->formRow($form->get('title'));?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->formRow($form->get('artist'));?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->formSubmit($form->get('submit'));?>
+        </td>
+    </tr>
 
-//echo $this->formHidden($form->get('id'));
-//echo $this->formRow($form->get('title'));
-//echo $this->formRow($form->get('artist'));
-//echo $this->formSubmit($form->get('submit'));
+</table>
 
-echo $this->form()->closeTag();
+<?php echo $this->form()->closeTag();?>
 
