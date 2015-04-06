@@ -15,7 +15,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Album\Controller\Album',
+                        'controller' => 'Pidzhak\Controller\Index',
                         'action'     => 'index',
                     ),
                 ),

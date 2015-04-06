@@ -9,7 +9,12 @@
 namespace Pidzhak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
-class ListController extends AbstractActionController
+class IndexController extends AbstractActionController
 {
+    public function indexAction()
+    {
+        return new ViewModel(array());
+    }
 }
