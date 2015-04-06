@@ -75,10 +75,11 @@ return array(
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '/[:action]',
+                            'route'    => '/[:action][/:accessTypeId]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'accessTypeId'     => '[0-9]+',
                             ),
                             'defaults' => array(
                             ),
