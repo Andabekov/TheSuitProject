@@ -6,7 +6,40 @@
  * Time: 11:11
  */
 
-$title = 'Login Page';
-$this->headTitle($title);
+
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'login/process',
+    array(
+        'action'     => 'authenticate',
+    )
+));
+$form->prepare();
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<div class="myContainer">
+
+    <script type="text/javascript">
+        $(function() {
+            $('<br />').insertAfter($('.myContainer').find('form').find('label')[0]);
+            $('<br />').insertAfter($('.myContainer').find('form').find('label')[1]);
+        });
+    </script>
+
+    <?php
+    echo $this->form()->openTag($form);
+    echo $this->formCollection($form);
+    echo $this->form()->closeTag();
+
+    if ($this->messages){
+        echo '<ul>';
+        foreach($this->messages as $message)
+        {
+            echo '<li>'.$message.'</li>';
+        }
+        echo '</ul>';
+    }
+    ?>
+</div>
+
+

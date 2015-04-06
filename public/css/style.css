@@ -84,3 +84,8 @@ div.container a.brand {
     margin: 0 auto;
     margin-top: 50px;
 }
+
+.myContainer{
+    display: table;
+    margin: 50px auto;
+}
