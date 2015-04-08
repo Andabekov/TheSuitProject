@@ -8,12 +8,7 @@
 
 
 $form = $this->form;
-$form->setAttribute('action', $this->url(
-    'login/process',
-    array(
-        'action'     => 'authenticate',
-    )
-));
+$form->setAttribute('action', $this->url('login/process', array('action'=>'authenticate',)));
 $form->prepare();
 ?>
 
@@ -21,23 +16,47 @@ $form->prepare();
 
     <script type="text/javascript">
         $(function() {
-            $('<br />').insertAfter($('.myContainer').find('form').find('label')[0]);
-            $('<br />').insertAfter($('.myContainer').find('form').find('label')[1]);
+//            $('<br />').insertAfter($('.myContainer').find('form').find('label')[0]);
+//            $('<br />').insertAfter($('.myContainer').find('form').find('label')[1]);
         });
     </script>
 
     <?php
     echo $this->form()->openTag($form);
-    echo $this->formCollection($form);
+    ?>
+
+    <table id="loginTable">
+        <tr>
+            <td><?php echo $this->formLabel($form->get('username'));?></td>
+            <td><?php echo $this->formInput($form->get('username'));?></td>
+        </tr>
+
+        <tr>
+            <td><?php echo $this->formLabel($form->get('password'));?></td>
+            <td><?php echo $this->formInput($form->get('password'));?></td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: right">
+                <?php echo $this->formRow($form->get('submit'));?>
+            </td>
+        </tr>
+    </table>
+
+    <?php
+//    echo $this->formCollection($form);
     echo $this->form()->closeTag();
 
     if ($this->messages){
-        echo '<ul>';
+        echo '<span style="color: red">';
         foreach($this->messages as $message)
         {
-            echo '<li>'.$message.'</li>';
+            if($message=="Supplied credential is invalid." || $message=="A record with the supplied identity could not be found.")
+                echo 'Логин или пароль указаны не верно<br />';
+            else
+                echo $message.'<br />';
         }
-        echo '</ul>';
+        echo '</span>';
     }
     ?>
 </div>

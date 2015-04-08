@@ -89,3 +89,18 @@ div.container a.brand {
     display: table;
     margin: 50px auto;
 }
+
+
+#logoutDiv{
+    float: right;
+    margin-top: 30px;
+    font-size: 15px;
+}
+#logoutDiv a{
+    color: white;
+}
+
+
+#loginTable td{
+    padding: 3px;
+}
