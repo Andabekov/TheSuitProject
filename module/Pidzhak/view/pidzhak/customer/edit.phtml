@@ -1,0 +1,35 @@
+<?php
+$title = 'Edit customer';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'customer',
+    array(
+        'action' => 'edit',
+        'id'     => $this->id,
+    )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formRow($form->get('firstname'));
+echo $this->formRow($form->get('lastname'));
+echo $this->formRow($form->get('middlename'));
+echo $this->formRow($form->get('birthday'));
+echo $this->formRow($form->get('mobilephone'));
+echo $this->formRow($form->get('email'));
+echo $this->formRow($form->get('country'));
+echo $this->formRow($form->get('city'));
+echo $this->formRow($form->get('address'));
+echo $this->formRow($form->get('homephone'));
+echo $this->formRow($form->get('work'));
+echo $this->formRow($form->get('position'));
+echo $this->formRow($form->get('workaddress'));
+echo $this->formRow($form->get('workphone'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();

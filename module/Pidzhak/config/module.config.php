@@ -11,7 +11,9 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Pidzhak\Controller\Index' => 'Pidzhak\Controller\IndexController',
-            'Pidzhak\Controller\Success' => 'Pidzhak\Controller\AuthSuccessController'
+            'Pidzhak\Controller\Success' => 'Pidzhak\Controller\AuthSuccessController',
+            'Pidzhak\Controller\Seller' => 'Pidzhak\Controller\SellerController',
+            'Pidzhak\Controller\Customer' => 'Pidzhak\Controller\CustomerController'
         )
     ),
 
@@ -27,6 +29,36 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Pidzhak\Controller\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'seller' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/seller[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\Seller',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'customer' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/customer[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\Customer',
                         'action'     => 'index',
                     ),
                 ),
@@ -60,10 +92,10 @@ return array(
                 ),
             ),
 
-            'seller' => array(
+            'seller2' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/seller',
+                    'route'    => '/seller2',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Pidzhak\Controller',
                         'controller'    => 'Pidzhak\Controller\Success',

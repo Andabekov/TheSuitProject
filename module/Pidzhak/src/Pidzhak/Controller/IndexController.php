@@ -56,7 +56,7 @@ class IndexController extends AbstractActionController
     {
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()){
-            return $this->redirect()->toRoute('seller');
+            return $this->redirect()->toRoute('seller2');
         }
 
         $form       = $this->getForm();
@@ -89,7 +89,7 @@ class IndexController extends AbstractActionController
                 }
 
                 if ($result->isValid()) {
-                    $redirect = 'seller';
+                    $redirect = 'seller2';
                     //check if it has rememberMe :
                     if ($request->getPost('rememberme') == 1 ) {
                         $this->getSessionStorage()

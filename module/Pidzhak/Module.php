@@ -11,6 +11,12 @@ namespace Pidzhak;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Pidzhak\Model\Seller;
+use Pidzhak\Model\SellerTable;
+use Pidzhak\Model\Customer;
+use Pidzhak\Model\CustomerTable;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
@@ -64,6 +70,28 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $authService->setStorage($sm->get('Pidzhak\Model\AuthStorage'));
 
                     return $authService;
+                },
+                'Pidzhak\Model\SellerTable' =>  function($sm) {
+                    $tableGateway = $sm->get('SellerTableGateway');
+                    $table = new SellerTable($tableGateway);
+                    return $table;
+                },
+                'SellerTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Seller());
+                    return new TableGateway('seller', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\CustomerTable' =>  function($sm) {
+                    $tableGateway = $sm->get('CustomerTableGateway');
+                    $table = new CustomerTable($tableGateway);
+                    return $table;
+                },
+                'CustomerTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Customer());
+                    return new TableGateway('customer', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

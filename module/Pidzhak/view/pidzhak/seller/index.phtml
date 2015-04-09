@@ -1,0 +1,30 @@
+<?php
+$title = 'My sellers';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('seller', array('action'=>'add'));?>">Add new seller</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>id</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($sellers as $seller) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($seller->id);?></td>
+            <td><?php echo $this->escapeHtml($seller->title);?></td>
+            <td><?php echo $this->escapeHtml($seller->description);?></td>
+            <td>
+                <a href="<?php echo $this->url('seller',
+                    array('action'=>'edit', 'id' => $seller->id));?>">Edit</a>
+                <a href="<?php echo $this->url('seller',
+                    array('action'=>'delete', 'id' => $seller->id));?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

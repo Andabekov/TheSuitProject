@@ -1,0 +1,54 @@
+<?php
+$title = 'My customers';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('customer', array('action'=>'add'));?>">Add new customer</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>id</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отчество</th>
+        <th>Дата рождения</th>
+        <th>Мобильный телефон</th>
+        <th>Емайл</th>
+        <th>Страна</th>
+        <th>Город</th>
+        <th>Адресс проживания</th>
+        <th>Домашний телефон</th>
+        <th>Место работы</th>
+        <th>Должность</th>
+        <th>Адрес работы</th>
+        <th>Рабочий телефон</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($customers as $customer) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($customer->id);?></td>
+            <td><?php echo $this->escapeHtml($customer->firstname);?></td>
+            <td><?php echo $this->escapeHtml($customer->lastname);?></td>
+            <td><?php echo $this->escapeHtml($customer->middlename);?></td>
+            <td><?php echo $this->escapeHtml($customer->birthday);?></td>
+            <td><?php echo $this->escapeHtml($customer->mobilephone);?></td>
+            <td><?php echo $this->escapeHtml($customer->email);?></td>
+            <td><?php echo $this->escapeHtml($customer->country);?></td>
+            <td><?php echo $this->escapeHtml($customer->city);?></td>
+            <td><?php echo $this->escapeHtml($customer->address);?></td>
+            <td><?php echo $this->escapeHtml($customer->homephone);?></td>
+            <td><?php echo $this->escapeHtml($customer->work);?></td>
+            <td><?php echo $this->escapeHtml($customer->position);?></td>
+            <td><?php echo $this->escapeHtml($customer->workaddress);?></td>
+            <td><?php echo $this->escapeHtml($customer->workphone);?></td>
+            <td>
+                <a href="<?php echo $this->url('customer',
+                    array('action'=>'edit', 'id' => $customer->id));?>">Edit</a>
+                <a href="<?php echo $this->url('customer',
+                    array('action'=>'delete', 'id' => $customer->id));?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
