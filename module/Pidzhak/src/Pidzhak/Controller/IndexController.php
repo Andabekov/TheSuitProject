@@ -49,6 +49,11 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+
+        if ($this->getAuthService()->hasIdentity()){
+            return $this->redirect()->toRoute('seller');
+        }
+
         return new ViewModel();
     }
 
@@ -110,7 +115,7 @@ class IndexController extends AbstractActionController
         $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
 
-        $this->flashmessenger()->addMessage("You've been logged out");
+        $this->flashmessenger()->addMessage("Вы вышли из системы");
         return $this->redirect()->toRoute('login');
     }
 }
