@@ -12,29 +12,34 @@ class CustomerRestController extends AbstractRestfulController
 
     public function create($data)
     {
+
+        $current = $data['current'];
+        $rowCount = $data['rowCount'];
+        $sort = $data['sort'];
+        $sortField = key($sort);
+        $sortType = $sort[$sortField];
+        $searchPhrase = $data['searchPhrase'];
+        $id = $data['id'];
+
+
+
+        $offset = intval($rowCount) * (intval($current)-1);
+        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset);
+        $count= $this->getCustomerTable()->getCount();
+
+
+
+/*        foreach($customers as $customer){
+            print_r($customer->id);
+        }*/
+
+
+
         return new JsonModel(array(
-            'current' => 1,
-            'rowCount' => 4,
-            'rows' => array(
-                array(
-                    "id" => 0,
-                    "sender" => "Item 0",
-                    "received" => "$0"
-                ),array(
-                    "id" => 1,
-                    "sender" => "Item 1",
-                    "received" => "$1"
-                ),array(
-                    "id" => 2,
-                    "sender" => "Item 2",
-                    "received" => "$2"
-                ),array(
-                    "id" => 3,
-                    "sender" => "Item 3",
-                    "received" => "$3"
-                ),
-            ),
-            "total"=> 1123
+            'current' => $current,
+            'rowCount' => $rowCount,
+            'rows' => $customers->toArray(),
+            "total"=> $count,
         ));
     }
 

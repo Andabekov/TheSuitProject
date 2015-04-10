@@ -2,6 +2,7 @@
 namespace Pidzhak\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
 
 class CustomerTable
 {
@@ -16,6 +17,19 @@ class CustomerTable
     {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
+    }
+
+    public function fetchPage($rowCount, $offset){
+        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset){
+            $select->limit($rowCount)->offset($offset);
+        });
+
+        return $resultSet;
+    }
+
+    public function getCount(){
+        $resultSet = $this->tableGateway->select();
+        return $resultSet->count();
     }
 
     public function getCustomer($id)

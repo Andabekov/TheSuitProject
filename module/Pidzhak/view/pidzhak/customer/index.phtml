@@ -7,7 +7,7 @@ $this->headTitle($title);
     <a href="<?php echo $this->url('customer', array('action' => 'add')); ?>">Add new customer</a>
 </p>
 
-<table class="table">
+<!--<table class="table">
     <tr>
         <th>id</th>
         <th>Имя</th>
@@ -26,42 +26,54 @@ $this->headTitle($title);
         <th>Рабочий телефон</th>
         <th>&nbsp;</th>
     </tr>
-    <?php foreach ($customers as $customer) : ?>
+    <?php /*foreach ($customers as $customer) : */?>
         <tr>
-            <td><?php echo $this->escapeHtml($customer->id); ?></td>
-            <td><?php echo $this->escapeHtml($customer->firstname); ?></td>
-            <td><?php echo $this->escapeHtml($customer->lastname); ?></td>
-            <td><?php echo $this->escapeHtml($customer->middlename); ?></td>
-            <td><?php echo $this->escapeHtml($customer->birthday); ?></td>
-            <td><?php echo $this->escapeHtml($customer->mobilephone); ?></td>
-            <td><?php echo $this->escapeHtml($customer->email); ?></td>
-            <td><?php echo $this->escapeHtml($customer->country); ?></td>
-            <td><?php echo $this->escapeHtml($customer->city); ?></td>
-            <td><?php echo $this->escapeHtml($customer->address); ?></td>
-            <td><?php echo $this->escapeHtml($customer->homephone); ?></td>
-            <td><?php echo $this->escapeHtml($customer->work); ?></td>
-            <td><?php echo $this->escapeHtml($customer->position); ?></td>
-            <td><?php echo $this->escapeHtml($customer->workaddress); ?></td>
-            <td><?php echo $this->escapeHtml($customer->workphone); ?></td>
+            <td><?php /*echo $this->escapeHtml($customer->id); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->firstname); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->lastname); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->middlename); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->birthday); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->mobilephone); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->email); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->country); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->city); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->address); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->homephone); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->work); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->position); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->workaddress); */?></td>
+            <td><?php /*echo $this->escapeHtml($customer->workphone); */?></td>
             <td>
-                <a href="<?php echo $this->url('customer',
-                    array('action' => 'edit', 'id' => $customer->id)); ?>">Edit</a>
-                <a href="<?php echo $this->url('customer',
-                    array('action' => 'delete', 'id' => $customer->id)); ?>">Delete</a>
+                <a href="<?php /*echo $this->url('customer',
+                    array('action' => 'edit', 'id' => $customer->id)); */?>">Edit</a>
+                <a href="<?php /*echo $this->url('customer',
+                    array('action' => 'delete', 'id' => $customer->id)); */?>">Delete</a>
             </td>
         </tr>
-    <?php endforeach; ?>
+    <?php /*endforeach; */?>
 </table>
-
+-->
 
 <div class="col-md-9">
     <table id="customer-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="id" data-type="numeric">ID</th>
-            <th data-column-id="sender">Sender</th>
-            <th data-column-id="received" data-order="desc">Received</th>
+            <!--<th data-column-id="id" data-type="numeric">ID</th>-->
+            <th data-column-id="firstname">firstname</th>
+            <th data-column-id="lastname" data-order="desc">lastname</th>
+            <th data-column-id="middlename" data-order="desc">middlename</th>
+            <!--<th data-column-id="birthday" data-order="desc">birthday</th>-->
+            <th data-column-id="mobilephone" data-order="desc">mobilephone</th>
+            <th data-column-id="email" data-order="desc">email</th>
+            <th data-column-id="country" data-order="desc">country</th>
+            <th data-column-id="city" data-order="desc">city</th>
+            <th data-column-id="address" data-order="desc">address</th>
+            <!--<th data-column-id="homephone" data-order="desc">homephone</th>
+            <th data-column-id="work" data-order="desc">work</th>
+            <th data-column-id="position" data-order="desc">position</th>
+            <th data-column-id="workaddress" data-order="desc">workaddress</th>
+            <th data-column-id="workphone" data-order="desc">workphone</th>-->
             <th data-column-id="link" data-formatter="link" data-sortable="false">Link</th>
         </tr>
         </thead>
@@ -84,7 +96,9 @@ $this->headTitle($title);
                 url: "/restcustomer",
                 formatters: {
                     "link": function (column, row) {
-                        return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
+                        return "<a href=\"customer/edit/"+row.id+"\">" + column.id + "</a>";
+
+
                     }
                 }
             });
