@@ -13,7 +13,8 @@ return array(
             'Pidzhak\Controller\Index' => 'Pidzhak\Controller\IndexController',
             'Pidzhak\Controller\Success' => 'Pidzhak\Controller\AuthSuccessController',
             'Pidzhak\Controller\Seller' => 'Pidzhak\Controller\SellerController',
-            'Pidzhak\Controller\Customer' => 'Pidzhak\Controller\CustomerController'
+            'Pidzhak\Controller\Customer' => 'Pidzhak\Controller\CustomerController',
+            'Pidzhak\Controller\CustomerRest' => 'Pidzhak\Controller\CustomerRestController'
         )
     ),
 
@@ -60,6 +61,17 @@ return array(
                     'defaults' => array(
                         'controller' => 'Pidzhak\Controller\Customer',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'customer-rest' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/restcustomer',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\CustomerRest',
                     ),
                 ),
             ),
@@ -139,6 +151,9 @@ return array(
         'doctype'                  => 'HTML5',
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy'
         ),
     ),
 );

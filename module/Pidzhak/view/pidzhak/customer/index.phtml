@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p>
-    <a href="<?php echo $this->url('customer', array('action'=>'add'));?>">Add new customer</a>
+    <a href="<?php echo $this->url('customer', array('action' => 'add')); ?>">Add new customer</a>
 </p>
 
 <table class="table">
@@ -28,120 +28,60 @@ $this->headTitle($title);
     </tr>
     <?php foreach ($customers as $customer) : ?>
         <tr>
-            <td><?php echo $this->escapeHtml($customer->id);?></td>
-            <td><?php echo $this->escapeHtml($customer->firstname);?></td>
-            <td><?php echo $this->escapeHtml($customer->lastname);?></td>
-            <td><?php echo $this->escapeHtml($customer->middlename);?></td>
-            <td><?php echo $this->escapeHtml($customer->birthday);?></td>
-            <td><?php echo $this->escapeHtml($customer->mobilephone);?></td>
-            <td><?php echo $this->escapeHtml($customer->email);?></td>
-            <td><?php echo $this->escapeHtml($customer->country);?></td>
-            <td><?php echo $this->escapeHtml($customer->city);?></td>
-            <td><?php echo $this->escapeHtml($customer->address);?></td>
-            <td><?php echo $this->escapeHtml($customer->homephone);?></td>
-            <td><?php echo $this->escapeHtml($customer->work);?></td>
-            <td><?php echo $this->escapeHtml($customer->position);?></td>
-            <td><?php echo $this->escapeHtml($customer->workaddress);?></td>
-            <td><?php echo $this->escapeHtml($customer->workphone);?></td>
+            <td><?php echo $this->escapeHtml($customer->id); ?></td>
+            <td><?php echo $this->escapeHtml($customer->firstname); ?></td>
+            <td><?php echo $this->escapeHtml($customer->lastname); ?></td>
+            <td><?php echo $this->escapeHtml($customer->middlename); ?></td>
+            <td><?php echo $this->escapeHtml($customer->birthday); ?></td>
+            <td><?php echo $this->escapeHtml($customer->mobilephone); ?></td>
+            <td><?php echo $this->escapeHtml($customer->email); ?></td>
+            <td><?php echo $this->escapeHtml($customer->country); ?></td>
+            <td><?php echo $this->escapeHtml($customer->city); ?></td>
+            <td><?php echo $this->escapeHtml($customer->address); ?></td>
+            <td><?php echo $this->escapeHtml($customer->homephone); ?></td>
+            <td><?php echo $this->escapeHtml($customer->work); ?></td>
+            <td><?php echo $this->escapeHtml($customer->position); ?></td>
+            <td><?php echo $this->escapeHtml($customer->workaddress); ?></td>
+            <td><?php echo $this->escapeHtml($customer->workphone); ?></td>
             <td>
                 <a href="<?php echo $this->url('customer',
-                    array('action'=>'edit', 'id' => $customer->id));?>">Edit</a>
+                    array('action' => 'edit', 'id' => $customer->id)); ?>">Edit</a>
                 <a href="<?php echo $this->url('customer',
-                    array('action'=>'delete', 'id' => $customer->id));?>">Delete</a>
+                    array('action' => 'delete', 'id' => $customer->id)); ?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 
 
-
-
 <div class="col-md-9">
-    <table id="customer-grid" class="table table-condensed table-hover table-striped"  data-row-select="true" data-keep-selection="true">
+    <table id="customer-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="id" data-identifier="true" data-type="numeric" data-align="right">ID</th>
-            <th data-column-id="sender" data-order="asc" data-align="center" data-header-align="center">Sender</th>
-            <th data-column-id="received" data-css-class="cell" data-header-css-class="column" data-filterable="true">Received</th>
+            <th data-column-id="id" data-type="numeric">ID</th>
+            <th data-column-id="sender">Sender</th>
+            <th data-column-id="received" data-order="desc">Received</th>
             <th data-column-id="link" data-formatter="link" data-sortable="false">Link</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>me@rafaelstaib.com</td>
-            <td>11.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>me@rafaelstaib.com</td>
-            <td>12.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>me@rafaelstaib.com</td>
-            <td>10.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>mo@rafaelstaib.com</td>
-            <td>12.08.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>ma@rafaelstaib.com</td>
-            <td>12.06.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>me@rafaelstaib.com</td>
-            <td>12.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>7</td>
-            <td>ma@rafaelstaib.com</td>
-            <td>12.11.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>8</td>
-            <td>mo@rafaelstaib.com</td>
-            <td>15.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>9</td>
-            <td>me@rafaelstaib.com</td>
-            <td>24.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>10</td>
-            <td>ma@rafaelstaib.com</td>
-            <td>14.12.2014</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>11</td>
-            <td>mo@rafaelstaib.com</td>
-            <td>12.12.2014</td>
-            <td>Link</td>
-        </tr>
-        </tbody>
+
     </table>
     <!--/div-->
 </div>
 
 <script>
-    $(function() {
+    $(function () {
         function init() {
             $("#customer-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                    };
+                },
+                url: "/restcustomer",
                 formatters: {
                     "link": function (column, row) {
                         return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
