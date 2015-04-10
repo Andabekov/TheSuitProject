@@ -16,99 +16,155 @@ class CustomerForm extends Form
         $this->add(array(
             'name' => 'firstname',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Имя',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'lastname',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Фамилия',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'middlename',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Отчество',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'birthday',
-            'type' => 'Text',
+            'type' => 'Date',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Дата рождения',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'mobilephone',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Мобильный телефон',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'email',
-            'type' => 'Text',
+            'type' => 'Email',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Емайл',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'country',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Страна',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'city',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Город',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'address',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Адресс проживания',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'homephone',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Домашний телефон',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'work',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Место работы',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'position',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Должность',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'workaddress',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Адрес работы',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'workphone',
             'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
             'options' => array(
                 'label' => 'Рабочий телефон',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -117,6 +173,7 @@ class CustomerForm extends Form
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-primary'
             ),
         ));
     }
