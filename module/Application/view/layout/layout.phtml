@@ -15,12 +15,14 @@
                         ->prependStylesheet($this->basePath('css/style.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap-table.css')) ?>
+                        ->prependStylesheet($this->basePath('css/jquery.bootgrid.css')) ?>
 
         <!-- Scripts -->
         <?php echo $this->headScript()
-            ->prependFile($this->basePath('js/bootstrap-table.js'))
+            ->prependFile($this->basePath('js/jquery.bootgrid.js'))
             ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.cookie.js'))
+            ->prependFile($this->basePath('js/moderniz.js'))
             ->prependFile($this->basePath('js/jquery.min.js'))
             ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile($this->basePath('js/html5shiv.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
