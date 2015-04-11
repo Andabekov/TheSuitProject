@@ -19,13 +19,16 @@ class CustomerTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby){
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
+        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
             if($rowCount<0)
                 $select->offset(0);
             else
                 $select->limit($rowCount)->offset($offset);
             $select->order($orderby);
+
+            if($searchPhrase)
+                $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');
         });
 
         return $resultSet;

@@ -24,7 +24,7 @@ class CustomerRestController extends AbstractRestfulController
 
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType);
+        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
         $count= $this->getCustomerTable()->getCount();
 
 
