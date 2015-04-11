@@ -19,9 +19,13 @@ class CustomerTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset){
-            $select->limit($rowCount)->offset($offset);
+    public function fetchPage($rowCount, $offset, $orderby){
+        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby){
+            if($rowCount<0)
+                $select->offset(0);
+            else
+                $select->limit($rowCount)->offset($offset);
+            $select->order($orderby);
         });
 
         return $resultSet;

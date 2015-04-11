@@ -24,7 +24,7 @@ class CustomerRestController extends AbstractRestfulController
 
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset);
+        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType);
         $count= $this->getCustomerTable()->getCount();
 
 
@@ -36,8 +36,8 @@ class CustomerRestController extends AbstractRestfulController
 
 
         return new JsonModel(array(
-            'current' => $current,
-            'rowCount' => $rowCount,
+            'current' => intval($current),
+            'rowCount' => intval($rowCount),
             'rows' => $customers->toArray(),
             "total"=> $count,
         ));

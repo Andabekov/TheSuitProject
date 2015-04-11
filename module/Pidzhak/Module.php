@@ -8,6 +8,8 @@
 
 namespace Pidzhak;
 
+use Pidzhak\Model\BodyMeasure;
+use Pidzhak\Model\BodyMeasureTable;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -92,6 +94,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Customer());
                     return new TableGateway('customer', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\BodyMeasureTable' =>  function($sm) {
+                    $tableGateway = $sm->get('BodyMeasureTableGateway');
+                    $table = new BodyMeasureTable($tableGateway);
+                    return $table;
+                },
+                'BodyMeasureTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new BodyMeasure());
+                    return new TableGateway('bodymeasure', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

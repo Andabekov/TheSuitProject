@@ -2,6 +2,7 @@
 namespace Pidzhak\Form;
 
 use Zend\Form\Form;
+use  Zend\Form\Element\Hidden;
 
 class CustomerForm extends Form
 {
@@ -176,5 +177,17 @@ class CustomerForm extends Form
                 'class' => 'btn btn-primary'
             ),
         ));
+    }
+
+    public function highlightErrorElements()
+    {
+        foreach ($this->getElements() as $element) {
+            if ($element->getMessages()) {
+                $element->setAttribute('style', 'border-color:#a94442; box-shadow:inset 0 1px 1px rgba(0,0,0,.075);');
+                $element->setLabelAttributes(array(
+                    'class' => 'control-label col-xs-2',
+                    'style' => 'color:#a94442'));
+            }
+        }
     }
 }

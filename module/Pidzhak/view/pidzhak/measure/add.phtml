@@ -1,0 +1,42 @@
+<?php
+$title = 'Add new measure';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->setAttribute('action', $this->url('measure', array('action' => 'add')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formRow($form->get('clother_id'));
+echo $this->formRow($form->get('customer_id'));
+echo $this->formRow($form->get('growth'));
+echo $this->formRow($form->get('weight'));
+echo $this->formRow($form->get('arm_position'));
+echo $this->formRow($form->get('neck'));
+echo $this->formRow($form->get('chest'));
+echo $this->formRow($form->get('stomach'));
+echo $this->formRow($form->get('seat'));
+echo $this->formRow($form->get('thigh'));
+echo $this->formRow($form->get('knee_finished'));
+echo $this->formRow($form->get('pant_bottom_finished'));
+echo $this->formRow($form->get('u_rise'));
+echo $this->formRow($form->get('otseam_l_and_r'));
+echo $this->formRow($form->get('nape_to_waist'));
+echo $this->formRow($form->get('front_waist_length'));
+echo $this->formRow($form->get('back_waist_height'));
+echo $this->formRow($form->get('front_waist_height'));
+echo $this->formRow($form->get('biceps'));
+echo $this->formRow($form->get('back_shoulder'));
+echo $this->formRow($form->get('right_sleeve'));
+echo $this->formRow($form->get('left_sleeve'));
+echo $this->formRow($form->get('back_length'));
+echo $this->formRow($form->get('overcoat_back_length'));
+echo $this->formRow($form->get('waist'));
+echo $this->formRow($form->get('right_wrist'));
+echo $this->formRow($form->get('left_wrist'));
+echo $this->formRow($form->get('style'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();

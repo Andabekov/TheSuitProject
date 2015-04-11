@@ -3,39 +3,36 @@ namespace Pidzhak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\Customer;
-use Pidzhak\Form\CustomerForm;
+use Pidzhak\Model\BodyMeasure;
+use Pidzhak\Form\MeasureForm;
 
-class CustomerController extends AbstractActionController
+class MeasureController extends AbstractActionController
 {
-    protected $customerTable;
+    protected $bodyMeasureTable;
 
     public function indexAction()
     {
         return new ViewModel(array(
-            'customers' => $this->getCustomerTable()->fetchAll(),
+            'bodymeasures' => $this->getBodyMeasureTable()->fetchAll(),
         ));
     }
 
     public function addAction()
     {
-        $form = new CustomerForm();
+        $form = new MeasureForm();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $customer = new Customer();
-            $form->setInputFilter($customer->getInputFilter());
+            $bodymeasure = new BodyMeasure();
+            $form->setInputFilter($bodymeasure->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $customer->exchangeArray($form->getData());
-                $this->getCustomerTable()->saveCustomer($customer);
+                $bodymeasure->exchangeArray($form->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
 
-                return $this->redirect()->toRoute('customer');
-            }else {
-                $form->highlightErrorElements();
-                // other error logic
+                return $this->redirect()->toRoute('measure');
             }
         }
         return array('form' => $form);
@@ -45,33 +42,33 @@ class CustomerController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('customer', array(
+            return $this->redirect()->toRoute('measure', array(
                 'action' => 'add'
             ));
         }
 
         try {
-            $customer = $this->getCustomerTable()->getCustomer($id);
+            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasure($id);
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('customer', array(
+            return $this->redirect()->toRoute('measure', array(
                 'action' => 'index'
             ));
         }
 
-        $form  = new CustomerForm();
-        $form->bind($customer);
+        $form  = new MeasureForm();
+        $form->bind($bodymeasure);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($customer->getInputFilter());
+            $form->setInputFilter($bodymeasure->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getCustomerTable()->saveCustomer($customer);
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
 
-                return $this->redirect()->toRoute('customer');
+                return $this->redirect()->toRoute('measure');
             }
         }
 
@@ -85,7 +82,7 @@ class CustomerController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('customer');
+            return $this->redirect()->toRoute('measure');
         }
 
         $request = $this->getRequest();
@@ -94,25 +91,25 @@ class CustomerController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getCustomerTable()->deleteCustomer($id);
+                $this->getBodyMeasureTable()->deleteBodyMeasure($id);
             }
 
-            return $this->redirect()->toRoute('customer');
+            return $this->redirect()->toRoute('measure');
         }
 
         return array(
             'id'    => $id,
-            'customer' => $this->getCustomerTable()->getCustomer($id)
+            'measure' => $this->getBodyMeasureTable()->getBodyMeasure($id)
         );
     }
 
     /*Inversion of Control*/
-    public function getCustomerTable()
+    public function getBodyMeasureTable()
     {
-        if (!$this->customerTable) {
+        if (!$this->bodyMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\BodyMeasureTable');
         }
-        return $this->customerTable;
+        return $this->bodyMeasureTable;
     }
 }
