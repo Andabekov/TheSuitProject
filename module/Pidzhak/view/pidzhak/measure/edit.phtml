@@ -1,142 +1,259 @@
 <?php
-$title = 'Edit customer';
+$title = 'Edit measure';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <?php
 $form = $this->form;
-$form->setAttribute('action', $this->url(
-    'customer',
-    array(
-        'action' => 'edit',
-        'id'     => $this->id,
-    )
-));
 
+$form->setAttribute('action', $this->url('measure', array('action' => 'edit', 'id'     => $this->id,)));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
 echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('id'));
+
+echo $this->formHidden($form->get('id_1'));
+echo $this->formHidden($form->get('id_2'));
+echo $this->formHidden($form->get('id_3'));
+echo $this->formHidden($form->get('id_4'));
+echo $this->formHidden($form->get('id_5'));
+
+echo $this->formHidden($form->get('clother_id_1')->setValue(1));
+echo $this->formHidden($form->get('clother_id_2')->setValue(2));
+echo $this->formHidden($form->get('clother_id_3')->setValue(3));
+echo $this->formHidden($form->get('clother_id_4')->setValue(4));
+echo $this->formHidden($form->get('clother_id_5')->setValue(5));
+
+echo $this->formHidden($form->get('customer_id_1'));
+echo $this->formHidden($form->get('customer_id_2'));
+echo $this->formHidden($form->get('customer_id_3'));
+echo $this->formHidden($form->get('customer_id_4'));
+echo $this->formHidden($form->get('customer_id_5'));
 ?>
-    <div class="form-group">
-        <?php $element = $form->get('firstname'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('lastname'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('middlename'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('birthday'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formDate($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('mobilephone'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('email'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('country'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('city'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('address'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('homephone'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('work'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('position'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('workaddress'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('workphone'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <?php echo $this->formSubmit($form->get('submit')); ?>
-        </div>
-    </div>
+<table>
+    <thead>
+    <tr>
+        <td></td>
+        <td>Пиджак</td>
+        <td>Брюки</td>
+        <td>Сорочка</td>
+        <td>Жилетка</td>
+        <td>Пальто</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('growth_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('growth_1')); ?></td>
+        <td><?php echo $this->formText($form->get('growth_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('growth_3')); ?></td>
+        <td><?php echo $this->formText($form->get('growth_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('growth_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('weight_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('weight_1')); ?></td>
+        <td><?php echo $this->formText($form->get('weight_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('weight_3')); ?></td>
+        <td><?php echo $this->formText($form->get('weight_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('weight_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('arm_position_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('arm_position_1')); ?></td>
+        <td><?php echo $this->formText($form->get('arm_position_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('arm_position_3')); ?></td>
+        <td><?php echo $this->formText($form->get('arm_position_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('arm_position_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('neck_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('neck_1')); ?></td>
+        <td><?php echo $this->formText($form->get('neck_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('neck_3')); ?></td>
+        <td><?php echo $this->formText($form->get('neck_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('neck_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('chest_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('chest_1')); ?></td>
+        <td><?php echo $this->formText($form->get('chest_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('chest_3')); ?></td>
+        <td><?php echo $this->formText($form->get('chest_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('chest_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('stomach_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('stomach_1')); ?></td>
+        <td><?php echo $this->formText($form->get('stomach_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('stomach_3')); ?></td>
+        <td><?php echo $this->formText($form->get('stomach_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('stomach_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('seat_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('seat_1')); ?></td>
+        <td><?php echo $this->formText($form->get('seat_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('seat_3')); ?></td>
+        <td><?php echo $this->formText($form->get('seat_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('seat_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('thigh_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('thigh_1')); ?></td>
+        <td><?php echo $this->formText($form->get('thigh_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('thigh_3')); ?></td>
+        <td><?php echo $this->formText($form->get('thigh_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('thigh_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('knee_finished_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('knee_finished_1')); ?></td>
+        <td><?php echo $this->formText($form->get('knee_finished_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('knee_finished_3')); ?></td>
+        <td><?php echo $this->formText($form->get('knee_finished_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('knee_finished_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('pant_bottom_finished_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('pant_bottom_finished_1')); ?></td>
+        <td><?php echo $this->formText($form->get('pant_bottom_finished_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('pant_bottom_finished_3')); ?></td>
+        <td><?php echo $this->formText($form->get('pant_bottom_finished_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('pant_bottom_finished_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('u_rise_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_1')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_3')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('otseam_l_and_r_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('otseam_l_and_r_1')); ?></td>
+        <td><?php echo $this->formText($form->get('otseam_l_and_r_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('otseam_l_and_r_3')); ?></td>
+        <td><?php echo $this->formText($form->get('otseam_l_and_r_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('otseam_l_and_r_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('nape_to_waist_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('nape_to_waist_1')); ?></td>
+        <td><?php echo $this->formText($form->get('nape_to_waist_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('nape_to_waist_3')); ?></td>
+        <td><?php echo $this->formText($form->get('nape_to_waist_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('nape_to_waist_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('front_waist_length_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_length_1')); ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_length_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_length_3')); ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_length_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_length_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('back_waist_height_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_waist_height_1')); ?></td>
+        <td><?php echo $this->formText($form->get('back_waist_height_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_waist_height_3')); ?></td>
+        <td><?php echo $this->formText($form->get('back_waist_height_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_waist_height_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('front_waist_height_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_height_1')); ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_height_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_height_3')); ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_height_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('front_waist_height_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('biceps_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('biceps_1')); ?></td>
+        <td><?php echo $this->formText($form->get('biceps_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('biceps_3')); ?></td>
+        <td><?php echo $this->formText($form->get('biceps_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('biceps_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('back_shoulder_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_shoulder_1')); ?></td>
+        <td><?php echo $this->formText($form->get('back_shoulder_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_shoulder_3')); ?></td>
+        <td><?php echo $this->formText($form->get('back_shoulder_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_shoulder_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('right_sleeve_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('right_sleeve_1')); ?></td>
+        <td><?php echo $this->formText($form->get('right_sleeve_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('right_sleeve_3')); ?></td>
+        <td><?php echo $this->formText($form->get('right_sleeve_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('right_sleeve_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('left_sleeve_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('left_sleeve_1')); ?></td>
+        <td><?php echo $this->formText($form->get('left_sleeve_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('left_sleeve_3')); ?></td>
+        <td><?php echo $this->formText($form->get('left_sleeve_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('left_sleeve_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('back_length_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_length_1')); ?></td>
+        <td><?php echo $this->formText($form->get('back_length_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_length_3')); ?></td>
+        <td><?php echo $this->formText($form->get('back_length_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('back_length_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('overcoat_back_length_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('overcoat_back_length_1')); ?></td>
+        <td><?php echo $this->formText($form->get('overcoat_back_length_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('overcoat_back_length_3')); ?></td>
+        <td><?php echo $this->formText($form->get('overcoat_back_length_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('overcoat_back_length_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('waist_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('waist_1')); ?></td>
+        <td><?php echo $this->formText($form->get('waist_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('waist_3')); ?></td>
+        <td><?php echo $this->formText($form->get('waist_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('waist_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('right_wrist_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('right_wrist_1')); ?></td>
+        <td><?php echo $this->formText($form->get('right_wrist_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('right_wrist_3')); ?></td>
+        <td><?php echo $this->formText($form->get('right_wrist_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('right_wrist_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('left_wrist_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('left_wrist_1')); ?></td>
+        <td><?php echo $this->formText($form->get('left_wrist_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('left_wrist_3')); ?></td>
+        <td><?php echo $this->formText($form->get('left_wrist_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('left_wrist_5'));  ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('style_1'));  ?></td>
+        <td><?php echo $this->formText($form->get('style_1')); ?></td>
+        <td><?php echo $this->formText($form->get('style_2'));  ?></td>
+        <td><?php echo $this->formText($form->get('style_3')); ?></td>
+        <td><?php echo $this->formText($form->get('style_4'));  ?></td>
+        <td><?php echo $this->formText($form->get('style_5'));  ?></td>
+    </tr>
+    </tbody>
+</table>
 <?php
 
+echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();

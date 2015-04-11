@@ -29,6 +29,23 @@ class MeasureController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                $bodymeasure->setPostfix('_1');
+                $bodymeasure->exchangeArray($form->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_2');
+                $bodymeasure->exchangeArray($form->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_3');
+                $bodymeasure->exchangeArray($form->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_4');
+                $bodymeasure->exchangeArray($form->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_5');
                 $bodymeasure->exchangeArray($form->getData());
                 $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
 
@@ -57,6 +74,7 @@ class MeasureController extends AbstractActionController
         }
 
         $form  = new MeasureForm();
+        $bodymeasure->setPostfix('_2');
         $form->bind($bodymeasure);
         $form->get('submit')->setAttribute('value', 'Edit');
 

@@ -37,42 +37,49 @@ class BodyMeasure  implements InputFilterAwareInterface
     public $left_wrist;
     public $style;
 
+    private $postfix;
+
     public function exchangeArray($data)
     {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
-        $this->clother_id = (!empty($data['clother_id'])) ? $data['clother_id'] : null;
-        $this->customer_id = (!empty($data['customer_id'])) ? $data['customer_id'] : null;
-        $this->growth = (!empty($data['growth'])) ? $data['growth'] : null;
-        $this->weight = (!empty($data['weight'])) ? $data['weight'] : null;
-        $this->arm_position = (!empty($data['arm_position'])) ? $data['arm_position'] : null;
-        $this->neck = (!empty($data['neck'])) ? $data['neck'] : null;
-        $this->chest = (!empty($data['chest'])) ? $data['chest'] : null;
-        $this->stomach = (!empty($data['stomach'])) ? $data['stomach'] : null;
-        $this->seat = (!empty($data['seat'])) ? $data['seat'] : null;
-        $this->thigh = (!empty($data['thigh'])) ? $data['thigh'] : null;
-        $this->knee_finished = (!empty($data['knee_finished'])) ? $data['knee_finished'] : null;
-        $this->pant_bottom_finished = (!empty($data['pant_bottom_finished'])) ? $data['pant_bottom_finished'] : null;
-        $this->u_rise = (!empty($data['u_rise'])) ? $data['u_rise'] : null;
-        $this->otseam_l_and_r = (!empty($data['otseam_l_and_r'])) ? $data['otseam_l_and_r'] : null;
-        $this->nape_to_waist = (!empty($data['nape_to_waist'])) ? $data['nape_to_waist'] : null;
-        $this->front_waist_length = (!empty($data['front_waist_length'])) ? $data['front_waist_length'] : null;
-        $this->back_waist_height = (!empty($data['back_waist_height'])) ? $data['back_waist_height'] : null;
-        $this->front_waist_height = (!empty($data['front_waist_height'])) ? $data['front_waist_height'] : null;
-        $this->biceps = (!empty($data['biceps'])) ? $data['biceps'] : null;
-        $this->back_shoulder = (!empty($data['back_shoulder'])) ? $data['back_shoulder'] : null;
-        $this->right_sleeve = (!empty($data['right_sleeve'])) ? $data['right_sleeve'] : null;
-        $this->left_sleeve = (!empty($data['left_sleeve'])) ? $data['left_sleeve'] : null;
-        $this->back_length = (!empty($data['back_length'])) ? $data['back_length'] : null;
-        $this->overcoat_back_length = (!empty($data['overcoat_back_length'])) ? $data['overcoat_back_length'] : null;
-        $this->waist = (!empty($data['waist'])) ? $data['waist'] : null;
-        $this->right_wrist = (!empty($data['right_wrist'])) ? $data['right_wrist'] : null;
-        $this->left_wrist = (!empty($data['left_wrist'])) ? $data['left_wrist'] : null;
-        $this->style = (!empty($data['style'])) ? $data['style'] : null;
+        $this->id = (!empty($data['id'.$this->postfix])) ? $data['id'.$this->postfix] : null;
+        $this->clother_id = (!empty($data['clother_id'.$this->postfix])) ? $data['clother_id'.$this->postfix] : null;
+        $this->customer_id = (!empty($data['customer_id'.$this->postfix])) ? $data['customer_id'.$this->postfix] : null;
+        $this->growth = (!empty($data['growth'.$this->postfix])) ? $data['growth'.$this->postfix] : null;
+        $this->weight = (!empty($data['weight'.$this->postfix])) ? $data['weight'.$this->postfix] : null;
+        $this->arm_position = (!empty($data['arm_position'.$this->postfix])) ? $data['arm_position'.$this->postfix] : null;
+        $this->neck = (!empty($data['neck'.$this->postfix])) ? $data['neck'.$this->postfix] : null;
+        $this->chest = (!empty($data['chest'.$this->postfix])) ? $data['chest'.$this->postfix] : null;
+        $this->stomach = (!empty($data['stomach'.$this->postfix])) ? $data['stomach'.$this->postfix] : null;
+        $this->seat = (!empty($data['seat'.$this->postfix])) ? $data['seat'.$this->postfix] : null;
+        $this->thigh = (!empty($data['thigh'.$this->postfix])) ? $data['thigh'.$this->postfix] : null;
+        $this->knee_finished = (!empty($data['knee_finished'.$this->postfix])) ? $data['knee_finished'.$this->postfix] : null;
+        $this->pant_bottom_finished = (!empty($data['pant_bottom_finished'.$this->postfix])) ? $data['pant_bottom_finished'.$this->postfix] : null;
+        $this->u_rise = (!empty($data['u_rise'.$this->postfix])) ? $data['u_rise'.$this->postfix] : null;
+        $this->otseam_l_and_r = (!empty($data['otseam_l_and_r'.$this->postfix])) ? $data['otseam_l_and_r'.$this->postfix] : null;
+        $this->nape_to_waist = (!empty($data['nape_to_waist'.$this->postfix])) ? $data['nape_to_waist'.$this->postfix] : null;
+        $this->front_waist_length = (!empty($data['front_waist_length'.$this->postfix])) ? $data['front_waist_length'.$this->postfix] : null;
+        $this->back_waist_height = (!empty($data['back_waist_height'.$this->postfix])) ? $data['back_waist_height'.$this->postfix] : null;
+        $this->front_waist_height = (!empty($data['front_waist_height'.$this->postfix])) ? $data['front_waist_height'.$this->postfix] : null;
+        $this->biceps = (!empty($data['biceps'.$this->postfix])) ? $data['biceps'.$this->postfix] : null;
+        $this->back_shoulder = (!empty($data['back_shoulder'.$this->postfix])) ? $data['back_shoulder'.$this->postfix] : null;
+        $this->right_sleeve = (!empty($data['right_sleeve'.$this->postfix])) ? $data['right_sleeve'.$this->postfix] : null;
+        $this->left_sleeve = (!empty($data['left_sleeve'.$this->postfix])) ? $data['left_sleeve'.$this->postfix] : null;
+        $this->back_length = (!empty($data['back_length'.$this->postfix])) ? $data['back_length'.$this->postfix] : null;
+        $this->overcoat_back_length = (!empty($data['overcoat_back_length'.$this->postfix])) ? $data['overcoat_back_length'.$this->postfix] : null;
+        $this->waist = (!empty($data['waist'.$this->postfix])) ? $data['waist'.$this->postfix] : null;
+        $this->right_wrist = (!empty($data['right_wrist'.$this->postfix])) ? $data['right_wrist'.$this->postfix] : null;
+        $this->left_wrist = (!empty($data['left_wrist'.$this->postfix])) ? $data['left_wrist'.$this->postfix] : null;
+        $this->style = (!empty($data['style'.$this->postfix])) ? $data['style'.$this->postfix] : null;
     }
 
     public function getArrayCopy()
     {
-        return get_object_vars($this);
+        $return_array = array();
+        $fields_array = get_object_vars($this);
+        foreach ($fields_array as $field=> $value) {
+            $return_array[$field.$this->postfix] = $value;
+        }
+        return $return_array;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -89,4 +96,14 @@ class BodyMeasure  implements InputFilterAwareInterface
 
         return $this->inputFilter;
     }
+
+    /**
+     * @param mixed $postfix
+     */
+    public function setPostfix($postfix)
+    {
+        $this->postfix = $postfix;
+    }
+
+
 }

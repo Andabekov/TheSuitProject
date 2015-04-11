@@ -9,20 +9,21 @@ class MeasureForm extends Form
     {
         parent::__construct('measure');
 
+        /*first column*/
         $this->add(array(
-            'name' => 'id',
+            'name' => 'id_1',
             'type' => 'Hidden',
         ));
         $this->add(array(
-            'name' => 'clother_id',
+            'name' => 'clother_id_1',
             'type' => 'Hidden',
         ));
         $this->add(array(
-            'name' => 'customer_id',
+            'name' => 'customer_id_1',
             'type' => 'Hidden',
         ));
         $this->add(array(
-            'name' => 'growth',
+            'name' => 'growth_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -32,7 +33,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'weight',
+            'name' => 'weight_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -42,7 +43,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'arm_position',
+            'name' => 'arm_position_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -52,7 +53,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'neck',
+            'name' => 'neck_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -62,7 +63,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'chest',
+            'name' => 'chest_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -72,7 +73,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'stomach',
+            'name' => 'stomach_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -82,7 +83,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'seat',
+            'name' => 'seat_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -92,7 +93,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'thigh',
+            'name' => 'thigh_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -102,7 +103,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'knee_finished',
+            'name' => 'knee_finished_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -112,7 +113,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'pant_bottom_finished',
+            'name' => 'pant_bottom_finished_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -122,7 +123,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'u_rise',
+            'name' => 'u_rise_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -132,7 +133,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'otseam_l_and_r',
+            'name' => 'otseam_l_and_r_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -142,7 +143,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'nape_to_waist',
+            'name' => 'nape_to_waist_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -152,7 +153,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'front_waist_length',
+            'name' => 'front_waist_length_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -162,7 +163,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'back_waist_height',
+            'name' => 'back_waist_height_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -172,7 +173,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'front_waist_height',
+            'name' => 'front_waist_height_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -182,7 +183,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'biceps',
+            'name' => 'biceps_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -192,7 +193,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'back_shoulder',
+            'name' => 'back_shoulder_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -202,7 +203,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'right_sleeve',
+            'name' => 'right_sleeve_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -212,7 +213,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'left_sleeve',
+            'name' => 'left_sleeve_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -222,7 +223,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'back_length',
+            'name' => 'back_length_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -232,7 +233,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'overcoat_back_length',
+            'name' => 'overcoat_back_length_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -242,7 +243,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'waist',
+            'name' => 'waist_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -252,7 +253,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'right_wrist',
+            'name' => 'right_wrist_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -262,7 +263,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'left_wrist',
+            'name' => 'left_wrist_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -272,7 +273,7 @@ class MeasureForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'style',
+            'name' => 'style_1',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -291,5 +292,805 @@ class MeasureForm extends Form
                 'class' => 'btn btn-primary'
             ),
         ));
+
+
+
+
+        /*seconde column*/
+
+
+        $this->add(array(
+            'name' => 'id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'clother_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'customer_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'growth_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'weight_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'arm_position_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'neck_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'chest_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'stomach_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'seat_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'thigh_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'knee_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'pant_bottom_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'otseam_l_and_r_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'nape_to_waist_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_length_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_waist_height_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_height_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'biceps_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_shoulder_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_sleeve_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_sleeve_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_length_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'overcoat_back_length_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'waist_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_wrist_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_wrist_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'style_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+
+        /*third column*/
+
+
+        $this->add(array(
+            'name' => 'id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'clother_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'customer_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'growth_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'weight_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'arm_position_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'neck_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'chest_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'stomach_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'seat_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'thigh_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'knee_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'pant_bottom_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'otseam_l_and_r_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'nape_to_waist_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_length_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_waist_height_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_height_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'biceps_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_shoulder_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_sleeve_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_sleeve_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_length_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'overcoat_back_length_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'waist_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_wrist_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_wrist_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'style_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+
+
+
+
+        /*forth column */
+
+        $this->add(array(
+            'name' => 'id_4',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'clother_id_4',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'customer_id_4',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'growth_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'weight_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'arm_position_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'neck_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'chest_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'stomach_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'seat_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'thigh_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'knee_finished_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'pant_bottom_finished_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'otseam_l_and_r_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'nape_to_waist_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_length_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_waist_height_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_height_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'biceps_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_shoulder_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_sleeve_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_sleeve_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_length_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'overcoat_back_length_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'waist_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_wrist_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_wrist_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'style_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+
+
+        /*fifth column*/
+
+        $this->add(array(
+            'name' => 'id_5',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'clother_id_5',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'customer_id_5',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'growth_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'weight_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'arm_position_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'neck_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'chest_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'stomach_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'seat_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'thigh_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'knee_finished_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'pant_bottom_finished_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'otseam_l_and_r_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'nape_to_waist_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_length_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_waist_height_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'front_waist_height_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'biceps_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_shoulder_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_sleeve_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_sleeve_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'back_length_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'overcoat_back_length_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'waist_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'right_wrist_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'left_wrist_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'style_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
     }
+
+
+
 }
