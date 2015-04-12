@@ -43,6 +43,20 @@ class BodyMeasureTable
         return $row;
     }
 
+
+
+    public function getBodyMeasureByCustomerAndClother($customer_id, $clother_id)
+    {
+        $customer_id  = (int) $customer_id;
+        $clother_id  = (int) $clother_id;
+        $rowset = $this->tableGateway->select(array('customer_id'=> $customer_id, 'clother_id' => $clother_id ));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $customer_id");
+        }
+        return $row;
+    }
+
     public function saveBodyMeasure(BodyMeasure $bodymeasure)
     {
         $data = array(

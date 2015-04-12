@@ -57,15 +57,37 @@ class MeasureController extends AbstractActionController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
+        $customer_id = (int) $this->params()->fromRoute('id', 0);
+        if (!$customer_id) {
             return $this->redirect()->toRoute('measure', array(
                 'action' => 'add'
             ));
         }
 
+        $form  = new MeasureForm();
+        $form->get('submit')->setAttribute('value', 'Edit');
+
         try {
-            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasure($id);
+            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasureByCustomerAndClother($customer_id, '1');
+            $bodymeasure->setPostfix('_1');
+            $form->bind($bodymeasure);
+
+            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasureByCustomerAndClother($customer_id, '2');
+            $bodymeasure->setPostfix('_2');
+            $form->bind($bodymeasure);
+
+            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasureByCustomerAndClother($customer_id, '3');
+            $bodymeasure->setPostfix('_3');
+            $form->bind($bodymeasure);
+
+            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasureByCustomerAndClother($customer_id, '4');
+            $bodymeasure->setPostfix('_4');
+            $form->bind($bodymeasure);
+
+            $bodymeasure = $this->getBodyMeasureTable()->getBodyMeasureByCustomerAndClother($customer_id, '5');
+            $bodymeasure->setPostfix('_5');
+            $form->bind($bodymeasure);
+
         }
         catch (\Exception $ex) {
             return $this->redirect()->toRoute('measure', array(
@@ -73,25 +95,40 @@ class MeasureController extends AbstractActionController
             ));
         }
 
-        $form  = new MeasureForm();
-        $bodymeasure->setPostfix('_2');
-        $form->bind($bodymeasure);
-        $form->get('submit')->setAttribute('value', 'Edit');
-
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($bodymeasure->getInputFilter());
-            $form->setData($request->getPost());
+            $bodymeasure = new BodyMeasure();
+            $form_edited = new MeasureForm();
+            $form_edited->setData($request->getPost());
+            if ($form_edited->isValid()) {
 
-            if ($form->isValid()) {
+                $bodymeasure->setPostfix('_1');
+                $bodymeasure->exchangeArray($form_edited->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_2');
+                $bodymeasure->exchangeArray($form_edited->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_3');
+                $bodymeasure->exchangeArray($form_edited->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_4');
+                $bodymeasure->exchangeArray($form_edited->getData());
+                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $bodymeasure->setPostfix('_5');
+                $bodymeasure->exchangeArray($form_edited->getData());
                 $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
 
                 return $this->redirect()->toRoute('measure');
             }
         }
 
+
         return array(
-            'id' => $id,
+            'id' => $customer_id,
             'form' => $form,
         );
     }
