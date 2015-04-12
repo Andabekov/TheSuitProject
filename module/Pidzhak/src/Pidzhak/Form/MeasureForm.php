@@ -9,6 +9,21 @@ class MeasureForm extends Form
     {
         parent::__construct('measure');
 
+
+        $this->addFirstColumnBodyMeasure();
+        $this->addSecondColumnBodyMeasure();
+        $this->addThirdColumnBodyMeasure();
+        $this->addForthColumnBodyMeasure();
+        $this->addFifthColumnBodyMeasure();
+
+
+        $this->addFirstColumnClotherMeasure();
+        $this->addSecondColumnClotherMeasure();
+
+    }
+
+
+    private function addFirstColumnBodyMeasure(){
         /*first column*/
         $this->add(array(
             'name' => 'id_1',
@@ -292,13 +307,9 @@ class MeasureForm extends Form
                 'class' => 'btn btn-primary'
             ),
         ));
-
-
-
-
+    }
+    private function addSecondColumnBodyMeasure(){
         /*seconde column*/
-
-
         $this->add(array(
             'name' => 'id_2',
             'type' => 'Hidden',
@@ -493,9 +504,10 @@ class MeasureForm extends Form
                 'class' => 'form-control'
             ),
         ));
+    }
+    private function addThirdColumnBodyMeasure(){
 
         /*third column*/
-
 
         $this->add(array(
             'name' => 'id_3',
@@ -691,9 +703,8 @@ class MeasureForm extends Form
                 'class' => 'form-control'
             ),
         ));
-
-
-
+    }
+    private function addForthColumnBodyMeasure(){
 
         /*forth column */
 
@@ -891,7 +902,8 @@ class MeasureForm extends Form
                 'class' => 'form-control'
             ),
         ));
-
+    }
+    private function addFifthColumnBodyMeasure(){
 
         /*fifth column*/
 
@@ -1092,5 +1104,339 @@ class MeasureForm extends Form
     }
 
 
+    private function addFirstColumnClotherMeasure(){
+        $this->add(array(
+            'name' => 'c_id_1',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_clother_id_1',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_customer_id_1',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_growth_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Рост',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_weight_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Вес',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_chest_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Грудь (Chest Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_stomach_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Живот (Stomach Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_jacket_seat_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Зад Пиджака (Seat Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_biceps_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Бицепс (Biceps Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_left_sleeve_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Левый рукав (Left sleeve Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_right_sleeve_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Правый рукав (Right sleeve Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_back_length_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Длина изделия со спины (Back length Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_front_length_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Длина изделия спереди (Front length Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_shoulder_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Ширина спины (Shoulder Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_waist_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Брючная талия (Waist Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_seat_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Зад Брюк (Seat Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_thigh_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Бедро (Thigh Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_outseam_l_and_r_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Длина брюк (Outseam L and R Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_knee_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Колено (Knee Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_pant_bottom_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Низ брюк (Pant bottom Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_u_rise_finished_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Шов сиденья (U-rise Finished)',
+            ),
+        ));
+    }
+    private function addSecondColumnClotherMeasure(){
+        $this->add(array(
+            'name' => 'c_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_clother_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_customer_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_growth_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_weight_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_chest_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_stomach_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_jacket_seat_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_biceps_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_left_sleeve_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_right_sleeve_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_back_length_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_front_length_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_shoulder_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_waist_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_seat_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_thigh_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_outseam_l_and_r_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_knee_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_pant_bottom_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_u_rise_finished_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+        ));
+    }
 
 }

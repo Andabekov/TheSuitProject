@@ -1,6 +1,7 @@
 <?php
 namespace Pidzhak\Controller;
 
+use Pidzhak\Model\ClotherMeasure;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\BodyMeasure;
@@ -9,6 +10,7 @@ use Pidzhak\Form\MeasureForm;
 class MeasureController extends AbstractActionController
 {
     protected $bodyMeasureTable;
+    protected $clotherMeasureTable;
 
     public function indexAction()
     {
@@ -24,8 +26,8 @@ class MeasureController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $clothermeasure = new ClotherMeasure();
             $bodymeasure = new BodyMeasure();
-            $form->setInputFilter($bodymeasure->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -48,6 +50,15 @@ class MeasureController extends AbstractActionController
                 $bodymeasure->setPostfix('_5');
                 $bodymeasure->exchangeArray($form->getData());
                 $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+
+                $clothermeasure->setPostfix('_1');
+                $clothermeasure->exchangeArray($form->getData());
+                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
+
+                $clothermeasure->setPostfix('_2');
+                $clothermeasure->exchangeArray($form->getData());
+                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
 
                 return $this->redirect()->toRoute('measure');
             }
@@ -88,15 +99,27 @@ class MeasureController extends AbstractActionController
             $bodymeasure->setPostfix('_5');
             $form->bind($bodymeasure);
 
+
+
+            $clothermeasure = $this->getClotherMeasureTable()->getClotherMeasureByCustomerAndClother($customer_id, '1');
+            $clothermeasure->setPostfix('_1');
+            $form->bind($clothermeasure);
+
+            $clothermeasure = $this->getClotherMeasureTable()->getClotherMeasureByCustomerAndClother($customer_id, '2');
+            $clothermeasure->setPostfix('_2');
+            $form->bind($clothermeasure);
+
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('measure', array(
+            echo $ex;
+            /*return $this->redirect()->toRoute('measure', array(
                 'action' => 'index'
-            ));
+            ));*/
         }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $clothermeasure = new ClotherMeasure();
             $bodymeasure = new BodyMeasure();
             $form_edited = new MeasureForm();
             $form_edited->setData($request->getPost());
@@ -121,6 +144,14 @@ class MeasureController extends AbstractActionController
                 $bodymeasure->setPostfix('_5');
                 $bodymeasure->exchangeArray($form_edited->getData());
                 $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+
+                $clothermeasure->setPostfix('_1');
+                $clothermeasure->exchangeArray($form_edited->getData());
+                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
+
+                $clothermeasure->setPostfix('_2');
+                $clothermeasure->exchangeArray($form_edited->getData());
+                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
 
                 return $this->redirect()->toRoute('measure');
             }
@@ -166,5 +197,13 @@ class MeasureController extends AbstractActionController
             $this->bodyMeasureTable = $sm->get('Pidzhak\Model\BodyMeasureTable');
         }
         return $this->bodyMeasureTable;
+    }
+    public function getClotherMeasureTable()
+    {
+        if (!$this->clotherMeasureTable) {
+            $sm = $this->getServiceLocator();
+            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\ClotherMeasureTable');
+        }
+        return $this->clotherMeasureTable;
     }
 }
