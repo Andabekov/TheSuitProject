@@ -62,10 +62,14 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('delivery'))
             ->addResource(new Resource('admin'))
             ->addResource(new Resource('login/process'))
+            ->addResource(new Resource('seller2'))
+            ->addResource(new Resource('customer'))
+            ->addResource(new Resource('measure'))
+            ->addResource(new Resource('customer-rest'))
         ;
 
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')
+            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')
             ->allow('redactor', 'redactor')
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
