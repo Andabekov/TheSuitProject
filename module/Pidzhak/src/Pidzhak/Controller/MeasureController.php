@@ -100,7 +100,6 @@ class MeasureController extends AbstractActionController
             $form->bind($bodymeasure);
 
 
-
             $clothermeasure = $this->getClotherMeasureTable()->getClotherMeasureByCustomerAndClother($customer_id, '1');
             $clothermeasure->setPostfix('_1');
             $form->bind($clothermeasure);
@@ -111,10 +110,9 @@ class MeasureController extends AbstractActionController
 
         }
         catch (\Exception $ex) {
-            echo $ex;
-            /*return $this->redirect()->toRoute('measure', array(
+            return $this->redirect()->toRoute('measure', array(
                 'action' => 'index'
-            ));*/
+            ));
         }
 
         $request = $this->getRequest();
