@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('SOFT') ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -42,7 +42,7 @@
                     </ul>
                     <div id="logoutDiv">
                         <?php if($this->identity()!=null) { ?>
-                            <a href="<?php echo $this->url('login/process', array('action'=>'logout')); ?>">ВЫЙТИ</a>
+                            <span id="welcomeText"></span><a href="<?php echo $this->url('login/process', array('action'=>'logout')); ?>">ВЫЙТИ</a>
                         <?php } ?>
 
                     </div>

@@ -40,4 +40,16 @@ class User
      * @Annotation\Attributes({"value":"Войти"})
      */
     public $submit;
+
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Required({"required":"true" })
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"AccessLevel: "})
+     */
+    public $access_type_id;
+
+
+
 }

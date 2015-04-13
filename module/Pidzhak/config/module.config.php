@@ -11,7 +11,13 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Pidzhak\Controller\Index' => 'Pidzhak\Controller\IndexController',
-            'Pidzhak\Controller\Success' => 'Pidzhak\Controller\AuthSuccessController'
+            'Pidzhak\Controller\Success' => 'Pidzhak\Controller\AuthSuccessController',
+            'Pidzhak\seller\Index'=>'Pidzhak\Controller\seller\IndexController',
+            'Pidzhak\redactor\Index'=>'Pidzhak\Controller\redactor\IndexController',
+            'Pidzhak\accountant\Index'=>'Pidzhak\Controller\accountant\IndexController',
+            'Pidzhak\director\Index'=>'Pidzhak\Controller\director\IndexController',
+            'Pidzhak\delivery\Index'=>'Pidzhak\Controller\delivery\IndexController',
+            'Pidzhak\admin\Index'=>'Pidzhak\Controller\admin\IndexController'
         )
     ),
 
@@ -61,29 +67,85 @@ return array(
             ),
 
             'seller' => array(
-                'type'    => 'Literal',
+                'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/seller',
+                    'route'    => '/seller[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Pidzhak\Controller',
-                        'controller'    => 'Pidzhak\Controller\Success',
-                        'action'        => 'index',
+                        'controller' => 'Pidzhak\seller\Index',
+                        'action'     => 'index',
                     ),
                 ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:action][/:accessTypeId]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'accessTypeId'     => '[0-9]+',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
+            ),
+
+            'redactor' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/redactor[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\redactor\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'accountant' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/accountant[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\accountant\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'director' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/director[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\director\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'delivery' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/delivery[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\delivery\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'admin' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/admin[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Index',
+                        'action'     => 'index',
                     ),
                 ),
             ),

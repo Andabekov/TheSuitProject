@@ -1,0 +1,48 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: abu.andabekov
+ * Date: 06.04.2015
+ * Time: 15:20
+ */
+?>
+
+<div class="mainContainer">
+
+    <script type="text/javascript">
+        $(function() {
+            $('#welcomeText').text('Добро пожаловать, <?php echo $info->read()['surname']." ".$info->read()['name'] ?>!');
+        });
+    </script>
+
+    <div class="left-menu">
+
+        <a class="menuBtn header" href="/seller">Заказы</a>
+        <a class="menuBtn child" href="/seller">Просмотреть все заказы</a>
+        <a class="menuBtn child" href="/seller">Просмотреть заказы на исполнении</a>
+
+        <a class="menuBtn header" href="/seller">Продавцы</a>
+        <a class="menuBtn child" href="/seller">Просмотреть всех продавцов</a>
+        <a class="menuBtn child" href="/seller">Составить статистику</a>
+        <a class="menuBtn child" href="/seller">Написать письмо</a>
+
+        <a class="menuBtn header" href="/seller">Редакторы</a>
+        <a class="menuBtn child" href="/seller">Просмотреть всех редакторов</a>
+        <a class="menuBtn child" href="/seller">Составить статистику</a>
+        <a class="menuBtn child" href="/seller">Написать письмо</a>
+
+        <a class="menuBtn header" href="/seller">Документы</a>
+        <a class="menuBtn child" href="/seller">Изменить список тканей</a>
+        <a class="menuBtn child" href="/seller">Изменить список циклов</a>
+        <a class="menuBtn child" href="/seller">Изменить инструкцию пользывателя</a>
+
+    </div>
+
+    <div class="right-section">
+        <div class="header">
+            Заказы
+        </div>
+
+    </div>
+
+</div>

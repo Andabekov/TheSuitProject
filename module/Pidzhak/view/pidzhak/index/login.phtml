@@ -26,8 +26,12 @@ $form->prepare();
     ?>
 
     <table id="loginTable">
+
         <tr>
-            <td><?php echo $this->formLabel($form->get('username'));?></td>
+            <td>
+                <?php echo $this->FormHidden($form->get('access_type_id')); ?>
+                <?php echo $this->formLabel($form->get('username'));?>
+            </td>
             <td><?php echo $this->formInput($form->get('username'));?></td>
         </tr>
 
@@ -43,6 +47,8 @@ $form->prepare();
         </tr>
     </table>
 
+</div>
+<div class="myContainer">
     <?php
 //    echo $this->formCollection($form);
     echo $this->form()->closeTag();
@@ -53,12 +59,16 @@ $form->prepare();
         {
             if($message=="Supplied credential is invalid." || $message=="A record with the supplied identity could not be found.")
                 echo 'Логин или пароль указаны не верно<br />';
+            else if($message=='Authentication successful.')
+                echo "";
             else
                 echo $message.'<br />';
         }
         echo '</span>';
     }
     ?>
+
 </div>
+
 
 

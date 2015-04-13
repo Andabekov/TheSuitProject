@@ -59,12 +59,19 @@ class IndexController extends AbstractActionController
 
     public function loginAction()
     {
+        $accessTypeIdParam = (int) $this->params()->fromRoute('accessTypeId', 0);
+        if(!$accessTypeIdParam){
+            return $this->redirect()->toRoute('home');
+        }
+
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()){
             return $this->redirect()->toRoute('seller');
         }
 
         $form       = $this->getForm();
+
+        $form->get('access_type_id')->setValue($accessTypeIdParam);
 
         return array(
             'form'      => $form,
@@ -75,10 +82,12 @@ class IndexController extends AbstractActionController
     public function authenticateAction()
     {
         $form       = $this->getForm();
-        $redirect = 'login';
 
         $request = $this->getRequest();
         if ($request->isPost()){
+
+//            fwrite(STDOUT, "test stop");
+
             $form->setData($request->getPost());
             if ($form->isValid()){
                 //check authentication...
@@ -94,20 +103,46 @@ class IndexController extends AbstractActionController
                 }
 
                 if ($result->isValid()) {
-                    $redirect = 'seller';
-                    //check if it has rememberMe :
-                    if ($request->getPost('rememberme') == 1 ) {
-                        $this->getSessionStorage()
-                            ->setRememberMe(1);
-                        //set storage again
+
+                    $resultRow = $this->getAuthService()->getAdapter()->getResultRowObject();
+
+
+                    if($request->getPost('access_type_id')!=$resultRow->ACCESS_TYPE_ID){
+//                        $this->flashmessenger()->clearMessagesFromContainer();
+                        $this->flashmessenger()->addMessage("Данный пользыватель не имеет доступа к выбранной подсистеме");
+                        $this->getSessionStorage()->forgetMe();
+                        $this->getAuthService()->clearIdentity();
+
+                    } else {
                         $this->getAuthService()->setStorage($this->getSessionStorage());
+                        $this->getAuthService()->getStorage()->write(array(
+                            'username'       => $resultRow->USERNAME,
+                            'access_type_id' => $resultRow->ACCESS_TYPE_ID,
+                            'name'           => $resultRow->NAME,
+                            'surname'        => $resultRow->SURNAME,
+                            'email'          => $resultRow->EMAIL,
+                            'phone'          => $resultRow->PHONE,
+                        ));
+
+                        $route = '';
+
+                        switch($resultRow->ACCESS_TYPE_ID){
+                            case 1: $route='seller'; break;
+                            case 2: $route='redactor'; break;
+                            case 3: $route='accountant'; break;
+                            case 4: $route='director'; break;
+                            case 5: $route='deliver'; break;
+                            case 6: $route='admin'; break;
+                        }
+
+                        return $this->redirect()->toRoute($route);
                     }
-                    $this->getAuthService()->getStorage()->write($request->getPost('username'));
                 }
             }
         }
 
-        return $this->redirect()->toRoute($redirect);
+        return $this->redirect()->toRoute('pidzhak', array('action'=>'login', 'accessTypeId'=>$request->getPost('access_type_id')));
+
     }
 
     public function logoutAction()
@@ -115,7 +150,8 @@ class IndexController extends AbstractActionController
         $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
 
-        $this->flashmessenger()->addMessage("Вы вышли из системы");
-        return $this->redirect()->toRoute('login');
+//        $this->flashmessenger()->addMessage("Вы вышли из системы");
+
+        return $this->redirect()->toRoute('home');
     }
 }

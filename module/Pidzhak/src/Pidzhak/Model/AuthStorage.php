@@ -24,4 +24,25 @@ class AuthStorage extends Storage\Session
     {
         $this->session->getManager()->forgetMe();
     }
+
+    public function getRole()
+    {
+        if (isset($_SESSION['userstable'])) {
+            foreach ($_SESSION['userstable'] as $val) {
+                $storage = $val;
+            }
+
+            if (!empty($storage)) {
+                switch($storage['access_type_id']){
+                    case 1: return 'seller'; break;
+                    case 2: return 'redactor'; break;
+                    case 3: return 'accountant'; break;
+                    case 4: return 'director'; break;
+                    case 5: return 'delivery'; break;
+                    case 6: return 'admin'; break;
+                }
+            }
+        }
+        return 'nobody';
+    }
 }
