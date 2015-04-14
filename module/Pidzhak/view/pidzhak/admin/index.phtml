@@ -6,34 +6,8 @@
  * Time: 15:20
  */
 ?>
-<div class="myContainer">
 
-    <script type="text/javascript">
-        $(function() {
-            $('#welcomeText').text('Добро пожаловать, <?php echo $info->read()['surname']." ".$info->read()['name'] ?>!');
-        });
-    </script>
 
-    <div class="left-menu">
-
-        <a class="menuBtn header" href="/seller">Управление пользывателями</a>
-        <a class="menuBtn child" href="/seller">Добавить нового пользывателя</a>
-
-        <a class="menuBtn header" href="/seller">Управление заказами</a>
-        <a class="menuBtn child" href="/seller">Измененить статуса заказа</a>
-
-        <a class="menuBtn header" href="/seller">Управление документы</a>
-        <a class="menuBtn child" href="/seller">Изменить список тканей</a>
-        <a class="menuBtn child" href="/seller">Изменить список циклов</a>
-        <a class="menuBtn child" href="/seller">Изменить инструкцию пользывателя</a>
-
-    </div>
-
-    <div class="right-section">
-        <div class="header">
-            Управление пользывателями
-        </div>
-
-    </div>
-
+<div class="header">
+    Управление пользывателями
 </div>

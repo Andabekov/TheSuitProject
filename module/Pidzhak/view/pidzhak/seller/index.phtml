@@ -7,50 +7,11 @@
  */
 ?>
 
-<div class="mainContainer">
-
-    <script type="text/javascript">
-        $(function() {
-            $('#welcomeText').text('Добро пожаловать, <?php echo $info->read()['surname']." ".$info->read()['name'] ?>!');
-        });
-    </script>
-
-    <div class="left-menu">
-
-        <a class="menuBtn header" href="/seller">Мои заказы</a>
-        <a class="menuBtn child" href="/seller">Создать новый заказ</a>
-        <a class="menuBtn child" href="/seller">Проверить изделия</a>
-        <a class="menuBtn child" href="/seller">Пригласить на примерку</a>
-        <a class="menuBtn child" href="/seller">Поставить оценку</a>
-        <a class="menuBtn child" href="/seller">Изменить заказ</a>
-        <a class="menuBtn child" href="/seller">Список изделии в процессе</a>
-
-        <a class="menuBtn header" href="/seller">Мои клиенты</a>
-        <a class="menuBtn child" href="/seller">Поиск клиентов и изделии</a>
-        <a class="menuBtn child" href="/seller">Изменить данные клиента</a>
-        <a class="menuBtn child" href="/seller">Поздравить клиента с Д.Р.</a>
-
-        <a class="menuBtn header" href="/seller">Мои финансы</a>
-        <a class="menuBtn child" href="/seller">Внести финансовые операции</a>
-        <a class="menuBtn child" href="/seller">Мои продажи</a>
-
-        <a class="menuBtn header" href="/seller">Мои документы</a>
-        <a class="menuBtn child" href="/seller">Список тканей</a>
-        <a class="menuBtn child" href="/seller">Список циклов</a>
-        <a class="menuBtn child" href="/seller">Инструкция замеров</a>
-        <a class="menuBtn child" href="/seller">Инструкция пользывателя</a>
-
-    </div>
-
-    <div class="right-section">
-        <div class="header">
-            Мои заказы
-        </div>
-
-        <a class="navBtn active" href="/seller">1 Шаг - Данные клиента</a>
-        <a class="navBtn" href="/seller">2 Шаг - Замеры клиента</a>
-        <a class="navBtn" href="/seller">2 Шаг - Заказ клиента</a>
-
-    </div>
-
+<div class="header">
+    Мои заказы
 </div>
+
+<a class="navBtn active" href="/seller">1 Шаг - Данные клиента</a>
+<a class="navBtn" href="/seller">2 Шаг - Замеры клиента</a>
+<a class="navBtn" href="/seller">2 Шаг - Заказ клиента</a>
+

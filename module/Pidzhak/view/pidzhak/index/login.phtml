@@ -14,13 +14,6 @@ $form->prepare();
 
 <div class="myContainer">
 
-    <script type="text/javascript">
-        $(function() {
-//            $('<br />').insertAfter($('.myContainer').find('form').find('label')[0]);
-//            $('<br />').insertAfter($('.myContainer').find('form').find('label')[1]);
-        });
-    </script>
-
     <?php
     echo $this->form()->openTag($form);
     ?>
@@ -50,7 +43,6 @@ $form->prepare();
 </div>
 <div class="myContainer">
     <?php
-//    echo $this->formCollection($form);
     echo $this->form()->closeTag();
 
     if ($this->messages){

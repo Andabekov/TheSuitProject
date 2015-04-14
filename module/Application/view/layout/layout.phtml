@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('SOFT') ?>
+        <?php echo $this->headTitle('PidzhakSOFT') ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -30,21 +30,16 @@
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
-<!--                <div class="navbar-header">-->
-<!--                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">-->
-<!--                        <span class="icon-bar"></span>-->
-<!--                        <span class>="icon-bar"></span>-->
-           <!--            <span class="icon-bar"></span>-->
-<!--                    </button>-->
-<!--                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>-->
-<!--                </div> -->
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><img src="<?php echo $this->basePath('img/header-logo.png') ?>" height="80" style="cursor:pointer; padding: 5px; padding-bottom: 10px;" onclick="window.location='<?php echo $this->url('home') ?>'"/></li>
                     </ul>
                     <div id="logoutDiv">
                         <?php if($this->identity()!=null) { ?>
-                            <span id="welcomeText"></span><a href="<?php echo $this->url('login/process', array('action'=>'logout')); ?>">ВЫЙТИ</a>
+                            <span id="welcomeText">
+                                Добро пожаловать, <?php echo $this->identity()['surname']." ".$this->identity()['name']; ?>!
+                            </span>
+                            <a href="<?php echo $this->url('login/process', array('action'=>'logout')); ?>">ВЫЙТИ</a>
                         <?php } ?>
 
                     </div>
@@ -53,7 +48,115 @@
             </div>
         </nav>
         <div class="container">
-            <?php echo $this->content; ?>
+
+        <?php
+        if($this->identity()==null)
+            echo $this->content;
+        else {
+            ?>
+
+
+            <div class="myContainer">
+
+
+                <div class="left-menu">
+                    <?php
+
+                    $sellerMenu = '<a class="menuBtn header" href="/seller">Мои заказы</a>
+                            <a class="menuBtn child" href="/seller">Создать новый заказ</a>
+                            <a class="menuBtn child" href="/seller">Проверить изделия</a>
+                            <a class="menuBtn child" href="/seller">Пригласить на примерку</a>
+                            <a class="menuBtn child" href="/seller">Поставить оценку</a>
+                            <a class="menuBtn child" href="/seller">Изменить заказ</a>
+                            <a class="menuBtn child" href="/seller">Список изделии в процессе</a>
+
+                            <a class="menuBtn header" href="/seller">Мои клиенты</a>
+                            <a class="menuBtn child" href="/seller">Поиск клиентов и изделии</a>
+                            <a class="menuBtn child" href="/seller">Изменить данные клиента</a>
+                            <a class="menuBtn child" href="/seller">Поздравить клиента с Д.Р.</a>
+
+                            <a class="menuBtn header" href="/seller">Мои финансы</a>
+                            <a class="menuBtn child" href="/seller">Внести финансовые операции</a>
+                            <a class="menuBtn child" href="/seller">Мои продажи</a>
+
+                            <a class="menuBtn header" href="/seller">Мои документы</a>
+                            <a class="menuBtn child" href="/seller">Список тканей</a>
+                            <a class="menuBtn child" href="/seller">Список циклов</a>
+                            <a class="menuBtn child" href="/seller">Инструкция замеров</a>
+                            <a class="menuBtn child" href="/seller">Инструкция пользывателя</a>';
+
+                    $redactorMenu = '<a class="menuBtn header" href="/redactor">Мои заказы</a>
+                             <a class="menuBtn child" href="/redactor">Обработать изделия</a>
+                             <a class="menuBtn child" href="/redactor">Сверка кодов изделия</a>
+                             <a class="menuBtn child" href="/redactor">Отправить на производство</a>
+                             <a class="menuBtn child" href="/redactor">Организовать доставку</a>
+                             <a class="menuBtn child" href="/redactor">Изменить коды на изделия</a>
+
+                             <a class="menuBtn header" href="/redactor">Мои клиенты</a>
+                             <a class="menuBtn child" href="/redactor">Поиск клиентов и изделии</a>
+
+                             <a class="menuBtn header" href="/redactor">Мои документы</a>
+                             <a class="menuBtn child" href="/redactor">Список тканей</a>
+                             <a class="menuBtn child" href="/redactor">Список циклов</a>
+                             <a class="menuBtn child" href="/redactor">Инструкция пользывателя</a>';
+
+                    $accountantMenu = '';
+
+                    $directorMenu = '<a class="menuBtn header" href="/director">Заказы</a>
+                            <a class="menuBtn child" href="/director">Просмотреть все заказы</a>
+                            <a class="menuBtn child" href="/director">Просмотреть заказы на исполнении</a>
+
+                            <a class="menuBtn header" href="/director">Продавцы</a>
+                            <a class="menuBtn child" href="/director">Просмотреть всех продавцов</a>
+                            <a class="menuBtn child" href="/director">Составить статистику</a>
+                            <a class="menuBtn child" href="/director">Написать письмо</a>
+
+                            <a class="menuBtn header" href="/director">Редакторы</a>
+                            <a class="menuBtn child" href="/director">Просмотреть всех редакторов</a>
+                            <a class="menuBtn child" href="/director">Составить статистику</a>
+                            <a class="menuBtn child" href="/director">Написать письмо</a>
+
+                            <a class="menuBtn header" href="/director">Документы</a>
+                            <a class="menuBtn child" href="/director">Изменить список тканей</a>
+                            <a class="menuBtn child" href="/director">Изменить список циклов</a>
+                            <a class="menuBtn child" href="/director">Изменить инструкцию пользывателя</a>';
+
+                    $deliveryMenu = '';
+
+                    $adminMenu = '<a class="menuBtn header" href="/admin">Управление пользывателями</a>
+                          <a class="menuBtn child" href="/admin">Добавить нового пользывателя</a>
+
+                          <a class="menuBtn header" href="/admin">Управление заказами</a>
+                          <a class="menuBtn child" href="/admin">Измененить статуса заказа</a>
+
+                          <a class="menuBtn header" href="/admin">Управление документы</a>
+                          <a class="menuBtn child" href="/admin">Изменить список тканей</a>
+                          <a class="menuBtn child" href="/admin">Изменить список циклов</a>
+                          <a class="menuBtn child" href="/admin">Изменить инструкцию пользывателя</a>';
+
+                    if ($this->identity() != null) {
+                        switch ($this->identity()['access_type_id']) {
+                            case 1: echo $sellerMenu; break;
+                            case 2: echo $redactorMenu; break;
+                            case 3: echo $accountantMenu; break;
+                            case 4: echo $directorMenu; break;
+                            case 5: echo $deliveryMenu; break;
+                            case 6: echo $adminMenu; break;
+                        }
+                    }
+                    ?>
+                </div>
+
+                <div class="right-section">
+                    <?php echo $this->content; ?>
+                </div>
+
+            </div>
+
+        <?php
+        }
+        ?>
+
             <hr>
             <footer>
                 <p style="float: right;">&copy; <?php echo date('Y') ?> Pidzhak. <?php echo $this->translate('All rights reserved.') ?></p>
