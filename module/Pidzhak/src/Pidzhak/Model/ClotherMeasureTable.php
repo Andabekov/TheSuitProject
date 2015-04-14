@@ -56,7 +56,6 @@ class ClotherMeasureTable
             throw new \Exception("Could not find row $customer_id");
         }
 
-        var_dump($rowset);
         return $row;
     }
 
