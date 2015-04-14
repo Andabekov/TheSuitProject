@@ -53,10 +53,12 @@ class MeasureController extends AbstractActionController
 
 
                 $clothermeasure->setPostfix('_1');
+                $clothermeasure->setPrefix('c_');
                 $clothermeasure->exchangeArray($form->getData());
                 $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
 
                 $clothermeasure->setPostfix('_2');
+                $clothermeasure->setPrefix('c_');
                 $clothermeasure->exchangeArray($form->getData());
                 $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
 
@@ -102,10 +104,12 @@ class MeasureController extends AbstractActionController
 
             $clothermeasure = $this->getClotherMeasureTable()->getClotherMeasureByCustomerAndClother($customer_id, '1');
             $clothermeasure->setPostfix('_1');
+            $clothermeasure->setPrefix('c_');
             $form->bind($clothermeasure);
 
             $clothermeasure = $this->getClotherMeasureTable()->getClotherMeasureByCustomerAndClother($customer_id, '2');
             $clothermeasure->setPostfix('_2');
+            $clothermeasure->setPrefix('c_');
             $form->bind($clothermeasure);
 
         }
@@ -144,10 +148,12 @@ class MeasureController extends AbstractActionController
                 $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
 
                 $clothermeasure->setPostfix('_1');
+                $clothermeasure->setPrefix('c_');
                 $clothermeasure->exchangeArray($form_edited->getData());
                 $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
 
                 $clothermeasure->setPostfix('_2');
+                $clothermeasure->setPrefix('c_');
                 $clothermeasure->exchangeArray($form_edited->getData());
                 $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
 

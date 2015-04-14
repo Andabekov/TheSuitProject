@@ -31,7 +31,7 @@ class ClotherMeasure  implements InputFilterAwareInterface
 
 
     private $postfix;
-    private $prefix = 'c_';
+    private $prefix;
 
     public function exchangeArray($data)
     {
@@ -91,6 +91,19 @@ class ClotherMeasure  implements InputFilterAwareInterface
     {
         $this->postfix = $postfix;
     }
+
+    /**
+     * @param mixed $prefix
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
+
+
+
+
 
 
 }
