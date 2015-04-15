@@ -18,6 +18,8 @@ use Zend\Mvc\MvcEvent;
 
 use Pidzhak\Model\Seller\Order;
 use Pidzhak\Model\Seller\OrderTable;
+use Pidzhak\Model\Seller\OrderClothes;
+use Pidzhak\Model\Seller\OrderClothesTable;
 use Pidzhak\Model\Seller;
 use Pidzhak\Model\SellerTable;
 use Pidzhak\Model\Customer;
@@ -71,10 +73,11 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('measure'))
             ->addResource(new Resource('customer-rest'))
             ->addResource(new Resource('order'))
+            ->addResource(new Resource('orderclothes'))
         ;
 
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')
+            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')
             ->allow('redactor', 'redactor')
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
@@ -194,6 +197,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Order());
                     return new TableGateway('ordertable', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\Seller\OrderClothesTable' =>  function($sm) {
+                    $tableGateway = $sm->get('OrderClothesTableGateway');
+                    $table = new OrderClothesTable($tableGateway);
+                    return $table;
+                },
+                'OrderClothesTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new OrderClothes());
+                    return new TableGateway('orderclothes', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );
