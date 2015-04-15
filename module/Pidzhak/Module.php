@@ -8,12 +8,16 @@
 
 namespace Pidzhak;
 
-use Pidzhak\Model\AuthStorage;use Pidzhak\Model\BodyMeasure;
+use Pidzhak\Model\AuthStorage;
+use Pidzhak\Model\BodyMeasure;
 use Pidzhak\Model\BodyMeasureTable;
 use Pidzhak\Model\ClotherMeasure;
-use Pidzhak\Model\ClotherMeasureTable;use Zend\Mvc\ModuleRouteListener;
+use Pidzhak\Model\ClotherMeasureTable;
+use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Pidzhak\Model\Seller\Order;
+use Pidzhak\Model\Seller\OrderTable;
 use Pidzhak\Model\Seller;
 use Pidzhak\Model\SellerTable;
 use Pidzhak\Model\Customer;
@@ -66,10 +70,11 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('customer'))
             ->addResource(new Resource('measure'))
             ->addResource(new Resource('customer-rest'))
+            ->addResource(new Resource('order'))
         ;
 
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')
+            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')
             ->allow('redactor', 'redactor')
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
@@ -178,6 +183,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ClotherMeasure());
                     return new TableGateway('clothermeasure', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\Seller\OrderTable' =>  function($sm) {
+                    $tableGateway = $sm->get('OrderTableGateway');
+                    $table = new OrderTable($tableGateway);
+                    return $table;
+                },
+                'OrderTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Order());
+                    return new TableGateway('ordertable', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

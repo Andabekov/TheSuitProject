@@ -20,7 +20,9 @@ return array(
             'Pidzhak\Controller\Seller' => 'Pidzhak\Controller\SellerController',
             'Pidzhak\Controller\Customer' => 'Pidzhak\Controller\CustomerController',
             'Pidzhak\Controller\CustomerRest' => 'Pidzhak\Controller\CustomerRestController',
-            'Pidzhak\Controller\Measure' => 'Pidzhak\Controller\MeasureController',        )
+            'Pidzhak\Controller\Measure' => 'Pidzhak\Controller\MeasureController',
+            'Pidzhak\Controller\Seller\Order' => 'Pidzhak\Controller\Seller\OrderController',
+            )
     ),
 
     'router' => array(
@@ -65,6 +67,21 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Pidzhak\Controller\Customer',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'order' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/order[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\Seller\Order',
                         'action'     => 'index',
                     ),
                 ),
