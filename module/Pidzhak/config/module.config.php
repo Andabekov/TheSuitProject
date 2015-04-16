@@ -23,7 +23,8 @@ return array(
             'Pidzhak\Controller\CustomerRest' => 'Pidzhak\Controller\CustomerRestController',
             'Pidzhak\Controller\Measure' => 'Pidzhak\Controller\MeasureController',
             'Pidzhak\Controller\Seller\Order' => 'Pidzhak\Controller\Seller\OrderController',
-            'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',)
+            'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',
+            'Pidzhak\Controller\Seller\OrderClothesRest' => 'Pidzhak\Controller\Seller\OrderClothesRestController',),
     ),
 
     'router' => array(
@@ -118,6 +119,15 @@ return array(
                 ),
             ),
 
+            'orderclothes-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restorderclothes',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\Seller\OrderClothesRest',
+                    ),
+                ),
+            ),
 
             'customer-rest' => array(
                 'type' => 'segment',

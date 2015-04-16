@@ -71,7 +71,7 @@ class OrderController extends AbstractActionController
             if ($form->isValid()) {
                 $this->getOrderTable()->saveOrder($order);
 
-                return $this->redirect()->toRoute('order');
+                //return $this->redirect()->toRoute('order');
             }
         }
 
