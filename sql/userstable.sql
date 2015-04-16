@@ -1,15 +1,15 @@
 CREATE TABLE userstable (
-  ID int(10) NOT NULL AUTO_INCREMENT,
-  USERNAME varchar(30) NOT NULL,
-  PASSWORD varchar(10) NOT NULL,
-  NAME varchar(100) NOT NULL,
-  SURNAME varchar(200) NOT NULL,
-  PHONE varchar(20) NOT NULL,
-  ACCESS_TYPE_ID int(10) NOT NULL,
-  EMAIL varchar(45) NOT NULL,
-  PRIMARY KEY (ID),
-  KEY ACCESS_TYPE_ID_idx (ACCESS_TYPE_ID),
-  CONSTRAINT FK_ACCESS_TYPE_ID FOREIGN KEY (ACCESS_TYPE_ID) REFERENCES accesstypes (ID)
+  id int(10) NOT NULL AUTO_INCREMENT,
+  username varchar(30) NOT NULL,
+  password varchar(10) NOT NULL,
+  name varchar(100) NOT NULL,
+  surname varchar(200) NOT NULL,
+  phone varchar(20) NOT NULL,
+  access_type_id int(10) NOT NULL,
+  email varchar(45) NOT NULL,
+  PRIMARY KEY (id),
+  KEY ACCESS_TYPE_ID_idx (access_type_id),
+  CONSTRAINT FK_ACCESS_TYPE_ID FOREIGN KEY (access_type_id) REFERENCES accesstypes (ID)
 ) ;
 
 

@@ -26,15 +26,15 @@ class User implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id               = (isset($data['ID'])) ? $data['ID'] : null;
-        $this->username         = (isset($data['USERNAME'])) ? $data['USERNAME'] : null;
-        $this->password         = (isset($data['PASSWORD'])) ? $data['PASSWORD'] : null;
-        $this->access_type_id   = (isset($data['ACCESS_TYPE_ID'])) ? $data['ACCESS_TYPE_ID'] : null;
+        $this->id               = (isset($data['id'])) ? $data['id'] : null;
+        $this->username         = (isset($data['username'])) ? $data['username'] : null;
+        $this->password         = (isset($data['password'])) ? $data['password'] : null;
+        $this->access_type_id   = (isset($data['access_type_id'])) ? $data['access_type_id'] : null;
 
-        $this->name             = (isset($data['NAME'])) ? $data['NAME'] : null;
-        $this->surname          = (isset($data['SURNAME'])) ? $data['SURNAME'] : null;
-        $this->email            = (isset($data['EMAIL'])) ? $data['EMAIL'] : null;
-        $this->phone            = (isset($data['PHONE'])) ? $data['PHONE'] : null;
+        $this->name             = (isset($data['name'])) ? $data['name'] : null;
+        $this->surname          = (isset($data['surname'])) ? $data['surname'] : null;
+        $this->email            = (isset($data['email'])) ? $data['email'] : null;
+        $this->phone            = (isset($data['phone'])) ? $data['phone'] : null;
     }
 
     public function getArrayCopy()
@@ -58,12 +58,22 @@ class User implements InputFilterAwareInterface
                 'name'     => 'username',
                 'required' => true,
                 'filters'  => array(
-                    'filters'  => array(
-                        array('name' => 'StripTags'),
-                        array('name' => 'StringTrim'),
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 100,
+                        ),
                     ),
                 ),
             ));
+
+
 
             $this->inputFilter = $inputFilter;
         }
