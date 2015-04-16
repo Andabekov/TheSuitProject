@@ -10,7 +10,11 @@ namespace Pidzhak;
 
 use Pidzhak\Model\admin\User;
 use Pidzhak\Model\admin\UserTable;
-use Pidzhak\Model\AuthStorage;use Pidzhak\Model\BodyMeasure;use Pidzhak\Model\BodyMeasureTable;
+
+use Pidzhak\Model\AuthStorage;
+use Pidzhak\Model\BodyMeasure;
+use Pidzhak\Model\BodyMeasureTable;
+
 use Pidzhak\Model\ClotherMeasure;
 use Pidzhak\Model\ClotherMeasureTable;
 use Zend\Mvc\ModuleRouteListener;
