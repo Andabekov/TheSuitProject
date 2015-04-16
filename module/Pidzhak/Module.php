@@ -10,12 +10,16 @@ namespace Pidzhak;
 
 use Pidzhak\Model\admin\User;
 use Pidzhak\Model\admin\UserTable;
-use Pidzhak\Model\AuthStorage;use Pidzhak\Model\BodyMeasure;
-use Pidzhak\Model\BodyMeasureTable;
+use Pidzhak\Model\AuthStorage;use Pidzhak\Model\BodyMeasure;use Pidzhak\Model\BodyMeasureTable;
 use Pidzhak\Model\ClotherMeasure;
-use Pidzhak\Model\ClotherMeasureTable;use Zend\Mvc\ModuleRouteListener;
+use Pidzhak\Model\ClotherMeasureTable;
+use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Pidzhak\Model\Seller\Order;
+use Pidzhak\Model\Seller\OrderTable;
+use Pidzhak\Model\Seller\OrderClothes;
+use Pidzhak\Model\Seller\OrderClothesTable;
 use Pidzhak\Model\Seller;
 use Pidzhak\Model\SellerTable;
 use Pidzhak\Model\Customer;
@@ -68,12 +72,13 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('customer'))
             ->addResource(new Resource('measure'))
             ->addResource(new Resource('customer-rest'))
-            ->addResource(new Resource('admin-rest'))
+			->addResource(new Resource('admin-rest'))
             ->addResource(new Resource('admin/add'))
-        ;
+			->addResource(new Resource('order'))
+            ->addResource(new Resource('orderclothes'))        ;
 
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')
+            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')
             ->allow('redactor', 'redactor')
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
@@ -194,6 +199,28 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new User());
                     return new TableGateway('userstable', $dbAdapter, null, $resultSetPrototype);
+                },
+				'Pidzhak\Model\Seller\OrderTable' =>  function($sm) {
+                    $tableGateway = $sm->get('OrderTableGateway');
+                    $table = new OrderTable($tableGateway);
+                    return $table;
+                },
+                'OrderTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Order());
+                    return new TableGateway('ordertable', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\Seller\OrderClothesTable' =>  function($sm) {
+                    $tableGateway = $sm->get('OrderClothesTableGateway');
+                    $table = new OrderClothesTable($tableGateway);
+                    return $table;
+                },
+                'OrderClothesTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new OrderClothes());
+                    return new TableGateway('orderclothes', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );
