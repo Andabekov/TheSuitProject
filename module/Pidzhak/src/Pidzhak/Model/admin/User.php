@@ -53,6 +53,7 @@ class User implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+
             $inputFilter->add(array(
                 'name'     => 'username',
                 'required' => true,
