@@ -121,7 +121,7 @@ class IndexController extends AbstractActionController
                     $resultRow = $this->getAuthService()->getAdapter()->getResultRowObject();
 
 
-                    if($request->getPost('access_type_id')!=$resultRow->ACCESS_TYPE_ID){
+                    if($request->getPost('access_type_id')!=$resultRow->access_type_id){
 //                        $this->flashmessenger()->clearMessagesFromContainer();
                         $this->flashmessenger()->addMessage("Данный пользыватель не имеет доступа к выбранной подсистеме");
                         $this->getSessionStorage()->forgetMe();
@@ -130,17 +130,17 @@ class IndexController extends AbstractActionController
                     } else {
                         $this->getAuthService()->setStorage($this->getSessionStorage());
                         $this->getAuthService()->getStorage()->write(array(
-                            'username'       => $resultRow->USERNAME,
-                            'access_type_id' => $resultRow->ACCESS_TYPE_ID,
-                            'name'           => $resultRow->NAME,
-                            'surname'        => $resultRow->SURNAME,
-                            'email'          => $resultRow->EMAIL,
-                            'phone'          => $resultRow->PHONE,
+                            'username'       => $resultRow->username,
+                            'access_type_id' => $resultRow->access_type_id,
+                            'name'           => $resultRow->name,
+                            'surname'        => $resultRow->surname,
+                            'email'          => $resultRow->email,
+                            'phone'          => $resultRow->PHphone
                         ));
 
                         $route = '';
 
-                        switch($resultRow->ACCESS_TYPE_ID){
+                        switch($resultRow->access_type_id){
                             case 1: $route='seller'; break;
                             case 2: $route='redactor'; break;
                             case 3: $route='accountant'; break;
