@@ -16,11 +16,13 @@ return array(
             'Pidzhak\accountant\Index'=>'Pidzhak\Controller\accountant\IndexController',
             'Pidzhak\director\Index'=>'Pidzhak\Controller\director\IndexController',
             'Pidzhak\delivery\Index'=>'Pidzhak\Controller\delivery\IndexController',
-            'Pidzhak\admin\Index'=>'Pidzhak\Controller\admin\IndexController',
+            'Pidzhak\admin\Index'=>'Pidzhak\Controller\admin\UserController',
+            'Pidzhak\admin\AdminRest'=>'Pidzhak\Controller\admin\UserRestController',
             'Pidzhak\Controller\Seller' => 'Pidzhak\Controller\SellerController',
             'Pidzhak\Controller\Customer' => 'Pidzhak\Controller\CustomerController',
             'Pidzhak\Controller\CustomerRest' => 'Pidzhak\Controller\CustomerRestController',
-            'Pidzhak\Controller\Measure' => 'Pidzhak\Controller\MeasureController',        )
+            'Pidzhak\Controller\Measure' => 'Pidzhak\Controller\MeasureController',
+        )
     ),
 
     'router' => array(
@@ -205,7 +207,34 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'user' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:action][/:accessTypeId]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'accessTypeId'     => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
             ),
+
+            'admin-rest' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/restadmin',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\AdminRest',
+                    ),
+                ),
+            ),
+
         ),
     ),
 

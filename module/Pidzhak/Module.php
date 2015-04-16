@@ -8,6 +8,8 @@
 
 namespace Pidzhak;
 
+use Pidzhak\Model\admin\User;
+use Pidzhak\Model\admin\UserTable;
 use Pidzhak\Model\AuthStorage;use Pidzhak\Model\BodyMeasure;
 use Pidzhak\Model\BodyMeasureTable;
 use Pidzhak\Model\ClotherMeasure;
@@ -37,8 +39,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $this->initAcl($e);
-        $e->getApplication()->getEventManager()->attach('route', array($this, 'checkAcl'));
+//        $this->initAcl($e);
+//        $e->getApplication()->getEventManager()->attach('route', array($this, 'checkAcl'));
     }
 
     public function initAcl(MvcEvent $e)
@@ -66,6 +68,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('customer'))
             ->addResource(new Resource('measure'))
             ->addResource(new Resource('customer-rest'))
+            ->addResource(new Resource('admin-rest'))
+            ->addResource(new Resource('admin/add'))
         ;
 
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
@@ -74,7 +78,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
             ->allow('delivery', 'delivery')
-            ->allow('admin', 'admin');
+            ->allow('admin', 'admin')->allow('admin', 'admin-rest')->allow('admin', 'admin/add');
 
         $e->getViewModel()->acl = $acl;
     }
@@ -178,6 +182,18 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ClotherMeasure());
                     return new TableGateway('clothermeasure', $dbAdapter, null, $resultSetPrototype);
+                },
+
+                'Pidzhak\Model\admin\UserTable' =>  function($sm) {
+                    $tableGateway = $sm->get('UserTableGateway');
+                    $table = new UserTable($tableGateway);
+                    return $table;
+                },
+                'UserTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new User());
+                    return new TableGateway('userstable', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

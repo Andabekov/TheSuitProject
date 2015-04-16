@@ -51,7 +51,14 @@ class IndexController extends AbstractActionController
     {
 
         if ($this->getAuthService()->hasIdentity()){
-            return $this->redirect()->toRoute('seller');
+            switch($this->getAuthService()->getStorage()->read()['access_type_id']){
+                case 1: return $this->redirect()->toRoute('seller'); break;
+                case 2: return $this->redirect()->toRoute('redactor'); break;
+                case 3: return $this->redirect()->toRoute('accountant'); break;
+                case 4: return $this->redirect()->toRoute('director'); break;
+                case 5: return $this->redirect()->toRoute('delivery'); break;
+                case 6: return $this->redirect()->toRoute('admin'); break;
+            }
         }
 
         return new ViewModel();
@@ -66,7 +73,14 @@ class IndexController extends AbstractActionController
 
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()){
-            return $this->redirect()->toRoute('seller');
+            switch($this->getAuthService()->getStorage()->read()['access_type_id']){
+                case 1: return $this->redirect()->toRoute('seller'); break;
+                case 2: return $this->redirect()->toRoute('redactor'); break;
+                case 3: return $this->redirect()->toRoute('accountant'); break;
+                case 4: return $this->redirect()->toRoute('director'); break;
+                case 5: return $this->redirect()->toRoute('delivery'); break;
+                case 6: return $this->redirect()->toRoute('admin'); break;
+            }
         }
 
         $form       = $this->getForm();
