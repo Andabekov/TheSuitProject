@@ -2,84 +2,77 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 15/04/2015
- * Time: 17:14
+ * Date: 17/04/2015
+ * Time: 10:54
  */
+
 ?>
 
-    <div class="header">
-        Добавление нового пользывателя
-    </div>
+<div class="header">
+    Добавление нового цикла
+</div>
 
 <?php
-$form->setAttribute('action', $this->url('admin', array('action' => 'add')));
+$form->setAttribute('action', $this->url('cycles', array('action' => 'add')));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
+echo $this->formHidden($form->get('cycle_active')->setValue('1'));
 ?>
 
 <div class="form-group">
-    <?php $element = $form->get('username'); ?>
+    <?php $element = $form->get('order_accept_start_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formDate($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
 <div class="form-group">
-    <?php $element = $form->get('password'); ?>
+    <?php $element = $form->get('order_accept_finish_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formPassword($element); ?>
+        <?php echo $this->formDate($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
 <div class="form-group">
-    <?php $element = $form->get('access_type_id'); ?>
+    <?php $element = $form->get('order_check_deadline_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formSelect($element); ?>
+        <?php echo $this->formDate($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
 <div class="form-group">
-    <?php $element = $form->get('name'); ?>
+    <?php $element = $form->get('submit_deadline_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formDate($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
 <div class="form-group">
-    <?php $element = $form->get('surname'); ?>
+    <?php $element = $form->get('ship_deadline_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formDate($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
 <div class="form-group">
-    <?php $element = $form->get('email'); ?>
+    <?php $element = $form->get('arrive_deadline_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formDate($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
-<div class="form-group">
-    <?php $element = $form->get('phone'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
 <div class="form-group">
     <div class="col-xs-offset-2 col-xs-10">
-        <a class="btn btn-default cancel-btn" href="/admin">Отменить</a>
+        <a class="btn btn-default cancel-btn" href="/cycles">Отменить</a>
         <?php echo $this->formSubmit($form->get('submit')); ?>
     </div>
 </div>
@@ -87,4 +80,3 @@ echo $this->formHidden($form->get('id'));
 <?php
     echo $this->form()->closeTag();
 ?>
-

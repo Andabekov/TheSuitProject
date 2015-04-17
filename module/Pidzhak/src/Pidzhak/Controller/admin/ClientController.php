@@ -2,68 +2,57 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 15/04/2015
- * Time: 12:12
- */#
+ * Date: 16/04/2015
+ * Time: 17:09
+ */
 
 namespace Pidzhak\Controller\admin;
 
-use Pidzhak\Form\admin\UserForm;
-use Pidzhak\Model\admin\User;
+use Pidzhak\Model\Customer;
+use Pidzhak\Form\CustomerForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class UserController extends AbstractActionController
+class ClientController extends AbstractActionController
 {
-    protected $userTable;
+    protected $customerTable;
 
     public function indexAction()
     {
-        if (! $this->getServiceLocator()->get('AuthService')->hasIdentity()){
-            return $this->redirect()->toRoute('pidzhak');
-        }
-
         $view = new ViewModel(array(
-                'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
-                'user' => $this->getUserTable()->fetchAll(),
+                'customers' => $this->getCustomerTable()->fetchAll(),
             )
         );
-        $view->setTemplate('pidzhak/admin/index.phtml');
+        $view->setTemplate('pidzhak/admin/clients.phtml');
         return $view;
     }
 
     public function addAction()
     {
-
-        $form = new UserForm();
+        $form = new CustomerForm();
         $form->get('submit')->setValue('Добавить');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
-            $user = new User();
-            $form->setInputFilter($user->getInputFilter());
-
+            $customer = new Customer();
+            $form->setInputFilter($customer->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                $customer->exchangeArray($form->getData());
+                $this->getCustomerTable()->saveCustomer($customer);
 
-                $user->exchangeArray($form->getData());
-                $this->getUserTable()->saveUser($user);
-
-                return $this->redirect()->toRoute('admin');
+                return $this->redirect()->toRoute('clients');
             }else {
                 $form->highlightErrorElements();
                 // other error logic
             }
         }
-//        return array('form' => $form);
-
         $view = new ViewModel(array(
                 'form' => $form,
             )
         );
-        $view->setTemplate('pidzhak/admin/addUser.phtml');
+        $view->setTemplate('pidzhak/admin/addClient.phtml');
         return $view;
     }
 
@@ -71,33 +60,33 @@ class UserController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('admin', array(
+            return $this->redirect()->toRoute('clients', array(
                 'action' => 'add'
             ));
         }
 
         try {
-            $user = $this->getUserTable()->getUser($id);
+            $customer = $this->getCustomerTable()->getCustomer($id);
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('admin', array(
+            return $this->redirect()->toRoute('clients', array(
                 'action' => 'index'
             ));
         }
 
-        $form  = new UserForm();
-        $form->bind($user);
+        $form  = new CustomerForm();
+        $form->bind($customer);
         $form->get('submit')->setAttribute('value', 'Сохранить');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($user->getInputFilter());
+            $form->setInputFilter($customer->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getUserTable()->saveUser($user);
+                $this->getCustomerTable()->saveCustomer($customer);
 
-                return $this->redirect()->toRoute('admin');
+                return $this->redirect()->toRoute('clients');
             }
         }
 
@@ -106,7 +95,7 @@ class UserController extends AbstractActionController
                 'form' => $form,
             )
         );
-        $view->setTemplate('pidzhak/admin/editUser.phtml');
+        $view->setTemplate('pidzhak/admin/editClient.phtml');
         return $view;
     }
 
@@ -114,29 +103,30 @@ class UserController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('admin');
+            return $this->redirect()->toRoute('clients');
         }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $id = (int) $request->getPost('id');
-            $this->getUserTable()->deleteUser($id);
+            $this->getCustomerTable()->deleteCustomer($id);
 
-            return $this->redirect()->toRoute('admin');
+            return $this->redirect()->toRoute('clients');
         }
 
         return array(
             'id'    => $id,
-            'user' => $this->getUserTable()->getUser($id)
+            'customer' => $this->getCustomerTable()->getCustomer($id)
         );
     }
 
-    public function getUserTable(){
-        if (!$this->userTable) {
+    /*Inversion of Control*/
+    public function getCustomerTable()
+    {
+        if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->userTable = $sm->get('Pidzhak\Model\admin\UserTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
         }
-        return $this->userTable;
+        return $this->customerTable;
     }
-
 }

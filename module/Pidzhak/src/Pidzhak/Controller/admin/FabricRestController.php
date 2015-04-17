@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 15/04/2015
- * Time: 15:29
+ * Date: 17/04/2015
+ * Time: 15:46
  */
 
 namespace Pidzhak\Controller\admin;
@@ -11,9 +11,9 @@ namespace Pidzhak\Controller\admin;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
-class UserRestController extends AbstractRestfulController
+class FabricRestController extends AbstractRestfulController
 {
-    protected $userTable;
+    protected $fabricTable;
 
     public function create($data)
     {
@@ -26,29 +26,24 @@ class UserRestController extends AbstractRestfulController
         $id = $data['id'];
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $users= $this->getUserTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
-        $count= $this->getUserTable()->getCount();
-
-        /*        foreach($customers as $customer){
-                    print_r($customer->id);
-                }*/
+        $fabrics= $this->getFabricTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
+        $count= $this->getFabricTable()->getCount();
 
         return new JsonModel(array(
             'current' => intval($current),
             'rowCount' => intval($rowCount),
-            'rows' => $users->toArray(),
+            'rows' => $fabrics->toArray(),
             "total"=> $count,
         ));
     }
 
     /*Inversion of Control*/
-    public function getUserTable()
+    public function getFabricTable()
     {
-        if (!$this->userTable) {
+        if (!$this->fabricTable) {
             $sm = $this->getServiceLocator();
-            $this->userTable = $sm->get('Pidzhak\Model\admin\UserTable');
+            $this->fabricTable = $sm->get('Pidzhak\Model\admin\FabricTable');
         }
-        return $this->userTable;
+        return $this->fabricTable;
     }
 }
-

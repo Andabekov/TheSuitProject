@@ -1,40 +1,39 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: abu.andabekov
- * Date: 10.04.2015
- * Time: 15:20
+ * User: Abu Andabekov
+ * Date: 17/04/2015
+ * Time: 10:54
  */
 ?>
 
 <div class="header">
-    Управление пользывателями
+    Управление циклами
 </div>
 
 <div class="col-md-9">
-    <table id="user-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+    <table id="cycle-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="name">Имя</th>
-            <th data-column-id="surname" data-order="desc">Фамилия</th>
-            <th data-column-id="username" data-order="desc">Логин</th>
-            <th data-column-id="access_type_id" data-order="desc">Роль</th>
-            <th data-column-id="email" data-order="desc">Почта</th>
-            <th data-column-id="phone" data-order="desc">Телефон</th>
+            <th data-column-id="order_accept_start_date">Дата начала приема заказов</th>
+            <th data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
+            <th data-column-id="order_check_deadline_date" data-order="desc">Дэдлайн сверки заказа</th>
+            <th data-column-id="submit_deadline_date" data-order="desc">Дэдлайн предзаказа</th>
+            <th data-column-id="ship_deadline_date" data-order="desc">Дэдлайн отправки заказа</th>
+            <th data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
 
             <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
         </thead>
 
     </table>
-    <!--/div-->
 </div>
 
-<script type="text/javascript">
+<script>
     $(function () {
         function init() {
-            var grid =  $("#user-grid").bootgrid({
+            var grid = $("#cycle-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -42,7 +41,7 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
                     };
                 },
-                url: "/restadmin",
+                url: "/restcycle",
                 formatters: {
                     "commands": function(column, row)
                     {
@@ -55,7 +54,7 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".command-edit").on("click", function(e)
                 {
-                    window.location="admin/edit/"+$(this).data("row-id");
+                    window.location="cycles/edit/"+$(this).data("row-id");
                 }).end().find(".command-delete").on("click", function(e)
                 {
                     myId=$(this).data("row-id");
@@ -65,15 +64,14 @@
                     });
                     bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
                         if(result){
-                            $.post( "admin/delete/"+myId, { id: myId } ).done(function( data ) {
-                                $('#user-grid').bootgrid('reload');
+                            $.post( "cycles/delete/"+myId, { id: myId } ).done(function( data ) {
+                                $('#cycle-grid').bootgrid('reload');
                             });
                         };
                     });
                 });
             });
         }
-
         init();
     })
 

@@ -1,40 +1,41 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: abu.andabekov
- * Date: 10.04.2015
- * Time: 15:20
+ * User: Abu Andabekov
+ * Date: 16/04/2015
+ * Time: 17:08
  */
 ?>
 
 <div class="header">
-    Управление пользывателями
+    Управление клиентами
 </div>
 
 <div class="col-md-9">
-    <table id="user-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+    <table id="customer-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="name">Имя</th>
-            <th data-column-id="surname" data-order="desc">Фамилия</th>
-            <th data-column-id="username" data-order="desc">Логин</th>
-            <th data-column-id="access_type_id" data-order="desc">Роль</th>
-            <th data-column-id="email" data-order="desc">Почта</th>
-            <th data-column-id="phone" data-order="desc">Телефон</th>
+            <th data-column-id="firstname">Имя</th>
+            <th data-column-id="lastname" data-order="desc">Фамилия</th>
+            <th data-column-id="middlename" data-order="desc">Отчество</th>
+            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+            <th data-column-id="email" data-order="desc">Емайл</th>
+            <th data-column-id="city" data-order="desc">Город</th>
+            <th data-column-id="address" data-order="desc">Адрес</th>
 
             <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
         </thead>
 
     </table>
-    <!--/div-->
 </div>
 
-<script type="text/javascript">
+<script>
     $(function () {
         function init() {
-            var grid =  $("#user-grid").bootgrid({
+            var grid = $("#customer-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -42,7 +43,7 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
                     };
                 },
-                url: "/restadmin",
+                url: "/restcustomer",
                 formatters: {
                     "commands": function(column, row)
                     {
@@ -55,7 +56,7 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".command-edit").on("click", function(e)
                 {
-                    window.location="admin/edit/"+$(this).data("row-id");
+                    window.location="clients/edit/"+$(this).data("row-id");
                 }).end().find(".command-delete").on("click", function(e)
                 {
                     myId=$(this).data("row-id");
@@ -65,15 +66,14 @@
                     });
                     bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
                         if(result){
-                            $.post( "admin/delete/"+myId, { id: myId } ).done(function( data ) {
-                                $('#user-grid').bootgrid('reload');
+                            $.post( "clients/delete/"+myId, { id: myId } ).done(function( data ) {
+                                $('#customer-grid').bootgrid('reload');
                             });
                         };
                     });
                 });
             });
         }
-
         init();
     })
 

@@ -19,6 +19,7 @@
 
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/bootbox.min.js'))
             ->prependFile($this->basePath('js/jquery.bootgrid.js'))
             ->prependFile($this->basePath('js/bootstrap.min.js'))
             ->prependFile($this->basePath('js/jquery.min.js'))
@@ -123,12 +124,19 @@
                     $adminMenu = '<a class="menuBtn header" href="/admin">Управление пользывателями</a>
                           <a class="menuBtn child" href="/admin/add">Добавить нового пользывателя</a>
 
+                          <a class="menuBtn header" href="/clients">Управление клиентами</a>
+                          <a class="menuBtn child" href="/clients/add">Добавить нового клиента</a>
+
                           <a class="menuBtn header" href="/admin">Управление заказами</a>
                           <a class="menuBtn child" href="/admin">Измененить статуса заказа</a>
 
+                          <a class="menuBtn header" href="/cycles">Управление циклами</a>
+                          <a class="menuBtn child" href="/cycles/add">Добавить новый цикл</a>
+
+                          <a class="menuBtn header" href="/fabrics">Ткани</a>
+                          <a class="menuBtn child" href="/fabrics/add">Добавить новую ткань</a>
+
                           <a class="menuBtn header" href="/admin">Управление документы</a>
-                          <a class="menuBtn child" href="/admin">Изменить список тканей</a>
-                          <a class="menuBtn child" href="/admin">Изменить список циклов</a>
                           <a class="menuBtn child" href="/admin">Изменить инструкцию пользывателя</a>';
 
                     if ($this->identity() != null) {

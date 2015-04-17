@@ -8,6 +8,10 @@
 
 namespace Pidzhak;
 
+use Pidzhak\Model\admin\Cycle;
+use Pidzhak\Model\admin\CycleTable;
+use Pidzhak\Model\admin\Fabric;
+use Pidzhak\Model\admin\FabricTable;
 use Pidzhak\Model\admin\User;
 use Pidzhak\Model\admin\UserTable;
 
@@ -47,8 +51,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-//        $this->initAcl($e);
-//        $e->getApplication()->getEventManager()->attach('route', array($this, 'checkAcl'));
+        $this->initAcl($e);
+        $e->getApplication()->getEventManager()->attach('route', array($this, 'checkAcl'));
     }
 
     public function initAcl(MvcEvent $e)
@@ -79,7 +83,13 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 			->addResource(new Resource('admin-rest'))
             ->addResource(new Resource('admin/add'))
 			->addResource(new Resource('order'))
-            ->addResource(new Resource('orderclothes'))        ;
+            ->addResource(new Resource('orderclothes'))
+            ->addResource(new Resource('clients'))
+            ->addResource(new Resource('cycles'))
+            ->addResource(new Resource('cycle-rest'))
+            ->addResource(new Resource('fabrics'))
+            ->addResource(new Resource('fabric-rest'))
+        ;
 
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
             ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')
@@ -87,7 +97,9 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
             ->allow('delivery', 'delivery')
-            ->allow('admin', 'admin')->allow('admin', 'admin-rest')->allow('admin', 'admin/add');
+            ->allow('admin', 'admin')->allow('admin', 'admin-rest')->allow('admin', 'clients')->allow('admin', 'customer-rest')
+            ->allow('admin', 'cycles')->allow('admin', 'cycle-rest')
+            ->allow('admin', 'fabrics')->allow('admin', 'fabric-rest');
 
         $e->getViewModel()->acl = $acl;
     }
@@ -204,6 +216,29 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new User());
                     return new TableGateway('userstable', $dbAdapter, null, $resultSetPrototype);
                 },
+                'Pidzhak\Model\admin\CycleTable' =>  function($sm) {
+                    $tableGateway = $sm->get('CycleTableGateway');
+                    $table = new CycleTable($tableGateway);
+                    return $table;
+                },
+                'CycleTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Cycle());
+                    return new TableGateway('cyclestable', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\admin\FabricTable' =>  function($sm) {
+                    $tableGateway = $sm->get('FabricTableGateway');
+                    $table = new FabricTable($tableGateway);
+                    return $table;
+                },
+                'FabricTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Fabric());
+                    return new TableGateway('fabricstable', $dbAdapter, null, $resultSetPrototype);
+                },
+
 				'Pidzhak\Model\Seller\OrderTable' =>  function($sm) {
                     $tableGateway = $sm->get('OrderTableGateway');
                     $table = new OrderTable($tableGateway);

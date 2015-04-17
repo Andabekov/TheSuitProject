@@ -1,0 +1,95 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 16/04/2015
+ * Time: 12:32
+ */
+?>
+<div class="header">
+    Редактирование данных пользывателя
+</div>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('admin',
+    array(
+        'action' => 'edit',
+        'id'     => $this->id,
+    )
+));
+
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+
+    <div class="form-group">
+        <?php $element = $form->get('username'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('password'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formPassword($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('access_type_id'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formSelect($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('name'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('surname'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('email'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('phone'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <a class="btn btn-default cancel-btn" href="/admin">Отменить</a>
+            <?php echo $this->formSubmit($form->get('submit')); ?>
+        </div>
+    </div>
+
+<?php
+echo $this->form()->closeTag();
+?>

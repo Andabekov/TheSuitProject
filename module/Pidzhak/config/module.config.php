@@ -17,13 +17,19 @@ return array(
             'Pidzhak\director\Index' => 'Pidzhak\Controller\director\IndexController',
             'Pidzhak\delivery\Index' => 'Pidzhak\Controller\delivery\IndexController',
             'Pidzhak\admin\Index' => 'Pidzhak\Controller\admin\UserController',
+            'Pidzhak\admin\Clients' => 'Pidzhak\Controller\admin\ClientController',
+            'Pidzhak\admin\Cycles' => 'Pidzhak\Controller\admin\CycleController',
+            'Pidzhak\admin\CycleRest' => 'Pidzhak\Controller\admin\CycleRestController',
+            'Pidzhak\admin\Fabrics' => 'Pidzhak\Controller\admin\FabricController',
+            'Pidzhak\admin\FabricRest' => 'Pidzhak\Controller\admin\FabricRestController',
             'Pidzhak\admin\AdminRest' => 'Pidzhak\Controller\admin\UserRestController',
             'Pidzhak\Controller\Seller' => 'Pidzhak\Controller\SellerController',
             'Pidzhak\Controller\Customer' => 'Pidzhak\Controller\CustomerController',
             'Pidzhak\Controller\CustomerRest' => 'Pidzhak\Controller\CustomerRestController',
             'Pidzhak\Controller\Measure' => 'Pidzhak\Controller\MeasureController',
             'Pidzhak\Controller\Seller\Order' => 'Pidzhak\Controller\Seller\OrderController',
-            'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',)
+            'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',
+        )
     ),
 
     'router' => array(
@@ -238,20 +244,6 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => array(
-                    'user' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:action][/:accessTypeId]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'accessTypeId' => '[0-9]+',
-                            ),
-                            'defaults' => array(),
-                        ),
-                    ),
-                ),
             ),
 
             'admin-rest' => array(
@@ -260,6 +252,71 @@ return array(
                     'route' => '/restadmin',
                     'defaults' => array(
                         'controller' => 'Pidzhak\admin\AdminRest',
+                    ),
+                ),
+            ),
+
+            'clients' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/clients[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Clients',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'cycles' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/cycles[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Cycles',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'cycle-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restcycle',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\CycleRest',
+                    ),
+                ),
+            ),
+
+            'fabrics' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/fabrics[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Fabrics',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'fabric-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restfabric',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\FabricRest',
                     ),
                 ),
             ),

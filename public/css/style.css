@@ -249,3 +249,15 @@ a.active {
     color:#ffffff;
     border:1px solid #36423e;
 }
+
+.cancel-btn{
+    margin-right: 20px;
+}
+.form-group{
+    text-align: left;
+}
+.modal-content{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 30%;
+}

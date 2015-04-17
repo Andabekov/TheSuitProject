@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 15/04/2015
- * Time: 15:29
+ * Date: 17/04/2015
+ * Time: 12:46
  */
 
 namespace Pidzhak\Controller\admin;
@@ -11,9 +11,9 @@ namespace Pidzhak\Controller\admin;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
-class UserRestController extends AbstractRestfulController
+class CycleRestController extends AbstractRestfulController
 {
-    protected $userTable;
+    protected $cycleTable;
 
     public function create($data)
     {
@@ -26,29 +26,24 @@ class UserRestController extends AbstractRestfulController
         $id = $data['id'];
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $users= $this->getUserTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
-        $count= $this->getUserTable()->getCount();
-
-        /*        foreach($customers as $customer){
-                    print_r($customer->id);
-                }*/
+        $cycles= $this->getCycleTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
+        $count= $this->getCycleTable()->getCount();
 
         return new JsonModel(array(
             'current' => intval($current),
             'rowCount' => intval($rowCount),
-            'rows' => $users->toArray(),
+            'rows' => $cycles->toArray(),
             "total"=> $count,
         ));
     }
 
     /*Inversion of Control*/
-    public function getUserTable()
+    public function getCycleTable()
     {
-        if (!$this->userTable) {
+        if (!$this->cycleTable) {
             $sm = $this->getServiceLocator();
-            $this->userTable = $sm->get('Pidzhak\Model\admin\UserTable');
+            $this->cycleTable = $sm->get('Pidzhak\Model\admin\CycleTable');
         }
-        return $this->userTable;
+        return $this->cycleTable;
     }
 }
-

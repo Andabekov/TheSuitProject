@@ -2,20 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 15/04/2015
- * Time: 12:12
- */#
+ * Date: 17/04/2015
+ * Time: 10:55
+ */
 
 namespace Pidzhak\Controller\admin;
 
-use Pidzhak\Form\admin\UserForm;
-use Pidzhak\Model\admin\User;
+use Pidzhak\Form\admin\CycleForm;
+use Pidzhak\Model\admin\Cycle;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class UserController extends AbstractActionController
+class CycleController extends AbstractActionController
 {
-    protected $userTable;
+    protected $cycleTable;
 
     public function indexAction()
     {
@@ -25,45 +25,37 @@ class UserController extends AbstractActionController
 
         $view = new ViewModel(array(
                 'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
-                'user' => $this->getUserTable()->fetchAll(),
+                'cycle' => $this->getCycleTable()->fetchAll(),
             )
         );
-        $view->setTemplate('pidzhak/admin/index.phtml');
+        $view->setTemplate('pidzhak/admin/cycles.phtml');
         return $view;
     }
 
     public function addAction()
     {
-
-        $form = new UserForm();
+        $form = new CycleForm();
         $form->get('submit')->setValue('Добавить');
 
         $request = $this->getRequest();
+
         if ($request->isPost()) {
-
-            $user = new User();
-            $form->setInputFilter($user->getInputFilter());
-
+            $cycle = new Cycle();
+            $form->setInputFilter($cycle->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                $cycle->exchangeArray($form->getData());
+                $this->getCycleTable()->saveCycle($cycle);
 
-                $user->exchangeArray($form->getData());
-                $this->getUserTable()->saveUser($user);
-
-                return $this->redirect()->toRoute('admin');
+                return $this->redirect()->toRoute('cycles');
             }else {
                 $form->highlightErrorElements();
-                // other error logic
             }
         }
-//        return array('form' => $form);
 
-        $view = new ViewModel(array(
-                'form' => $form,
-            )
-        );
-        $view->setTemplate('pidzhak/admin/addUser.phtml');
+        $view = new ViewModel(array('form' => $form,));
+        $view->setTemplate('pidzhak/admin/addCycle.phtml');
         return $view;
     }
 
@@ -71,33 +63,28 @@ class UserController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('admin', array(
-                'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('cycles', array('action' => 'add'));
         }
 
         try {
-            $user = $this->getUserTable()->getUser($id);
+            $cycle = $this->getCycleTable()->getCycle($id);
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('admin', array(
-                'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('cycles', array('action' => 'index'));
         }
 
-        $form  = new UserForm();
-        $form->bind($user);
+        $form  = new CycleForm();
+        $form->bind($cycle);
         $form->get('submit')->setAttribute('value', 'Сохранить');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($user->getInputFilter());
+            $form->setInputFilter($cycle->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getUserTable()->saveUser($user);
-
-                return $this->redirect()->toRoute('admin');
+                $this->getCycleTable()->saveCycle($cycle);
+                return $this->redirect()->toRoute('cycles');
             }
         }
 
@@ -106,7 +93,7 @@ class UserController extends AbstractActionController
                 'form' => $form,
             )
         );
-        $view->setTemplate('pidzhak/admin/editUser.phtml');
+        $view->setTemplate('pidzhak/admin/editCycle.phtml');
         return $view;
     }
 
@@ -114,29 +101,27 @@ class UserController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('admin');
+            return $this->redirect()->toRoute('cycles');
         }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $id = (int) $request->getPost('id');
-            $this->getUserTable()->deleteUser($id);
-
-            return $this->redirect()->toRoute('admin');
+            $this->getCycleTable()->deleteCycle($id);
+            return $this->redirect()->toRoute('cycles');
         }
 
         return array(
             'id'    => $id,
-            'user' => $this->getUserTable()->getUser($id)
+            'cycle' => $this->getCycleTable()->getCycle($id)
         );
     }
 
-    public function getUserTable(){
-        if (!$this->userTable) {
+    public function getCycleTable(){
+        if (!$this->cycleTable) {
             $sm = $this->getServiceLocator();
-            $this->userTable = $sm->get('Pidzhak\Model\admin\UserTable');
+            $this->cycleTable = $sm->get('Pidzhak\Model\admin\CycleTable');
         }
-        return $this->userTable;
+        return $this->cycleTable;
     }
-
 }
