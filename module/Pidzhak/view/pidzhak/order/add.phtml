@@ -29,88 +29,8 @@ echo $this->formHidden($form->get('customer_id'));
     </center>
 
 
+    <?= $this->render('fields.phtml') ?>
 
-
-    <div class="form-group">
-        <?php $element = $form->get('dateofsale'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formDate($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-    <div class="form-group">
-        <?php $element = $form->get('pricelistnum'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-
-    <div class="form-group">
-        <?php $element = $form->get('payamount'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-
-    <div class="form-group">
-        <?php $element = $form->get('paytype'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-
-    <div class="form-group">
-        <?php $element = $form->get('cashlocation'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-    <div class="form-group">
-        <?php $element = $form->get('cityofsale'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-    <div class="form-group">
-        <?php $element = $form->get('pointofsale'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-    <div class="form-group">
-        <?php $element = $form->get('seller'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <?php echo $this->formSubmit($form->get('submit')); ?>
-        </div>
-    </div>
 <?php
 
 echo $this->form()->closeTag();
