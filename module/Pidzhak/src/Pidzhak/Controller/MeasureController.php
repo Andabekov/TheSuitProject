@@ -11,6 +11,7 @@ class MeasureController extends AbstractActionController
 {
     protected $bodyMeasureTable;
     protected $clotherMeasureTable;
+    protected $customerTable;
 
     public function indexAction()
     {
@@ -172,7 +173,6 @@ class MeasureController extends AbstractActionController
     {
         $customer_id = (int) $this->params()->fromRoute('id', 0);
 
-
         $form  = new MeasureForm();
         $form->get('submit')->setAttribute('value', 'Сохранить и продолжить');
         $form->get('customer_id_1') ->setValue($customer_id);
@@ -267,11 +267,14 @@ class MeasureController extends AbstractActionController
             }else {
                 $form->highlightErrorElements();
             }
+        }else{
+            $customer = $this->getCustomerTable()->getCustomer($customer_id);
         }
 
 
         $view = new ViewModel(array(
                 'id' => $customer_id,
+                'customer' => $customer,
                 'form' => $form,
             )
         );
@@ -321,5 +324,14 @@ class MeasureController extends AbstractActionController
             $this->clotherMeasureTable = $sm->get('Pidzhak\Model\ClotherMeasureTable');
         }
         return $this->clotherMeasureTable;
+    }
+
+    public function getCustomerTable()
+    {
+        if (!$this->customerTable) {
+            $sm = $this->getServiceLocator();
+            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+        }
+        return $this->customerTable;
     }
 }

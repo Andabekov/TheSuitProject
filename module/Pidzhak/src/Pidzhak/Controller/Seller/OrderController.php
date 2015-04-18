@@ -9,6 +9,7 @@ use Pidzhak\Form\OrderForm;
 class OrderController extends AbstractActionController
 {
     protected $orderTable;
+    protected $customerTable;
 
     public function indexAction()
     {
@@ -45,6 +46,8 @@ class OrderController extends AbstractActionController
     public function thirdstepAction()
     {
         $customer_id = (int) $this->params()->fromRoute('id', 0);
+
+
         $form = new OrderForm();
         $form->get('customer_id')->setValue($customer_id);
         $form->get('submit')->setValue('Add');
@@ -65,11 +68,14 @@ class OrderController extends AbstractActionController
                 $form->highlightErrorElements();
                 // other error logic
             }
+        }else{
+            $customer = $this->getCustomerTable()->getCustomer($customer_id);
         }
 
         $view = new ViewModel(array(
                 'id' => $customer_id,
                 'form' => $form,
+                'customer' => $customer,
             )
         );
         $view->setTemplate('pidzhak/order/add.phtml');
@@ -149,5 +155,14 @@ class OrderController extends AbstractActionController
             $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
         }
         return $this->orderTable;
+    }
+
+    public function getCustomerTable()
+    {
+        if (!$this->customerTable) {
+            $sm = $this->getServiceLocator();
+            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+        }
+        return $this->customerTable;
     }
 }
