@@ -39,7 +39,7 @@ class CustomerController extends AbstractActionController
                 // other error logic
             }
         }
-        return array('form' => $form);
+        return array('form' => $form, 'back' => '#',);
     }
 
     public function editAction()
@@ -79,6 +79,7 @@ class CustomerController extends AbstractActionController
         return array(
             'id' => $id,
             'form' => $form,
+            'back' => '#',
         );
     }
 
@@ -134,7 +135,7 @@ class CustomerController extends AbstractActionController
                 return $this->redirect()->toRoute('measure'
                     , array(
                         'action' => 'secondstep',
-                        'id' => $idval
+                        'id' => $idval,
                     ));
 
                 //return $this->redirect()->toRoute('customer');
@@ -144,6 +145,7 @@ class CustomerController extends AbstractActionController
         }
         $view = new ViewModel(array(
                 'form' => $form,
+                'back' => '#',
             )
         );
         $view->setTemplate('pidzhak/customer/first.phtml');
