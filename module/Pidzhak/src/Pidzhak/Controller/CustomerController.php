@@ -17,6 +17,7 @@ class CustomerController extends AbstractActionController
         ));
     }
 
+
     public function addAction()
     {
         $form = new CustomerForm();
@@ -40,6 +41,50 @@ class CustomerController extends AbstractActionController
         }
         return array('form' => $form);
     }
+
+    public function firststepAction()
+    {
+        $form = new CustomerForm();
+        $form->get('submit')->setValue('Сохранить и продолжить');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $customer = new Customer();
+            $form->setInputFilter($customer->getInputFilter());
+            $form->setData($request->getPost());
+
+            $idval = $request->getPost()->get('id');
+            if($idval){
+                return $this->redirect()->toRoute('measure'
+                    , array(
+                        'action' => 'secondstep',
+                        'id' => $idval
+                    ));
+            }elseif ($form->isValid()) {
+                $customer->exchangeArray($form->getData());
+                $this->getCustomerTable()->saveCustomer($customer);
+                $idval = $this->getCustomerTable()->insertedCustomer();
+
+                return $this->redirect()->toRoute('measure'
+                    , array(
+                        'action' => 'secondstep',
+                        'id' => $idval
+                    ));
+
+                //return $this->redirect()->toRoute('customer');
+            }else {
+                $form->highlightErrorElements();
+            }
+        }
+        $view = new ViewModel(array(
+                'form' => $form,
+            )
+        );
+        $view->setTemplate('pidzhak/customer/add.phtml');
+        return $view;
+    }
+
+
 
     public function editAction()
     {

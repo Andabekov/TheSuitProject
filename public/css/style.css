@@ -256,8 +256,15 @@ a.active {
 .form-group{
     text-align: left;
 }
-.modal-content{
+.my-modal .modal-content{
     width: 50%;
     margin: 0 auto;
     margin-top: 30%;
+}
+
+
+#myModal .modal-dialog  {width:1000px;}
+
+#myModal {
+    top:2px;
 }

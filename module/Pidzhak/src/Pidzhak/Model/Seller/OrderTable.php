@@ -53,6 +53,7 @@ class OrderTable
     public function saveOrder(Order $order)
     {
         $data = array(
+            'customer_id' => $order->customer_id,
             'dateofsale' => $order->dateofsale,
             'pricelistnum' => $order->pricelistnum,
             'payamount' => $order->payamount,

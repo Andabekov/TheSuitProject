@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
     <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
-$form->setAttribute('action', $this->url('measure', array('action' => 'add')));
+$form->setAttribute('action', $this->url('measure', array('action' => 'secondstep')));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
@@ -28,6 +28,22 @@ echo $this->formHidden($form->get('customer_id_3'));
 echo $this->formHidden($form->get('customer_id_4'));
 echo $this->formHidden($form->get('customer_id_5'));
 ?>
+
+    <div class="header">
+        Замеры
+    </div>
+
+    <a class="navBtn">1 Шаг - Данные клиента</a>
+    <a class="navBtn active">2 Шаг - Замеры клиента</a>
+    <a class="navBtn">3 Шаг - Заказ клиента</a>
+
+    <center>
+        <div id="chooseContent">
+            <?php
+            ?>
+        </div>
+    </center>
+
     <table>
         <thead>
         <tr>

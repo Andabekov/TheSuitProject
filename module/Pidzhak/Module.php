@@ -85,6 +85,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 			->addResource(new Resource('order'))
             ->addResource(new Resource('orderclothes'))
 			->addResource(new Resource('orderclothes-rest'))
+			->addResource(new Resource('order-rest'))
 			->addResource(new Resource('clients'))
             ->addResource(new Resource('cycles'))
             ->addResource(new Resource('cycle-rest'))
@@ -92,7 +93,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('fabric-rest'))
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')
+            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')->allow('seller', 'order-rest')
             ->allow('redactor', 'redactor')
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')

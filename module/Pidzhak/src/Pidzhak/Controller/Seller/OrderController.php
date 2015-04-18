@@ -41,6 +41,41 @@ class OrderController extends AbstractActionController
         return array('form' => $form);
     }
 
+
+    public function thirdstepAction()
+    {
+        $customer_id = (int) $this->params()->fromRoute('id', 0);
+        $form = new OrderForm();
+        $form->get('customer_id')->setValue($customer_id);
+        $form->get('submit')->setValue('Add');
+
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $order = new Order();
+            $form->setInputFilter($order->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $order->exchangeArray($form->getData());
+                $this->getOrderTable()->saveOrder($order);
+
+                return $this->redirect()->toRoute('order');
+            }else {
+                $form->highlightErrorElements();
+                // other error logic
+            }
+        }
+
+        $view = new ViewModel(array(
+                'id' => $customer_id,
+                'form' => $form,
+            )
+        );
+        $view->setTemplate('pidzhak/order/add.phtml');
+        return $view;
+    }
+
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);

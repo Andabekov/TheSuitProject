@@ -30,6 +30,7 @@ return array(
             'Pidzhak\Controller\Seller\Order' => 'Pidzhak\Controller\Seller\OrderController',
             'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',
 			'Pidzhak\Controller\Seller\OrderClothesRest' => 'Pidzhak\Controller\Seller\OrderClothesRestController',
+			'Pidzhak\Controller\Seller\OrderRest' => 'Pidzhak\Controller\Seller\OrderRestController',
 		)    ),
 
     'router' => array(
@@ -134,10 +135,20 @@ return array(
                 ),
             ),
 
+            'order-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restorder',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\Seller\OrderRest',
+                    ),
+                ),
+            ),
+
             'customer-rest' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/restcustomer',
+                    'route' => '/restcustomer[/:id]',
                     'defaults' => array(
                         'controller' => 'Pidzhak\Controller\CustomerRest',
                     ),

@@ -52,6 +52,7 @@ class CustomerTable
 
     public function saveCustomer(Customer $customer)
     {
+        $retval = null;
         $data = array(
             'firstname' => $customer->firstname,
             'lastname' => $customer->lastname,
@@ -71,18 +72,25 @@ class CustomerTable
 
         $id = (int) $customer->id;
         if ($id == 0) {
-            $this->tableGateway->insert($data);
+            $retval = $this->tableGateway->insert($data);
         } else {
             if ($this->getCustomer($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $retval = $this->tableGateway->update($data, array('id' => $id));
             } else {
                 throw new \Exception('Customer id does not exist');
             }
         }
+
+        return $retval;
     }
 
     public function deleteCustomer($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
+    }
+
+    public function insertedCustomer()
+    {
+        return $this->tableGateway->lastInsertValue;
     }
 }

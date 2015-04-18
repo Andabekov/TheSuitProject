@@ -16,6 +16,11 @@ class OrderForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'customer_id',
+            'type' => 'Hidden',
+        ));
+
+        $this->add(array(
             'name' => 'dateofsale',
             'type' => 'Date',
             'attributes' => array(
