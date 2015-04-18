@@ -169,6 +169,32 @@ class MeasureController extends AbstractActionController
         );
     }
 
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('measure');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->getBodyMeasureTable()->deleteBodyMeasure($id);
+            }
+
+            return $this->redirect()->toRoute('measure');
+        }
+
+        return array(
+            'id'    => $id,
+            'measure' => $this->getBodyMeasureTable()->getBodyMeasure($id)
+        );
+    }
+
+
     public function secondstepAction()
     {
         $customer_id = (int) $this->params()->fromRoute('id', 0);
@@ -218,7 +244,7 @@ class MeasureController extends AbstractActionController
         }
         catch (\Exception $ex) {
 
-                    }
+        }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -278,35 +304,12 @@ class MeasureController extends AbstractActionController
                 'form' => $form,
             )
         );
-        $view->setTemplate('pidzhak/measure/add.phtml');
+        $view->setTemplate('pidzhak/measure/second.phtml');
         return $view;
 
     }
 
-    public function deleteAction()
-    {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('measure');
-        }
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-
-            if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
-                $this->getBodyMeasureTable()->deleteBodyMeasure($id);
-            }
-
-            return $this->redirect()->toRoute('measure');
-        }
-
-        return array(
-            'id'    => $id,
-            'measure' => $this->getBodyMeasureTable()->getBodyMeasure($id)
-        );
-    }
 
     /*Inversion of Control*/
     public function getBodyMeasureTable()
