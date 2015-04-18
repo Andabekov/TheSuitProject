@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model;
+namespace Pidzhak\Model\Seller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;

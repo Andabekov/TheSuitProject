@@ -1,11 +1,11 @@
 <?php
-namespace Pidzhak\Controller;
+namespace Pidzhak\Controller\Seller;
 
-use Pidzhak\Model\ClotherMeasure;
+use Pidzhak\Model\Seller\ClotherMeasure;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\BodyMeasure;
-use Pidzhak\Form\MeasureForm;
+use Pidzhak\Model\Seller\BodyMeasure;
+use Pidzhak\Form\Seller\MeasureForm;
 
 class MeasureController extends AbstractActionController
 {
@@ -316,7 +316,7 @@ class MeasureController extends AbstractActionController
     {
         if (!$this->bodyMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\BodyMeasureTable');
+            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\Seller\BodyMeasureTable');
         }
         return $this->bodyMeasureTable;
     }
@@ -324,7 +324,7 @@ class MeasureController extends AbstractActionController
     {
         if (!$this->clotherMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\ClotherMeasureTable');
+            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\Seller\ClotherMeasureTable');
         }
         return $this->clotherMeasureTable;
     }
@@ -333,7 +333,7 @@ class MeasureController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
         }
         return $this->customerTable;
     }

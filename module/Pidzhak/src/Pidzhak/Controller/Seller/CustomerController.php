@@ -1,10 +1,10 @@
 <?php
-namespace Pidzhak\Controller;
+namespace Pidzhak\Controller\Seller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\Customer;
-use Pidzhak\Form\CustomerForm;
+use Pidzhak\Model\Seller\Customer;
+use Pidzhak\Form\Seller\CustomerForm;
 
 class CustomerController extends AbstractActionController
 {
@@ -156,7 +156,7 @@ class CustomerController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
         }
         return $this->customerTable;
     }

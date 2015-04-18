@@ -1,8 +1,8 @@
 <?php
-namespace Pidzhak\Controller;
+namespace Pidzhak\Controller\Seller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
-use Pidzhak\Model\Customer;
+use Pidzhak\Model\Seller\Customer;
 use Zend\View\Model\JsonModel;
 
 class CustomerRestController extends AbstractRestfulController
@@ -60,7 +60,7 @@ class CustomerRestController extends AbstractRestfulController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
         }
         return $this->customerTable;
     }
