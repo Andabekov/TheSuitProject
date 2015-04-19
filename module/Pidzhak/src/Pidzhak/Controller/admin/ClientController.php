@@ -8,8 +8,8 @@
 
 namespace Pidzhak\Controller\admin;
 
-use Pidzhak\Model\Customer;
-use Pidzhak\Form\CustomerForm;
+use Pidzhak\Model\Seller\Customer;
+use Pidzhak\Form\Seller\CustomerForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -50,6 +50,7 @@ class ClientController extends AbstractActionController
         }
         $view = new ViewModel(array(
                 'form' => $form,
+                'back' => '/clients',
             )
         );
         $view->setTemplate('pidzhak/admin/addClient.phtml');
@@ -93,6 +94,7 @@ class ClientController extends AbstractActionController
         $view = new ViewModel(array(
                 'id' => $id,
                 'form' => $form,
+                'back' => '/clients',
             )
         );
         $view->setTemplate('pidzhak/admin/editClient.phtml');
@@ -125,7 +127,7 @@ class ClientController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
         }
         return $this->customerTable;
     }

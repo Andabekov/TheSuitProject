@@ -1,41 +1,39 @@
 <?php
-namespace Pidzhak\Controller;
+namespace Pidzhak\Controller\Seller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\Customer;
-use Pidzhak\Form\CustomerForm;
+use Pidzhak\Model\Seller\Seller;
+use Pidzhak\Form\Seller\SellerForm;
 
-class CustomerController extends AbstractActionController
+class SellerController extends AbstractActionController
 {
-    protected $customerTable;
+    protected $sellerTable;
 
     public function indexAction()
     {
         return new ViewModel(array(
-            'customers' => $this->getCustomerTable()->fetchAll(),
+            'sellers' => $this->getSellerTable()->fetchAll(),
         ));
     }
 
     public function addAction()
     {
-        $form = new CustomerForm();
+        $form = new SellerForm();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $customer = new Customer();
-            $form->setInputFilter($customer->getInputFilter());
+            $seller = new Seller();
+            $form->setInputFilter($seller->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $customer->exchangeArray($form->getData());
-                $this->getCustomerTable()->saveCustomer($customer);
+                $seller->exchangeArray($form->getData());
+                $this->getSellerTable()->saveSeller($seller);
 
-                return $this->redirect()->toRoute('customer');
-            }else {
-                $form->highlightErrorElements();
-                // other error logic
+                // Redirect to list of sellers
+                return $this->redirect()->toRoute('seller');
             }
         }
         return array('form' => $form);
@@ -45,33 +43,34 @@ class CustomerController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('customer', array(
+            return $this->redirect()->toRoute('seller', array(
                 'action' => 'add'
             ));
         }
 
         try {
-            $customer = $this->getCustomerTable()->getCustomer($id);
+            $seller = $this->getSellerTable()->getSeller($id);
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('customer', array(
+            return $this->redirect()->toRoute('seller', array(
                 'action' => 'index'
             ));
         }
 
-        $form  = new CustomerForm();
-        $form->bind($customer);
+        $form  = new SellerForm();
+        $form->bind($seller);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($customer->getInputFilter());
+            $form->setInputFilter($seller->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getCustomerTable()->saveCustomer($customer);
+                $this->getSellerTable()->saveSeller($seller);
 
-                return $this->redirect()->toRoute('customer');
+                // Redirect to list of sellers
+                return $this->redirect()->toRoute('seller');
             }
         }
 
@@ -85,7 +84,7 @@ class CustomerController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('customer');
+            return $this->redirect()->toRoute('seller');
         }
 
         $request = $this->getRequest();
@@ -94,25 +93,26 @@ class CustomerController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getCustomerTable()->deleteCustomer($id);
+                $this->getSellerTable()->deleteSeller($id);
             }
 
-            return $this->redirect()->toRoute('customer');
+            // Redirect to list of sellers
+            return $this->redirect()->toRoute('seller');
         }
 
         return array(
             'id'    => $id,
-            'customer' => $this->getCustomerTable()->getCustomer($id)
+            'seller' => $this->getSellerTable()->getSeller($id)
         );
     }
 
     /*Inversion of Control*/
-    public function getCustomerTable()
+    public function getSellerTable()
     {
-        if (!$this->customerTable) {
+        if (!$this->sellerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->sellerTable = $sm->get('Pidzhak\Model\Seller\SellerTable');
         }
-        return $this->customerTable;
+        return $this->sellerTable;
     }
 }

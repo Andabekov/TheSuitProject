@@ -18,11 +18,11 @@ use Pidzhak\Model\admin\User;
 use Pidzhak\Model\admin\UserTable;
 
 use Pidzhak\Model\AuthStorage;
-use Pidzhak\Model\BodyMeasure;
-use Pidzhak\Model\BodyMeasureTable;
+use Pidzhak\Model\Seller\BodyMeasure;
+use Pidzhak\Model\Seller\BodyMeasureTable;
 
-use Pidzhak\Model\ClotherMeasure;
-use Pidzhak\Model\ClotherMeasureTable;
+use Pidzhak\Model\Seller\ClotherMeasure;
+use Pidzhak\Model\Seller\ClotherMeasureTable;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -30,10 +30,10 @@ use Pidzhak\Model\Seller\Order;
 use Pidzhak\Model\Seller\OrderTable;
 use Pidzhak\Model\Seller\OrderClothes;
 use Pidzhak\Model\Seller\OrderClothesTable;
-use Pidzhak\Model\Seller;
-use Pidzhak\Model\SellerTable;
-use Pidzhak\Model\Customer;
-use Pidzhak\Model\CustomerTable;
+use Pidzhak\Model\Seller\Seller;
+use Pidzhak\Model\Seller\SellerTable;
+use Pidzhak\Model\Seller\Customer;
+use Pidzhak\Model\Seller\CustomerTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
@@ -78,7 +78,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('delivery'))
             ->addResource(new Resource('admin'))
             ->addResource(new Resource('login/process'))
-            ->addResource(new Resource('seller2'))
             ->addResource(new Resource('customer'))
             ->addResource(new Resource('measure'))
             ->addResource(new Resource('customer-rest'))
@@ -87,6 +86,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 			->addResource(new Resource('order'))
             ->addResource(new Resource('orderclothes'))
 			->addResource(new Resource('orderclothes-rest'))
+			->addResource(new Resource('order-rest'))
 			->addResource(new Resource('clients'))
             ->addResource(new Resource('cycles'))
             ->addResource(new Resource('cycle-rest'))
@@ -96,7 +96,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('style-rest'))
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')
+            ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')->allow('seller', 'order-rest')
             ->allow('redactor', 'redactor')
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
@@ -165,7 +165,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 
                     return $authService;
                 },
-                'Pidzhak\Model\SellerTable' =>  function($sm) {
+                'Pidzhak\Model\Seller\SellerTable' =>  function($sm) {
                     $tableGateway = $sm->get('SellerTableGateway');
                     $table = new SellerTable($tableGateway);
                     return $table;
@@ -176,7 +176,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Seller());
                     return new TableGateway('seller', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Pidzhak\Model\CustomerTable' =>  function($sm) {
+                'Pidzhak\Model\Seller\CustomerTable' =>  function($sm) {
                     $tableGateway = $sm->get('CustomerTableGateway');
                     $table = new CustomerTable($tableGateway);
                     return $table;
@@ -187,7 +187,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Customer());
                     return new TableGateway('customer', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Pidzhak\Model\BodyMeasureTable' =>  function($sm) {
+                'Pidzhak\Model\Seller\BodyMeasureTable' =>  function($sm) {
                     $tableGateway = $sm->get('BodyMeasureTableGateway');
                     $table = new BodyMeasureTable($tableGateway);
                     return $table;
@@ -198,7 +198,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new BodyMeasure());
                     return new TableGateway('bodymeasure', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Pidzhak\Model\ClotherMeasureTable' =>  function($sm) {
+                'Pidzhak\Model\Seller\ClotherMeasureTable' =>  function($sm) {
                     $tableGateway = $sm->get('ClotherMeasureTableGateway');
                     $table = new ClotherMeasureTable($tableGateway);
                     return $table;

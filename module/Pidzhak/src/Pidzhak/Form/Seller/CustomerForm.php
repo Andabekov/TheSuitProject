@@ -1,112 +1,173 @@
 <?php
-namespace Pidzhak\Form;
+namespace Pidzhak\Form\Seller;
 
 use Zend\Form\Form;
 use  Zend\Form\Element\Hidden;
 
-class OrderForm extends Form
+class CustomerForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('order');
+        parent::__construct('customer');
 
         $this->add(array(
             'name' => 'id',
             'type' => 'Hidden',
         ));
-
         $this->add(array(
-            'name' => 'dateofsale',
+            'name' => 'firstname',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Имя',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'lastname',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Фамилия',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'middlename',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Отчество',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'birthday',
             'type' => 'Date',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Дата продажи',
+                'label' => 'Дата рождения',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
-
         $this->add(array(
-            'name' => 'pricelistnum',
+            'name' => 'mobilephone',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => '# Прайс-листа',
+                'label' => 'Мобильный телефон',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'payamount',
+            'name' => 'email',
+            'type' => 'Email',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Емайл',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'country',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Сумма оплаты',
+                'label' => 'Страна',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'paytype',
+            'name' => 'city',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Способ оплаты',
+                'label' => 'Город',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
-
         $this->add(array(
-            'name' => 'cashlocation',
+            'name' => 'address',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Местоположение денежных средств',
+                'label' => 'Адресс проживания',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'cityofsale',
+            'name' => 'homephone',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Город продажи',
+                'label' => 'Домашний телефон',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'pointofsale',
+            'name' => 'work',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Место продажи',
+                'label' => 'Место работы',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'seller',
+            'name' => 'position',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Продавец',
+                'label' => 'Должность',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
-
-
+        $this->add(array(
+            'name' => 'workaddress',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Адрес работы',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'workphone',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Рабочий телефон',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',

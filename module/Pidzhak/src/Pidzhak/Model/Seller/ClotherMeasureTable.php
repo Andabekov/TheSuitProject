@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model;
+namespace Pidzhak\Model\Seller;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;

@@ -4,11 +4,12 @@ namespace Pidzhak\Controller\Seller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\Seller\Order;
-use Pidzhak\Form\OrderForm;
+use Pidzhak\Form\Seller\OrderForm;
 
 class OrderController extends AbstractActionController
 {
     protected $orderTable;
+    protected $customerTable;
 
     public function indexAction()
     {
@@ -40,6 +41,7 @@ class OrderController extends AbstractActionController
         }
         return array('form' => $form);
     }
+
 
     public function editAction()
     {
@@ -106,6 +108,47 @@ class OrderController extends AbstractActionController
         );
     }
 
+
+    public function thirdstepAction()
+    {
+        $customer_id = (int) $this->params()->fromRoute('id', 0);
+
+
+        $form = new OrderForm();
+        $form->get('customer_id')->setValue($customer_id);
+        $form->get('submit')->setValue('Add');
+
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $order = new Order();
+            $form->setInputFilter($order->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $order->exchangeArray($form->getData());
+                $this->getOrderTable()->saveOrder($order);
+
+                return $this->redirect()->toRoute('order');
+            }else {
+                $form->highlightErrorElements();
+                // other error logic
+            }
+        }else{
+            $customer = $this->getCustomerTable()->getCustomer($customer_id);
+        }
+
+        $view = new ViewModel(array(
+                'id' => $customer_id,
+                'form' => $form,
+                'customer' => $customer,
+            )
+        );
+        $view->setTemplate('pidzhak/order/third.phtml');
+        return $view;
+    }
+
+
     /*Inversion of Control*/
     public function getOrderTable()
     {
@@ -114,5 +157,14 @@ class OrderController extends AbstractActionController
             $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
         }
         return $this->orderTable;
+    }
+
+    public function getCustomerTable()
+    {
+        if (!$this->customerTable) {
+            $sm = $this->getServiceLocator();
+            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
+        }
+        return $this->customerTable;
     }
 }

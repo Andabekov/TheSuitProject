@@ -1,0 +1,36 @@
+<?php
+$title = '';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->setAttribute('action', $this->url('order', array('action' => 'add')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formHidden($form->get('customer_id'));
+?>
+    <div class="header">
+        Заказ
+    </div>
+
+    <a class="navBtn">1 Шаг - Данные клиента</a>
+    <a class="navBtn">2 Шаг - Замеры клиента</a>
+    <a class="navBtn active">3 Шаг - Заказ клиента</a>
+
+    <center>
+        <div id="chooseContent">
+            <?php
+            echo 'Выбранный клиент: '.$customer->lastname." ".$customer->firstname." - ".$customer->mobilephone;
+            ?>
+        </div>
+    </center>
+
+
+<?= $this->render('fields.phtml') ?>
+
+<?php
+
+echo $this->form()->closeTag();

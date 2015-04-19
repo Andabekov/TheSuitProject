@@ -4,7 +4,7 @@ namespace Pidzhak\Controller\Seller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\Seller\OrderClothes;
-use Pidzhak\Form\OrderClothesForm;
+use Pidzhak\Form\Seller\OrderClothesForm;
 
 class OrderClothesController extends AbstractActionController
 {

@@ -1,13 +1,12 @@
 <?php
-namespace Pidzhak\Controller;
+namespace Pidzhak\Controller\Seller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
-use Pidzhak\Model\Customer;
 use Zend\View\Model\JsonModel;
 
-class CustomerRestController extends AbstractRestfulController
+class OrderRestController extends AbstractRestfulController
 {
-    protected $customerTable;
+    protected $orderTable;
 
 
     public function create($data)
@@ -24,16 +23,8 @@ class CustomerRestController extends AbstractRestfulController
 
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
-        $count= $this->getCustomerTable()->getCount();
-
-
-
-/*        foreach($customers as $customer){
-            print_r($customer->id);
-        }*/
-
-
+        $customers= $this->getOrderTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
+        $count= $this->getOrderTable()->getCount();
 
         return new JsonModel(array(
             'current' => intval($current),
@@ -44,13 +35,13 @@ class CustomerRestController extends AbstractRestfulController
     }
 
     /*Inversion of Control*/
-    public function getCustomerTable()
+    public function getOrderTable()
     {
-        if (!$this->customerTable) {
+        if (!$this->orderTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\CustomerTable');
+            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
         }
-        return $this->customerTable;
+        return $this->orderTable;
     }
 }
 

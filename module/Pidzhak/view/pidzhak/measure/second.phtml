@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
     <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
-$form->setAttribute('action', $this->url('measure', array('action' => 'add')));
+$form->setAttribute('action', $this->url('measure', array('action' => 'secondstep')));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
@@ -28,7 +28,27 @@ echo $this->formHidden($form->get('customer_id_3'));
 echo $this->formHidden($form->get('customer_id_4'));
 echo $this->formHidden($form->get('customer_id_5'));
 ?>
-    <?= $this->render('bodyfields.phtml') ?>
+
+    <div class="header">
+        Замеры
+    </div>
+
+    <a class="navBtn">1 Шаг - Данные клиента</a>
+    <a class="navBtn active">2 Шаг - Замеры клиента</a>
+    <a class="navBtn">3 Шаг - Заказ клиента</a>
+
+    <center>
+        <div id="chooseContent">
+            <?php
+            echo 'Выбранный клиент: '.$customer->lastname." ".$customer->firstname." - ".$customer->mobilephone;
+            ?>
+        </div>
+    </center>
+
+<?= $this->render('bodyfields.phtml') ?>
+
+
+
 <?php
 
 echo $this->formHidden($form->get('c_id_1'));
@@ -41,7 +61,9 @@ echo $this->formHidden($form->get('c_customer_id_1'));
 echo $this->formHidden($form->get('c_customer_id_2'));
 
 ?>
-    <?= $this->render('clothefields.phtml') ?>
+
+<?= $this->render('clothefields.phtml') ?>
+
 <?php
 
 echo $this->formSubmit($form->get('submit'));

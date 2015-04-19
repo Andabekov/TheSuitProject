@@ -1,0 +1,118 @@
+<div class="form-group">
+    <?php $element = $form->get('firstname'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('lastname'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('middlename'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('birthday'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formDate($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('mobilephone'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('email'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('country'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('city'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('address'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('homephone'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('work'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('position'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('workaddress'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <?php $element = $form->get('workphone'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+<div class="form-group">
+    <div class="col-xs-offset-2 col-xs-10">
+        <a class="btn btn-default cancel-btn" href="<?= $back?>">Отменить</a>
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Form;
+namespace Pidzhak\Form\Seller;
 
 use Zend\Form\Form;
 

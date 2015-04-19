@@ -1,173 +1,205 @@
 <?php
-namespace Pidzhak\Form;
+namespace Pidzhak\Form\Seller;
 
 use Zend\Form\Form;
 use  Zend\Form\Element\Hidden;
 
-class CustomerForm extends Form
+class OrderClothesForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('customer');
+        parent::__construct('orderclothes');
 
         $this->add(array(
             'name' => 'id',
             'type' => 'Hidden',
         ));
+
         $this->add(array(
-            'name' => 'firstname',
+            'name' => 'order_id',
+            'type' => 'Hidden',
+        ));
+
+        $this->add(array(
+            'name' => 'cycle_number',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Имя',
+                'label' => 'Номер цикла',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
         $this->add(array(
-            'name' => 'lastname',
+            'name' => 'product_name',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Фамилия',
+                'label' => 'Наименование изделия',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'middlename',
+            'name' => 'textile_class',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Отчество',
+                'label' => 'Класс Ткани',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'birthday',
-            'type' => 'Date',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Дата рождения',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
-        ));
-        $this->add(array(
-            'name' => 'mobilephone',
+            'name' => 'textile_number',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Мобильный телефон',
+                'label' => 'Номер ткани',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
         $this->add(array(
-            'name' => 'email',
-            'type' => 'Email',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Емайл',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
-        ));
-        $this->add(array(
-            'name' => 'country',
+            'name' => 'typeof_measure',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Страна',
+                'label' => 'Вид замера',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'city',
+            'name' => 'label_brand',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Город',
+                'label' => 'Этикетка бранда',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'address',
+            'name' => 'style_number',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Адресс проживания',
+                'label' => 'Номер стиля',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'homephone',
+            'name' => 'first_monogram_location',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Домашний телефон',
+                'label' => '1. Монограм (расположение)',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'work',
+            'name' => 'first_monogram_font',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Место работы',
+                'label' => '1. Монограм (шрифт)',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'position',
+            'name' => 'first_monogram_font_color',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Должность',
+                'label' => '1. Монограм (цвет шрифта)',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'workaddress',
+            'name' => 'first_monogram_caption',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Адрес работы',
+                'label' => '1. Монограм (Надпись)',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'workphone',
+            'name' => 'second_monogram_location',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Рабочий телефон',
+                'label' => '2. Монограм (расположение)',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+        $this->add(array(
+            'name' => 'second_monogram_font',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => '2. Монограм (шрифт)',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'second_monogram_font_color',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => '2. Монограм (цвет шрифта)',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'second_monogram_caption',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => '2. Монограм (Надпись)',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+        $this->add(array(
+            'name' => 'seller_comment',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Комментарии Продавца',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',

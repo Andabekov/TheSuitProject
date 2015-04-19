@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilterInterface;
 class Order  implements InputFilterAwareInterface
 {
     public $id;
+    public $customer_id;
     public $dateofsale;
     public $pricelistnum;
     public $payamount;
@@ -20,6 +21,7 @@ class Order  implements InputFilterAwareInterface
     public function exchangeArray($data)
     {
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
+        $this->customer_id = (!empty($data['customer_id'])) ? $data['customer_id'] : null;
         $this->dateofsale = (!empty($data['dateofsale'])) ? $data['dateofsale'] : null;
         $this->pricelistnum = (!empty($data['pricelistnum'])) ? $data['pricelistnum'] : null;
         $this->payamount = (!empty($data['payamount'])) ? $data['payamount'] : null;
