@@ -12,6 +12,8 @@ use Pidzhak\Model\admin\Cycle;
 use Pidzhak\Model\admin\CycleTable;
 use Pidzhak\Model\admin\Fabric;
 use Pidzhak\Model\admin\FabricTable;
+use Pidzhak\Model\admin\Style;
+use Pidzhak\Model\admin\StyleTable;
 use Pidzhak\Model\admin\User;
 use Pidzhak\Model\admin\UserTable;
 
@@ -90,6 +92,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('cycle-rest'))
             ->addResource(new Resource('fabrics'))
             ->addResource(new Resource('fabric-rest'))
+            ->addResource(new Resource('styles'))
+            ->addResource(new Resource('style-rest'))
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
             ->allow('seller', 'seller')->allow('seller', 'seller2')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')
@@ -99,7 +103,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->allow('delivery', 'delivery')
             ->allow('admin', 'admin')->allow('admin', 'admin-rest')->allow('admin', 'clients')->allow('admin', 'customer-rest')
             ->allow('admin', 'cycles')->allow('admin', 'cycle-rest')
-            ->allow('admin', 'fabrics')->allow('admin', 'fabric-rest');
+            ->allow('admin', 'fabrics')->allow('admin', 'fabric-rest')
+            ->allow('admin', 'styles')->allow('admin', 'style-rest');
 
         $e->getViewModel()->acl = $acl;
     }
@@ -237,6 +242,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Fabric());
                     return new TableGateway('fabricstable', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\admin\StyleTable' =>  function($sm) {
+                    $tableGateway = $sm->get('StyleTableGateway');
+                    $table = new StyleTable($tableGateway);
+                    return $table;
+                },
+                'StyleTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Style());
+                    return new TableGateway('stylestable', $dbAdapter, null, $resultSetPrototype);
                 },
 
 				'Pidzhak\Model\Seller\OrderTable' =>  function($sm) {
