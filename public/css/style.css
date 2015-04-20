@@ -201,6 +201,7 @@ a.child{
     width: 30%;
     padding: 10px;
     margin: 10px;
+    margin-bottom: 0px;
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #d9d9d9));
     background:-moz-linear-gradient(top, #ffffff 5%, #d9d9d9 100%);
     background:-webkit-linear-gradient(top, #ffffff 5%, #d9d9d9 100%);
@@ -267,4 +268,25 @@ a.active {
 
 #myModal {
     top:2px;
+}
+
+.circleBtn{
+    margin-top: 0px;
+    margin-bottom: 8px;
+    border-radius:40px;
+}
+
+#choosedContent{
+    margin-bottom: 15px;
+}
+.clientChosen{
+    display: none;
+    margin: 15px;
+}
+#chosenClient{
+    font-weight: bold;
+    margin: 15px;
+}
+#clothMeasureDiv{
+    display: none;
 }

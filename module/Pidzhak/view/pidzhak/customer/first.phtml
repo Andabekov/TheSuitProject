@@ -1,9 +1,4 @@
 <?php
-//$title = 'Add new customer';
-//$this->headTitle($title);
-?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
-<?php
 $form->setAttribute('action', $this->url('customer', array('action' => 'firststep')));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
@@ -12,95 +7,71 @@ echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 ?>
 <div class="header">
-    Мои заказы
+    Создание нового заказа
 </div>
 
-<a class="navBtn active">1 Шаг - Данные клиента</a>
-<a class="navBtn">2 Шаг - Замеры клиента</a>
-<a class="navBtn">3 Шаг - Заказ клиента</a>
+<div style="text-align:center;">
+    <a class="navBtn active">1 Шаг - Данные клиента</a>
+    <a class="navBtn">2 Шаг - Замеры клиента</a>
+    <a class="navBtn">3 Шаг - Заказ клиента</a>
 
-<center>
+    <hr />
+
     <div id="chooseContent">
-
         <b><div id="choosedContent"></div></b>
-        <a class="navBtn chooseClient" >Выберите клиента</a>
+        <a class="btn btn-primary circleBtn chooseClient" >Выбрать существующего клиента</a>
+        <a class="btn btn-default clientChosen" onclick="cancelChosenClient()">Отменить выбор</a>
+        <a class="btn btn-primary clientChosen" onclick="continueChosenClient()">Продолжить</a>
     </div>
-    <div>
-        ИЛИ
+
+    <div class="newClientDiv">
+        <div>
+            ИЛИ
+        </div>
+        <div style="margin-bottom: 10px; font-weight: bold;">
+            Зарегистрировать нового клиента:
+        </div>
+
+        <?= $this->render('fields.phtml') ?>
+
+        <?php
+
+        echo $this->form()->closeTag();
+        ?>
     </div>
-    <div>
-        Зарегистрировать нового клиента
-    </div>
-</center>
 
-<?= $this->render('fields.phtml') ?>
-
-<?php
-
-echo $this->form()->closeTag();
-?>
-
-
+</div>
 
 <div id="myModal" class="modal large fade">
-
     <div class="modal-dialog">
-
         <div class="modal-content">
-
             <div class="modal-header">
-
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
                 <h4 class="modal-title">Выбор клиента</h4>
-
             </div>
 
             <div class="modal-body">
-
-                <!--<p>Do you want to save changes you made to document before closing?</p>
-
-                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>-->
-
-
                 <p>
                 <table id="customer-grid" class="table table-condensed table-hover table-striped" >
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-type="numeric" data-identifier="true">ID</th>
-                        <th data-column-id="firstname">firstname</th>
-                        <th data-column-id="lastname" data-order="desc">lastname</th>
-                        <th data-column-id="middlename" data-order="desc">middlename</th>
-                        <!--<th data-column-id="birthday" data-order="desc">birthday</th>-->
-                        <th data-column-id="mobilephone" data-order="desc">mobilephone</th>
-                        <th data-column-id="email" data-order="desc">email</th>
-                        <th data-column-id="country" data-order="desc">country</th>
-                        <th data-column-id="city" data-order="desc">city</th>
-                        <th data-column-id="address" data-order="desc">address</th>
-                        <!--<th data-column-id="homephone" data-order="desc">homephone</th>
-                        <th data-column-id="work" data-order="desc">work</th>
-                        <th data-column-id="position" data-order="desc">position</th>
-                        <th data-column-id="workaddress" data-order="desc">workaddress</th>
-                        <th data-column-id="workphone" data-order="desc">workphone</th>
-                        <th data-column-id="link" data-formatter="link" data-sortable="false">Link</th>-->
+                        <th data-column-id="firstname">Имя</th>
+                        <th data-column-id="lastname" data-order="desc">Фамилия</th>
+                        <th data-column-id="middlename" data-order="desc">Отчество</th>
+                        <th data-column-id="birthday" data-order="desc">День рождение</th>
+                        <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+                        <th data-column-id="email" data-order="desc">Email</th>
+                        <th data-column-id="city" data-order="desc">Город</th>
+                        <th data-column-id="address" data-order="desc">Адрес</th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
                     </tr>
                     </thead>
-
                 </table>
                 </p>
-
-
             </div>
-
-
         </div>
-
     </div>
-
 </div>
-
-
 
 
 
@@ -111,10 +82,8 @@ echo $this->form()->closeTag();
         init();
 
         $(".chooseClient").click(function(){
-
             $('#customer-grid').bootgrid('reload');
             $("#myModal").modal('show');
-
         });
 
         function init() {
@@ -154,27 +123,33 @@ echo $this->form()->closeTag();
                 grid.find(".command-choose-client").on("click", function(e)
                 {
                     myId=$(this).data("row-id");
-                    /*bootbox.setDefaults({
-                     locale: "ru",
-                     className: "my-modal"
-                     });*/
-                    /*$.post( "admin/delete/"+myId, { id: myId } ).done(function( data ) {
-                     $('#customer-grid').bootgrid('reload');
-                     });*/
 
                     $('input[name=id]').val(myId);
 
                     $.get( "/restcustomer/"+myId, { } ).done(function( data ) {
-
-                        $('#choosedContent').html(" Выбранный клиент: " +data.lastname +" "+data.firstname+ " - "+ data.mobilephone);
+                        $('#choosedContent').html(" Выбранный клиент: " +data.lastname +" "+data.firstname+ ", "+ data.mobilephone);
+                        $('.newClientDiv').hide();
+                        $('.chooseClient').hide();
+                        $('.clientChosen').show();
                     });
-
 
                     $('#myModal').modal('hide');
                 });
             });
         }
     });
+
+    function cancelChosenClient(){
+        $('input[name=id]').val('');
+        $('#choosedContent').html('');
+        $('.chooseClient').show();
+        $('.newClientDiv').show();
+        $('.clientChosen').hide();
+    }
+
+    function continueChosenClient(){
+        window.location= "/measure/secondstep/"+myId;
+    }
 
 </script>
 

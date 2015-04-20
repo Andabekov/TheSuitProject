@@ -87,6 +87,8 @@ class BodyMeasure  implements InputFilterAwareInterface
         throw new \Exception("Not used");
     }
 
+    public $inputFilter;
+
     public function getInputFilter()
     {
         if (!$this->inputFilter) {

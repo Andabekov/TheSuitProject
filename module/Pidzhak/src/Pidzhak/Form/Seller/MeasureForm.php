@@ -101,7 +101,8 @@ class MeasureForm extends Form
             'name' => 'seat_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Зад (Seat)',
@@ -111,17 +112,20 @@ class MeasureForm extends Form
             'name' => 'thigh_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Бедро (Thigh)',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'knee_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Колено (Knee Finished)',
@@ -131,7 +135,8 @@ class MeasureForm extends Form
             'name' => 'pant_bottom_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Низ брюк (Pant bottom Finished)',
@@ -141,7 +146,8 @@ class MeasureForm extends Form
             'name' => 'u_rise_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Шов сиденья (U-rise)',
@@ -151,7 +157,8 @@ class MeasureForm extends Form
             'name' => 'otseam_l_and_r_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Длина брюк (Otseam L and R)',
@@ -181,7 +188,8 @@ class MeasureForm extends Form
             'name' => 'back_waist_height_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Расстояние от талии спины до пояса брюк (Back waist height)',
@@ -191,7 +199,8 @@ class MeasureForm extends Form
             'name' => 'front_waist_height_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Расстояние от талии полочки до пояса брюк (Front waist height)',
@@ -251,7 +260,8 @@ class MeasureForm extends Form
             'name' => 'overcoat_back_length_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Длина пальто cо спины (Overcoat back length)',
@@ -261,7 +271,8 @@ class MeasureForm extends Form
             'name' => 'waist_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Брючная талия (Waist)',
@@ -271,7 +282,8 @@ class MeasureForm extends Form
             'name' => 'right_wrist_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Запястье (правое) (Right wrist)',
@@ -281,7 +293,8 @@ class MeasureForm extends Form
             'name' => 'left_wrist_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Запястье (левое) (Left wrist)',
@@ -340,28 +353,32 @@ class MeasureForm extends Form
             'name' => 'arm_position_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'neck_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'chest_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'stomach_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -410,14 +427,16 @@ class MeasureForm extends Form
             'name' => 'nape_to_waist_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'front_waist_length_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -438,42 +457,48 @@ class MeasureForm extends Form
             'name' => 'biceps_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'back_shoulder_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'right_sleeve_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'left_sleeve_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'back_length_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'overcoat_back_length_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -487,14 +512,16 @@ class MeasureForm extends Form
             'name' => 'right_wrist_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'left_wrist_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -539,7 +566,8 @@ class MeasureForm extends Form
             'name' => 'arm_position_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -567,42 +595,48 @@ class MeasureForm extends Form
             'name' => 'seat_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'thigh_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'knee_finished_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'pant_bottom_finished_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'u_rise_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'otseam_l_and_r_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -623,14 +657,16 @@ class MeasureForm extends Form
             'name' => 'back_waist_height_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'front_waist_height_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -672,14 +708,16 @@ class MeasureForm extends Form
             'name' => 'overcoat_back_length_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'waist_3',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -738,7 +776,8 @@ class MeasureForm extends Form
             'name' => 'arm_position_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -766,42 +805,48 @@ class MeasureForm extends Form
             'name' => 'seat_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'thigh_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'knee_finished_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'pant_bottom_finished_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'u_rise_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'otseam_l_and_r_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -836,63 +881,72 @@ class MeasureForm extends Form
             'name' => 'biceps_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'back_shoulder_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'right_sleeve_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'left_sleeve_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'back_length_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'overcoat_back_length_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'waist_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'right_wrist_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'left_wrist_4',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -965,42 +1019,48 @@ class MeasureForm extends Form
             'name' => 'seat_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'thigh_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'knee_finished_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'pant_bottom_finished_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'u_rise_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'otseam_l_and_r_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1021,14 +1081,16 @@ class MeasureForm extends Form
             'name' => 'back_waist_height_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'front_waist_height_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1077,21 +1139,24 @@ class MeasureForm extends Form
             'name' => 'waist_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'right_wrist_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'left_wrist_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1231,7 +1296,8 @@ class MeasureForm extends Form
             'name' => 'c_waist_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Брючная талия (Waist Finished)',
@@ -1241,7 +1307,8 @@ class MeasureForm extends Form
             'name' => 'c_seat_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Зад Брюк (Seat Finished)',
@@ -1251,7 +1318,8 @@ class MeasureForm extends Form
             'name' => 'c_thigh_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Бедро (Thigh Finished)',
@@ -1261,7 +1329,8 @@ class MeasureForm extends Form
             'name' => 'c_outseam_l_and_r_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Длина брюк (Outseam L and R Finished)',
@@ -1271,7 +1340,8 @@ class MeasureForm extends Form
             'name' => 'c_knee_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Колено (Knee Finished)',
@@ -1281,7 +1351,8 @@ class MeasureForm extends Form
             'name' => 'c_pant_bottom_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Низ брюк (Pant bottom Finished)',
@@ -1291,7 +1362,8 @@ class MeasureForm extends Form
             'name' => 'c_u_rise_finished_1',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Шов сиденья (U-rise Finished)',
@@ -1329,63 +1401,72 @@ class MeasureForm extends Form
             'name' => 'c_chest_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_stomach_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_jacket_seat_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_biceps_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_left_sleeve_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_right_sleeve_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_back_length_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_front_length_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
             'name' => 'c_shoulder_finished_2',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
