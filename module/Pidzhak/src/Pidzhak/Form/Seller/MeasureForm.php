@@ -19,6 +19,7 @@ class MeasureForm extends Form
 
         $this->addFirstColumnClotherMeasure();
         $this->addSecondColumnClotherMeasure();
+        $this->addThirdColumnClotherMeasure();
 
     }
 
@@ -59,12 +60,29 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'arm_position_1',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Положение рук (Arm position)',
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Normal',
+                    '2' => 'Backward',
+                    '3' => 'Forward',
+                ),
+            ),
+        ));
+        $this->add(array(
+            'name' => 'butt_position_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Положение ягодицы',
             ),
         ));
         $this->add(array(
@@ -151,6 +169,17 @@ class MeasureForm extends Form
             ),
             'options' => array(
                 'label' => 'Шов сиденья (U-rise)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_auto_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Шов сиденья (auto)',
             ),
         ));
         $this->add(array(
@@ -302,12 +331,18 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'style_1',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Приталенность (Style)',
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Приталенный',
+                    '2' => 'Полуприталенный',
+                    '3' => 'Свободный',
+                ),
             ),
         ));
 
@@ -355,6 +390,22 @@ class MeasureForm extends Form
             'attributes' => array(
                 'class' => 'form-control',
                 'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'butt_position_2',
+            'type' => 'select',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Normal',
+                    '2' => 'Prominent',
+                    '3' => 'Drop',
+                    '4' => 'Flat',
+                ),
             ),
         ));
         $this->add(array(
@@ -414,6 +465,13 @@ class MeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_auto_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
             ),
         ));
         $this->add(array(
@@ -526,9 +584,16 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'style_2',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Приталенный',
+                    '3' => 'Свободный',
+                ),
             ),
         ));
     }
@@ -564,6 +629,14 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'arm_position_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'butt_position_3',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
@@ -625,6 +698,14 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'u_rise_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_auto_3',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
@@ -736,9 +817,17 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'style_3',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Приталенный',
+                    '2' => 'Полуприталенный',
+                    '3' => 'Свободный',
+                ),
             ),
         ));
     }
@@ -774,6 +863,14 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'arm_position_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'butt_position_4',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
@@ -835,6 +932,14 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'u_rise_4',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_auto_4',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
@@ -951,9 +1056,17 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'style_4',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Приталенный',
+                    '2' => 'Полуприталенный',
+                    '3' => 'Свободный',
+                ),
             ),
         ));
     }
@@ -989,9 +1102,25 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'arm_position_5',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Normal',
+                    '2' => 'Backward',
+                    '3' => 'Forward',
+                ),
+            ),
+        ));
+        $this->add(array(
+            'name' => 'butt_position_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1049,6 +1178,14 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'u_rise_5',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'u_rise_auto_5',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
@@ -1161,9 +1298,17 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'style_5',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Приталенный',
+                    '2' => 'Полуприталенный',
+                    '3' => 'Свободный',
+                ),
             ),
         ));
     }
@@ -1369,6 +1514,42 @@ class MeasureForm extends Form
                 'label' => 'Шов сиденья (U-rise Finished)',
             ),
         ));
+        $this->add(array(
+            'name' => 'c_right_cuff_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Правый манжет (Right cuff)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_left_cuff_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Левый манжет (Left cuff)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_shirt_neck_1',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Шея сорочки (Shirt neck)',
+                'disabled' => 'true'
+            ),
+        ));
     }
     private function addSecondColumnClotherMeasure(){
         $this->add(array(
@@ -1516,6 +1697,277 @@ class MeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_right_cuff_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Правый манжет (Right cuff)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_left_cuff_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Левый манжет (Left cuff)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_shirt_neck_2',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Шея сорочки (Shirt neck)',
+                'disabled' => 'true'
+            ),
+        ));
+    }
+    private function addThirdColumnClotherMeasure(){
+        $this->add(array(
+            'name' => 'c_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_clother_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_customer_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_growth_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Рост',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_weight_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Вес',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_chest_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Грудь (Chest Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_stomach_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Живот (Stomach Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_jacket_seat_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Зад Пиджака (Seat Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_biceps_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Бицепс (Biceps Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_left_sleeve_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Левый рукав (Left sleeve Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_right_sleeve_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Правый рукав (Right sleeve Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_back_length_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Длина изделия со спины (Back length Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_front_length_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Длина изделия спереди (Front length Finished)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_shoulder_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Ширина спины (Shoulder Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_waist_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Брючная талия (Waist Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_seat_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Зад Брюк (Seat Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_thigh_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Бедро (Thigh Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_outseam_l_and_r_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Длина брюк (Outseam L and R Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_knee_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Колено (Knee Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_pant_bottom_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Низ брюк (Pant bottom Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_u_rise_finished_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Шов сиденья (U-rise Finished)',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_right_cuff_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Правый манжет (Right cuff)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_left_cuff_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Левый манжет (Left cuff)',
+                'disabled' => 'true'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'c_shirt_neck_3',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Шея сорочки (Shirt neck)',
+                'disabled' => 'true'
             ),
         ));
     }

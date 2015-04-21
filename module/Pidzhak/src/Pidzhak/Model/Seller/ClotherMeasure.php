@@ -28,6 +28,9 @@ class ClotherMeasure  implements InputFilterAwareInterface
     public $knee_finished;
     public $pant_bottom_finished;
     public $u_rise_finished;
+    public $right_cuff;
+    public $left_cuff;
+    public $shirt_neck;
 
 
     private $postfix;

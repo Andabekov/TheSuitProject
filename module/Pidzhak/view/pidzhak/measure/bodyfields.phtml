@@ -28,11 +28,19 @@
     </tr>
     <tr>
         <td><?php echo $this->formLabel($form->get('arm_position_1')); ?></td>
-        <td><?php echo $this->formText($form->get('arm_position_1')); ?></td>
+        <td><?php echo $this->formSelect($form->get('arm_position_1')); ?></td>
         <td><?php echo $this->formText($form->get('arm_position_2')); ?></td>
         <td><?php echo $this->formText($form->get('arm_position_3')); ?></td>
         <td><?php echo $this->formText($form->get('arm_position_4')); ?></td>
-        <td><?php echo $this->formText($form->get('arm_position_5')); ?></td>
+        <td><?php echo $this->formSelect($form->get('arm_position_5')); ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('butt_position_1')); ?></td>
+        <td><?php echo $this->formText($form->get('butt_position_1')); ?></td>
+        <td><?php echo $this->formSelect($form->get('butt_position_2')); ?></td>
+        <td><?php echo $this->formText($form->get('butt_position_3')); ?></td>
+        <td><?php echo $this->formText($form->get('butt_position_4')); ?></td>
+        <td><?php echo $this->formText($form->get('butt_position_5')); ?></td>
     </tr>
     <tr>
         <td><?php echo $this->formLabel($form->get('neck_1')); ?></td>
@@ -97,6 +105,14 @@
         <td><?php echo $this->formText($form->get('u_rise_3')); ?></td>
         <td><?php echo $this->formText($form->get('u_rise_4')); ?></td>
         <td><?php echo $this->formText($form->get('u_rise_5')); ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('u_rise_auto_1')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_auto_1')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_auto_2')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_auto_3')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_auto_4')); ?></td>
+        <td><?php echo $this->formText($form->get('u_rise_auto_5')); ?></td>
     </tr>
     <tr>
         <td><?php echo $this->formLabel($form->get('otseam_l_and_r_1')); ?></td>
@@ -212,11 +228,167 @@
     </tr>
     <tr>
         <td><?php echo $this->formLabel($form->get('style_1')); ?></td>
-        <td><?php echo $this->formText($form->get('style_1')); ?></td>
-        <td><?php echo $this->formText($form->get('style_2')); ?></td>
-        <td><?php echo $this->formText($form->get('style_3')); ?></td>
-        <td><?php echo $this->formText($form->get('style_4')); ?></td>
-        <td><?php echo $this->formText($form->get('style_5')); ?></td>
+        <td><?php echo $this->formSelect($form->get('style_1')); ?></td>
+        <td><?php echo $this->formSelect($form->get('style_2')); ?></td>
+        <td><?php echo $this->formSelect($form->get('style_3')); ?></td>
+        <td><?php echo $this->formSelect($form->get('style_4')); ?></td>
+        <td><?php echo $this->formSelect($form->get('style_5')); ?></td>
     </tr>
     </tbody>
 </table>
+
+<script>
+    $(document).ready(function(){
+        $('input[name=growth_1]').bind("paste keyup", function() {
+            $('input[name=growth_2]').val($(this).val()); $('input[name=growth_3]').val($(this).val()); $('input[name=growth_4]').val($(this).val()); $('input[name=growth_5]').val($(this).val());
+        });
+        $('input[name=growth_2]').bind("paste keyup", function() {
+            $('input[name=growth_1]').val($(this).val()); $('input[name=growth_3]').val($(this).val()); $('input[name=growth_4]').val($(this).val()); $('input[name=growth_5]').val($(this).val());
+        });
+        $('input[name=growth_3]').bind("paste keyup", function() {
+            $('input[name=growth_1]').val($(this).val()); $('input[name=growth_2]').val($(this).val()); $('input[name=growth_4]').val($(this).val()); $('input[name=growth_5]').val($(this).val());
+        });
+        $('input[name=growth_4]').bind("paste keyup", function() {
+            $('input[name=growth_1]').val($(this).val()); $('input[name=growth_2]').val($(this).val()); $('input[name=growth_3]').val($(this).val()); $('input[name=growth_5]').val($(this).val());
+        });
+        $('input[name=growth_5]').bind("paste keyup", function() {
+            $('input[name=growth_1]').val($(this).val()); $('input[name=growth_2]').val($(this).val()); $('input[name=growth_3]').val($(this).val()); $('input[name=growth_4]').val($(this).val());
+        });
+
+        $('input[name=weight_1]').bind("paste keyup", function() {
+            $('input[name=weight_2]').val($(this).val()); $('input[name=weight_3]').val($(this).val()); $('input[name=weight_4]').val($(this).val()); $('input[name=weight_5]').val($(this).val());
+        });
+        $('input[name=weight_2]').bind("paste keyup", function() {
+            $('input[name=weight_1]').val($(this).val()); $('input[name=weight_3]').val($(this).val()); $('input[name=weight_4]').val($(this).val()); $('input[name=weight_5]').val($(this).val());
+        });
+        $('input[name=weight_3]').bind("change paste keyup", function() {
+            $('input[name=weight_1]').val($(this).val()); $('input[name=weight_2]').val($(this).val()); $('input[name=weight_4]').val($(this).val()); $('input[name=weight_5]').val($(this).val());
+        });
+        $('input[name=weight_4]').bind("paste keyup", function() {
+            $('input[name=weight_1]').val($(this).val()); $('input[name=weight_2]').val($(this).val()); $('input[name=weight_3]').val($(this).val()); $('input[name=weight_5]').val($(this).val());
+        });
+        $('input[name=weight_5]').bind("paste keyup", function() {
+            $('input[name=weight_1]').val($(this).val()); $('input[name=weight_2]').val($(this).val()); $('input[name=weight_3]').val($(this).val()); $('input[name=weight_4]').val($(this).val());
+        });
+
+        $('select[name=arm_position_1]').bind("change", function() {
+            $('select[name=arm_position_5]').val($(this).val());
+        });
+        $('select[name=arm_position_5]').bind("change", function() {
+            $('select[name=arm_position_1]').val($(this).val());
+        });
+
+        $('input[name=neck_1]').bind("paste keyup", function() {
+            $('input[name=neck_3]').val($(this).val()); $('input[name=neck_4]').val($(this).val()); $('input[name=neck_5]').val($(this).val());
+        });
+        $('input[name=neck_3]').bind("paste keyup", function() {
+            $('input[name=neck_1]').val($(this).val()); $('input[name=neck_4]').val($(this).val()); $('input[name=neck_5]').val($(this).val());
+        });
+        $('input[name=neck_4]').bind("paste keyup", function() {
+            $('input[name=neck_1]').val($(this).val()); $('input[name=neck_3]').val($(this).val()); $('input[name=neck_5]').val($(this).val());
+        });
+        $('input[name=neck_5]').bind("paste keyup", function() {
+            $('input[name=neck_1]').val($(this).val()); $('input[name=neck_3]').val($(this).val()); $('input[name=neck_4]').val($(this).val());
+        });
+
+        $('input[name=chest_1]').bind("paste keyup", function() {
+            $('input[name=chest_3]').val($(this).val()); $('input[name=chest_4]').val($(this).val()); $('input[name=chest_5]').val($(this).val());
+        });
+        $('input[name=chest_3]').bind("paste keyup", function() {
+            $('input[name=chest_1]').val($(this).val()); $('input[name=chest_4]').val($(this).val()); $('input[name=chest_5]').val($(this).val());
+        });
+        $('input[name=chest_4]').bind("paste keyup", function() {
+            $('input[name=chest_1]').val($(this).val()); $('input[name=chest_3]').val($(this).val()); $('input[name=chest_5]').val($(this).val());
+        });
+        $('input[name=chest_5]').bind("paste keyup", function() {
+            $('input[name=chest_1]').val($(this).val()); $('input[name=chest_3]').val($(this).val()); $('input[name=chest_4]').val($(this).val());
+        });
+
+        $('input[name=stomach_1]').bind("paste keyup", function() {
+            $('input[name=stomach_3]').val($(this).val()); $('input[name=stomach_4]').val($(this).val()); $('input[name=stomach_5]').val($(this).val());
+        });
+        $('input[name=stomach_3]').bind("paste keyup", function() {
+            $('input[name=stomach_1]').val($(this).val()); $('input[name=stomach_4]').val($(this).val()); $('input[name=stomach_5]').val($(this).val());
+        });
+        $('input[name=stomach_4]').bind("paste keyup", function() {
+            $('input[name=stomach_1]').val($(this).val()); $('input[name=stomach_3]').val($(this).val()); $('input[name=stomach_5]').val($(this).val());
+        });
+        $('input[name=stomach_5]').bind("paste keyup", function() {
+            $('input[name=stomach_1]').val($(this).val()); $('input[name=stomach_3]').val($(this).val()); $('input[name=stomach_4]').val($(this).val());
+        });
+
+        $('input[name=nape_to_waist_1]').bind("paste keyup", function() {
+            $('input[name=nape_to_waist_3]').val($(this).val()); $('input[name=nape_to_waist_4]').val($(this).val()); $('input[name=nape_to_waist_5]').val($(this).val());
+        });
+        $('input[name=nape_to_waist_3]').bind("paste keyup", function() {
+            $('input[name=nape_to_waist_1]').val($(this).val()); $('input[name=nape_to_waist_4]').val($(this).val()); $('input[name=nape_to_waist_5]').val($(this).val());
+        });
+        $('input[name=nape_to_waist_4]').bind("paste keyup", function() {
+            $('input[name=nape_to_waist_1]').val($(this).val()); $('input[name=nape_to_waist_3]').val($(this).val()); $('input[name=nape_to_waist_5]').val($(this).val());
+        });
+        $('input[name=nape_to_waist_5]').bind("paste keyup", function() {
+            $('input[name=nape_to_waist_1]').val($(this).val()); $('input[name=nape_to_waist_3]').val($(this).val()); $('input[name=nape_to_waist_4]').val($(this).val());
+        });
+
+        $('input[name=front_waist_length_1]').bind("paste keyup", function() {
+            $('input[name=front_waist_length_3]').val($(this).val()); $('input[name=front_waist_length_4]').val($(this).val()); $('input[name=front_waist_length_5]').val($(this).val());
+        });
+        $('input[name=front_waist_length_3]').bind("paste keyup", function() {
+            $('input[name=front_waist_length_1]').val($(this).val()); $('input[name=front_waist_length_4]').val($(this).val()); $('input[name=front_waist_length_5]').val($(this).val());
+        });
+        $('input[name=front_waist_length_4]').bind("paste keyup", function() {
+            $('input[name=front_waist_length_1]').val($(this).val()); $('input[name=front_waist_length_3]').val($(this).val()); $('input[name=front_waist_length_5]').val($(this).val());
+        });
+        $('input[name=front_waist_length_5]').bind("paste keyup", function() {
+            $('input[name=front_waist_length_1]').val($(this).val()); $('input[name=front_waist_length_3]').val($(this).val()); $('input[name=front_waist_length_4]').val($(this).val());
+        });
+
+        $('input[name=back_waist_height_2]').bind("paste keyup", function() {
+            $('input[name=back_waist_height_4]').val($(this).val());
+        });
+        $('input[name=back_waist_height_4]').bind("paste keyup", function() {
+            $('input[name=back_waist_height_2]').val($(this).val());
+        });
+
+        $('input[name=front_waist_height_2]').bind("paste keyup", function() {
+            $('input[name=front_waist_height_4]').val($(this).val());
+        });
+        $('input[name=front_waist_height_4]').bind("paste keyup", function() {
+            $('input[name=front_waist_height_2]').val($(this).val());
+        });
+
+        $('input[name=biceps_1]').bind("paste keyup", function() {
+            $('input[name=biceps_3]').val($(this).val()); $('input[name=biceps_4]').val($(this).val()); $('input[name=biceps_5]').val($(this).val());
+        });
+        $('input[name=biceps_3]').bind("paste keyup", function() {
+            $('input[name=biceps_1]').val($(this).val()); $('input[name=biceps_4]').val($(this).val()); $('input[name=biceps_5]').val($(this).val());
+        });
+        $('input[name=biceps_4]').bind("paste keyup", function() {
+            $('input[name=biceps_1]').val($(this).val()); $('input[name=biceps_3]').val($(this).val()); $('input[name=biceps_5]').val($(this).val());
+        });
+        $('input[name=biceps_5]').bind("paste keyup", function() {
+            $('input[name=biceps_1]').val($(this).val()); $('input[name=biceps_3]').val($(this).val()); $('input[name=biceps_4]').val($(this).val());
+        });
+
+        $('input[name=back_shoulder_1]').bind("paste keyup", function() {
+            $('input[name=back_shoulder_3]').val($(this).val()); $('input[name=back_shoulder_4]').val($(this).val()); $('input[name=back_shoulder_5]').val($(this).val());
+        });
+        $('input[name=back_shoulder_3]').bind("paste keyup", function() {
+            $('input[name=back_shoulder_1]').val($(this).val()); $('input[name=back_shoulder_4]').val($(this).val()); $('input[name=back_shoulder_5]').val($(this).val());
+        });
+        $('input[name=back_shoulder_4]').bind("paste keyup", function() {
+            $('input[name=back_shoulder_1]').val($(this).val()); $('input[name=back_shoulder_3]').val($(this).val()); $('input[name=back_shoulder_5]').val($(this).val());
+        });
+        $('input[name=back_shoulder_5]').bind("paste keyup", function() {
+            $('input[name=back_shoulder_1]').val($(this).val()); $('input[name=back_shoulder_3]').val($(this).val()); $('input[name=back_shoulder_4]').val($(this).val());
+        });
+
+        $('input[name=u_rise_2]').bind("paste keyup", function() {
+            $('input[name=u_rise_auto_2]').val($(this).val()-2);
+        });
+        $('input[name=u_rise_auto_2]').bind("paste keyup", function() {
+            $('input[name=u_rise_2]').val($(this).val()+2);
+        });
+
+    });
+</script>
