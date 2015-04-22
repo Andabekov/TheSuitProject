@@ -203,7 +203,7 @@ class OrderForm extends Form
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'ordersubmit',
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-default'
             ),
         ));
     }

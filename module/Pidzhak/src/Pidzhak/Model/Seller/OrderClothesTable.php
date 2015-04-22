@@ -63,6 +63,16 @@ class OrderClothesTable
         return $resultSet->count();
     }
 
+    public function getCountOfClothesByOrder($order_id)
+    {
+        $resultSet = $this->tableGateway->select(function(Select $select) use ($order_id){
+            $where = new  Where();
+            $where->equalTo('order_id', $order_id);
+            $select->where($where);
+        });
+        return $resultSet->count();
+    }
+
     public function getOrderClothes($id)
     {
         $id = (int)$id;

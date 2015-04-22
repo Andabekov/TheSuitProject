@@ -119,11 +119,12 @@ class OrderController extends AbstractActionController
         $form = new OrderForm($dbAdapter);
         $form->get('customer_id')->setValue($customer_id);
         $form->get('status')->setValue(1);
-        $form->get('ordersubmit')->setValue('Добавить');
+        $form->get('ordersubmit')->setValue('Сохранить заказ');
 
 
         $cform = new OrderClothesForm($dbAdapter);
-        $cform->get('orderclothessubmit')->setValue('Добавить');
+        $cform->get('orderclothessubmit')->setValue('Сохранить изделие');
+        $cform->get('orderclothescancel')->setValue('Отменить');
 
 
         $request = $this->getRequest();
@@ -176,7 +177,15 @@ class OrderController extends AbstractActionController
             }
 
             if (!empty($request->getPost()['sendordersubmit'])) {
-                return $this->redirect()->toRoute('order');
+                if ($order_form_id){
+                    $clothes_count = $this->getOrderClothesTable()->getCountOfClothesByOrder($order_form_id);
+                    if($clothes_count<=0)
+                        $order_error = "Нельзя отправить закас с пустыми изделиями";
+                    else
+                        return $this->redirect()->toRoute('order');
+                }else {
+                    $order_error = "Заполните заказ для добавления изделия";
+                }
             }
 
             if($order_form_id){

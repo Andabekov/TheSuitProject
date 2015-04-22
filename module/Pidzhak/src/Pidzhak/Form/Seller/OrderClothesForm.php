@@ -273,7 +273,17 @@ class OrderClothesForm extends Form
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'orderclothessubmit',
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-default'
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'orderclothescancel',
+            'type' => 'Submit',
+            'attributes' => array(
+                'value' => 'Go',
+                'id' => 'orderclothescancel',
+                'class' => 'btn btn-default'
             ),
         ));
     }
