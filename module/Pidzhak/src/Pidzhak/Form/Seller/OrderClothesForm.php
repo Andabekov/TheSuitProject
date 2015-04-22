@@ -15,7 +15,7 @@ class OrderClothesForm extends Form
         parent::__construct('orderclothes');
 
         $this->add(array(
-            'name' => 'id',
+            'name' => 'c_id',
             'type' => 'Hidden',
         ));
 

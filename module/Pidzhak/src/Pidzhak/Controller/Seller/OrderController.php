@@ -121,8 +121,6 @@ class OrderController extends AbstractActionController
         $form = new OrderForm($dbAdapter);
         $form->get('customer_id')->setValue($customer_id);
         $form->get('status')->setValue(1);
-        $form->get('ordersubmit')->setValue('Сохранить заказ');
-
 
         $cform = new OrderClothesForm($dbAdapter);
         $cform->get('orderclothessubmit')->setValue('Сохранить изделие');
@@ -140,57 +138,51 @@ class OrderController extends AbstractActionController
             $cform->setData($request->getPost());
 
             $order_form_id = $request->getPost()['order_form_id'];
+
             $orderclothesform = 0;
 
-            if (!empty($request->getPost()['ordersubmit'])) {
-                if ($form->isValid()) {
-                    $order->exchangeArray($form->getData());
-                    $this->getOrderTable()->saveOrder($order);
-                    $order_form_id = $this->getOrderTable()->insertedOrder();
-                } else {
-                    $form->highlightErrorElements();
-                }
-            }
-
-
             if (!empty($request->getPost()['orderclothessubmit'])) {
-                if ($order_form_id) {
-                    if ($cform->isValid()) {
-                        //$cform->get('order_id')->setValue($order_form_id);
+                $orderclothesform = 1;
+                $form_valid = $form->isValid();
+                $cform_valid= $cform->isValid();
+                if (!$form_valid || !$cform_valid) {
+                    $form->highlightErrorElements();
+                    $cform->highlightErrorElements();
+                } else {
+                    if (!$order_form_id) {
+                        $order->exchangeArray($form->getData());
+                        $this->getOrderTable()->saveOrder($order);
+                        $order_form_id = $this->getOrderTable()->insertedOrder();
+                    }
+                    if ($order_form_id) {
                         $orderclothes->exchangeArray($cform->getData());
                         $orderclothes->order_id = $order_form_id;
-
                         $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
-                    } else {
-                        $cform->highlightErrorElements();
-                        $orderclothesform = 1;
                     }
-                } else {
-                    $order_error = "Заполните заказ для добавления изделия";
+                    $orderclothesform = 0;
                 }
             }
 
             if (!empty($request->getPost()['addclothessubmit'])) {
-                if ($order_form_id){
-                    $orderclothesform = 1;
-                }else {
-                    $order_error = "Заполните заказ для добавления изделия";
+                if(!$form->isValid()){
+                    $form->highlightErrorElements();
                 }
+                $orderclothesform = 1;
             }
 
             if (!empty($request->getPost()['sendordersubmit'])) {
-                if ($order_form_id){
+                if ($order_form_id) {
                     $clothes_count = $this->getOrderClothesTable()->getCountOfClothesByOrder($order_form_id);
-                    if($clothes_count<=0)
+                    if ($clothes_count <= 0)
                         $order_error = "Нельзя отправить закас с пустыми изделиями";
                     else
                         return $this->redirect()->toRoute('order');
-                }else {
-                    $order_error = "Заполните заказ для добавления изделия";
+                } else {
+                    $order_error = "Заполните заказ";
                 }
             }
 
-            if($order_form_id){
+            if ($order_form_id) {
                 $order = $this->getOrderTable()->getOrder($order_form_id);
                 $form->bind($order);
             }

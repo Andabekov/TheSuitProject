@@ -40,11 +40,9 @@ class OrderClothesTable
             $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
 
 
-        if ($order_id) {
-            $where = new  Where();
-            $where->equalTo('order_id', $order_id);
-            $select->where($where);
-        }
+        $where = new  Where();
+        $where->equalTo('order_id', $order_id);
+        $select->where($where);
 
         //you can check your query by echo-ing :
         // echo $select->getSqlString();
@@ -65,7 +63,7 @@ class OrderClothesTable
 
     public function getCountOfClothesByOrder($order_id)
     {
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($order_id){
+        $resultSet = $this->tableGateway->select(function (Select $select) use ($order_id) {
             $where = new  Where();
             $where->equalTo('order_id', $order_id);
             $select->where($where);
