@@ -32,13 +32,19 @@ class OrderClothesController extends AbstractActionController
                 $orderclothes->exchangeArray($form->getData());
                 $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
 
-                return $this->redirect()->toRoute('orderclothes');
+                //return $this->redirect()->toRoute('orderclothes');
             }else {
                 $form->highlightErrorElements();
                 // other error logic
             }
         }
-        return array('form' => $form);
+
+        return $this->redirect()->toRoute('order'
+            , array(
+                'action' => 'thirdstep',
+                'id' => 6
+            ));
+        //return array('form' => $form);
     }
 
     public function editAction()
@@ -109,10 +115,10 @@ class OrderClothesController extends AbstractActionController
     /*Inversion of Control*/
     public function getOrderClothesTable()
     {
-        if (!$this->orderTable) {
+        if (!$this->orderclothesTable) {
             $sm = $this->getServiceLocator();
-            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
         }
-        return $this->orderTable;
+        return $this->orderclothesTable;
     }
 }

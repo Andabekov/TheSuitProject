@@ -1,6 +1,9 @@
 <?php
 namespace Pidzhak\Model\Seller;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -19,29 +22,60 @@ class OrderClothesTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
-            if($rowCount<0)
-                $select->offset(0);
-            else
-                $select->limit($rowCount)->offset($offset);
-            $select->order($orderby);
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $order_id)
+    {
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->join('clothers', 'orderclothes.product_id = clothers.id')
+            ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
+            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
+        if ($rowCount < 0)
+            $select->offset(0);
+        else
+            $select->limit($rowCount)->offset($offset);
+        $select->order($orderby);
 
-            /*if($searchPhrase)
-                $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
-        });
+        /*if($searchPhrase)
+            $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
+
+
+        if ($order_id) {
+            $where = new  Where();
+            $where->equalTo('order_id', $order_id);
+            $select->where($where);
+        }
+
+        //you can check your query by echo-ing :
+        // echo $select->getSqlString();
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
 
         return $resultSet;
     }
 
-    public function getCount(){
+    public function getCount()
+    {
         $resultSet = $this->tableGateway->select();
+        return $resultSet->count();
+    }
+
+    public function getCountOfClothesByOrder($order_id)
+    {
+        $resultSet = $this->tableGateway->select(function(Select $select) use ($order_id){
+            $where = new  Where();
+            $where->equalTo('order_id', $order_id);
+            $select->where($where);
+        });
         return $resultSet->count();
     }
 
     public function getOrderClothes($id)
     {
-        $id  = (int) $id;
+        $id = (int)$id;
         $rowset = $this->tableGateway->select(array('id' => $id));
         $row = $rowset->current();
         if (!$row) {
@@ -54,10 +88,13 @@ class OrderClothesTable
     {
         $data = array(
             'order_id' => $orderclothes->order_id,
-            'cycle_number' => $orderclothes->cycle_number,
-            'product_name' => $orderclothes->product_name,
-            'textile_class' => $orderclothes->textile_class,
-            'textile_number' => $orderclothes->textile_number,
+            'cycle_id' => $orderclothes->cycle_id,
+            'preferred_date' => $orderclothes->preferred_date,
+            'product_id' => $orderclothes->product_id,
+            'pricelistnum' => $orderclothes->pricelistnum,
+            'actual_amount' => $orderclothes->actual_amount,
+            'paytype' => $orderclothes->paytype,
+            'textile_id' => $orderclothes->textile_id,
             'typeof_measure' => $orderclothes->typeof_measure,
             'label_brand' => $orderclothes->label_brand,
             'style_number' => $orderclothes->style_number,
@@ -72,20 +109,24 @@ class OrderClothesTable
             'seller_comment' => $orderclothes->seller_comment,
         );
 
-        $id = (int) $orderclothes->id;
+
+        $id = (int)$orderclothes->id;
         if ($id == 0) {
-            $this->tableGateway->insert($data);
+            $retval = $this->tableGateway->insert($data);
         } else {
             if ($this->getOrderClothes($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $retval = $this->tableGateway->update($data, array('id' => $id));
             } else {
                 throw new \Exception('OrderClothes id does not exist');
             }
         }
+
     }
 
     public function deleteOrderClothes($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('id' => (int)$id));
     }
+
+
 }

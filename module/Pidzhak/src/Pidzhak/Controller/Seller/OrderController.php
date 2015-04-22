@@ -1,15 +1,18 @@
 <?php
 namespace Pidzhak\Controller\Seller;
 
+use Pidzhak\Model\Seller\OrderClothes;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\Seller\Order;
 use Pidzhak\Form\Seller\OrderForm;
+use Pidzhak\Form\Seller\OrderClothesForm;
 
 class OrderController extends AbstractActionController
 {
     protected $orderTable;
     protected $customerTable;
+    protected $orderclothesTable;
 
     public function indexAction()
     {
@@ -34,7 +37,7 @@ class OrderController extends AbstractActionController
                 $this->getOrderTable()->saveOrder($order);
 
                 return $this->redirect()->toRoute('order');
-            }else {
+            } else {
                 $form->highlightErrorElements();
                 // other error logic
             }
@@ -45,7 +48,7 @@ class OrderController extends AbstractActionController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('order', array(
                 'action' => 'add'
@@ -54,14 +57,13 @@ class OrderController extends AbstractActionController
 
         try {
             $order = $this->getOrderTable()->getOrder($id);
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             return $this->redirect()->toRoute('order', array(
                 'action' => 'index'
             ));
         }
 
-        $form  = new OrderForm();
+        $form = new OrderForm();
         $form->bind($order);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -85,7 +87,7 @@ class OrderController extends AbstractActionController
 
     public function deleteAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('order');
         }
@@ -95,7 +97,7 @@ class OrderController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
+                $id = (int)$request->getPost('id');
                 $this->getOrderTable()->deleteOrder($id);
             }
 
@@ -103,7 +105,7 @@ class OrderController extends AbstractActionController
         }
 
         return array(
-            'id'    => $id,
+            'id' => $id,
             'order' => $this->getOrderTable()->getOrder($id)
         );
     }
@@ -111,12 +113,18 @@ class OrderController extends AbstractActionController
 
     public function thirdstepAction()
     {
-        $customer_id = (int) $this->params()->fromRoute('id', 0);
+        $customer_id = (int)$this->params()->fromRoute('id', 0);
 
-
-        $form = new OrderForm();
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new OrderForm($dbAdapter);
         $form->get('customer_id')->setValue($customer_id);
-        $form->get('submit')->setValue('Add');
+        $form->get('status')->setValue(1);
+        $form->get('ordersubmit')->setValue('Сохранить заказ');
+
+
+        $cform = new OrderClothesForm($dbAdapter);
+        $cform->get('orderclothessubmit')->setValue('Сохранить изделие');
+        $cform->get('orderclothescancel')->setValue('Отменить');
 
 
         $request = $this->getRequest();
@@ -125,23 +133,84 @@ class OrderController extends AbstractActionController
             $form->setInputFilter($order->getInputFilter());
             $form->setData($request->getPost());
 
-            if ($form->isValid()) {
-                $order->exchangeArray($form->getData());
-                $this->getOrderTable()->saveOrder($order);
+            $orderclothes = new OrderClothes();
+            $cform->setInputFilter($orderclothes->getInputFilter());
+            $cform->setData($request->getPost());
 
-                return $this->redirect()->toRoute('order');
-            }else {
-                $form->highlightErrorElements();
-                // other error logic
+            $order_form_id = $request->getPost()['order_form_id'];
+            $orderclothesform = 0;
+
+            if (!empty($request->getPost()['ordersubmit'])) {
+                if ($form->isValid()) {
+                    $order->exchangeArray($form->getData());
+                    $this->getOrderTable()->saveOrder($order);
+                    $order_form_id = $this->getOrderTable()->insertedOrder();
+                } else {
+                    $form->highlightErrorElements();
+                }
             }
-        }else{
+
+
+            if (!empty($request->getPost()['orderclothessubmit'])) {
+                if ($order_form_id) {
+                    if ($cform->isValid()) {
+                        //$cform->get('order_id')->setValue($order_form_id);
+                        $orderclothes->exchangeArray($cform->getData());
+                        $orderclothes->order_id = $order_form_id;
+
+                        $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+                    } else {
+                        $cform->highlightErrorElements();
+                        $orderclothesform = 1;
+                    }
+                } else {
+                    $order_error = "Заполните заказ для добавления изделия";
+                }
+            }
+
+            if (!empty($request->getPost()['addclothessubmit'])) {
+                if ($order_form_id){
+                    $orderclothesform = 1;
+                }else {
+                    $order_error = "Заполните заказ для добавления изделия";
+                }
+            }
+
+            if (!empty($request->getPost()['sendordersubmit'])) {
+                if ($order_form_id){
+                    $clothes_count = $this->getOrderClothesTable()->getCountOfClothesByOrder($order_form_id);
+                    if($clothes_count<=0)
+                        $order_error = "Нельзя отправить закас с пустыми изделиями";
+                    else
+                        return $this->redirect()->toRoute('order');
+                }else {
+                    $order_error = "Заполните заказ для добавления изделия";
+                }
+            }
+
+            if($order_form_id){
+                $order = $this->getOrderTable()->getOrder($order_form_id);
+                $form->bind($order);
+            }
+        }
+
+
+        if ($customer_id == 0) {
+            $customer_id = $form->get('customer_id')->getValue();
+        }
+
+        if ($customer_id != 0) {
             $customer = $this->getCustomerTable()->getCustomer($customer_id);
         }
 
         $view = new ViewModel(array(
+                'order_form_id' => $order_form_id,
                 'id' => $customer_id,
                 'form' => $form,
+                'cform' => $cform,
                 'customer' => $customer,
+                'order_error' => $order_error,
+                'orderclothesform' => $orderclothesform,
             )
         );
         $view->setTemplate('pidzhak/order/third.phtml');
@@ -166,5 +235,15 @@ class OrderController extends AbstractActionController
             $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
         }
         return $this->customerTable;
+    }
+
+    /*Inversion of Control*/
+    public function getOrderClothesTable()
+    {
+        if (!$this->orderclothesTable) {
+            $sm = $this->getServiceLocator();
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+        }
+        return $this->orderclothesTable;
     }
 }

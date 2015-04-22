@@ -9,10 +9,14 @@ class OrderClothes  implements InputFilterAwareInterface
 {
     public $id;
     public $order_id;
-    public $cycle_number;
-    public $product_name;
-    public $textile_class;
-    public $textile_number;
+    public $product_id;
+    public $cycle_id;
+    public $preferred_date;
+    public $textile_id;
+    //public $textile_class;
+    public $pricelistnum;
+    public $actual_amount;
+    public $paytype;
     public $typeof_measure;
     public $label_brand;
     public $style_number;
@@ -27,14 +31,21 @@ class OrderClothes  implements InputFilterAwareInterface
     public $seller_comment;
 
 
+
+
+
     public function exchangeArray($data)
     {
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
         $this->order_id = (!empty($data['order_id'])) ? $data['order_id'] : null;
-        $this->cycle_number = (!empty($data['cycle_number'])) ? $data['cycle_number'] : null;
-        $this->product_name = (!empty($data['product_name'])) ? $data['product_name'] : null;
-        $this->textile_class = (!empty($data['textile_class'])) ? $data['textile_class'] : null;
-        $this->textile_number = (!empty($data['textile_number'])) ? $data['textile_number'] : null;
+        $this->cycle_id = (!empty($data['cycle_id'])) ? $data['cycle_id'] : null;
+        $this->preferred_date = (!empty($data['preferred_date'])) ? $data['preferred_date'] : null;
+        $this->product_id = (!empty($data['product_id'])) ? $data['product_id'] : null;
+        //$this->textile_class = (!empty($data['textile_class'])) ? $data['textile_class'] : null;
+        $this->pricelistnum = (!empty($data['pricelistnum'])) ? $data['pricelistnum'] : null;
+        $this->actual_amount = (!empty($data['actual_amount'])) ? $data['actual_amount'] : null;
+        $this->paytype = (!empty($data['paytype'])) ? $data['paytype'] : null;
+        $this->textile_id = (!empty($data['textile_id'])) ? $data['textile_id'] : null;
         $this->typeof_measure = (!empty($data['typeof_measure'])) ? $data['typeof_measure'] : null;
         $this->label_brand = (!empty($data['label_brand'])) ? $data['label_brand'] : null;
         $this->style_number = (!empty($data['style_number'])) ? $data['style_number'] : null;

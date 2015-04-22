@@ -1,13 +1,18 @@
 <?php
 namespace Pidzhak\Form\Seller;
 
+use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
 use  Zend\Form\Element\Hidden;
 
 class OrderForm extends Form
 {
-    public function __construct($name = null)
+    protected $adapter;
+
+    public function __construct(AdapterInterface $dbAdapter = null, $name = null)
     {
+        $this->adapter =$dbAdapter;
+
         parent::__construct('order');
 
         $this->add(array(
@@ -17,6 +22,11 @@ class OrderForm extends Form
 
         $this->add(array(
             'name' => 'customer_id',
+            'type' => 'Hidden',
+        ));
+
+        $this->add(array(
+            'name' => 'status',
             'type' => 'Hidden',
         ));
 
@@ -33,50 +43,122 @@ class OrderForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'pricelistnum',
+            'name' => 'number_of_costumes',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
-                'label' => '# Прайс-листа',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
-        ));
-        $this->add(array(
-            'name' => 'payamount',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Сумма оплаты',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
-        ));
-        $this->add(array(
-            'name' => 'paytype',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Способ оплаты',
+                'label' => 'Количество костюмов',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
         $this->add(array(
-            'name' => 'cashlocation',
+            'name' => 'number_of_shirts',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
-                'label' => 'Местоположение денежных средств',
+                'label' => 'Количество сорочек',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
+        $this->add(array(
+            'name' => 'number_of_vests',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество жилеток',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'number_of_coats',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество пальто',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'number_of_trousers',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество брюк',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'number_of_shirts',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество сорочек',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'number_of_jacket',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество пиджаков',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'number_of_butterflies',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество бабочек',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'number_of_sash',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Количество кушаков',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
         $this->add(array(
             'name' => 'cityofsale',
             'type' => 'Text',
@@ -99,26 +181,29 @@ class OrderForm extends Form
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
         $this->add(array(
-            'name' => 'seller',
-            'type' => 'Text',
+            'name' => 'seller_id',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Продавец',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите продовца',
+                'value_options' => $this->getSellersForSelect(),
+            )
         ));
 
 
         $this->add(array(
-            'name' => 'submit',
+            'name' => 'ordersubmit',
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Go',
-                'id' => 'submitbutton',
-                'class' => 'btn btn-primary'
+                'id' => 'ordersubmit',
+                'class' => 'btn btn-default'
             ),
         ));
     }
@@ -133,5 +218,21 @@ class OrderForm extends Form
                     'style' => 'color:#a94442'));
             }
         }
+    }
+
+    public function getSellersForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT  id, name,surname FROM userstable WHERE access_type_id = 1 ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['name'].$res['surname'];
+        }
+        return $selectData;
     }
 }

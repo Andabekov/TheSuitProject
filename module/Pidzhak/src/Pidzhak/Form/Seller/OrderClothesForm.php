@@ -1,13 +1,17 @@
 <?php
 namespace Pidzhak\Form\Seller;
 
+use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
-use  Zend\Form\Element\Hidden;
 
 class OrderClothesForm extends Form
 {
-    public function __construct($name = null)
+    protected $adapter;
+
+    public function __construct(AdapterInterface $dbAdapter = null, $name = null)
     {
+        $this->adapter =$dbAdapter;
+
         parent::__construct('orderclothes');
 
         $this->add(array(
@@ -21,33 +25,83 @@ class OrderClothesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'cycle_number',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Номер цикла',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
+            'name' => 'pricelistnum',
+            'type' => 'Hidden',
         ));
 
+
         $this->add(array(
-            'name' => 'product_name',
-            'type' => 'Text',
+            'name' => 'product_id',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Наименование изделия',
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите изделия',
+                'value_options' => $this->getProductsForSelect(),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'cycle_id',
+            'type' => 'Select',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Номер цикла',
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите цикл',
+                'value_options' => $this->getCycleForSelect(),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'cycle_date',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Дата прибытие по циклу',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'preferred_date',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Предпочтительная дата выдачи',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'textile_id',
+            'type' => 'Select',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Номер ткани',
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите материал',
+                'value_options' => $this->getTextileForSelect(),
             ),
         ));
         $this->add(array(
             'name' => 'textile_class',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Класс Ткани',
@@ -55,13 +109,25 @@ class OrderClothesForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'textile_number',
+            'name' => 'actual_amount',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Фактическая сумма оплаты в тенге*',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'paytype',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Номер ткани',
+                'label' => 'Способ оплаты',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -77,6 +143,7 @@ class OrderClothesForm extends Form
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
         $this->add(array(
             'name' => 'label_brand',
             'type' => 'Text',
@@ -201,12 +268,22 @@ class OrderClothesForm extends Form
 
 
         $this->add(array(
-            'name' => 'submit',
+            'name' => 'orderclothessubmit',
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Go',
-                'id' => 'submitbutton',
-                'class' => 'btn btn-primary'
+                'id' => 'orderclothessubmit',
+                'class' => 'btn btn-default'
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'orderclothescancel',
+            'type' => 'Submit',
+            'attributes' => array(
+                'value' => 'Go',
+                'id' => 'orderclothescancel',
+                'class' => 'btn btn-default'
             ),
         ));
     }
@@ -221,5 +298,54 @@ class OrderClothesForm extends Form
                     'style' => 'color:#a94442'));
             }
         }
+    }
+
+
+    public function getProductsForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id, clother FROM clothers ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['clother'];
+        }
+        return $selectData;
+    }
+
+    public function getCycleForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id FROM cyclestable ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['id'];
+        }
+        return $selectData;
+    }
+
+    public function getTextileForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id FROM fabricstable ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['id'];
+        }
+        return $selectData;
     }
 }
