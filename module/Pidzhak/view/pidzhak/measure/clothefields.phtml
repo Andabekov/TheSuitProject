@@ -141,23 +141,23 @@
 
 <script>
     $(document).ready(function(){
-        $('input[name=c_growth_1]').bind("paste keyup", function() {
+        $('input[name=c_growth_1]').bind("change paste keyup", function() {
             $('input[name=c_growth_2]').val($(this).val()); $('input[name=c_growth_3]').val($(this).val());
         });
-        $('input[name=c_growth_2]').bind("paste keyup", function() {
+        $('input[name=c_growth_2]').bind("change paste keyup", function() {
             $('input[name=c_growth_1]').val($(this).val()); $('input[name=c_growth_3]').val($(this).val());
         });
-        $('input[name=c_growth_3]').bind("paste keyup", function() {
+        $('input[name=c_growth_3]').bind("change paste keyup", function() {
             $('input[name=c_growth_1]').val($(this).val()); $('input[name=c_growth_2]').val($(this).val());
         });
 
-        $('input[name=c_weight_1]').bind("paste keyup", function() {
+        $('input[name=c_weight_1]').bind("change paste keyup", function() {
             $('input[name=c_weight_2]').val($(this).val()); $('input[name=c_weight_3]').val($(this).val());
         });
-        $('input[name=c_weight_2]').bind("paste keyup", function() {
+        $('input[name=c_weight_2]').bind("change paste keyup", function() {
             $('input[name=c_weight_1]').val($(this).val()); $('input[name=c_weight_3]').val($(this).val());
         });
-        $('input[name=c_weight_3]').bind("paste keyup", function() {
+        $('input[name=c_weight_3]').bind("change paste keyup", function() {
             $('input[name=c_weight_1]').val($(this).val()); $('input[name=c_weight_2]').val($(this).val());
         });
     });

@@ -37,6 +37,14 @@ echo $this->formHidden($form->get('id'));
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
     <div class="form-group">
+        <?php $element = $form->get('price'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
         <?php $element = $form->get('start_date'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">

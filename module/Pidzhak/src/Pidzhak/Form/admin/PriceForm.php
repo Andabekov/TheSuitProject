@@ -49,7 +49,7 @@ class PriceForm extends Form
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Прайс/цена',
+                'label' => 'Прайс',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));

@@ -11,4 +11,4 @@ CREATE TABLE `ordertable` (
   KEY `ordertable_seller_id_ind` (`seller_id`),
   CONSTRAINT `ordertable_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT `userstable_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `userstable` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
