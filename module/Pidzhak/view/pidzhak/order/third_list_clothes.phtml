@@ -34,7 +34,8 @@
                 post: function () {
                     /* To accumulate custom parameter with the request object */
                     return {
-                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: <?= $order_form_id ?>
                     };
                 },
                 url: "/restorderclothes",
@@ -46,7 +47,7 @@
                     }
                 },
                 templates: {
-                    header: "<div id=\"{{ctx.id}}\" class=\"{{css.header}}\"><div class=\"row\"><div class=\"col-sm-12 actionBar\"><input type='submit' action='<?= $this->url('order', array('action' => 'thirdstep', 'id' => $this->id,)) ?>' class='btn btn-default addClothes' value='Добавить изделия'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p class=\"{{css.search}}\"></p><p class=\"{{css.actions}}\"></p></div></div></div>"
+                    header: "<div id=\"{{ctx.id}}\" class=\"{{css.header}}\"><div class=\"row\"><div class=\"col-sm-12 actionBar\"><p class=\"{{css.search}}\"></p><p class=\"{{css.actions}}\"></p></div></div></div>"
                 }
             }).on("loaded.rs.jquery.bootgrid", function () {
                 /*$(".addClothes").click(function () {

@@ -3,6 +3,7 @@ namespace Pidzhak\Model\Seller;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -21,14 +22,15 @@ class OrderClothesTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $order_id)
+    {
         $sql = new Sql($this->tableGateway->adapter);
         $select = $sql->select();
         $select->from($this->tableGateway->table)
             ->join('clothers', 'orderclothes.product_id = clothers.id')
             ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
             ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
-        if($rowCount<0)
+        if ($rowCount < 0)
             $select->offset(0);
         else
             $select->limit($rowCount)->offset($offset);
@@ -37,9 +39,12 @@ class OrderClothesTable
         /*if($searchPhrase)
             $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
 
-     /*   $where = new  Where();
-        $where->equalTo('status', 1) ;
-        $select->where($where);*/
+
+        if ($order_id) {
+            $where = new  Where();
+            $where->equalTo('order_id', $order_id);
+            $select->where($where);
+        }
 
         //you can check your query by echo-ing :
         // echo $select->getSqlString();
@@ -52,14 +57,15 @@ class OrderClothesTable
         return $resultSet;
     }
 
-    public function getCount(){
+    public function getCount()
+    {
         $resultSet = $this->tableGateway->select();
         return $resultSet->count();
     }
 
     public function getOrderClothes($id)
     {
-        $id  = (int) $id;
+        $id = (int)$id;
         $rowset = $this->tableGateway->select(array('id' => $id));
         $row = $rowset->current();
         if (!$row) {
@@ -93,20 +99,24 @@ class OrderClothesTable
             'seller_comment' => $orderclothes->seller_comment,
         );
 
-        $id = (int) $orderclothes->id;
+
+        $id = (int)$orderclothes->id;
         if ($id == 0) {
-            $this->tableGateway->insert($data);
+            $retval = $this->tableGateway->insert($data);
         } else {
             if ($this->getOrderClothes($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $retval = $this->tableGateway->update($data, array('id' => $id));
             } else {
                 throw new \Exception('OrderClothes id does not exist');
             }
         }
+
     }
 
     public function deleteOrderClothes($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('id' => (int)$id));
     }
+
+
 }

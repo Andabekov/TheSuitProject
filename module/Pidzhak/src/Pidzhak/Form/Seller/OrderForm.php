@@ -9,7 +9,7 @@ class OrderForm extends Form
 {
     protected $adapter;
 
-    public function __construct(AdapterInterface $dbAdapter, $name = null)
+    public function __construct(AdapterInterface $dbAdapter = null, $name = null)
     {
         $this->adapter =$dbAdapter;
 
@@ -198,11 +198,11 @@ class OrderForm extends Form
 
 
         $this->add(array(
-            'name' => 'submit',
+            'name' => 'ordersubmit',
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Go',
-                'id' => 'submitbutton',
+                'id' => 'ordersubmit',
                 'class' => 'btn btn-primary'
             ),
         ));

@@ -97,4 +97,9 @@ class OrderTable
     {
         $this->tableGateway->delete(array('id' => (int) $id));
     }
+
+    public function insertedOrder()
+    {
+        return $this->tableGateway->lastInsertValue;
+    }
 }

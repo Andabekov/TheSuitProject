@@ -23,8 +23,7 @@ class OrderController extends AbstractActionController
 
     public function addAction()
     {
-        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-        $form = new OrderForm($dbAdapter);
+        $form = new OrderForm();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
@@ -64,8 +63,7 @@ class OrderController extends AbstractActionController
             ));
         }
 
-        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-        $form = new OrderForm($dbAdapter);
+        $form = new OrderForm();
         $form->bind($order);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -117,12 +115,15 @@ class OrderController extends AbstractActionController
     {
         $customer_id = (int)$this->params()->fromRoute('id', 0);
 
-
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $form = new OrderForm($dbAdapter);
         $form->get('customer_id')->setValue($customer_id);
         $form->get('status')->setValue(1);
-        $form->get('submit')->setValue('Add');
+        $form->get('ordersubmit')->setValue('Добавить');
+
+
+        $cform = new OrderClothesForm($dbAdapter);
+        $cform->get('orderclothessubmit')->setValue('Добавить');
 
 
         $request = $this->getRequest();
@@ -131,46 +132,76 @@ class OrderController extends AbstractActionController
             $form->setInputFilter($order->getInputFilter());
             $form->setData($request->getPost());
 
-            if ($form->isValid()) {
-                $order->exchangeArray($form->getData());
-                $this->getOrderTable()->saveOrder($order);
-
-                return $this->redirect()->toRoute('order');
-            } else {
-                $form->highlightErrorElements();
-            }
-        }
-
-        if ($customer_id == 0) {
-            $customer_id = $form->get('customer_id')->getValue();
-        } else {
-            $customer = $this->getCustomerTable()->getCustomer($customer_id);
-        }
-
-
-        $cform = new OrderClothesForm($dbAdapter);
-        $cform->get('submit')->setValue('Добавить');
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
             $orderclothes = new OrderClothes();
             $cform->setInputFilter($orderclothes->getInputFilter());
             $cform->setData($request->getPost());
 
-            if ($cform->isValid()) {
-                $orderclothes->exchangeArray($cform->getData());
-                $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+            $order_form_id = $request->getPost()['order_form_id'];
+            $orderclothesform = 0;
 
-            }else {
-                $form->highlightErrorElements();
+            if (!empty($request->getPost()['ordersubmit'])) {
+                if ($form->isValid()) {
+                    $order->exchangeArray($form->getData());
+                    $this->getOrderTable()->saveOrder($order);
+                    $order_form_id = $this->getOrderTable()->insertedOrder();
+                } else {
+                    $form->highlightErrorElements();
+                }
+            }
+
+
+            if (!empty($request->getPost()['orderclothessubmit'])) {
+                if ($order_form_id) {
+                    if ($cform->isValid()) {
+                        //$cform->get('order_id')->setValue($order_form_id);
+                        $orderclothes->exchangeArray($cform->getData());
+                        $orderclothes->order_id = $order_form_id;
+
+                        $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+                    } else {
+                        $cform->highlightErrorElements();
+                        $orderclothesform = 1;
+                    }
+                } else {
+                    $order_error = "Заполните заказ для добавления изделия";
+                }
+            }
+
+            if (!empty($request->getPost()['addclothessubmit'])) {
+                if ($order_form_id){
+                    $orderclothesform = 1;
+                }else {
+                    $order_error = "Заполните заказ для добавления изделия";
+                }
+            }
+
+            if (!empty($request->getPost()['sendordersubmit'])) {
+                return $this->redirect()->toRoute('order');
+            }
+
+            if($order_form_id){
+                $order = $this->getOrderTable()->getOrder($order_form_id);
+                $form->bind($order);
             }
         }
 
+
+        if ($customer_id == 0) {
+            $customer_id = $form->get('customer_id')->getValue();
+        }
+
+        if ($customer_id != 0) {
+            $customer = $this->getCustomerTable()->getCustomer($customer_id);
+        }
+
         $view = new ViewModel(array(
+                'order_form_id' => $order_form_id,
                 'id' => $customer_id,
                 'form' => $form,
                 'cform' => $cform,
                 'customer' => $customer,
+                'order_error' => $order_error,
+                'orderclothesform' => $orderclothesform,
             )
         );
         $view->setTemplate('pidzhak/order/third.phtml');
