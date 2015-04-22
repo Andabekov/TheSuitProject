@@ -44,11 +44,11 @@ class PriceController extends AbstractActionController
             $form->setInputFilter($price->getInputFilter());
             $form->setData($request->getPost());
 
-            print_r($request);
-            fwrite(STDOUT, "test stop");
+//            print_r($request);
+//            fwrite(STDOUT, "test stop");
 
             if ($form->isValid()) {
-                fwrite(STDOUT, "test stop");
+//                fwrite(STDOUT, "test stop");
                 $price->exchangeArray($form->getData());
                 $this->getPriceTable()->savePrice($price);
 
