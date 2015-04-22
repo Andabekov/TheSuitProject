@@ -1,5 +1,24 @@
 <div class="form-group">
-    <?php $element = $form->get('dateofsale'); ?>
+    <?php $element = $cform->get('product_id'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+<div class="form-group">
+    <?php $element = $cform->get('cycle_id'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+
+<div class="form-group">
+    <?php $element = $cform->get('cycle_date'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formDate($element); ?>
@@ -8,7 +27,26 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_costumes'); ?>
+    <?php $element = $cform->get('preferred_date'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formDate($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+<div class="form-group">
+    <?php $element = $cform->get('textile_id'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+
+<div class="form-group">
+    <?php $element = $cform->get('textile_class'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -17,7 +55,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_shirts'); ?>
+    <?php $element = $cform->get('actual_amount'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -26,7 +64,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_vests'); ?>
+    <?php $element = $cform->get('paytype'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -35,7 +73,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_coats'); ?>
+    <?php $element = $cform->get('typeof_measure'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -44,7 +82,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_trousers'); ?>
+    <?php $element = $cform->get('label_brand'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -53,7 +91,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_shirts'); ?>
+    <?php $element = $cform->get('style_number'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -62,7 +100,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_jacket'); ?>
+    <?php $element = $cform->get('first_monogram_location'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -71,7 +109,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_butterflies'); ?>
+    <?php $element = $cform->get('first_monogram_font'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -80,7 +118,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('number_of_sash'); ?>
+    <?php $element = $cform->get('first_monogram_font_color'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -89,7 +127,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('cityofsale'); ?>
+    <?php $element = $cform->get('first_monogram_caption'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -98,7 +136,7 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('pointofsale'); ?>
+    <?php $element = $cform->get('second_monogram_location'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -107,7 +145,34 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('seller_id'); ?>
+    <?php $element = $cform->get('second_monogram_font'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+<div class="form-group">
+    <?php $element = $cform->get('second_monogram_font_color'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+<div class="form-group">
+    <?php $element = $cform->get('second_monogram_caption'); ?>
+    <?php echo $this->formLabel($element); ?>
+    <div class="col-xs-10">
+        <?php echo $this->formText($element); ?>
+    </div>
+    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+</div>
+
+<div class="form-group">
+    <?php $element = $cform->get('seller_comment'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
@@ -117,6 +182,6 @@
 
 <div class="form-group">
     <div class="col-xs-offset-2 col-xs-10">
-        <?php echo $this->formSubmit($form->get('submit')); ?>
+        <?php echo $this->formSubmit($cform->get('submit')); ?>
     </div>
 </div>

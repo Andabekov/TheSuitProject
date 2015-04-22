@@ -5,6 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\Seller\Order;
 use Pidzhak\Form\Seller\OrderForm;
+use Pidzhak\Form\Seller\OrderClothesForm;
 
 class OrderController extends AbstractActionController
 {
@@ -34,7 +35,7 @@ class OrderController extends AbstractActionController
                 $this->getOrderTable()->saveOrder($order);
 
                 return $this->redirect()->toRoute('order');
-            }else {
+            } else {
                 $form->highlightErrorElements();
                 // other error logic
             }
@@ -45,7 +46,7 @@ class OrderController extends AbstractActionController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('order', array(
                 'action' => 'add'
@@ -54,14 +55,13 @@ class OrderController extends AbstractActionController
 
         try {
             $order = $this->getOrderTable()->getOrder($id);
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             return $this->redirect()->toRoute('order', array(
                 'action' => 'index'
             ));
         }
 
-        $form  = new OrderForm();
+        $form = new OrderForm();
         $form->bind($order);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -85,7 +85,7 @@ class OrderController extends AbstractActionController
 
     public function deleteAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('order');
         }
@@ -95,7 +95,7 @@ class OrderController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
+                $id = (int)$request->getPost('id');
                 $this->getOrderTable()->deleteOrder($id);
             }
 
@@ -103,7 +103,7 @@ class OrderController extends AbstractActionController
         }
 
         return array(
-            'id'    => $id,
+            'id' => $id,
             'order' => $this->getOrderTable()->getOrder($id)
         );
     }
@@ -111,7 +111,7 @@ class OrderController extends AbstractActionController
 
     public function thirdstepAction()
     {
-        $customer_id = (int) $this->params()->fromRoute('id', 0);
+        $customer_id = (int)$this->params()->fromRoute('id', 0);
 
 
         $form = new OrderForm();
@@ -130,17 +130,26 @@ class OrderController extends AbstractActionController
                 $this->getOrderTable()->saveOrder($order);
 
                 return $this->redirect()->toRoute('order');
-            }else {
+            } else {
                 $form->highlightErrorElements();
                 // other error logic
             }
-        }else{
+        }
+
+        if ($customer_id == 0) {
+            $customer_id = $form->get('customer_id')->getValue();
+        } else {
             $customer = $this->getCustomerTable()->getCustomer($customer_id);
         }
+
+
+        $cform = new OrderClothesForm();
+        $cform->get('submit')->setValue('Добавить');
 
         $view = new ViewModel(array(
                 'id' => $customer_id,
                 'form' => $form,
+                'cform' => $cform,
                 'customer' => $customer,
             )
         );

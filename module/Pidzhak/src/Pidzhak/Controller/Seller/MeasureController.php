@@ -293,7 +293,13 @@ class MeasureController extends AbstractActionController
             }else {
                 $form->highlightErrorElements();
             }
-        }else{
+        }
+
+
+
+        if ($customer_id == 0) {
+            $customer_id = $form->get('customer_id_1')->getValue();
+        } else {
             $customer = $this->getCustomerTable()->getCustomer($customer_id);
         }
 

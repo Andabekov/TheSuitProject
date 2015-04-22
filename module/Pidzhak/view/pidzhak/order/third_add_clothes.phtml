@@ -1,0 +1,20 @@
+<?php
+$title = 'Add new order clothes';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$cform->setAttribute('action', $this->url('order', array('action' => 'thirdstep', 'id' => $this->id,)));
+$cform->setAttribute('class', 'form-horizontal');
+$cform->setAttribute('id', 'order-clothes-form');
+$cform->prepare();
+
+echo $this->form()->openTag($cform);
+echo $this->formHidden($cform->get('id'));
+echo $this->formHidden($cform->get('order_id'));
+?>
+<?= $this->render('/pidzhak/order-clothes/fields_cform.phtml') ?>
+<?php
+
+echo $this->form()->closeTag();
+?>

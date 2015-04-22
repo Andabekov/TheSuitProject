@@ -21,7 +21,25 @@ class OrderClothesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'cycle_number',
+            'name' => 'pricelistnum',
+            'type' => 'Hidden',
+        ));
+
+
+        $this->add(array(
+            'name' => 'product_id',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Наименование изделия',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'cycle_id',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -33,13 +51,38 @@ class OrderClothesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'product_name',
+            'name' => 'cycle_date',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'disabled' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Дата прибытие по циклу',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'preferred_date',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Наименование изделия',
+                'label' => 'Предпочтительная дата выдачи',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'textile_id',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Номер ткани',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -47,7 +90,8 @@ class OrderClothesForm extends Form
             'name' => 'textile_class',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Класс Ткани',
@@ -55,13 +99,25 @@ class OrderClothesForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'textile_number',
+            'name' => 'actual_amount',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Фактическая сумма оплаты в тенге*',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'paytype',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Номер ткани',
+                'label' => 'Способ оплаты',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -77,6 +133,7 @@ class OrderClothesForm extends Form
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
         $this->add(array(
             'name' => 'label_brand',
             'type' => 'Text',

@@ -1,0 +1,63 @@
+<table id="orderclothes-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+       data-keep-selection="true">
+    <thead>
+    <tr>
+        <th data-column-id="id" data-type="numeric">ID</th>
+        <th data-column-id="order_id" data-order="desc">order_id</th>
+        <th data-column-id="cycle_number" data-order="desc">cycle_number</th>
+        <th data-column-id="product_name" data-order="desc">product_name</th>
+        <th data-column-id="textile_class" data-order="desc">textile_class</th>
+        <th data-column-id="textile_number" data-order="desc">textile_number</th>
+        <!--<th data-column-id="typeof_measure" data-order="desc">typeof_measure</th>
+        <th data-column-id="label_brand" data-order="desc">label_brand</th>
+        <th data-column-id="style_number" data-order="desc">style_number</th>
+        <th data-column-id="first_monogram_location" data-order="desc">first_monogram_location</th>
+        <th data-column-id="first_monogram_font" data-order="desc">first_monogram_font</th>
+        <th data-column-id="first_monogram_font_color" data-order="desc">first_monogram_font_color</th>
+        <th data-column-id="first_monogram_caption" data-order="desc">first_monogram_caption</th>
+        <th data-column-id="second_monogram_location" data-order="desc">second_monogram_location</th>
+        <th data-column-id="second_monogram_font" data-order="desc">second_monogram_font</th>
+        <th data-column-id="second_monogram_font_color" data-order="desc">second_monogram_font_color</th>
+        <th data-column-id="second_monogram_caption" data-order="desc">second_monogram_caption</th>
+        <th data-column-id="seller_comment" data-order="desc">seller_comment</th>
+        <th data-column-id="link" data-formatter="link" data-sortable="false">Link</th>-->
+    </tr>
+    </thead>
+</table>
+
+
+<script>
+    $(function () {
+        function init() {
+            $("#orderclothes-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                    };
+                },
+                url: "/restorderclothes",
+                formatters: {
+                    "link": function (column, row) {
+                        return "<a href=\"orderclothes/edit/" + row.id + "\">" + column.id + "</a>";
+
+
+                    }
+                },
+                templates: {
+                    header: "<div id=\"{{ctx.id}}\" class=\"{{css.header}}\"><div class=\"row\"><div class=\"col-sm-12 actionBar\"><input type='submit' action='<?= $this->url('order', array('action' => 'thirdstep', 'id' => $this->id,)) ?>' class='btn btn-default addClothes' value='Добавить изделия'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p class=\"{{css.search}}\"></p><p class=\"{{css.actions}}\"></p></div></div></div>"
+                }
+            }).on("loaded.rs.jquery.bootgrid", function () {
+                /*$(".addClothes").click(function () {
+                    $("#myModal").modal('show');
+                });*/
+
+            });
+        }
+
+        init();
+
+    })
+
+</script>
