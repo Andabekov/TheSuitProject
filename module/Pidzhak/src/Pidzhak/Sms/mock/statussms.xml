@@ -1,0 +1,13 @@
+<SMS>
+    <operations>
+        <operation>GETSTATUS</operation>
+    </operations>
+    <authentification>
+        <username></username>
+        <password></password>
+    </authentification>
+    <statistics>
+        <messageid></messageid>
+        <messageid></messageid>
+    </statistics>
+</SMS>
