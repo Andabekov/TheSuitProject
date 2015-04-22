@@ -13,6 +13,7 @@ class Order  implements InputFilterAwareInterface
     public $cityofsale;
     public $pointofsale;
     public $seller_id;
+    public $status;
 
     public function exchangeArray($data)
     {
@@ -22,6 +23,7 @@ class Order  implements InputFilterAwareInterface
         $this->cityofsale = (!empty($data['cityofsale'])) ? $data['cityofsale'] : null;
         $this->pointofsale = (!empty($data['pointofsale'])) ? $data['pointofsale'] : null;
         $this->seller_id = (!empty($data['seller_id'])) ? $data['seller_id'] : null;
+        $this->status = (!empty($data['status'])) ? $data['status'] : null;
     }
 
     public function getArrayCopy()

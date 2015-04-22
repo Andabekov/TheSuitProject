@@ -1,13 +1,18 @@
 <?php
 namespace Pidzhak\Form\Seller;
 
+use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
 use  Zend\Form\Element\Hidden;
 
 class OrderForm extends Form
 {
-    public function __construct($name = null)
+    protected $adapter;
+
+    public function __construct(AdapterInterface $dbAdapter, $name = null)
     {
+        $this->adapter =$dbAdapter;
+
         parent::__construct('order');
 
         $this->add(array(
@@ -17,6 +22,11 @@ class OrderForm extends Form
 
         $this->add(array(
             'name' => 'customer_id',
+            'type' => 'Hidden',
+        ));
+
+        $this->add(array(
+            'name' => 'status',
             'type' => 'Hidden',
         ));
 
@@ -171,16 +181,19 @@ class OrderForm extends Form
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
+
         $this->add(array(
             'name' => 'seller_id',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Продавец',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите продовца',
+                'value_options' => $this->getSellersForSelect(),
+            )
         ));
 
 
@@ -205,5 +218,21 @@ class OrderForm extends Form
                     'style' => 'color:#a94442'));
             }
         }
+    }
+
+    public function getSellersForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT  id, name,surname FROM userstable WHERE access_type_id = 1 ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['name'].$res['surname'];
+        }
+        return $selectData;
     }
 }

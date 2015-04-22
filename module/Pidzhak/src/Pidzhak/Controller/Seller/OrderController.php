@@ -21,7 +21,8 @@ class OrderController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new OrderForm();
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new OrderForm($dbAdapter);
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
@@ -61,7 +62,8 @@ class OrderController extends AbstractActionController
             ));
         }
 
-        $form = new OrderForm();
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new OrderForm($dbAdapter);
         $form->bind($order);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -114,8 +116,10 @@ class OrderController extends AbstractActionController
         $customer_id = (int)$this->params()->fromRoute('id', 0);
 
 
-        $form = new OrderForm();
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new OrderForm($dbAdapter);
         $form->get('customer_id')->setValue($customer_id);
+        $form->get('status')->setValue(1);
         $form->get('submit')->setValue('Add');
 
 
