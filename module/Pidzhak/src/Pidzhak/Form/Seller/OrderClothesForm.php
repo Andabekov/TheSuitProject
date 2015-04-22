@@ -1,13 +1,17 @@
 <?php
 namespace Pidzhak\Form\Seller;
 
+use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
-use  Zend\Form\Element\Hidden;
 
 class OrderClothesForm extends Form
 {
-    public function __construct($name = null)
+    protected $adapter;
+
+    public function __construct(AdapterInterface $dbAdapter, $name = null)
     {
+        $this->adapter =$dbAdapter;
+
         parent::__construct('orderclothes');
 
         $this->add(array(
@@ -28,25 +32,29 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'product_id',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Наименование изделия',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите изделия',
+                'value_options' => $this->getProductsForSelect(),
             ),
         ));
 
         $this->add(array(
             'name' => 'cycle_id',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Номер цикла',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите цикл',
+                'value_options' => $this->getCycleForSelect(),
             ),
         ));
 
@@ -77,13 +85,15 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'textile_id',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Номер ткани',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите материал',
+                'value_options' => $this->getTextileForSelect(),
             ),
         ));
         $this->add(array(
@@ -278,5 +288,54 @@ class OrderClothesForm extends Form
                     'style' => 'color:#a94442'));
             }
         }
+    }
+
+
+    public function getProductsForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id, clother FROM clothers ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['clother'];
+        }
+        return $selectData;
+    }
+
+    public function getCycleForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id FROM cyclestable ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['id'];
+        }
+        return $selectData;
+    }
+
+    public function getTextileForSelect()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id FROM fabricstable ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['id'];
+        }
+        return $selectData;
     }
 }

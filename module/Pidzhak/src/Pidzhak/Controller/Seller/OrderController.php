@@ -1,6 +1,7 @@
 <?php
 namespace Pidzhak\Controller\Seller;
 
+use Pidzhak\Model\Seller\OrderClothes;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\Seller\Order;
@@ -11,6 +12,7 @@ class OrderController extends AbstractActionController
 {
     protected $orderTable;
     protected $customerTable;
+    protected $orderclothesTable;
 
     public function indexAction()
     {
@@ -136,7 +138,6 @@ class OrderController extends AbstractActionController
                 return $this->redirect()->toRoute('order');
             } else {
                 $form->highlightErrorElements();
-                // other error logic
             }
         }
 
@@ -147,8 +148,23 @@ class OrderController extends AbstractActionController
         }
 
 
-        $cform = new OrderClothesForm();
+        $cform = new OrderClothesForm($dbAdapter);
         $cform->get('submit')->setValue('Добавить');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $orderclothes = new OrderClothes();
+            $cform->setInputFilter($orderclothes->getInputFilter());
+            $cform->setData($request->getPost());
+
+            if ($cform->isValid()) {
+                $orderclothes->exchangeArray($cform->getData());
+                $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+
+            }else {
+                $form->highlightErrorElements();
+            }
+        }
 
         $view = new ViewModel(array(
                 'id' => $customer_id,
@@ -179,5 +195,15 @@ class OrderController extends AbstractActionController
             $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
         }
         return $this->customerTable;
+    }
+
+    /*Inversion of Control*/
+    public function getOrderClothesTable()
+    {
+        if (!$this->orderclothesTable) {
+            $sm = $this->getServiceLocator();
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+        }
+        return $this->orderclothesTable;
     }
 }
