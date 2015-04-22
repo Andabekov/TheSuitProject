@@ -2,32 +2,32 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 17/04/2015
- * Time: 10:57
+ * Date: 22/04/2015
+ * Time: 11:03
  */
 
 namespace Pidzhak\Form\admin;
 
 use Zend\Form\Form;
 
-class StyleForm extends Form
+class PriceForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('style');
+        parent::__construct('prices');
 
         $this->add(array(
             'name' => 'id',
             'type' => 'Hidden',
         ));
         $this->add(array(
-            'name' => 'style_num',
+            'name' => 'fabric_class',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Номер стиля',
+                'label' => 'Класс ткани',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -43,35 +43,35 @@ class StyleForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'style_code',
+            'name' => 'price',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Код стиля',
+                'label' => 'Прайс/цена',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'style_code_fabric',
-            'type' => 'Text',
+            'name' => 'start_date',
+            'type' => 'Date',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Код ткани стиля',
+                'label' => 'Дата начала',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'style_code_desc',
-            'type' => 'Text',
+            'name' => 'end_date',
+            'type' => 'Date',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Описание кода стиля',
+                'label' => 'Дата окончание',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -79,8 +79,6 @@ class StyleForm extends Form
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
-                'id' => 'submitbutton',
                 'class' => 'btn btn-primary'
             ),
         ));

@@ -384,10 +384,10 @@
         });
 
         $('input[name=u_rise_2]').bind("paste keyup", function() {
-            $('input[name=u_rise_auto_2]').val($(this).val()-2);
+            $('input[name=u_rise_auto_2]').val(parseInt($(this).val())-2);
         });
         $('input[name=u_rise_auto_2]').bind("paste keyup", function() {
-            $('input[name=u_rise_2]').val($(this).val()+2);
+            $('input[name=u_rise_2]').val(parseInt($(this).val())+2);
         });
 
     });

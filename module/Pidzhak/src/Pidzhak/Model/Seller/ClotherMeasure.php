@@ -28,6 +28,7 @@ class ClotherMeasure  implements InputFilterAwareInterface
     public $knee_finished;
     public $pant_bottom_finished;
     public $u_rise_finished;
+
     public $right_cuff;
     public $left_cuff;
     public $shirt_neck;
@@ -60,6 +61,9 @@ class ClotherMeasure  implements InputFilterAwareInterface
         $this->pant_bottom_finished = (!empty($data[$this->prefix.'pant_bottom_finished'.$this->postfix])) ? $data[$this->prefix.'pant_bottom_finished'.$this->postfix] : null;
         $this->u_rise_finished = (!empty($data[$this->prefix.'u_rise_finished'.$this->postfix])) ? $data[$this->prefix.'u_rise_finished'.$this->postfix] : null;
 
+        $this->right_cuff = (!empty($data[$this->prefix.'right_cuff'.$this->postfix])) ? $data[$this->prefix.'right_cuff'.$this->postfix] : null;
+        $this->left_cuff = (!empty($data[$this->prefix.'left_cuff'.$this->postfix])) ? $data[$this->prefix.'left_cuff'.$this->postfix] : null;
+        $this->shirt_neck = (!empty($data[$this->prefix.'shirt_neck'.$this->postfix])) ? $data[$this->prefix.'shirt_neck'.$this->postfix] : null;
     }
 
     public function getArrayCopy()

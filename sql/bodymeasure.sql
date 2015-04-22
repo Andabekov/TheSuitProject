@@ -29,6 +29,8 @@ CREATE TABLE bodymeasure
   right_wrist VARCHAR(100) COMMENT 'Запястье (правое) (Right wrist)',
   left_wrist VARCHAR(100) COMMENT 'Запястье (левое) (Left wrist)',
   style VARCHAR(100) COMMENT 'Приталенность (Style)',
+  butt_position VARCHAR(100) COMMENT 'Положение ягодицы',
+  u_rise_auto VARCHAR(100) COMMENT 'Шов сиденья (auto)',
 
   INDEX bodymeasure_clother_id_ind (clother_id),
   FOREIGN KEY (clother_id)  REFERENCES clothers(id),

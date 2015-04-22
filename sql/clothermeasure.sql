@@ -21,6 +21,9 @@ CREATE TABLE clothermeasure
   knee_finished VARCHAR(100) COMMENT 'Колено (Knee Finished)',
   pant_bottom_finished VARCHAR(100) COMMENT 'Низ брюк (Pant bottom Finished)',
   u_rise_finished VARCHAR(100) COMMENT 'Шов сиденья (U-rise Finished)',
+  right_cuff VARCHAR(100) COMMENT 'Правый манжет (Right cuff)',
+  left_cuff VARCHAR(100) COMMENT 'Левый манжет (Left cuff)',
+  shirt_neck VARCHAR(100) COMMENT 'Шея сорочки (Shirt neck)',
 
   INDEX clothermeasure_clother_id_ind (clother_id),
   FOREIGN KEY (clother_id)  REFERENCES clothers(id),

@@ -10,3 +10,63 @@
 <div class="header">
     Добавление нового стиля
 </div>
+
+<?php
+$form->setAttribute('action', $this->url('styles', array('action' => 'add')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+
+    <div class="form-group">
+        <?php $element = $form->get('style_num'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('cloth_type'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('style_code'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('style_code_fabric'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <?php $element = $form->get('style_code_desc'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <a class="btn btn-default cancel-btn" href="/styles">Отменить</a>
+            <?php echo $this->formSubmit($form->get('submit')); ?>
+        </div>
+    </div>
+
+<?php
+echo $this->form()->closeTag();
+?>

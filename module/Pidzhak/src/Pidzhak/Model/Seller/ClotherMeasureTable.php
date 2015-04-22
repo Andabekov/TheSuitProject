@@ -83,6 +83,9 @@ class ClotherMeasureTable
             'knee_finished' => $clothermeasure->knee_finished,
             'pant_bottom_finished' => $clothermeasure->pant_bottom_finished,
             'u_rise_finished' => $clothermeasure->u_rise_finished,
+            'right_cuff' => $clothermeasure->right_cuff,
+            'left_cuff' => $clothermeasure->left_cuff,
+            'shirt_neck' => $clothermeasure->shirt_neck,
         );
 
         $id = (int)$clothermeasure->id;

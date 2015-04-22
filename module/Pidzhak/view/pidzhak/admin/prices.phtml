@@ -2,25 +2,25 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 17/04/2015
- * Time: 10:54
+ * Date: 22/04/2015
+ * Time: 11:20
  */
 ?>
 
 <div class="header">
-    Управление стилями
+Управление прайс-листом
 </div>
 
 <div class="col-md-9">
-    <table id="style-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+    <table id="price-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="style_num">Номер стиля</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
             <th data-column-id="cloth_type" data-order="desc">Тип изделия</th>
-            <th data-column-id="style_code" data-order="desc">Код стиля</th>
-            <th data-column-id="style_code_fabric" data-order="desc">Код ткани стиля</th>
-            <th data-column-id="style_code_desc" data-order="desc">Описание кода стиля</th>
+            <th data-column-id="price" data-order="desc">Прайс/цена</th>
+            <th data-column-id="start_date" data-order="desc">Дата начала</th>
+            <th data-column-id="end_date" data-order="desc">Дата окончания</th>
 
             <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
@@ -32,7 +32,7 @@
 <script>
     $(function () {
         function init() {
-            var grid = $("#style-grid").bootgrid({
+            var grid = $("#price-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -40,7 +40,7 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
                     };
                 },
-                url: "/reststyle",
+                url: "/restprice",
                 formatters: {
                     "commands": function(column, row)
                     {
@@ -53,7 +53,7 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".command-edit").on("click", function(e)
                 {
-                    window.location="styles/edit/"+$(this).data("row-id");
+                    window.location="prices/edit/"+$(this).data("row-id");
                 }).end().find(".command-delete").on("click", function(e)
                 {
                     myId=$(this).data("row-id");
@@ -63,8 +63,8 @@
                     });
                     bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
                         if(result){
-                            $.post( "styles/delete/"+myId, { id: myId } ).done(function( data ) {
-                                $('#style-grid').bootgrid('reload');
+                            $.post( "prices/delete/"+myId, { id: myId } ).done(function( data ) {
+                                $('#price-grid').bootgrid('reload');
                             });
                         };
                     });

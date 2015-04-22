@@ -88,6 +88,8 @@ class BodyMeasureTable
             'right_wrist' => $bodymeasure->right_wrist,
             'left_wrist' => $bodymeasure->left_wrist,
             'style' => $bodymeasure->style,
+            'butt_position' => $bodymeasure->butt_position,
+            'u_rise_auto' => $bodymeasure->u_rise_auto,
         );
 
         $id = (int) $bodymeasure->id;

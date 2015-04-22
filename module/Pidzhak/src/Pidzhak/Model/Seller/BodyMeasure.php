@@ -37,6 +37,9 @@ class BodyMeasure  implements InputFilterAwareInterface
     public $left_wrist;
     public $style;
 
+    public $butt_position;
+    public $u_rise_auto;
+
     private $postfix;
 
     public function exchangeArray($data)
@@ -70,6 +73,9 @@ class BodyMeasure  implements InputFilterAwareInterface
         $this->right_wrist = (!empty($data['right_wrist'.$this->postfix])) ? $data['right_wrist'.$this->postfix] : null;
         $this->left_wrist = (!empty($data['left_wrist'.$this->postfix])) ? $data['left_wrist'.$this->postfix] : null;
         $this->style = (!empty($data['style'.$this->postfix])) ? $data['style'.$this->postfix] : null;
+
+        $this->butt_position = (!empty($data['butt_position'.$this->postfix])) ? $data['butt_position'.$this->postfix] : null;
+        $this->u_rise_auto = (!empty($data['u_rise_auto'.$this->postfix])) ? $data['u_rise_auto'.$this->postfix] : null;
     }
 
     public function getArrayCopy()

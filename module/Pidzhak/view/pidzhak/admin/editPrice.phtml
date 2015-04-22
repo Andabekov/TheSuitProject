@@ -2,19 +2,19 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 17/04/2015
- * Time: 10:55
+ * Date: 22/04/2015
+ * Time: 11:21
  */
 ?>
 
-<div class="header">
-    Редактирование стиля
-</div>
+    <div class="header">
+        Редактирование прайса
+    </div>
 
 <?php
 $form = $this->form;
 $form->setAttribute('action', $this->url(
-    'styles',
+    'prices',
     array(
         'action' => 'edit',
         'id'     => $this->id,
@@ -29,7 +29,7 @@ echo $this->formHidden($form->get('id'));
 ?>
 
     <div class="form-group">
-        <?php $element = $form->get('style_num'); ?>
+        <?php $element = $form->get('fabric_class'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">
             <?php echo $this->formText($element); ?>
@@ -45,32 +45,24 @@ echo $this->formHidden($form->get('id'));
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>
     <div class="form-group">
-        <?php $element = $form->get('style_code'); ?>
+        <?php $element = $form->get('start_date'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
+            <?php echo $this->formDate($element); ?>
         </div>
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>
     <div class="form-group">
-        <?php $element = $form->get('style_code_fabric'); ?>
+        <?php $element = $form->get('end_date'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('style_code_desc'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
+            <?php echo $this->formDate($element); ?>
         </div>
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>
     <div class="form-group">
         <div class="col-xs-offset-2 col-xs-10">
-            <a class="btn btn-default cancel-btn" href="/styles">Отменить</a>
+            <a class="btn btn-default cancel-btn" href="/prices">Отменить</a>
             <?php echo $this->formSubmit($form->get('submit')); ?>
         </div>
     </div>

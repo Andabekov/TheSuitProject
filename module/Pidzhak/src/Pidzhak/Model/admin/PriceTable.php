@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 17/04/2015
- * Time: 10:56
+ * Date: 22/04/2015
+ * Time: 11:03
  */
 
 namespace Pidzhak\Model\admin;
@@ -11,7 +11,7 @@ namespace Pidzhak\Model\admin;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
-class StyleTable
+class PriceTable
 {
     protected $tableGateway;
 
@@ -44,7 +44,7 @@ class StyleTable
         return $resultSet->count();
     }
 
-    public function getStyle($id) {
+    public function getPrice($id) {
         $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
         $row = $rowset->current();
@@ -54,29 +54,29 @@ class StyleTable
         return $row;
     }
 
-    public function saveStyle(Style $style)
+    public function savePrice(Price $price)
     {
         $data = array(
-            'style_num'  => $style->style_num,
-            'cloth_type' => $style->cloth_type,
-            'style_code' => $style->style_code,
-            'style_code_fabric' => $style->style_code_fabric,
-            'style_code_desc' => $style->style_code_desc,
+            'fabric_class'  => $price->fabric_class,
+            'cloth_type' => $price->cloth_type,
+            'price' => $price->price,
+            'start_date' => $price->start_date,
+            'end_date' => $price->end_date,
         );
 
-        $id = (int) $style->id;
+        $id = (int) $price->id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getStyle($id)) {
+            if ($this->getPrice($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
-                throw new \Exception('Style_id does not exist');
+                throw new \Exception('Price_id does not exist');
             }
         }
     }
 
-    public function deleteStyle($id)
+    public function deletePrice($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
     }

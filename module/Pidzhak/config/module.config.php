@@ -23,6 +23,8 @@ return array(
             'Pidzhak\admin\FabricRest' => 'Pidzhak\Controller\admin\FabricRestController',
             'Pidzhak\admin\Styles' => 'Pidzhak\Controller\admin\StyleController',
             'Pidzhak\admin\StyleRest' => 'Pidzhak\Controller\admin\StyleRestController',
+            'Pidzhak\admin\Prices' => 'Pidzhak\Controller\admin\PriceController',
+            'Pidzhak\admin\PriceRest' => 'Pidzhak\Controller\admin\PriceRestController',
             'Pidzhak\admin\AdminRest' => 'Pidzhak\Controller\admin\UserRestController',
             'Pidzhak\Controller\Seller\Seller' => 'Pidzhak\Controller\Seller\SellerController',
             'Pidzhak\Controller\Seller\Customer' => 'Pidzhak\Controller\Seller\CustomerController',
@@ -351,6 +353,31 @@ return array(
                     'route' => '/reststyle',
                     'defaults' => array(
                         'controller' => 'Pidzhak\admin\StyleRest',
+                    ),
+                ),
+            ),
+
+            'prices' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/prices[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Prices',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'price-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restprice',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\PriceRest',
                     ),
                 ),
             ),

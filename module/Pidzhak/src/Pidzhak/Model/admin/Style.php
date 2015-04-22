@@ -16,7 +16,7 @@ class Style implements InputFilterAwareInterface
 {
     public $id;
     public $style_num;
-    public $cloth_name;
+    public $cloth_type;
     public $style_code;
     public $style_code_fabric;
     public $style_code_desc;
@@ -25,7 +25,7 @@ class Style implements InputFilterAwareInterface
     {
         $this->id                 = (isset($data['id'])) ? $data['id'] : null;
         $this->style_num          = (isset($data['style_num'])) ? $data['style_num'] : null;
-        $this->cloth_name         = (isset($data['cloth_name'])) ? $data['cloth_name'] : null;
+        $this->cloth_type         = (isset($data['cloth_type'])) ? $data['cloth_type'] : null;
         $this->style_code         = (isset($data['style_code'])) ? $data['style_code'] : null;
         $this->style_code_fabric  = (isset($data['style_code_fabric'])) ? $data['style_code_fabric'] : null;
         $this->style_code_desc    = (isset($data['style_code_desc'])) ? $data['style_code_desc'] : null;
@@ -66,7 +66,7 @@ class Style implements InputFilterAwareInterface
                 ),
             ));
             $inputFilter->add(array(
-                'name'     => 'cloth_name',
+                'name'     => 'cloth_type',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
