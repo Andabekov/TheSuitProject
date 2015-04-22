@@ -114,6 +114,7 @@ class OrderController extends AbstractActionController
     public function thirdstepAction()
     {
         $order_form_id = 0;
+        $order_error = "";
         $customer_id = (int)$this->params()->fromRoute('id', 0);
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
