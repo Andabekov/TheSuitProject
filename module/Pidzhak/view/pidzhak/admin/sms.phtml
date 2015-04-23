@@ -8,7 +8,7 @@
 ?>
 
 <div class="header">
-СМСы
+    СМСы
 </div>
 
 <div class="col-md-9">
@@ -22,11 +22,12 @@
             <th data-column-id="id">id</th>
             <th data-column-id="text" data-order="desc">text</th>
             <th data-column-id="number" data-order="desc">number</th>
-            <th data-column-id="variables" data-order="desc">variables</th>
+            <!--<th data-column-id="variables" data-order="desc">variables</th>-->
             <th data-column-id="credits" data-order="desc">credits</th>
             <th data-column-id="sentdate" data-order="desc">sentdate</th>
             <th data-column-id="donedate" data-order="desc">donedate</th>
-            <th data-column-id="first_status" data-order="desc">first_status</th>
+            <!--<th data-column-id="first_status" data-order="desc">first_status</th>-->
+            <th data-column-id="status_str" data-formatter="status_str"> status_str </th>
             <th data-column-id="status" data-order="desc">status</th>
             <th data-column-id="send_sms_xml" data-order="desc">send_sms_xml</th>
 
@@ -50,23 +51,59 @@
                 },
                 url: "/restsms",
                 formatters: {
-                    "commands": function(column, row)
-                    {
+                    "commands": function (column, row) {
                         return "<button type=\"button\" class=\"btn btn-xs btn-default command-status\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-refresh\"></span></button> ";
+                    },
+                    "status_str": function (column, row) {
+                        $val = row.first_status;
+                        if ($val == -1) {
+                            return 'AUTH_FAILED';
+                            //return 'Неправильный логин и/или пароль либо аккаунт заблокирован';
+                        }
+                        else if($val == -2)
+                        {
+                            return 'XML_ERROR';
+                            //return 'Неправильный формат XML';
+                        }
+                        else if($val == -3)
+                        {
+                            return 'NOT_ENOUGH_CREDITS';
+                            //return 'Недостаточно кредитов на аккаунте пользователя';
+                        }
+                        else if($val == -4)
+                        {
+                            return 'NO_ROUTES';
+                            //return 'Нет корректных номеров получателей либо отправка по указанным маршрутам запрещена для Вашего аккаунта';
+                        }
+                        else if($val == -5)
+                        {
+                            return 'NO_SENDER';
+                            //return 'Используемое имя отправителя не разрешено для Вашего аккаунта';
+                        }
+                        else if($val == -6)
+                        {
+                            return 'NO_TEXT';
+                            //return 'Текст сообщения не указан';
+                        }
+                        else if($val >= 0)
+                        {
+                            return 'SEND_OK';
+                            //return 'Сообщение успешно отправлено';
+                        }
+
                     }
                 }
-            }).on("loaded.rs.jquery.bootgrid", function()
-            {
+            }).on("loaded.rs.jquery.bootgrid", function () {
                 /* Executes after data is loaded and rendered */
-                grid.find(".command-status").on("click", function(e)
-                {
+                grid.find(".command-status").on("click", function (e) {
                     var msgId = $(this).data("row-id");
-                    $.get("/restsms/"+msgId).done(function() {
+                    $.get("/restsms/" + msgId).done(function () {
                         $('#sms-grid').bootgrid('reload');
                     });
                 });
             });
         }
+
         init();
     })
 
