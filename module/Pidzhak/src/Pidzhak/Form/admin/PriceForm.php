@@ -49,7 +49,7 @@ class PriceForm extends Form
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Прайс/цена',
+                'label' => 'Прайс',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -92,6 +92,16 @@ class PriceForm extends Form
                 $element->setLabelAttributes(array(
                     'class' => 'control-label col-xs-2',
                     'style' => 'color:#a94442'));
+            }
+        }
+    }
+
+    public function getErrorAjax(){
+        foreach ($this->getElements() as $element) {
+            if ($element->getMessages()) {
+//                return $element->getName();;
+
+                return $element->getMessages();
             }
         }
     }

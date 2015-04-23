@@ -31,6 +31,45 @@ class PriceController extends AbstractActionController
         return $view;
     }
 
+    public function ajaxaddAction(){
+        $form = new PriceForm();
+        $request = $this->getRequest();
+        $response   = $this->getResponse();
+        $messages = array();
+
+        if ($request->isPost()) {
+
+            $price = new Price();
+            $form->setInputFilter($price->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $message = 'form valid';
+            }else {
+                $errors = $form->getMessages();
+                foreach($errors as $key=>$row)
+                {
+                    if (!empty($row) && $key != 'submit') {
+                        foreach($row as $keyer => $rower)
+                        {
+                            //save error(s) per-element that
+                            //needed by Javascript
+                            $messages[$key][] = $rower;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($messages)){
+                $response->setContent(\Zend\Json\Json::encode($messages));
+            } else {
+                $response->setContent(\Zend\Json\Json::encode(array('success'=>1,'hello'=>$message)));
+            }
+
+            return $response;
+        }
+    }
+
     public function addAction()
     {
         $form = new PriceForm();
@@ -44,17 +83,14 @@ class PriceController extends AbstractActionController
             $form->setInputFilter($price->getInputFilter());
             $form->setData($request->getPost());
 
-//            print_r($request);
-//            fwrite(STDOUT, "test stop");
-
             if ($form->isValid()) {
-//                fwrite(STDOUT, "test stop");
                 $price->exchangeArray($form->getData());
                 $this->getPriceTable()->savePrice($price);
 
                 return $this->redirect()->toRoute('prices');
             }else {
                 $form->highlightErrorElements();
+
             }
         }
 

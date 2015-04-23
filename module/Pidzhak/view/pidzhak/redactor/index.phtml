@@ -7,4 +7,49 @@
  */
 ?>
 
-TODO
+
+
+<div class="header">
+    Изделия в обработке
+</div>
+
+<div class="col-md-9">
+    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+
+            <th data-column-id="order_number">Номер заказа</th>
+            <th data-column-id="client_name">Клиент</th>
+            <th data-column-id="cloth">Изделие</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-column-id="fabric_num">Номер ткани</th>
+            <th data-column-id="cycle_num">Номер цикла</th>
+            <th data-column-id="dateofsale">Дата продажи</th>
+            <th data-column-id="name" data-order="desc">Продовец</th>
+            <th data-column-id="status" data-order="desc">Статус</th>
+            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    $(function () {
+        function init() {
+            $("#order-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                    };
+                },
+                url: "/restorder"
+            });
+        }
+        init();
+    })
+
+</script>

@@ -14,6 +14,7 @@
 <?php
 $form->setAttribute('action', $this->url('prices', array('action' => 'add')));
 $form->setAttribute('class', 'form-horizontal');
+$form->setAttribute('id', 'newForm');
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -36,6 +37,14 @@ echo $this->formHidden($form->get('id'));
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
+    <div class="form-group">
+        <?php $element = $form->get('price'); ?>
+        <?php echo $this->formLabel($element); ?>
+        <div class="col-xs-10">
+            <?php echo $this->formText($element); ?>
+        </div>
+        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+    </div>
     <div class="form-group">
         <?php $element = $form->get('start_date'); ?>
         <?php echo $this->formLabel($element); ?>
@@ -62,3 +71,28 @@ echo $this->formHidden($form->get('id'));
 <?php
 echo $this->form()->closeTag();
 ?>
+
+<button onclick="submitAjax()">AjaxSubmit</button>
+
+<script>
+    function submitAjax(){
+        $.ajax({
+            url: '/prices/ajaxadd',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: $("#newForm").serialize(),
+            success: function (data) {
+                $('.error').remove();
+                for (var prop in data) {
+                    if (data.hasOwnProperty(prop)) {
+                        $('input[name='+prop+']').after('<span class="error" style="color: red;">'+data[prop][0]+'</span>');
+                    }
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+    });
+    }
+</script>

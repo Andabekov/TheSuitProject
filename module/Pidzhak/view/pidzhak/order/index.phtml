@@ -1,8 +1,9 @@
 <?php
-$title = 'My orders';
-$this->headTitle($title);
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<div class="header">
+    Мои заказы
+</div>
 
 <div class="col-md-9">
     <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
@@ -38,5 +39,4 @@ $this->headTitle($title);
 
         init();
     })
-
 </script>
