@@ -8,6 +8,7 @@
 
 namespace Pidzhak\Controller\admin;
 
+use Pidzhak\Sms\SmsXmlParser;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -22,7 +23,8 @@ class SmsController extends AbstractActionController
         return $view;
     }
 
-    public function getSmsTable(){
+    public function getSmsTable()
+    {
         if (!$this->smsTable) {
             $sm = $this->getServiceLocator();
             $this->smsTable = $sm->get('Pidzhak\Model\admin\SmsTable');

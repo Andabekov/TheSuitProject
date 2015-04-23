@@ -4,8 +4,8 @@ CREATE TABLE smsmessages
     text VARCHAR(500),
     variables VARCHAR(100),
     credits VARCHAR(100),
-    sentdate DATETIME,
-    donedate DATETIME,
+    sentdate DATETIME, /*d.m.Y H:i*/
+    donedate DATETIME, /*d.m.Y H:i*/
     first_status  VARCHAR(100),
     status  VARCHAR(100),
     send_sms_xml VARCHAR(500)
