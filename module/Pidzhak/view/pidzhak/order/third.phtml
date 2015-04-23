@@ -19,21 +19,22 @@ echo $this->formHidden($form->get('customer_id'));
 echo $this->formHidden($form->get('status'));
 
 ?>
-<div class="header">
-    Заказ
-</div>
+<div style="text-align:center;">
+    <div class="header">
+        Заказ
+    </div>
 
-<a class="navBtn">1 Шаг - Данные клиента</a>
-<a class="navBtn">2 Шаг - Замеры клиента</a>
-<a class="navBtn active">3 Шаг - Заказ клиента</a>
+    <a class="navBtn">1 Шаг - Данные клиента</a>
+    <a class="navBtn">2 Шаг - Замеры клиента</a>
+    <a class="navBtn active">3 Шаг - Заказ клиента</a>
 
-<center>
-    <div id="chooseContent">
+
+    <div id="chosenClient">
         <?php
-        echo 'Выбранный клиент: ' . $customer->lastname . " " . $customer->firstname . " - " . $customer->mobilephone;
+        echo 'Выбранный клиент: '.$customer->lastname." ".$customer->firstname.", ".$customer->mobilephone;
         ?>
     </div>
-</center>
+</div>
 
 
 <?= $this->render('fields.phtml') ?>

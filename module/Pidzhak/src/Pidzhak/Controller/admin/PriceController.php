@@ -37,6 +37,7 @@ class PriceController extends AbstractActionController
         $form->get('submit')->setValue('Добавить');
 
         $request = $this->getRequest();
+        $response   = $this->getResponse();
 
         if ($request->isPost()) {
 
@@ -49,13 +50,25 @@ class PriceController extends AbstractActionController
 
             if ($form->isValid()) {
 //                fwrite(STDOUT, "test stop");
-                $price->exchangeArray($form->getData());
-                $this->getPriceTable()->savePrice($price);
+                $message = 'form valid';
+//                $price->exchangeArray($form->getData());
+//                $this->getPriceTable()->savePrice($price);
 
-                return $this->redirect()->toRoute('prices');
+//                return $this->redirect()->toRoute('prices');
             }else {
                 $form->highlightErrorElements();
+                $message = 'form not valid';
             }
+
+            $messages = array();
+
+            if (!empty($messages)){
+                $response->setContent(\Zend\Json\Json::encode($messages));
+            } else {
+                $response->setContent(\Zend\Json\Json::encode(array('success'=>1,'hello'=>$message)));
+            }
+
+            return $response;
         }
 
         $view = new ViewModel(array('form' => $form,));
