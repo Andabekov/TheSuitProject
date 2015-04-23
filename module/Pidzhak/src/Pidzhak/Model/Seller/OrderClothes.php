@@ -36,7 +36,7 @@ class OrderClothes  implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
+        $this->id = (!empty($data['c_id'])) ? $data['c_id'] : null;
         $this->order_id = (!empty($data['order_id'])) ? $data['order_id'] : null;
         $this->cycle_id = (!empty($data['cycle_id'])) ? $data['cycle_id'] : null;
         $this->preferred_date = (!empty($data['preferred_date'])) ? $data['preferred_date'] : null;

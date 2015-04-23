@@ -114,11 +114,3 @@
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
-
-<?php if (!$form->get('id')->getValue()) { ?>
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <?php echo $this->formSubmit($form->get('ordersubmit')); ?>
-        </div>
-    </div>
-<?php } ?>

@@ -25,6 +25,8 @@ return array(
             'Pidzhak\admin\StyleRest' => 'Pidzhak\Controller\admin\StyleRestController',
             'Pidzhak\admin\Prices' => 'Pidzhak\Controller\admin\PriceController',
             'Pidzhak\admin\PriceRest' => 'Pidzhak\Controller\admin\PriceRestController',
+            'Pidzhak\admin\Sms' => 'Pidzhak\Controller\admin\SmsController',
+            'Pidzhak\admin\SmsRest' => 'Pidzhak\Controller\admin\SmsRestController',
             'Pidzhak\admin\AdminRest' => 'Pidzhak\Controller\admin\UserRestController',
             'Pidzhak\Controller\Seller\Seller' => 'Pidzhak\Controller\Seller\SellerController',
             'Pidzhak\Controller\Seller\Customer' => 'Pidzhak\Controller\Seller\CustomerController',
@@ -378,6 +380,31 @@ return array(
                     'route' => '/restprice',
                     'defaults' => array(
                         'controller' => 'Pidzhak\admin\PriceRest',
+                    ),
+                ),
+            ),
+
+            'sms' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/sms[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Sms',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'sms-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restsms',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\SmsRest',
                     ),
                 ),
             ),

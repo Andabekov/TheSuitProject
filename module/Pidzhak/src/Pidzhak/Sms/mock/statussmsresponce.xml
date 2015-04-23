@@ -1,0 +1,4 @@
+<deliveryreport>
+    <message id="msgID"  sentdate="xxxxx" donedate="xxxxx" status="xxxxxx"/>
+    <message id="msgID" sentdate="xxxxx"  donedate="xxxxx" status="xxxxxx"/>
+</deliveryreport>

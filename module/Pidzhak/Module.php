@@ -14,6 +14,8 @@ use Pidzhak\Model\admin\Fabric;
 use Pidzhak\Model\admin\FabricTable;
 use Pidzhak\Model\admin\Price;
 use Pidzhak\Model\admin\PriceTable;
+use Pidzhak\Model\admin\Sms;
+use Pidzhak\Model\admin\SmsTable;
 use Pidzhak\Model\admin\Style;
 use Pidzhak\Model\admin\StyleTable;
 use Pidzhak\Model\admin\User;
@@ -98,6 +100,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('style-rest'))
             ->addResource(new Resource('prices'))
             ->addResource(new Resource('price-rest'))
+            ->addResource(new Resource('sms'))
+            ->addResource(new Resource('sms-rest'))
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
             ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')->allow('seller', 'order-rest')
@@ -109,7 +113,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->allow('admin', 'cycles')->allow('admin', 'cycle-rest')
             ->allow('admin', 'fabrics')->allow('admin', 'fabric-rest')
             ->allow('admin', 'styles')->allow('admin', 'style-rest')
-            ->allow('admin', 'prices')->allow('admin', 'price-rest');
+            ->allow('admin', 'prices')->allow('admin', 'price-rest')
+            ->allow('admin', 'sms')->allow('admin', 'sms-rest');
 
         $e->getViewModel()->acl = $acl;
     }
@@ -269,6 +274,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Price());
                     return new TableGateway('pricestable', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\admin\SmsTable' =>  function($sm) {
+                    $tableGateway = $sm->get('SmsTableGateway');
+                    $table = new SmsTable($tableGateway);
+                    return $table;
+                },
+                'SmsTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Sms());
+                    return new TableGateway('smsmessages', $dbAdapter, null, $resultSetPrototype);
                 },
 
 				'Pidzhak\Model\Seller\OrderTable' =>  function($sm) {
