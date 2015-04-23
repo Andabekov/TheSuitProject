@@ -18,6 +18,10 @@ class SmsController extends AbstractActionController
 
     public function indexAction()
     {
+
+        //SmsXmlParser::sendSmsTest();
+        //SmsXmlParser::checkSmsStatusTest();
+
         $view = new ViewModel();
         $view->setTemplate('pidzhak/admin/sms.phtml');
         return $view;

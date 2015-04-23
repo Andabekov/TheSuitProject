@@ -123,6 +123,15 @@ XML;
         self::sendSmsToUrl($send_xml);
     }
 
+    public static function checkSmsStatusTest(){
+
+        $msgIdsArray = SmsXmlParser::add_msg_id_to_status_sms(1);
+
+        $send_xml = SmsXmlParser::buildStatusSms($msgIdsArray);
+
+        self::sendSmsToUrl($send_xml);
+    }
+
     private static function buildOper($operation)
     {
 
@@ -208,10 +217,12 @@ XML;
 
     }
 
+
+
     public static function parseResponseXml($response_xml)
     {
         $response = new SimpleXMLElement($response_xml);
-        if (strcasecmp(trim($response->getName()), trim('RESPONSE')) == 0)
+        if (strcasecmp(trim($response->getName()), trim('RESPONSE')) != 0)
             return null;
 
         return $response;
@@ -236,7 +247,8 @@ XML;
     public static function parseDeliveryreportXml($response_xml)
     {
         $deliveryreport = new SimpleXMLElement($response_xml);
-        if (strcasecmp(trim($deliveryreport->getName()), trim('deliveryreport')) == 0)
+
+        if (strcasecmp(trim($deliveryreport->getName()), trim('deliveryreport')) != 0)
             return null;
 
         return $deliveryreport;
@@ -276,7 +288,7 @@ XML;
 
     public static function sendSmsToUrl($sms_xml){
 
-        var_dump("<br>");
+        //var_dump("<br>");
         //var_dump($sms_xml);
         $client = new Client();
         $client->setUri(self::$uri);
@@ -295,7 +307,9 @@ XML;
         $client->setRequest($request);
         $response = $client->send();
 
-        var_dump($response->getBody());
+        //var_dump($response->getBody());
+
+        return $response->getBody();
     }
 
 }
@@ -313,9 +327,12 @@ SEND_OK >  0 Сообщение успешно отправлено
 *********************************/
 
 
+
 /*status ***************************
 PENDING Сообщение ожидает отправки
 SENT Отправлено
 NOT_DELIVERED Не доставлено
 DELIVERED Доставлено
+
+data format (d.m.Y H:i)
 *********************************/

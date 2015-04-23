@@ -8,12 +8,24 @@
 
 namespace Pidzhak\Controller\admin;
 
+use Pidzhak\Sms\SmsXmlParser;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
 class SmsRestController extends AbstractRestfulController
 {
     protected $smsTable;
+
+    public function get($id)
+    {
+
+        $this->updateSms(array($id));
+
+        return new JsonModel(array(
+            'status_ok' => 'ok',
+        ));
+    }
+
 
     public function create($data)
     {
@@ -35,6 +47,31 @@ class SmsRestController extends AbstractRestfulController
             'rows' => $smss->toArray(),
             "total"=> $count,
         ));
+    }
+
+    public function updateSms($msgIdsArray){
+        $send_xml = SmsXmlParser::buildStatusSms($msgIdsArray);
+        $response_xml = SmsXmlParser::sendSmsToUrl($send_xml);
+        if($response_xml==null)
+            return;
+
+
+        $deliveryreport = SmsXmlParser::parseDeliveryreportXml($response_xml);
+
+        if($deliveryreport==null)
+            return;
+
+        foreach ($deliveryreport->message as $message) {
+            $msgId= (string)$message['id'];
+            $deliverystatus = (string)$message['status'];
+            $sentdate = (string)$message['sentdate'];
+            $donedate = (string)$message['donedate'];
+            $sms = $this->getSmsTable()->getSms($msgId);
+            $sms->status = $deliverystatus;
+            $this->getSmsTable()->saveSms($sms);
+
+        }
+
     }
 
     /*Inversion of Control*/

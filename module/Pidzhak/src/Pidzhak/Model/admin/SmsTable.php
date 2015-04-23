@@ -60,14 +60,14 @@ class SmsTable
     public function saveSms(Sms $sms)
     {
         $data = array(
-            'text' => $sms->fabric_class,
-            'variables' => $sms->fabric_class,
-            'credits' => $sms->fabric_class,
-            'sentdate' => $sms->fabric_class,
-            'donedate' => $sms->fabric_class,
-            'first_status' => $sms->fabric_class,
-            'status' => $sms->fabric_class,
-            'send_sms_xml' => $sms->fabric_class,
+            'text' => $sms->text,
+            'variables' => $sms->variables,
+            'credits' => $sms->credits,
+            'sentdate' => $sms->sentdate,
+            'donedate' => $sms->donedate,
+            'first_status' => $sms->first_status,
+            'status' => $sms->status,
+            'send_sms_xml' => $sms->send_sms_xml,
         );
 
         $id = (int)$sms->id;
