@@ -12,12 +12,16 @@
 </div>
 
 <div class="col-md-9">
+
+    <a class="btn btn-default send-sms-btn" href="/sms/send">Отправить новый СМС</a>
+
     <table id="sms-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
             <th data-column-id="id">id</th>
             <th data-column-id="text" data-order="desc">text</th>
+            <th data-column-id="number" data-order="desc">number</th>
             <th data-column-id="variables" data-order="desc">variables</th>
             <th data-column-id="credits" data-order="desc">credits</th>
             <th data-column-id="sentdate" data-order="desc">sentdate</th>
@@ -48,29 +52,17 @@
                 formatters: {
                     "commands": function(column, row)
                     {
-                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-pencil\"></span></button> " +
-                            "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-status\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-refresh\"></span></button> ";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()
             {
                 /* Executes after data is loaded and rendered */
-                grid.find(".command-edit").on("click", function(e)
+                grid.find(".command-status").on("click", function(e)
                 {
-                    window.location="smss/edit/"+$(this).data("row-id");
-                }).end().find(".command-delete").on("click", function(e)
-                {
-                    myId=$(this).data("row-id");
-                    bootbox.setDefaults({
-                        locale: "ru",
-                        className: "my-modal"
-                    });
-                    bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
-                        if(result){
-                            $.post( "smss/delete/"+myId, { id: myId } ).done(function( data ) {
-                                $('#price-grid').bootgrid('reload');
-                            });
-                        };
+                    var msgId = $(this).data("row-id");
+                    $.get("/restsms/"+msgId).done(function() {
+                        $('#sms-grid').bootgrid('reload');
                     });
                 });
             });

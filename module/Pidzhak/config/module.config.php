@@ -402,7 +402,7 @@ return array(
             'sms-rest' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/restsms',
+                    'route' => '/restsms[/:id]',
                     'defaults' => array(
                         'controller' => 'Pidzhak\admin\SmsRest',
                     ),
