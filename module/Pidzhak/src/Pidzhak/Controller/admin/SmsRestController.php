@@ -68,6 +68,9 @@ class SmsRestController extends AbstractRestfulController
             $donedate = (string)$message['donedate'];
             $sms = $this->getSmsTable()->getSms($msgId);
             $sms->status = $deliverystatus;
+
+            $sms->sentdate =date( 'Y-m-d H:i:s', date_create_from_format('d.m.Y H:i', $sentdate)->getTimestamp());
+            $sms->donedate =date( 'Y-m-d H:i:s', date_create_from_format('d.m.Y H:i', $donedate)->getTimestamp());
             $this->getSmsTable()->saveSms($sms);
 
         }
