@@ -12,12 +12,16 @@
 </div>
 
 <div class="col-md-9">
+
+    <a class="btn btn-default send-sms-btn" href="/sms/send">Отправить новый СМС</a>
+
     <table id="sms-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
             <th data-column-id="id">id</th>
             <th data-column-id="text" data-order="desc">text</th>
+            <th data-column-id="number" data-order="desc">number</th>
             <th data-column-id="variables" data-order="desc">variables</th>
             <th data-column-id="credits" data-order="desc">credits</th>
             <th data-column-id="sentdate" data-order="desc">sentdate</th>

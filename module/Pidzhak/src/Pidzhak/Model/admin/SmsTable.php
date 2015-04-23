@@ -61,6 +61,7 @@ class SmsTable
     {
         $data = array(
             'text' => $sms->text,
+            'number' => $sms->number,
             'variables' => $sms->variables,
             'credits' => $sms->credits,
             'sentdate' => $sms->sentdate,
@@ -85,5 +86,11 @@ class SmsTable
     public function deleteSms($id)
     {
         $this->tableGateway->delete(array('id' => (int)$id));
+    }
+
+
+    public function insertedSms()
+    {
+        return $this->tableGateway->lastInsertValue;
     }
 }

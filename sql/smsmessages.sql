@@ -2,6 +2,7 @@ CREATE TABLE smsmessages
 (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     text VARCHAR(500),
+    number VARCHAR(500),
     variables VARCHAR(100),
     credits VARCHAR(100),
     sentdate DATETIME, /*d.m.Y H:i*/
@@ -12,8 +13,8 @@ CREATE TABLE smsmessages
 );
 CREATE UNIQUE INDEX unique_smsmessages_id ON smsmessages (id);
 
-INSERT INTO pidzhak.smsmessages (id, text, variables, credits, sentdate, donedate, first_status, status, send_sms_xml)
-VALUES (1, '798789798   ', '2121', '12155', '2015-04-23 15:26:33', '2015-04-23 15:26:36', '1', '0', '654654654');
+INSERT INTO pidzhak.smsmessages (id, text, variables, credits, sentdate, donedate, first_status, status, send_sms_xml, number)
+VALUES (1, '798789798   ', '2121', '12155', '2015-04-23 15:26:33', '2015-04-23 15:26:36', '1', '0', '654654654', '8771878787');
 
 /*first_status ***************************
 AUTH_FAILED -1 Неправильный логин и/или пароль либо аккаунт заблокирован
