@@ -290,3 +290,14 @@ a.active {
 #clothMeasureDiv{
     display: none;
 }
+
+#hideBtn{
+    margin-bottom: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+#showBtn{
+    margin-bottom: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}

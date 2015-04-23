@@ -31,13 +31,11 @@ class PriceController extends AbstractActionController
         return $view;
     }
 
-    public function addAction()
-    {
+    public function ajaxaddAction(){
         $form = new PriceForm();
-        $form->get('submit')->setValue('Добавить');
-
         $request = $this->getRequest();
         $response   = $this->getResponse();
+        $messages = array();
 
         if ($request->isPost()) {
 
@@ -45,22 +43,22 @@ class PriceController extends AbstractActionController
             $form->setInputFilter($price->getInputFilter());
             $form->setData($request->getPost());
 
-//            print_r($request);
-//            fwrite(STDOUT, "test stop");
-
             if ($form->isValid()) {
-//                fwrite(STDOUT, "test stop");
                 $message = 'form valid';
-//                $price->exchangeArray($form->getData());
-//                $this->getPriceTable()->savePrice($price);
-
-//                return $this->redirect()->toRoute('prices');
             }else {
-                $form->highlightErrorElements();
-                $message = 'form not valid';
+                $errors = $form->getMessages();
+                foreach($errors as $key=>$row)
+                {
+                    if (!empty($row) && $key != 'submit') {
+                        foreach($row as $keyer => $rower)
+                        {
+                            //save error(s) per-element that
+                            //needed by Javascript
+                            $messages[$key][] = $rower;
+                        }
+                    }
+                }
             }
-
-            $messages = array();
 
             if (!empty($messages)){
                 $response->setContent(\Zend\Json\Json::encode($messages));
@@ -69,6 +67,31 @@ class PriceController extends AbstractActionController
             }
 
             return $response;
+        }
+    }
+
+    public function addAction()
+    {
+        $form = new PriceForm();
+        $form->get('submit')->setValue('Добавить');
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $price = new Price();
+            $form->setInputFilter($price->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $price->exchangeArray($form->getData());
+                $this->getPriceTable()->savePrice($price);
+
+                return $this->redirect()->toRoute('prices');
+            }else {
+                $form->highlightErrorElements();
+
+            }
         }
 
         $view = new ViewModel(array('form' => $form,));

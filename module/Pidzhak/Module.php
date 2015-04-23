@@ -106,6 +106,9 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
             ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')->allow('seller', 'order-rest')
             ->allow('redactor', 'redactor')
+            ->allow('redactor', 'order')->allow('redactor', 'order-rest')
+            ->allow('redactor', 'orderclothes')->allow('redactor', 'orderclothes-rest')
+
             ->allow('accountant', 'accountant')
             ->allow('director', 'director')
             ->allow('delivery', 'delivery')

@@ -116,6 +116,7 @@ class OrderController extends AbstractActionController
         $order_form_id = 0;
         $order_error = "";
         $customer_id = (int)$this->params()->fromRoute('id', 0);
+        $orderclothesform = 0;
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $form = new OrderForm($dbAdapter);

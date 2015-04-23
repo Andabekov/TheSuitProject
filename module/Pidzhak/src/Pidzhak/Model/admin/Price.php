@@ -51,14 +51,16 @@ class Price implements InputFilterAwareInterface
                 'name'     => 'fabric_class',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'Int'),
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
                 ),
             ));
             $inputFilter->add(array(
                 'name'     => 'cloth_type',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'Int'),
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
                 ),
             ));
             $inputFilter->add(array(

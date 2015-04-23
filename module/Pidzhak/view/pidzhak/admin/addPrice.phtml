@@ -77,13 +77,18 @@ echo $this->form()->closeTag();
 <script>
     function submitAjax(){
         $.ajax({
-            url: '/prices/add',
+            url: '/prices/ajaxadd',
             type: 'POST',
             dataType: 'json',
             async: true,
             data: $("#newForm").serialize(),
             success: function (data) {
-                console.log(data);
+                $('.error').remove();
+                for (var prop in data) {
+                    if (data.hasOwnProperty(prop)) {
+                        $('input[name='+prop+']').after('<span class="error" style="color: red;">'+data[prop][0]+'</span>');
+                    }
+                }
             },
             error: function (data) {
                 console.log(data);

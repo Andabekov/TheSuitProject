@@ -95,4 +95,14 @@ class PriceForm extends Form
             }
         }
     }
+
+    public function getErrorAjax(){
+        foreach ($this->getElements() as $element) {
+            if ($element->getMessages()) {
+//                return $element->getName();;
+
+                return $element->getMessages();
+            }
+        }
+    }
 }
