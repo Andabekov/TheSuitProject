@@ -62,7 +62,8 @@ class CustomerForm extends Form
             'name' => 'mobilephone',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id' => 'mobilephone'
             ),
             'options' => array(
                 'label' => 'Мобильный телефон',

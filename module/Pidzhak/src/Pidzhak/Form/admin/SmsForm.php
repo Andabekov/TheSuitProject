@@ -35,7 +35,8 @@ class SmsForm extends Form
             'name' => 'number',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id' => 'number'
             ),
             'options' => array(
                 'label' => 'Номер получателя',
