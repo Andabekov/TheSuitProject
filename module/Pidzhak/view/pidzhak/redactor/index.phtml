@@ -14,22 +14,23 @@
 </div>
 
 <div class="col-md-9">
-    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+    <table id="ordercloth-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
 
-            <th data-column-id="order_number">Номер заказа</th>
+            <th data-type="numeric" data-column-id="order_id">Номер заказа</th>
             <th data-column-id="client_name">Клиент</th>
             <th data-column-id="cloth">Изделие</th>
             <th data-column-id="fabric_class">Класс ткани</th>
-            <th data-column-id="fabric_num">Номер ткани</th>
-            <th data-column-id="cycle_num">Номер цикла</th>
+            <th data-type="numeric" data-column-id="fabric_num">Номер ткани</th>
+            <th data-type="numeric" data-column-id="cycle_num">Номер цикла</th>
             <th data-column-id="dateofsale">Дата продажи</th>
             <th data-column-id="name" data-order="desc">Продовец</th>
             <th data-column-id="status" data-order="desc">Статус</th>
             <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
 
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
         </thead>
     </table>
@@ -38,7 +39,7 @@
 <script>
     $(function () {
         function init() {
-            $("#order-grid").bootgrid({
+            var grid = $("#ordercloth-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -46,7 +47,36 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
                     };
                 },
-                url: "/restorder"
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default enterCodes\" data-row-id=\"" + row.id + "\">Ввести коды</button><br />" +
+                            "<button type=\"button\" class=\"btn btn-xs btn-default checkCodes\" data-row-id=\"" + row.id + "\">Просмотреть коды</button> <br />"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-default presubmit\" data-row-id=\"" + row.id + "\">Presubmit</button> ";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    window.location="clients/edit/"+$(this).data("row-id");
+                }).end().find(".checkCodes").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
+                        if(result){
+                            $.post( "clients/delete/"+myId, { id: myId } ).done(function( data ) {
+                                $('#ordercloth-grid').bootgrid('reload');
+                            });
+                        };
+                    });
+                });
             });
         }
         init();
