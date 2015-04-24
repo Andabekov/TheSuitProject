@@ -10,7 +10,7 @@ namespace Pidzhak\Controller\admin;
 
 use Pidzhak\Form\admin\SmsForm;
 use Pidzhak\Model\admin\Sms;
-use Pidzhak\Sms\SmsXmlParser;
+use Pidzhak\Sms\SmsUtil;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -41,31 +41,7 @@ class SmsController extends AbstractActionController
 
             if ($form->isValid()) {
                 $sms->exchangeArray($form->getData());
-                $this->getSmsTable()->saveSms($sms);
-                $lastInsertedSms = $this->getSmsTable()->insertedSms();
-
-                $saved_sms = $this->getSmsTable()->getSms($lastInsertedSms);
-
-                if($saved_sms==null)
-                    return $this->redirect()->toRoute('sms');
-
-
-                $numbers_array = SmsXmlParser::add_numbers_to_send_sms($sms->number, $lastInsertedSms);
-
-                $send_xml = SmsXmlParser::buildSendSms($saved_sms->text, $numbers_array);
-
-                $response_xml = SmsXmlParser::sendSmsToUrl($send_xml);
-
-                $RESPONSE = SmsXmlParser::parseResponseXml($response_xml);
-
-                if($RESPONSE==null)
-                    return $this->redirect()->toRoute('sms');
-
-                $saved_sms->first_status = $RESPONSE->status;
-                $saved_sms->credits = $RESPONSE->credits;
-
-                $this->getSmsTable()->saveSms($saved_sms);
-
+                SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
                 return $this->redirect()->toRoute('sms');
             }else {
                 $form->highlightErrorElements();
