@@ -20,6 +20,8 @@ class SmsXmlParser
     private static $username = 'pidzhakkz';
     private static $password = 'eRywRApQ';
     private static $sender = 'MESSAGE';
+    private static $header = 'Бутик "Smoking"
+    ';
 
     public static function testXml()
     {
@@ -164,8 +166,10 @@ XML;
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <message/>
 XML;
+        $text = self::$header.$text;
         $message = new SimpleXMLElement($message_xml);
         $message->addChild("sender", $sender);
+
         $message->addChild("text", $text);
         return $message;
     }
