@@ -40,9 +40,11 @@ class OrderClothesTable
             $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
 
 
-        $where = new  Where();
-        $where->equalTo('order_id', $order_id);
-        $select->where($where);
+        if ($order_id != -1) {
+            $where = new  Where();
+            $where->equalTo('order_id', $order_id);
+            $select->where($where);
+        }
 
         //you can check your query by echo-ing :
         // echo $select->getSqlString();
