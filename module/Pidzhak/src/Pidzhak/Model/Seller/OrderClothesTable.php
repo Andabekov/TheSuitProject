@@ -34,7 +34,7 @@ class OrderClothesTable
             $select->offset(0);
         else
             $select->limit($rowCount)->offset($offset);
-        $select->order($orderby);
+        //$select->order($orderby);
 
         /*if($searchPhrase)
             $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
