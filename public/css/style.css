@@ -301,3 +301,7 @@ a.active {
     padding-top: 2px;
     padding-bottom: 2px;
 }
+
+.enterCodes, .checkCodes {
+    margin-bottom: 5px;
+}
