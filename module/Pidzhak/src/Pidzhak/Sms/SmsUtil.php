@@ -24,6 +24,7 @@ class SmsUtil {
         $numbers_array = SmsXmlParser::add_numbers_to_send_sms($sms->number, $lastInsertedSms);
 
         $send_xml = SmsXmlParser::buildSendSms($saved_sms->text, $numbers_array);
+        $saved_sms->send_sms_xml = $send_xml;
 
         $response_xml = SmsXmlParser::sendSmsToUrl($send_xml);
 

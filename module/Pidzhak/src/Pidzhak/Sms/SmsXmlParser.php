@@ -21,7 +21,7 @@ class SmsXmlParser
     private static $password = 'eRywRApQ';
     private static $sender = 'MESSAGE';
     private static $header = 'Бутик "Smoking"
-    ';
+';
 
     public static function testXml()
     {
