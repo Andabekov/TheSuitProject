@@ -30,13 +30,15 @@ class UploadForm extends Form
     {
         $inputFilter = new InputFilter();
 
+
+
         // File Input
         $fileInput = new FileInput('excel-file');
         $fileInput->setRequired(true);
         $fileInput->getFilterChain()->attachByName(
             'filerenameupload',
             array(
-                'target'    => './data/tmpuploads/avatar.png',
+                'target'    => getcwd().'/data/excelstocmp/excel.xls',
                 'randomize' => true,
             )
         );

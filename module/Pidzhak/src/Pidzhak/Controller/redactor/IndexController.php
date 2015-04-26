@@ -17,7 +17,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        if (! $this->getServiceLocator()->get('AuthService')->hasIdentity()){
+        if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
             return $this->redirect()->toRoute('pidzhak');
         }
 
@@ -26,28 +26,34 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
-    public function compareAction(){
+    public function compareAction()
+    {
         $form = new UploadForm('upload-form');
+        $tempFile = null;
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            // Make certain to merge the files info!
-            $post = array_merge_recursive(
-                $request->getPost()->toArray(),
-                $request->getFiles()->toArray()
-            );
-
-            $form->setData($post);
+        $prg = $this->fileprg($form);
+        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
+            return $prg; // Return PRG redirect response
+        } elseif (is_array($prg)) {
             if ($form->isValid()) {
                 $data = $form->getData();
-//                var_dump("<br>");
-                //var_dump($data);
+                var_dump("<cr>");
+                var_dump($data);
                 // Form is valid, save the form!
-                //return $this->redirect()->toRoute('re');
+                //return $this->redirect()->toRoute('upload-form/success');
+            } else {
+                // Form not valid, but file uploads might be valid...
+                // Get the temporary file information to show the user in the view
+                $fileErrors = $form->get('excel-file')->getMessages();
+                if (empty($fileErrors)) {
+                    $tempFile = $form->get('excel-file')->getValue();
+                }
             }
         }
 
-        $view = new ViewModel(array('form' => $form));
+        $view = new ViewModel(array('form' => $form,
+                                    'tempFile' => $tempFile,)
+        );
         $view->setTemplate('pidzhak/redactor/upload-form.phtml');
         return $view;
     }
