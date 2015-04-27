@@ -9,6 +9,7 @@
 
 namespace Pidzhak\Controller\redactor;
 
+use PHPExcel_IOFactory;
 use Pidzhak\Form\Redactor\UploadForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -39,6 +40,9 @@ class IndexController extends AbstractActionController
                 $data = $form->getData();
                 var_dump("<cr>");
                 var_dump($data);
+                $file_name = $data['excel-file']['tmp_name'];
+                $xls_data = $this->excelReader($file_name);
+                echo $xls_data;
                 // Form is valid, save the form!
                 //return $this->redirect()->toRoute('upload-form/success');
             } else {
@@ -52,9 +56,36 @@ class IndexController extends AbstractActionController
         }
 
         $view = new ViewModel(array('form' => $form,
-                                    'tempFile' => $tempFile,)
+                'tempFile' => $tempFile,)
         );
         $view->setTemplate('pidzhak/redactor/upload-form.phtml');
         return $view;
+    }
+
+
+    private function excelReader($filename)
+    {
+        $result_str = '';
+        if (!file_exists($filename)){
+            return $result_str;
+
+        }
+
+        $objPHPExcel = PHPExcel_IOFactory::load($filename);
+
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+
+            foreach ($worksheet->getRowIterator() as $row) {
+
+                $cellIterator = $row->getCellIterator();
+                foreach ($cellIterator as $cell) {
+                    if (!is_null($cell)) {
+                        $result_str = $result_str .$cell->getCalculatedValue()." ";
+                    }
+                }
+            }
+        }
+
+        return $result_str;
     }
 }

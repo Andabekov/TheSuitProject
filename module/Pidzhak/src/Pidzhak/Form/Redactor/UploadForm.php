@@ -21,7 +21,7 @@ class UploadForm extends Form
     {
         // File Input
         $file = new Element\File('excel-file');
-        $file->setLabel('Avatar Excel Upload')
+        $file->setLabel('Excel Upload')
             ->setAttribute('id', 'excel-file');
         $this->add($file);
     }
