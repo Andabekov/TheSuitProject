@@ -186,3 +186,37 @@
         <?php echo $this->formSubmit($cform->get('orderclothescancel')); ?>
     </div>
 </div>
+
+<script>
+    function resetMonograms(){
+        switch ($('select[name=product_id]').val()){
+            case '1': showMonograms();  break;
+            case '2': hideMonograms(); break;
+            case '3': showMonograms(); break;
+            case '4': hideMonograms(); break;
+            case '5': showMonograms(); break;
+        }
+    }
+
+    function showMonograms(){
+        $('input[name=first_monogram_location]').parent().parent().show();
+        $('input[name=first_monogram_font]').parent().parent().show();
+        $('input[name=first_monogram_font_color]').parent().parent().show();
+        $('input[name=first_monogram_caption]').parent().parent().show();
+        $('input[name=second_monogram_location]').parent().parent().show();
+        $('input[name=second_monogram_font]').parent().parent().show();
+        $('input[name=second_monogram_font_color]').parent().parent().show();
+        $('input[name=second_monogram_caption]').parent().parent().show();
+    }
+
+    function hideMonograms(){
+        $('input[name=first_monogram_location]').parent().parent().hide();
+        $('input[name=first_monogram_font]').parent().parent().hide();
+        $('input[name=first_monogram_font_color]').parent().parent().hide();
+        $('input[name=first_monogram_caption]').parent().parent().hide();
+        $('input[name=second_monogram_location]').parent().parent().hide();
+        $('input[name=second_monogram_font]').parent().parent().hide();
+        $('input[name=second_monogram_font_color]').parent().parent().hide();
+        $('input[name=second_monogram_caption]').parent().parent().hide();
+    }
+</script>

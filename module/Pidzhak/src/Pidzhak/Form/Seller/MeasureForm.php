@@ -40,12 +40,9 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'growth_1',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
             'options' => array(
                 'label' => 'Рост',
@@ -53,12 +50,9 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'weight_1',
-            'type' => 'number',
+            'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
             'options' => array(
                 'label' => 'Вес',
@@ -378,22 +372,16 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'growth_2',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
             'name' => 'weight_2',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
@@ -627,22 +615,16 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'growth_3',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
             'name' => 'weight_3',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
@@ -867,22 +849,16 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'growth_4',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
             'name' => 'weight_4',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
@@ -1112,22 +1088,16 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'growth_5',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(
             'name' => 'weight_5',
-            'type' => 'number',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'min' => '0',
-                'max' => '1000',
-                'step' => '1',
             ),
         ));
         $this->add(array(

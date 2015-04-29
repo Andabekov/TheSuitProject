@@ -34,7 +34,8 @@ class OrderClothesForm extends Form
             'name' => 'product_id',
             'type' => 'Select',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'onchange' => 'resetMonograms()'
             ),
             'options' => array(
                 'label' => 'Наименование изделия',
