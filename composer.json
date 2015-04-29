@@ -11,6 +11,7 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "~2.3",
         "doctrine/lexer": "1.*",
-        "doctrine/common": ">=2.1"
+        "doctrine/common": ">=2.1",
+        "phpoffice/phpexcel": "1.7.*"
     }
 }
