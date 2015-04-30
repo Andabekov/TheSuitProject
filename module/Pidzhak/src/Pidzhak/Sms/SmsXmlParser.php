@@ -195,18 +195,18 @@ XML;
 XML;
         $numbers = new SimpleXMLElement($numbers_xml);
         foreach ($numberMapsArray as $numberMaps) {
-            if (empty($numberMaps[number])) throw new SmsException("number is not passed");
-            if (empty($numberMaps[messageID])) throw new SmsException("messageID is not passed!!!");
-            $number = $numbers->addChild("number", $numberMaps[number]);
-            $number->addAttribute("messageID", $numberMaps[messageID]);
-            if (!empty($numberMaps[variables]))
-                $number->addAttribute("variables", $numberMaps[variables]);
+            if (empty($numberMaps['number'])) throw new SmsException("number is not passed");
+            if (empty($numberMaps['messageID'])) throw new SmsException("messageID is not passed!!!");
+            $number = $numbers->addChild("number", $numberMaps['number']);
+            $number->addAttribute("messageID", $numberMaps['messageID']);
+            if (!empty($numberMaps['variables']))
+                $number->addAttribute("variables", $numberMaps['variables']);
         }
         return $numbers;
     }
 
 
-    public function buildSendSms($text, $numberMapsArray)
+    public static function buildSendSms($text, $numberMapsArray)
     {
         $SMS_xml = <<<XML
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -273,9 +273,9 @@ XML;
     public static function add_numbers_to_send_sms($number, $messageID, $variables = null, $numbers_array = array())
     {
         $num_arr = array(
-            number => $number,
-            messageID => $messageID,
-            variables => $variables
+            'number' => $number,
+            'messageID' => $messageID,
+            'variables' => $variables
         );
         array_push($numbers_array, $num_arr);
 

@@ -1,8 +1,6 @@
 <?php
-$title = 'Add new order clothes';
-$this->headTitle($title);
 ?>
-    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <h1>Добавить новое изделие</h1>
 <?php
 $form->setAttribute('action', $this->url('orderclothes', array('action' => 'add')));
 $form->setAttribute('class', 'form-horizontal');

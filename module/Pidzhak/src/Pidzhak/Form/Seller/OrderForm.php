@@ -38,7 +38,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Дата продажи',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -51,7 +51,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество костюмов',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -64,7 +64,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество сорочек',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -77,7 +77,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество жилеток',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -90,7 +90,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество пальто',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -103,7 +103,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество брюк',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -116,7 +116,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество сорочек',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -129,7 +129,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество пиджаков',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -142,7 +142,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество бабочек',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -155,7 +155,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Количество кушаков',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -167,7 +167,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Город продажи',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -178,7 +178,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Место продажи',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -190,7 +190,7 @@ class OrderForm extends Form
             ),
             'options' => array(
                 'label' => 'Продавец',
-                'label_attributes' => array('class' => 'control-label col-xs-2'),
+//                'label_attributes' => array('class' => 'control-label col-xs-2'),
                 'empty_option' => 'Выберите продовца',
                 'value_options' => $this->getSellersForSelect(),
             )

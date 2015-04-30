@@ -39,36 +39,39 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Наименование изделия',
-                'label_attributes' => array('class' => 'control-label col-xs-2'),
+//            'label_attributes' => array('class' => 'control-label col-xs-2'),
                 'empty_option' => 'Выберите изделия',
                 'value_options' => $this->getProductsForSelect(),
             ),
         ));
 
         $this->add(array(
-            'name' => 'cycle_id',
-            'type' => 'Select',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Номер цикла',
-                'label_attributes' => array('class' => 'control-label col-xs-2'),
-                'empty_option' => 'Выберите цикл',
-                'value_options' => $this->getCycleForSelect(),
-            ),
-        ));
+        'name' => 'cycle_id',
+        'type' => 'Select',
+        'attributes' => array(
+            'class' => 'form-control',
+            'onchange' => 'changeCycleDate()'
+        ),
+        'options' => array(
+            'label' => 'Номер цикла',
+//            'label_attributes' => array('class' => 'control-label col-xs-2'),
+            'empty_option' => 'Выберите цикл',
+            'value_options' => $this->getCycleForSelect(),
+        ),
+    ));
 
         $this->add(array(
             'name' => 'cycle_date',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
                 'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Дата прибытие по циклу',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите цикл',
+                'value_options' => $this->getCycleDates(),
             ),
         ));
 
@@ -80,7 +83,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Предпочтительная дата выдачи',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -92,7 +95,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Номер ткани',
-                'label_attributes' => array('class' => 'control-label col-xs-2'),
+//                'label_attributes' => array('class' => 'control-label col-xs-2'),
                 'empty_option' => 'Выберите материал',
                 'value_options' => $this->getTextileForSelect(),
             ),
@@ -106,7 +109,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Класс Ткани',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -117,7 +120,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Фактическая сумма оплаты в тенге*',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -129,7 +132,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Способ оплаты',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -141,7 +144,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Вид замера',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -153,7 +156,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Этикетка бранда',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -164,7 +167,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Номер стиля',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -175,7 +178,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '1. Монограм (расположение)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -186,7 +189,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '1. Монограм (шрифт)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -197,7 +200,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '1. Монограм (цвет шрифта)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -208,7 +211,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '1. Монограм (Надпись)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -219,7 +222,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '2. Монограм (расположение)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -230,7 +233,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '2. Монограм (шрифт)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -241,7 +244,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '2. Монограм (цвет шрифта)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -252,7 +255,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => '2. Монограм (Надпись)',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
@@ -263,7 +266,7 @@ class OrderClothesForm extends Form
             ),
             'options' => array(
                 'label' => 'Комментарии Продавца',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
 
@@ -274,7 +277,7 @@ class OrderClothesForm extends Form
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'orderclothessubmit',
-                'class' => 'btn btn-default'
+                'class' => 'btn btn-primary'
             ),
         ));
 
@@ -322,7 +325,7 @@ class OrderClothesForm extends Form
     {
 
         $dbAdapter = $this->adapter;
-        $sql       = 'SELECT id FROM cyclestable ORDER BY id ASC';
+        $sql       = 'SELECT id FROM cyclestable where CURDATE()<=order_accept_finish_date ORDER BY id ASC';
         $statement = $dbAdapter->query($sql);
         $result    = $statement->execute();
 
@@ -346,6 +349,20 @@ class OrderClothesForm extends Form
 
         foreach ($result as $res) {
             $selectData[$res['id']] = $res['id'];
+        }
+        return $selectData;
+    }
+
+    public function getCycleDates(){
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id, arrive_deadline_date FROM cyclestable where CURDATE()<=order_accept_finish_date ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['arrive_deadline_date'];
         }
         return $selectData;
     }

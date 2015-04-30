@@ -305,3 +305,8 @@ a.active {
 .enterCodes, .checkCodes {
     margin-bottom: 5px;
 }
+
+.myTable td{
+    padding-right: 20px;
+    padding-bottom: 3px;
+}

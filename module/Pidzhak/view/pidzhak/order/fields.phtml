@@ -1,116 +1,120 @@
-<div class="form-group">
-    <?php $element = $form->get('dateofsale'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formDate($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
+<table class="myTable">
 
-<div class="form-group">
-    <?php $element = $form->get('number_of_costumes'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
+    <tr>
+        <td>
+            <?php $element = $form->get('dateofsale'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formDate($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_costumes'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_shirts'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_vests'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_coats'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_trousers'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_shirts'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_jacket'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_butterflies'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('number_of_sash'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('cityofsale'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('pointofsale'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    
+    <tr>
+        <td>
+            <?php $element = $form->get('seller_id'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
 
-<div class="form-group">
-    <?php $element = $form->get('number_of_shirts'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_vests'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_coats'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_trousers'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_shirts'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_jacket'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_butterflies'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('number_of_sash'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('cityofsale'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('pointofsale'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
-
-<div class="form-group">
-    <?php $element = $form->get('seller_id'); ?>
-    <?php echo $this->formLabel($element); ?>
-    <div class="col-xs-10">
-        <?php echo $this->formSelect($element); ?>
-    </div>
-    <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-</div>
+<table>

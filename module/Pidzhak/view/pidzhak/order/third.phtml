@@ -46,10 +46,8 @@ if ($orderclothesform) { ?>
     <div class="col-md-9">
 
         <?php
-        $title = 'Add new order clothes';
-        $this->headTitle($title);
         ?>
-        <h1><?php echo $this->escapeHtml($title); ?></h1>
+        <h1>Добавить новое изделие</h1>
         <?php
         echo $this->formHidden($cform->get('c_id'));
         echo $this->formHidden($cform->get('order_id'));
