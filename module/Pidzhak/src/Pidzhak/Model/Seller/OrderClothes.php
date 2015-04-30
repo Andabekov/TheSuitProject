@@ -78,6 +78,11 @@ class OrderClothes  implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $this->inputFilter = $inputFilter;
+            $this->inputFilter->add(array(
+                'name' => 'cycle_date',
+                'required' => false,
+            ));
+
         }
 
         return $this->inputFilter;
