@@ -1,0 +1,29 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 01/05/2015
+ * Time: 15:24
+ */
+?>
+
+<div class="header">
+    Ввести КОДы
+</div>
+
+<div>
+    Данные, которые вводил продавец
+</div>
+
+<?php
+$form->setAttribute('action', $this->url('cycles', array('action' => 'add')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+<!---->
+<?php
+echo $this->form()->closeTag();
+//?>

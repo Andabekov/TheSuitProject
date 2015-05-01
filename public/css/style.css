@@ -310,3 +310,11 @@ a.active {
     padding-right: 20px;
     padding-bottom: 3px;
 }
+
+.redactorColumnBtn{
+    text-align: center;
+    width: 130px !important;
+}
+.redactorNumColumns{
+    max-width: 85px !important;
+}
