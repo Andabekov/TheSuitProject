@@ -2,6 +2,7 @@
 namespace Pidzhak\Model\Seller;
 
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
@@ -29,7 +30,17 @@ class OrderClothesTable
         $select->from($this->tableGateway->table)
             ->join('clothers', 'orderclothes.product_id = clothers.id')
             ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
-            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
+            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id')
+            ->join('clothstatustable', 'orderclothes.status_id = clothstatustable.id')
+            ->join('ordertable', 'orderclothes.order_id = ordertable.id')
+            ->join('userstable', 'ordertable.seller_id = userstable.id')
+            ->join('customer', 'ordertable.customer_id = customer.id')
+            ->columns(array(
+                '*', new Expression("CONCAT(customer.firstname, ' ' , customer.lastname) as customer_full_name,
+                                    CONCAT(userstable.name, ' ' , userstable.surname) as seller_full_name,
+                                    orderclothes.id as my_id")
+            ))
+        ;
         if ($rowCount < 0)
             $select->offset(0);
         else

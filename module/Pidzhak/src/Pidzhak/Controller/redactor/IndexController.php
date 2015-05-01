@@ -11,6 +11,7 @@ namespace Pidzhak\Controller\redactor;
 
 use PHPExcel_IOFactory;
 use Pidzhak\Form\Redactor\UploadForm;
+use Pidzhak\Form\Seller\OrderClothesForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -24,6 +25,41 @@ class IndexController extends AbstractActionController
 
         $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
         $view->setTemplate('pidzhak/redactor/index.phtml');
+        return $view;
+    }
+
+    public function entercodesAction(){
+
+        $form = new OrderClothesForm();
+        $form->get('submit')->setValue('Добавить');
+
+        $request = $this->getRequest();
+
+        $view = new ViewModel(array(
+                'form' => $form,
+            )
+        );
+        $view->setTemplate('pidzhak/redactor/enterCodes.phtml');
+        return $view;
+    }
+
+    public function watchcodesAction(){
+        $view = new ViewModel(array(
+//                'form' => $form,
+//                'back' => '/clients',
+            )
+        );
+        $view->setTemplate('pidzhak/redactor/watchCodes.phtml');
+        return $view;
+    }
+
+    public function comparecodesAction(){
+        $view = new ViewModel(array(
+//                'form' => $form,
+//                'back' => '/clients',
+            )
+        );
+        $view->setTemplate('pidzhak/redactor/compareCodes.phtml');
         return $view;
     }
 

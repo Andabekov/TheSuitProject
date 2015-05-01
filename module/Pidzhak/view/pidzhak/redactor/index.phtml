@@ -18,25 +18,26 @@
            data-keep-selection="true">
         <thead>
         <tr>
-
-            <th data-type="numeric" data-column-id="order_id">Номер заказа</th>
-            <th data-column-id="client_name">Клиент</th>
-            <th data-column-id="product_id">Изделие</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
             <th data-column-id="fabric_class">Класс ткани</th>
-            <th data-type="numeric" data-column-id="textile_id">Номер ткани</th>
-            <th data-type="numeric" data-column-id="cycle_id">Номер цикла</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
             <th data-column-id="dateofsale">Дата продажи</th>
-            <th data-column-id="name" data-order="desc">Продовец</th>
-            <th data-column-id="status" data-order="desc">Статус</th>
+            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>
+            <th data-column-id="status_name" data-order="desc">Статус</th>
             <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
 
-            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+            <th data-header-css-class="redactorColumnBtn" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
         </thead>
     </table>
 </div>
 
 <script>
+    var test;
+
     $(function () {
         function init() {
             var grid = $("#ordercloth-grid").bootgrid({
@@ -52,9 +53,9 @@
                 formatters: {
                     "commands": function(column, row)
                     {
-                        return "<button type=\"button\" class=\"btn btn-xs btn-default enterCodes\" data-row-id=\"" + row.id + "\">Ввести коды</button><br />" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-default checkCodes\" data-row-id=\"" + row.id + "\">Просмотреть коды</button> <br />"+
-                            "<button type=\"button\" class=\"btn btn-xs btn-default presubmit\" data-row-id=\"" + row.id + "\">Presubmit</button> ";
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default enterCodes\" data-row-id=\"" + row.my_id + "\">Ввести коды</button><br />" +
+                            "<button type=\"button\" class=\"btn btn-xs btn-default checkCodes\" data-row-id=\"" + row.my_id + "\">Просмотреть коды</button> <br />"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-default presubmit\" data-row-id=\"" + row.my_id + "\">Presubmit</button> ";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()
@@ -62,15 +63,27 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".enterCodes").on("click", function(e)
                 {
-                    window.location="clients/edit/"+$(this).data("row-id");
+                    window.location="redactor/entercodes/"+$(this).data("row-id");
                 }).end().find(".checkCodes").on("click", function(e)
+                {
+                    window.location="redactor/watchcodes/"+$(this).data("row-id");
+                }).end().find(".presubmit").on("click", function(e)
                 {
                     myId=$(this).data("row-id");
                     bootbox.setDefaults({
                         locale: "ru",
                         className: "my-modal"
                     });
-                    bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
+                    bootbox.confirm("" +
+                        "Подтверждаю, что обработал изделие: " +
+                        "<ul>" +
+                            "<li>Преобразил изделие в системные коды</li>" +
+                            "<li>Ткань в наличии на фабрике (заказал ткань и она доступна)</li>" +
+                            "<li>Ввел коды в систему фабрики</li>" +
+                            "<li>Конфликты в кодах устранил</li>" +
+                            "<li>Сделал Presubmit. Ошибки не были найдены</li>" +
+                        "</ul>"
+                        , function(result) {
                         if(result){
                             $.post( "clients/delete/"+myId, { id: myId } ).done(function( data ) {
                                 $('#ordercloth-grid').bootgrid('reload');
