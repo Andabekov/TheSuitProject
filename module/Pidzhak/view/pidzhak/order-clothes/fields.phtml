@@ -56,10 +56,10 @@
 </div>
 
 <div class="form-group">
-    <?php $element = $form->get('style_number'); ?>
+    <?php $element = $form->get('style_id'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formSelect($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>

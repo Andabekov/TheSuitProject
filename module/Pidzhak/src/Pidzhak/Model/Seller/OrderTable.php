@@ -75,7 +75,7 @@ class OrderTable
         $data = array(
             'customer_id' => $order->customer_id,
             'dateofsale' => $order->dateofsale,
-            'cityofsale' => $order->cityofsale,
+            'cityofsale_id' => $order->cityofsale_id,
             'pointofsale' => $order->pointofsale,
             'seller_id' => $order->seller_id,
             'status' => $order->status,

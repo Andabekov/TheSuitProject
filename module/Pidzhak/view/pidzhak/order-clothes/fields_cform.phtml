@@ -50,7 +50,7 @@
             <?php $element = $cform->get('textile_class'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
@@ -65,10 +65,10 @@
 
     <tr>
         <td>
-            <?php $element = $cform->get('paytype'); ?>
+            <?php $element = $cform->get('paytype_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
@@ -77,7 +77,7 @@
             <?php $element = $cform->get('typeof_measure'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
@@ -86,16 +86,16 @@
             <?php $element = $cform->get('label_brand'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
     <tr>
         <td>
-            <?php $element = $cform->get('style_number'); ?>
+            <?php $element = $cform->get('style_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
@@ -228,5 +228,9 @@
 
     function changeCycleDate(){
         $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
+    }
+
+    function changeTextile(){
+        $('select[name=textile_class]').val($('select[name=textile_id]').val());
     }
 </script>

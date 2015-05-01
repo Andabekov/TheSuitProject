@@ -58,21 +58,20 @@ if ($orderclothesform) { ?>
     </div>
 <?php } ?>
 
-<?php
-echo $this->form()->closeTag();
-?>
 
 <?php
 if (!$orderclothesform) { ?>
     <div class="col-md-9">
-        <?php echo $this->form()->openTag($form);
-        echo $this->formHidden($order_form_id_elem); ?>
         <input type='submit' name='addclothessubmit' id='addclothessubmit' class='btn btn-default addClothes'
                value='Добавить изделия'/>
-        <?php echo $this->form()->closeTag(); ?>
         <?= $this->render('third_list_clothes.phtml') ?>
     </div>
 <?php } ?>
+
+
+<?php
+echo $this->form()->closeTag();
+?>
 
 
 <?php

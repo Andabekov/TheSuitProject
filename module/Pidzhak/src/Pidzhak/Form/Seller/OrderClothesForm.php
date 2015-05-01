@@ -91,7 +91,8 @@ class OrderClothesForm extends Form
             'name' => 'textile_id',
             'type' => 'Select',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'onchange' => 'changeTextile()'
             ),
             'options' => array(
                 'label' => 'Номер ткани',
@@ -102,14 +103,16 @@ class OrderClothesForm extends Form
         ));
         $this->add(array(
             'name' => 'textile_class',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
                 'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Класс Ткани',
-//                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2'
+                'empty_option' => 'Выберите ткань',
+                'value_options' => $this->getTextiles(),
             ),
         ));
         $this->add(array(
@@ -125,48 +128,61 @@ class OrderClothesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'paytype',
-            'type' => 'Text',
+            'name' => 'paytype_id',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Способ оплаты',
 //                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'empty_option' => 'Выберите тип оплаты',
+                'value_options' => $this->getTableForSelect('paymenttypes', 'id', 'payment_type_name'),
             ),
         ));
 
         $this->add(array(
             'name' => 'typeof_measure',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Вид замера',
 //                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
+                'empty_option' => 'Выберите вид замера',
+                'value_options' => array(
+                    '1' => 'По фигуре',
+                    '2' => 'По изделию',
+                ),
+           ),
         ));
 
         $this->add(array(
             'name' => 'label_brand',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Этикетка бранда',
 //                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'value_options' => array(
+                    '1' => 'Да',
+                    '2' => 'Нет',
+                ),
             ),
         ));
         $this->add(array(
-            'name' => 'style_number',
-            'type' => 'Text',
+            'name' => 'style_id',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Номер стиля',
+                'empty_option' => 'Выберите номер стиля',
+                'value_options' => $this->getTableForSelect('stylestable', 'id', 'style_code'),
 //                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -363,6 +379,39 @@ class OrderClothesForm extends Form
 
         foreach ($result as $res) {
             $selectData[$res['id']] = $res['arrive_deadline_date'];
+        }
+        return $selectData;
+    }
+
+
+    public function getTextiles()
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id, fabric_class FROM fabricstable ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['fabric_class'];
+        }
+        return $selectData;
+    }
+
+    public function getTableForSelect($table, $idcolumn, $valuecolumn )
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT  '.$idcolumn.', '.$valuecolumn.' FROM '.$table.'';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res[$idcolumn]] = $res[$valuecolumn];
         }
         return $selectData;
     }

@@ -165,10 +165,12 @@ class OrderController extends AbstractActionController
             }
 
             if (!empty($request->getPost()['addclothessubmit'])) {
-                if(!$form->isValid()){
+                if($form->isValid()){
+                    $orderclothesform = 1;
+                }else{
+                    $orderclothesform = 0;
                     $form->highlightErrorElements();
                 }
-                $orderclothesform = 1;
             }
 
             if (!empty($request->getPost()['sendordersubmit'])) {
