@@ -318,3 +318,9 @@ a.active {
 .redactorNumColumns{
     max-width: 85px !important;
 }
+.subHeader{
+    font-weight: bold;
+    padding-bottom: 10px;
+    font-size: 16px;
+    text-decoration: underline;
+}

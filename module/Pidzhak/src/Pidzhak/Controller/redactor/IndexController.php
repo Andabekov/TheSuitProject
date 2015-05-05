@@ -10,13 +10,17 @@
 namespace Pidzhak\Controller\redactor;
 
 use PHPExcel_IOFactory;
+use Pidzhak\Form\redactor\SystemCodeForm;
 use Pidzhak\Form\Redactor\UploadForm;
-use Pidzhak\Form\Seller\OrderClothesForm;
+use Pidzhak\Form\Redactor\OrderClothesForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+
+    protected $orderclothesTable;
+
     public function indexAction()
     {
         if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
@@ -30,13 +34,29 @@ class IndexController extends AbstractActionController
 
     public function entercodesAction(){
 
-        $form = new OrderClothesForm();
-        $form->get('submit')->setValue('Добавить');
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+
+        try {
+            $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
+        }
+        catch (\Exception $ex) {
+            return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+        }
+
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form  = new OrderClothesForm($dbAdapter);
+        $form->bind($orderclothes);
+
+        $sc_form = new SystemCodeForm();
 
         $request = $this->getRequest();
 
+
         $view = new ViewModel(array(
                 'form' => $form,
+                'sc_form' => $sc_form,
             )
         );
         $view->setTemplate('pidzhak/redactor/enterCodes.phtml');
@@ -123,5 +143,14 @@ class IndexController extends AbstractActionController
         }
 
         return $result_str;
+    }
+
+    public function getOrderClothesTable()
+    {
+        if (!$this->orderclothesTable) {
+            $sm = $this->getServiceLocator();
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+        }
+        return $this->orderclothesTable;
     }
 }
