@@ -160,14 +160,16 @@ class OrderForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'cityofsale',
-            'type' => 'Text',
+            'name' => 'cityofsale_id',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Город продажи',
-//                'label_attributes' => array('class' => 'control-label col-xs-2')
+//                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Выберите город',
+                'value_options' => $this->getTableForSelect('citiestable', 'id', 'city_name'),
             ),
         ));
         $this->add(array(
@@ -232,6 +234,21 @@ class OrderForm extends Form
 
         foreach ($result as $res) {
             $selectData[$res['id']] = $res['name'].$res['surname'];
+        }
+        return $selectData;
+    }
+    public function getTableForSelect($table, $idcolumn, $valuecolumn )
+    {
+
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT  '.$idcolumn.', '.$valuecolumn.' FROM '.$table.'';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res[$idcolumn]] = $res[$valuecolumn];
         }
         return $selectData;
     }

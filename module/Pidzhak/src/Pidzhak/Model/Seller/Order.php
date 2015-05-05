@@ -10,7 +10,7 @@ class Order  implements InputFilterAwareInterface
     public $id;
     public $customer_id;
     public $dateofsale;
-    public $cityofsale;
+    public $cityofsale_id;
     public $pointofsale;
     public $seller_id;
     public $status;
@@ -20,7 +20,7 @@ class Order  implements InputFilterAwareInterface
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
         $this->customer_id = (!empty($data['customer_id'])) ? $data['customer_id'] : null;
         $this->dateofsale = (!empty($data['dateofsale'])) ? $data['dateofsale'] : null;
-        $this->cityofsale = (!empty($data['cityofsale'])) ? $data['cityofsale'] : null;
+        $this->cityofsale_id = (!empty($data['cityofsale_id'])) ? $data['cityofsale_id'] : null;
         $this->pointofsale = (!empty($data['pointofsale'])) ? $data['pointofsale'] : null;
         $this->seller_id = (!empty($data['seller_id'])) ? $data['seller_id'] : null;
         $this->status = (!empty($data['status'])) ? $data['status'] : null;

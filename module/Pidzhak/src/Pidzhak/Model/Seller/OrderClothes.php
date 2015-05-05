@@ -16,10 +16,10 @@ class OrderClothes  implements InputFilterAwareInterface
     //public $textile_class;
     public $pricelistnum;
     public $actual_amount;
-    public $paytype;
+    public $paytype_id;
     public $typeof_measure;
     public $label_brand;
-    public $style_number;
+    public $style_id;
     public $first_monogram_location;
     public $first_monogram_font;
     public $first_monogram_font_color;
@@ -44,11 +44,11 @@ class OrderClothes  implements InputFilterAwareInterface
         //$this->textile_class = (!empty($data['textile_class'])) ? $data['textile_class'] : null;
         $this->pricelistnum = (!empty($data['pricelistnum'])) ? $data['pricelistnum'] : null;
         $this->actual_amount = (!empty($data['actual_amount'])) ? $data['actual_amount'] : null;
-        $this->paytype = (!empty($data['paytype'])) ? $data['paytype'] : null;
+        $this->paytype_id = (!empty($data['paytype_id'])) ? $data['paytype_id'] : null;
         $this->textile_id = (!empty($data['textile_id'])) ? $data['textile_id'] : null;
         $this->typeof_measure = (!empty($data['typeof_measure'])) ? $data['typeof_measure'] : null;
         $this->label_brand = (!empty($data['label_brand'])) ? $data['label_brand'] : null;
-        $this->style_number = (!empty($data['style_number'])) ? $data['style_number'] : null;
+        $this->style_id = (!empty($data['style_id'])) ? $data['style_id'] : null;
         $this->first_monogram_location = (!empty($data['first_monogram_location'])) ? $data['first_monogram_location'] : null;
         $this->first_monogram_font = (!empty($data['first_monogram_font'])) ? $data['first_monogram_font'] : null;
         $this->first_monogram_font_color = (!empty($data['first_monogram_font_color'])) ? $data['first_monogram_font_color'] : null;
@@ -80,6 +80,10 @@ class OrderClothes  implements InputFilterAwareInterface
             $this->inputFilter = $inputFilter;
             $this->inputFilter->add(array(
                 'name' => 'cycle_date',
+                'required' => false,
+            ));
+            $this->inputFilter->add(array(
+                'name' => 'fabric_class',
                 'required' => false,
             ));
 
