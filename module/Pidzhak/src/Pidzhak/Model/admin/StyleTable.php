@@ -8,6 +8,9 @@
 
 namespace Pidzhak\Model\admin;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -52,6 +55,35 @@ class StyleTable
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function getStyleByIdAndClothType($id, $clothType){
+        $id = (int)$id;
+        $clothType = (int)$clothType;
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table);
+
+        $where = new  Where();
+        $where->equalTo('style_num', $id);
+        $where->equalTo('cloth_type', $clothType);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+//        $row = $resultSet->current();
+
+//        var_dump($resultSet->current());
+
+//        if (!$row) {
+//            throw new \Exception("Could not find row $id");
+//        }
+        return $resultSet;
     }
 
     public function saveStyle(Style $style)

@@ -8,13 +8,21 @@
 
 namespace Pidzhak\Form\redactor;
 
-use Zend\Form\Form;
+use Pidzhak\Model\redactor\SystemCode;
+use Zend\Form\Fieldset;
+use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class SystemCodeForm extends Form
+class SystemCodeForm extends Fieldset implements InputFilterProviderInterface
 {
-    public function __construct($name = null)
+    public function __construct()
     {
         parent::__construct('systemcode');
+
+        $this
+            ->setHydrator(new ClassMethodsHydrator(false))
+            ->setObject(new SystemCode())
+        ;
 
         $this->add(array(
             'name' => 'id',
@@ -22,17 +30,23 @@ class SystemCodeForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'system_code',
+            'name' => 'order_cloth_id',
+            'type' => 'Hidden',
+        ));
+
+        $this->add(array(
+            'name' => 'code',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'required' => 'true'
             ),
             'options' => array(
                 'label' => 'Системный код',
             ),
         ));
         $this->add(array(
-            'name' => 'fabric_id',
+            'name' => 'fabric_optional',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -45,11 +59,38 @@ class SystemCodeForm extends Form
             'name' => 'description',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'required' => 'true'
             ),
             'options' => array(
                 'label' => 'Описание',
             ),
         ));
+        $this->add(array(
+            'name' => 'deleteBtn',
+            'type' => 'Button',
+            'attributes' => array(
+                'class' => 'btn btn-danger',
+                'onclick' => 'deleteRowClick($(this))'
+            ),
+            'options' => array(
+                'label' => 'Удалить строку',
+            ),
+        ));
+    }
+
+    /**
+     * @return array
+     */
+    public function getInputFilterSpecification()
+    {
+        return array(
+            'code' => array(
+                'required' => true,
+            ),
+            'description' => array(
+                'required' => true,
+            ),
+        );
     }
 }

@@ -10,9 +10,15 @@
 namespace Pidzhak\Controller\redactor;
 
 use PHPExcel_IOFactory;
-use Pidzhak\Form\redactor\SystemCodeForm;
+use Pidzhak\Form\admin\StyleForm;
+use Pidzhak\Form\Redactor\OrderClothesEnForm;
+use Pidzhak\Form\redactor\TestModelForm;
 use Pidzhak\Form\Redactor\UploadForm;
 use Pidzhak\Form\Redactor\OrderClothesForm;
+use Pidzhak\Model\redactor\OrderClothes;
+use Pidzhak\Model\redactor\SystemCode;
+use Pidzhak\Model\redactor\TestModel;
+use Zend\Http\Client\Adapter\Test;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -20,6 +26,9 @@ class IndexController extends AbstractActionController
 {
 
     protected $orderclothesTable;
+    protected $orderclothesTableEn;
+    protected $systemcodeTable;
+    protected $styleTable;
 
     public function indexAction()
     {
@@ -49,14 +58,58 @@ class IndexController extends AbstractActionController
         $form  = new OrderClothesForm($dbAdapter);
         $form->bind($orderclothes);
 
-        $sc_form = new SystemCodeForm();
+        $style = $this->getStyleTable()->getStyleByIdAndClothType($orderclothes['style_number'], $orderclothes['product_id']);
+        $arrayMy = array();
+
+        foreach($style as $temp){
+            array_push($arrayMy,
+                array(
+                    'code'            => $temp->style_code,
+                    'fabric_optional' => $temp->style_code_fabric,
+                    'description'     => $temp->style_code_desc,
+            ));
+        }
+
+        $sc_form = new TestModelForm();
+        $sc_form->populateValues(array("systemcode"=>$arrayMy));
+
+        $en_form = new OrderClothesEnForm($dbAdapter);
 
         $request = $this->getRequest();
 
+        if ($request->isPost()) {
+            $sc_form->setData($request->getPost());
+            $en_form->setData($request->getPost());
+
+            if ($sc_form->isValid() && $en_form->isValid()) {
+                $systemCode = new SystemCode();
+                $tempCode = $sc_form->getData()['systemcode'];
+
+                for($i=0; $i<sizeof($tempCode); $i++){
+                    $temp = $tempCode[$i] + array("order_cloth_id" => $id);
+                    $systemCode->exchangeArray($temp);
+                    $systemCodeTable = $this->getSystemCodesTable();
+                    $systemCodeTable->saveSystemCode($systemCode);
+                }
+
+                $orderclothesEN = new OrderClothes();
+                $orderclothesEN->exchangeArray($en_form->getData());
+
+                $orderclothesENTable = $this->getOrderClothesTableEn();
+                $orderclothesENTable->saveOrderClothes($orderclothesEN);
+
+                return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+            } else {
+                var_dump($en_form->getMessages());
+            }
+        }
 
         $view = new ViewModel(array(
                 'form' => $form,
                 'sc_form' => $sc_form,
+                'en_form' => $en_form,
+                'style_form'   => $style,
+                'orderClothId' => $id,
             )
         );
         $view->setTemplate('pidzhak/redactor/enterCodes.phtml');
@@ -152,5 +205,30 @@ class IndexController extends AbstractActionController
             $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
         }
         return $this->orderclothesTable;
+    }
+
+    public function getSystemCodesTable(){
+        if (!$this->systemcodeTable) {
+            $sm = $this->getServiceLocator();
+            $this->systemcodeTable = $sm->get('Pidzhak\Model\redactor\SystemCodeTable');
+        }
+        return $this->systemcodeTable;
+    }
+
+    public function getStyleTable(){
+        if (!$this->styleTable) {
+            $sm = $this->getServiceLocator();
+            $this->styleTable = $sm->get('Pidzhak\Model\admin\StyleTable');
+        }
+        return $this->styleTable;
+    }
+
+    public function getOrderClothesTableEn()
+    {
+        if (!$this->orderclothesTableEn) {
+            $sm = $this->getServiceLocator();
+            $this->orderclothesTableEn = $sm->get('Pidzhak\Model\Seller\OrderClothesTableEn');
+        }
+        return $this->orderclothesTableEn;
     }
 }

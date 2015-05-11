@@ -16,7 +16,6 @@
 </div>
 
 <?php
-$form->setAttribute('action', $this->url('cycles', array('action' => 'add')));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
@@ -24,6 +23,7 @@ echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('c_id'));
 
 $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product_id')->getValue()!='4';
+//var_dump($form);
 ?>
 
 <table class="myTable">
@@ -33,7 +33,7 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
             <?php $element = $form->get('cycle_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formSelect($element); ?></td>
+        <td><?php echo $this->formText($element); ?></td>
 
         <td>
             <?php if($monogramFlag) $element = $form->get('first_monogram_location'); ?>
@@ -72,7 +72,7 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
 
     <tr>
         <td>
-            <?php $element = $form->get('textile_class'); ?>
+            <?php $element = $form->get('fabric_class'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
         <td><?php echo $this->formText($element); ?></td>
@@ -151,59 +151,179 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
 echo $this->form()->closeTag();
 ?>
 
-
-
 <hr>
+
 <div class="subHeader">
     Данные, для ввода редактором:
 </div>
 
 <?php
-$sc_form->setAttribute('action', $this->url('redactor', array('action' => 'entercodes')));
-$sc_form->setAttribute('class', 'form-horizontal');
-$sc_form->prepare();
-
-echo $this->form()->openTag($sc_form);
-echo $this->formHidden($sc_form->get('id'));
+$en_form->setAttribute('action', $this->url('redactor', array('action' => 'entercodes', 'id' => $this->orderClothId,)));
+$en_form->setAttribute('class', 'form-horizontal');
+$en_form->prepare();
+echo $this->form()->openTag($en_form);
+echo $this->formHidden($en_form->get('order_cloth_id')->setValue($orderClothId));
 ?>
-
 
 <table class="myTable">
 
     <tr>
         <td>
-            <?php $element = $sc_form->get('system_code'); ?>
+            <?php $en_form->get('cloth_type')->setValue($form->get('product_id')->getValue()); ?>
+            <?php $element = $en_form->get('cloth_type'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+
         <td>
-            <?php $element = $sc_form->get('fabric_id'); ?>
+            <?php $en_form->get('fabric_id')->setValue($form->get('textile_id')->getValue()); ?>
+            <?php $element = $en_form->get('fabric_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td>
-            <?php $element = $sc_form->get('description'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
+        <td><?php echo $this->formText($element); ?></td>
     </tr>
 
     <tr>
         <td>
-            <?php echo $this->formText($element); ?>
-            <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+            <?php $element = $en_form->get('measurement_type'); ?>
+            <?php $element->setValue($form->get('typeof_measure')->getValue()); ?>
+            <?php echo $this->formLabel($element); ?>
         </td>
+        <td><?php echo $this->formText($element); ?></td>
+
         <td>
-            <?php echo $this->formText($element); ?>
-            <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+            <?php $element = $en_form->get('brand_label'); ?>
+            <?php echo $this->formLabel($element); ?>
         </td>
-        <td>
-            <?php echo $this->formText($element); ?>
-            <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-        </td>
+        <td><?php echo $this->formText($element); ?></td>
     </tr>
 
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_pos'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_pos'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_color_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_color_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_text'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_text'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php $element = $en_form->get('redactor_comment'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td colspan="3"><?php echo $this->formTextArea($element); ?></td>
+    </tr>
 </table>
 
-    <button>Добавить строку</button>
+<?php
+//echo $this->form()->closeTag();
+?>
+
+<hr>
+
+<?php
+
+$sc_form->setAttribute('class', 'form-horizontal');
+$sc_form->prepare();
+
+echo $this->form()->openTag($sc_form);
+?>
+<div id="testModel">
+<?php
+    $systemCodeForm = $sc_form->get('systemcode');
+    echo $this->formCollection($systemCodeForm);
+//    echo $systemCodeForm->formHidden('order_cloth_id')->value=$orderClothId;
+?>
+</div>
+
+<?php
+    echo $this->formHidden($sc_form->get('csrf'));
+?>
+
+<button type="button" class="btn btn-default" onclick="addCode()">Добавить строку</button><br /><br />
+
+<?php
+    echo $this->formSubmit($en_form->get('submit'));
+    echo $this->form()->closeTag();
+?>
 
 <?php
 echo $this->form()->closeTag();
 ?>
+
+<script>
+    $(function() {
+        styleRows();
+        var fieldsets = $('#testModel').find('fieldset');
+        for(i=0; i<fieldsets.length; i++){
+            if(i!=0 && i!=1) $(fieldsets[i]).find('span').remove();
+        }
+    });
+
+    function addCode(){
+        var currentCount = $('#testModel').find('fieldset').length;
+        var template = $('#testModel').find('span').last().data('template');
+        template = template.replace(/__mycount__/g, currentCount);
+
+        $('#testModel').find('fieldset').last().after(template);
+        $('#testModel').find('fieldset').last().find('span').remove();
+        styleRows();
+        return false;
+    }
+
+    function deleteRowClick(row){
+        row.parent().remove();
+    }
+
+    function styleRows(){
+        $('#testModel').find('fieldset').find('label').css('margin-right', '5px');
+    }
+</script>

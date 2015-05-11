@@ -2,16 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: Abu Andabekov
- * Date: 03/05/2015
- * Time: 18:04
+ * Date: 06/05/2015
+ * Time: 17:02
  */
 
 namespace Pidzhak\Model\redactor;
 
+use Pidzhak\Model\redactor\OrderClothes;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
-class SystemCodeTable
+class OrderClothesTable
 {
     protected $tableGateway;
 
@@ -44,7 +45,7 @@ class SystemCodeTable
         return $resultSet->count();
     }
 
-    public function getSystemCode($id) {
+    public function getOrderClothes($id) {
         $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
         $row = $rowset->current();
@@ -54,29 +55,41 @@ class SystemCodeTable
         return $row;
     }
 
-    public function saveSystemCode(SystemCode $systemCode)
+    public function saveOrderClothes(OrderClothes $orderClothes)
     {
         $data = array(
-            'id'                => $systemCode->id,
-            'order_cloth_id'    => $systemCode->order_cloth_id,
-            'code'              => $systemCode->code,
-            'fabric_optional'   => $systemCode->fabric_optional,
-            'description'       => $systemCode->description,
+            'order_cloth_id'   => $orderClothes->order_cloth_id,
+            'cloth_type'       => $orderClothes->cloth_type,
+            'measurement_type' => $orderClothes->measurement_type,
+            'fabric_id'        => $orderClothes->fabric_id,
+            'brand_label'      => $orderClothes->brand_label,
+
+            'monogram1_pos'        => $orderClothes->monogram1_pos,
+            'monogram1_font'       => $orderClothes->monogram1_font,
+            'monogram1_color_font' => $orderClothes->monogram1_color_font,
+            'monogram1_text'       => $orderClothes->monogram1_text,
+
+            'monogram2_pos'        => $orderClothes->monogram2_pos,
+            'monogram2_font'       => $orderClothes->monogram2_font,
+            'monogram2_color_font' => $orderClothes->monogram2_color_font,
+            'monogram2_text'       => $orderClothes->monogram2_text,
+
+            'redactor_comment'       => $orderClothes->redactor_comment,
         );
 
-        $id = (int) $systemCode->id;
+        $id = (int) $orderClothes->id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getSystemCode($id)) {
+            if ($this->getOrderClothes($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
-                throw new \Exception('systemCode does not exist');
+                throw new \Exception('OrderClothId does not exist');
             }
         }
     }
 
-    public function deleteSystemCode($id)
+    public function deleteOrderClothes($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
     }

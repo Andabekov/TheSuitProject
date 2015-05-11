@@ -53,7 +53,7 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'cycle_id',
-            'type' => 'Select',
+            'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
                 'disabled' => 'true'
@@ -104,7 +104,7 @@ class OrderClothesForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'textile_class',
+            'name' => 'fabric_class',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',

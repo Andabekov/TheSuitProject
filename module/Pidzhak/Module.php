@@ -22,6 +22,9 @@ use Pidzhak\Model\admin\User;
 use Pidzhak\Model\admin\UserTable;
 
 use Pidzhak\Model\AuthStorage;
+use Pidzhak\Model\redactor\SystemCode;
+use Pidzhak\Model\redactor\SystemCodeTable;
+use Pidzhak\Model\redactor\TestModel;
 use Pidzhak\Model\Seller\BodyMeasure;
 use Pidzhak\Model\Seller\BodyMeasureTable;
 
@@ -34,6 +37,8 @@ use Pidzhak\Model\Seller\Order;
 use Pidzhak\Model\Seller\OrderTable;
 use Pidzhak\Model\Seller\OrderClothes;
 use Pidzhak\Model\Seller\OrderClothesTable;
+use Pidzhak\Model\redactor\OrderClothes as OrderClothesEn;
+use Pidzhak\Model\redactor\OrderClothesTable as OrderClothesTableEn;
 use Pidzhak\Model\Seller\Seller;
 use Pidzhak\Model\Seller\SellerTable;
 use Pidzhak\Model\Seller\Customer;
@@ -311,6 +316,28 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new OrderClothes());
                     return new TableGateway('orderclothes', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\redactor\SystemCodeTable' =>  function($sm) {
+                    $tableGateway = $sm->get('SystemCodeTableGateway');
+                    $table = new SystemCodeTable($tableGateway);
+                    return $table;
+                },
+                'SystemCodeTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new SystemCode());
+                    return new TableGateway('orderclothsystemcodes', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\Seller\OrderClothesTableEn' =>  function($sm) {
+                    $tableGateway = $sm->get('OrderClothesTableGatewayEn');
+                    $table = new OrderClothesTableEn($tableGateway);
+                    return $table;
+                },
+                'OrderClothesTableGatewayEn' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new OrderClothesEn());
+                    return new TableGateway('orderclothredactor', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

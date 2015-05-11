@@ -15,16 +15,18 @@ use Zend\InputFilter\InputFilterInterface;
 class SystemCode implements InputFilterAwareInterface
 {
     public $id;
-    public $system_code;
-    public $fabric_id;
+    public $order_cloth_id;
+    public $code;
+    public $fabric_optional;
     public $description;
 
     public function exchangeArray($data)
     {
-        $this->id          = (isset($data['id'])) ? $data['id'] : null;
-        $this->system_code = (isset($data['system_code'])) ? $data['system_code'] : null;
-        $this->fabric_id   = (isset($data['fabric_id'])) ? $data['fabric_id'] : null;
-        $this->description = (isset($data['description'])) ? $data['description'] : null;
+        $this->id              = (isset($data['id'])) ? $data['id'] : null;
+        $this->order_cloth_id  = (isset($data['order_cloth_id'])) ? $data['order_cloth_id'] : null;
+        $this->code            = (isset($data['code'])) ? $data['code'] : null;
+        $this->fabric_optional = (isset($data['fabric_optional'])) ? $data['fabric_optional'] : null;
+        $this->description     = (isset($data['description'])) ? $data['description'] : null;
     }
 
     public function getArrayCopy()
@@ -43,17 +45,25 @@ class SystemCode implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+
             $inputFilter->add(array(
-                'name'     => 'system_code',
-                'required' => true,
+                'name'     => 'order_cloth_id',
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                )
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'code',
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 )
             ));
             $inputFilter->add(array(
-                'name'     => 'fabric_id',
-                'required' => true,
+                'name'     => 'fabric_optional',
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -61,7 +71,6 @@ class SystemCode implements InputFilterAwareInterface
             ));
             $inputFilter->add(array(
                 'name'     => 'description',
-                'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
