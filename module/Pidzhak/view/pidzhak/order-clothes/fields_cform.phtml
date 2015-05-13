@@ -1,3 +1,7 @@
+<?php
+    $cform->setAttribute('id', 'addClothForm');
+?>
+
 <table class="myTable">
 
     <tr>
@@ -233,4 +237,37 @@
     function changeTextile(){
         $('select[name=textile_class]').val($('select[name=textile_id]').val());
     }
+    function resetStylesSelect(){
+        $.ajax({
+            url: '/order/resetstylestoselect',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: { cloth_type_id : $('select[name=product_id]').val() },
+            success: function (data) {
+                if(data.styles!='empty'){
+
+                    $('select[name=style_id] option').remove();
+                    $('select[name=style_id]').append($("<option></option>").attr("value",'0').text('Выберите номер стиля'));
+
+                    for(i=0; i<data.styles.length; i++){
+                        $('select[name=style_id]').append($("<option></option>").attr("value",data.styles[i]).text(data.styles[i]));
+                    }
+                } else {
+                    $('select[name=style_id] option').remove();
+                    $('select[name=style_id]').append($("<option></option>").attr("value",'0').text('Выберите номер стиля'));
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    $(function() {
+        $($('select[name=style_id] option')[0]).val('0');
+        $($('select[name=product_id] option')[0]).val('0');
+        $($('select[name=textile_id] option')[0]).val('0');
+        $('select[name=textile_id]').val('0');
+    });
 </script>

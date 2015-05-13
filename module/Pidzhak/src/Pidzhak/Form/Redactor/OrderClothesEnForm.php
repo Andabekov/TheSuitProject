@@ -36,6 +36,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required'
 //                'readonly' => 'readonly'
             ),
             'options' => array(
@@ -50,6 +51,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required'
 //                'readonly' => 'readonly'
             ),
             'options' => array(
@@ -62,6 +64,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required'
 //                'readonly' => 'readonly'
             ),
             'options' => array(
@@ -71,12 +74,18 @@ class OrderClothesEnForm extends Form
 
         $this->add(array(
             'name' => 'brand_label',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required'
             ),
             'options' => array(
                 'label' => 'Brand label',
+                'empty_option' => 'Please choose',
+                'value_options' => array(
+                    '1' => 'Yes',
+                    '2' => 'No',
+                ),
             ),
         ));
 
@@ -203,5 +212,17 @@ class OrderClothesEnForm extends Form
             $selectData[$res['id']] = $res['clother'];
         }
         return $selectData;
+    }
+
+    public function highlightErrorElements()
+    {
+        foreach ($this->getElements() as $element) {
+            if ($element->getMessages()) {
+                $element->setAttribute('style', 'border-color:#a94442; box-shadow:inset 0 1px 1px rgba(0,0,0,.075);');
+                $element->setLabelAttributes(array(
+                    'class' => 'control-label col-xs-2',
+                    'style' => 'color:#a94442'));
+            }
+        }
     }
 }

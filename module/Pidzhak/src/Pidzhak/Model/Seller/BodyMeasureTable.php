@@ -1,6 +1,9 @@
 <?php
 namespace Pidzhak\Model\Seller;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -41,6 +44,26 @@ class BodyMeasureTable
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function getMeasure($cloth_type, $order_id){
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('ordertable');
+
+        $where = new Where();
+        $where->equalTo('id', $order_id);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        $row = $resultSet->current();
+
+        return $this->getBodyMeasureByCustomerAndClother($row->customer_id, $cloth_type);
     }
 
 

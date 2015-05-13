@@ -45,6 +45,9 @@ class ClotherMeasureTable
         return $row;
     }
 
+    public function getMeasure($cloth_type, $order_cloth_id){
+        //
+    }
 
     public function getClotherMeasureByCustomerAndClother($customer_id, $clother_id)
     {

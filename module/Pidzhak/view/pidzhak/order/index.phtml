@@ -10,11 +10,16 @@
            data-keep-selection="true">
         <thead>
         <tr>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
             <th data-column-id="dateofsale">Дата продажи</th>
-            <th data-column-id="cityofsale_id" data-order="desc">Город</th>
-            <th data-column-id="pointofsale" data-order="desc">Место продажи</th>
-            <th data-column-id="name" data-order="desc">Продовец</th>
-            <th data-column-id="status" data-order="desc">Статус</th>
+<!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
+            <th data-column-id="status_name" data-order="desc">Статус</th>
+            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
         </tr>
         </thead>
 
@@ -24,16 +29,19 @@
 
 <script>
     $(function () {
+
         function init() {
             $("#order-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
                     return {
-                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '<?php echo $current_user_id;?>'
                     };
                 },
-                url: "/restorder"
+                url: "/restorderclothes"
             });
         }
 

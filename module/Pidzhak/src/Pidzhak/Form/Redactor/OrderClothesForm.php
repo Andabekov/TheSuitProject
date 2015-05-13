@@ -126,7 +126,7 @@ class OrderClothesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'paytype',
+            'name' => 'paytype_id',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -160,7 +160,7 @@ class OrderClothesForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'style_number',
+            'name' => 'style_id',
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',

@@ -103,7 +103,10 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
             <?php $element = $form->get('label_brand'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td>
+            <?php echo $this->formText($element); ?>
+            <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+        </td>
 
         <td>
             <?php if($monogramFlag) $element = $form->get('second_monogram_font'); ?>
@@ -114,7 +117,7 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
 
     <tr>
         <td>
-            <?php $element = $form->get('style_number'); ?>
+            <?php $element = $form->get('style_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
         <td><?php echo $this->formText($element); ?></td>
@@ -162,7 +165,7 @@ $en_form->setAttribute('action', $this->url('redactor', array('action' => 'enter
 $en_form->setAttribute('class', 'form-horizontal');
 $en_form->prepare();
 echo $this->form()->openTag($en_form);
-echo $this->formHidden($en_form->get('order_cloth_id')->setValue($orderClothId));
+echo $this->formHidden($en_form->get('order_cloth_id'));
 ?>
 
 <table class="myTable">
@@ -195,7 +198,7 @@ echo $this->formHidden($en_form->get('order_cloth_id')->setValue($orderClothId))
             <?php $element = $en_form->get('brand_label'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
     </tr>
 
     <tr>
@@ -269,6 +272,8 @@ echo $this->formHidden($en_form->get('order_cloth_id')->setValue($orderClothId))
 
 <hr>
 
+
+
 <?php
 
 $sc_form->setAttribute('class', 'form-horizontal');
@@ -290,6 +295,7 @@ echo $this->form()->openTag($sc_form);
 
 <button type="button" class="btn btn-default" onclick="addCode()">Добавить строку</button><br /><br />
 
+<a class="btn btn-default cancel-btn" href="/redactor">Отменить</a>
 <?php
     echo $this->formSubmit($en_form->get('submit'));
     echo $this->form()->closeTag();

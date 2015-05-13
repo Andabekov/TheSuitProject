@@ -9,6 +9,7 @@
 namespace Pidzhak\Model\admin;
 
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
@@ -25,19 +26,34 @@ class StyleTable
 
     public function fetchAll()
     {
-        $resultSet = $this->tableGateway->select();
+        $resultSet = $this->tableGateway->select(new Expression('DISTINCT style_num, cloth_type'));
         return $resultSet;
     }
 
     public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
-            if($rowCount<0)
-                $select->offset(0);
-            else
-                $select->limit($rowCount)->offset($offset);
-            $select->order($orderby);
 
-        });
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->join('clothers', 'stylestable.cloth_type = clothers.id');
+        $select->columns(array(new Expression('DISTINCT style_num, cloth_type')));
+
+        if ($rowCount < 0)
+            $select->offset(0);
+        else
+            $select->limit($rowCount)->offset($offset);
+        $select->order($orderby);
+
+        /*if($searchPhrase)
+            $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+//        var_dump($resultSet);
 
         return $resultSet;
     }

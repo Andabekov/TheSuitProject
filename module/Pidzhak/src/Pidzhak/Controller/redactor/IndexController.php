@@ -11,6 +11,8 @@ namespace Pidzhak\Controller\redactor;
 
 use PHPExcel_IOFactory;
 use Pidzhak\Form\admin\StyleForm;
+use Pidzhak\Form\Redactor\BodyMeasureForm;
+use Pidzhak\Form\Redactor\ClothMeasureForm;
 use Pidzhak\Form\Redactor\OrderClothesEnForm;
 use Pidzhak\Form\redactor\TestModelForm;
 use Pidzhak\Form\Redactor\UploadForm;
@@ -18,6 +20,8 @@ use Pidzhak\Form\Redactor\OrderClothesForm;
 use Pidzhak\Model\redactor\OrderClothes;
 use Pidzhak\Model\redactor\SystemCode;
 use Pidzhak\Model\redactor\TestModel;
+use Pidzhak\Model\Seller\BodyMeasure;
+use Pidzhak\Model\Seller\ClotherMeasure;
 use Zend\Http\Client\Adapter\Test;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -29,6 +33,8 @@ class IndexController extends AbstractActionController
     protected $orderclothesTableEn;
     protected $systemcodeTable;
     protected $styleTable;
+    protected $bodyMeasureTable;
+    protected $clotherMeasureTable;
 
     public function indexAction()
     {
@@ -44,7 +50,6 @@ class IndexController extends AbstractActionController
     public function entercodesAction(){
 
         $id = (int) $this->params()->fromRoute('id', 0);
-
         if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
 
         try {
@@ -54,26 +59,61 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('redactor', array('action' => 'index'));
         }
 
+        try {
+            $orderclothesEN = $this->getOrderClothesTableEn()->getOrderClothes($id);
+        }
+        catch (\Exception $ex) {
+            $orderclothesEN = null;
+        }
+
+        try {
+            $systemCode1 = $this->getSystemCodesTable()->getSystemCode($id);
+            $systemCodeList = $this->getSystemCodesTable()->getSystemCodeList($id);
+        }
+        catch (\Exception $ex) {
+            $systemCode1 = null;
+        }
+
+        if($systemCode1!=null){
+            $style = $systemCodeList;
+            $arrayMy = array();
+
+            foreach($style as $temp){
+                array_push($arrayMy,
+                    array(
+                        'code'            => $temp->code,
+                        'fabric_optional' => $temp->fabric_optional,
+                        'description'     => $temp->description,
+                    ));
+            }
+            $sc_form = new TestModelForm();
+            $sc_form->populateValues(array("systemcode"=>$arrayMy));
+        } else {
+            $style = $this->getStyleTable()->getStyleByIdAndClothType($orderclothes['style_id'], $orderclothes['product_id']);
+            $arrayMy = array();
+
+            foreach($style as $temp){
+                array_push($arrayMy,
+                    array(
+                        'code'            => $temp->style_code,
+                        'fabric_optional' => $temp->style_code_fabric,
+                        'description'     => $temp->style_code_desc,
+                    ));
+            }
+
+            $sc_form = new TestModelForm();
+            $sc_form->populateValues(array("systemcode"=>$arrayMy));
+        }
+
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $form  = new OrderClothesForm($dbAdapter);
         $form->bind($orderclothes);
 
-        $style = $this->getStyleTable()->getStyleByIdAndClothType($orderclothes['style_number'], $orderclothes['product_id']);
-        $arrayMy = array();
-
-        foreach($style as $temp){
-            array_push($arrayMy,
-                array(
-                    'code'            => $temp->style_code,
-                    'fabric_optional' => $temp->style_code_fabric,
-                    'description'     => $temp->style_code_desc,
-            ));
-        }
-
-        $sc_form = new TestModelForm();
-        $sc_form->populateValues(array("systemcode"=>$arrayMy));
-
         $en_form = new OrderClothesEnForm($dbAdapter);
+
+        if($orderclothesEN!=null){
+            $en_form->bind($orderclothesEN);
+        }
 
         $request = $this->getRequest();
 
@@ -85,22 +125,29 @@ class IndexController extends AbstractActionController
                 $systemCode = new SystemCode();
                 $tempCode = $sc_form->getData()['systemcode'];
 
-                for($i=0; $i<sizeof($tempCode); $i++){
-                    $temp = $tempCode[$i] + array("order_cloth_id" => $id);
+                $systemCodeTable = $this->getSystemCodesTable();
+                $systemCodeTable->deleteSystemCode($id);
+
+                foreach($tempCode as $tempCode1){
+                    $temp = $tempCode1 + array("order_cloth_id" => $id);
                     $systemCode->exchangeArray($temp);
-                    $systemCodeTable = $this->getSystemCodesTable();
                     $systemCodeTable->saveSystemCode($systemCode);
                 }
 
-                $orderclothesEN = new OrderClothes();
-                $orderclothesEN->exchangeArray($en_form->getData());
+                if($orderclothesEN==null){
+                    $orderclothesEN = new OrderClothes();
+                    $orderclothesEN->exchangeArray($en_form->getData());
+                }
 
                 $orderclothesENTable = $this->getOrderClothesTableEn();
+                $orderclothesENTable->deleteOrderClothes($id);
                 $orderclothesENTable->saveOrderClothes($orderclothesEN);
 
                 return $this->redirect()->toRoute('redactor', array('action' => 'index'));
             } else {
-                var_dump($en_form->getMessages());
+//                var_dump($en_form->getMessages());
+//                var_dump($sc_form->getMessages());
+                $sc_form->highlightErrorElements();
             }
         }
 
@@ -117,9 +164,55 @@ class IndexController extends AbstractActionController
     }
 
     public function watchcodesAction(){
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+
+        try {
+            $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
+            $orderclothesEN = $this->getOrderClothesTableEn()->getOrderClothes($id);
+            $systemCodeList = $this->getSystemCodesTable()->getSystemCodeList($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+        }
+
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $en_form = new OrderClothesEnForm($dbAdapter);
+        $en_form->bind($orderclothesEN);
+
+        $arrayMy = array();
+        foreach($systemCodeList as $temp){
+            array_push($arrayMy,
+                array(
+                    'code'            => $temp->code,
+                    'fabric_optional' => $temp->fabric_optional,
+                    'description'     => $temp->description,
+                ));
+        }
+        $sc_form = new TestModelForm();
+        $sc_form->populateValues(array("systemcode"=>$arrayMy));
+
+        $measurement_type = $orderclothesEN->measurement_type;
+        $order_cloth_id = $orderclothesEN->order_cloth_id;
+        $cloth_type = $orderclothesEN->cloth_type;
+        $order_id = $orderclothes->order_id;
+
+        $bm_form = new BodyMeasureForm($dbAdapter);
+        $cm_form = new ClothMeasureForm($dbAdapter);
+        if($measurement_type==1){
+            $measurements = $this->getBodyMeasureTable()->getMeasure($cloth_type, $order_id);
+            $bm_form->bind($measurements);
+        } else {
+            $measurements = $this->getClotherMeasureTable()->getMeasure($cloth_type, $order_id);
+            $cm_form->bind($measurements);
+        }
+
         $view = new ViewModel(array(
-//                'form' => $form,
-//                'back' => '/clients',
+                'en_form' => $en_form,
+                'sc_form' => $sc_form,
+                'bm_form' => $bm_form,
+                'cm_form' => $cm_form,
+                'measurement_type' => $measurement_type
             )
         );
         $view->setTemplate('pidzhak/redactor/watchCodes.phtml');
@@ -230,5 +323,23 @@ class IndexController extends AbstractActionController
             $this->orderclothesTableEn = $sm->get('Pidzhak\Model\Seller\OrderClothesTableEn');
         }
         return $this->orderclothesTableEn;
+    }
+
+    public function getBodyMeasureTable()
+    {
+        if (!$this->bodyMeasureTable) {
+            $sm = $this->getServiceLocator();
+            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\Seller\BodyMeasureTable');
+        }
+        return $this->bodyMeasureTable;
+    }
+
+    public function getClotherMeasureTable()
+    {
+        if (!$this->clotherMeasureTable) {
+            $sm = $this->getServiceLocator();
+            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\Seller\ClotherMeasureTable');
+        }
+        return $this->clotherMeasureTable;
     }
 }

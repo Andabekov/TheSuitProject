@@ -8,6 +8,8 @@
 
 namespace Pidzhak\Model\admin;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Sql;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -27,16 +29,26 @@ class UserTable
     }
 
     public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
-            if($rowCount<0)
-                $select->offset(0);
-            else
-                $select->limit($rowCount)->offset($offset);
-            $select->order($orderby);
 
-            if($searchPhrase)
-                $select->where->like('name', '%'.strtolower($searchPhrase).'%')->OR->like('surname', '%'.strtolower($searchPhrase).'%');
-        });
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->join('rolestable', 'userstable.access_type_id = rolestable.id');
+
+        if ($rowCount < 0)
+            $select->offset(0);
+        else
+            $select->limit($rowCount)->offset($offset);
+        $select->order($orderby);
+
+        /*if($searchPhrase)
+            $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
 
         return $resultSet;
     }

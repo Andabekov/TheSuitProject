@@ -10,3 +10,521 @@
 <div class="header">
     Просмотреть КОДы
 </div>
+
+<div class="subHeader">
+    Данные, которые вводил редактор:
+</div>
+
+<?php
+    $monogramFlag = $en_form->get('cloth_type')->getValue()!='2' && $en_form->get('cloth_type')->getValue()!='4';
+    $en_form->setAttribute('class', 'form-horizontal');
+    $en_form->prepare();
+    echo $this->form()->openTag($en_form);
+    echo $this->formHidden($en_form->get('order_cloth_id'));
+?>
+
+<table class="myTable">
+    <tr>
+        <td>
+            <?php $element = $en_form->get('cloth_type'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+
+        <td>
+            <?php $element = $en_form->get('fabric_id'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php $element = $en_form->get('measurement_type'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+
+        <td>
+            <?php $element = $en_form->get('brand_label'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_pos'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_pos'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_color_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_color_font'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram1_text'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) $element = $en_form->get('monogram2_text'); ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php $element = $en_form->get('redactor_comment'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td colspan="3"><?php echo $this->formTextArea($element); ?></td>
+    </tr>
+</table>
+
+<?php
+    echo $this->form()->closeTag();
+?>
+<hr>
+<div class="subHeader">
+    Системные коды:
+</div>
+<div id="testModel">
+<?php
+    $sc_form->setAttribute('class', 'form-horizontal');
+    $sc_form->prepare();
+    echo $this->form()->openTag($sc_form);
+    $systemCodeForm = $sc_form->get('systemcode');
+    echo $this->formCollection($systemCodeForm);
+    echo $this->formHidden($sc_form->get('csrf'));
+    echo $this->form()->closeTag();
+?>
+</div>
+<hr>
+<div class="subHeader">
+    Замеры по <?php if($measurement_type==1) echo "фигуре"; else echo "изделию"; ?>:
+</div>
+<?php
+    if($measurement_type==1){
+    $bm_form->setAttribute('class', 'form-horizontal');
+    $bm_form->prepare();
+    echo $this->form()->openTag($bm_form);
+?>
+<table class="myTable">
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('growth'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('weight'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('arm_position'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('butt_position'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('neck'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('chest'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('stomach'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('seat'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('thigh'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('knee_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('pant_bottom_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('u_rise'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('u_rise_auto'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('otseam_l_and_r'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('nape_to_waist'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('front_waist_length'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('back_waist_height'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('front_waist_height'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('biceps'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('back_shoulder'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('right_sleeve'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('left_sleeve'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('back_length'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('overcoat_back_length'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('waist'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('right_wrist'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('left_wrist'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $bm_form->get('style'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+    </tr>
+</table>
+<?php
+    echo $this->form()->closeTag();
+    } else {
+?>
+<?php
+    $cm_form->setAttribute('class', 'form-horizontal');
+    $cm_form->prepare();
+    echo $this->form()->openTag($cm_form);
+?>
+<table class="myTable">
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('growth'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('weight'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('chest_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('stomach_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('jacket_seat_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('biceps_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('left_sleeve_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('right_sleeve_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('back_length_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('front_length_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('shoulder_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('waist_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('seat_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('thigh_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('outseam_l_and_r_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('knee_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('pant_bottom_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('u_rise_finished'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('right_cuff'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('left_cuff'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $cm_form->get('shirt_neck'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+    </tr>
+</table>
+<?php
+    echo $this->form()->closeTag();
+    }
+?>
+
+<a class="btn btn-default cancel-btn" href="/redactor">Вернутся</a>
+
+<script>
+    $(function() {
+        $('input').attr('disabled', 'true');
+        $('select').attr('disabled', 'true');
+        $('textarea').attr('disabled', 'true');
+
+        $('button').remove();
+
+        styleRows();
+
+        var fieldsets = $('#testModel').find('fieldset');
+        for(i=0; i<fieldsets.length; i++){
+            if(i!=0 && i!=1) $(fieldsets[i]).find('span').remove();
+        }
+    });
+
+    function styleRows(){
+        $('#testModel').find('fieldset').find('label').css('margin-right', '20px');
+    }
+</script>

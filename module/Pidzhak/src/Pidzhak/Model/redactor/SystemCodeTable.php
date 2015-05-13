@@ -8,6 +8,9 @@
 
 namespace Pidzhak\Model\redactor;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -46,12 +49,31 @@ class SystemCodeTable
 
     public function getSystemCode($id) {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('order_cloth_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function getSystemCodeList($id) {
+        $id  = (int) $id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table);
+
+        $where = new Where();
+        $where->equalTo('order_cloth_id', $id);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
     }
 
     public function saveSystemCode(SystemCode $systemCode)
@@ -78,6 +100,6 @@ class SystemCodeTable
 
     public function deleteSystemCode($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('order_cloth_id' => (int) $id));
     }
 }

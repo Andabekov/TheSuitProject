@@ -47,7 +47,7 @@ class OrderClothesTable
 
     public function getOrderClothes($id) {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('order_cloth_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -91,6 +91,6 @@ class OrderClothesTable
 
     public function deleteOrderClothes($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('order_cloth_id' => (int) $id));
     }
 }

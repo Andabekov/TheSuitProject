@@ -23,7 +23,7 @@ class OrderClothesTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $order_id)
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $order_id, $seller_name)
     {
         $sql = new Sql($this->tableGateway->adapter);
         $select = $sql->select();
@@ -50,10 +50,15 @@ class OrderClothesTable
         /*if($searchPhrase)
             $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
 
-
         if ($order_id != -1) {
             $where = new  Where();
             $where->equalTo('order_id', $order_id);
+            $select->where($where);
+        }
+
+        if($seller_name!= ''){
+            $where = new  Where();
+            $where->equalTo('userstable.username', $seller_name);
             $select->where($where);
         }
 
