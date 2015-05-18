@@ -26,7 +26,7 @@ class UserController extends AbstractActionController
 
 //        $google_contact = GoogleContactUtil::saveGoogleContact();
 
-        var_dump(GoogleContactUtil::saveGoogleContact());
+//        var_dump(GoogleContactUtil::saveGoogleContact());
 
         $view = new ViewModel(array(
                 'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),

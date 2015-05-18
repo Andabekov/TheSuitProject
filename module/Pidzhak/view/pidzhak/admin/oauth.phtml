@@ -16,6 +16,9 @@
         }
 
         function fetch(token) {
+
+            alert(token.access_token);
+
             $.ajax({
                 url: "https://www.google.com/m8/feeds/contacts/default/full?access_token=" + token.access_token + "&alt=json",
                 dataType: "jsonp",

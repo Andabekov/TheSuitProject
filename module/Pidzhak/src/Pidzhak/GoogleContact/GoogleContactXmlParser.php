@@ -134,10 +134,7 @@ XML;
         if (!isset($_SESSION['token'])) {
             $google_client->authenticate('and08275621');
             $_SESSION['token'] = $google_client->getAccessToken();
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
-        }
-
-        if (isset($_SESSION['token'])) {
+        } else {
             $authObj = json_decode($_SESSION['token']);
             $accessToken = $authObj->access_token;
         }
