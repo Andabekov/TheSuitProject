@@ -4,7 +4,6 @@
     <script src="https://apis.google.com/js/client.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
-
     <script>
         function auth() {
             var config = {
@@ -22,6 +21,10 @@
                 dataType: "jsonp",
                 success:function(data) {
                     console.log(JSON.stringify(data));
+                },
+                error : function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
                 }
             });
         }

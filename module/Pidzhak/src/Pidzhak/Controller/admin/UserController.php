@@ -24,16 +24,22 @@ class UserController extends AbstractActionController
             return $this->redirect()->toRoute('pidzhak');
         }
 
-        $view = new ViewModel(array(
-                'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
-                'user' => $this->getUserTable()->fetchAll(),
-            )
-        );
+//        $google_contact = GoogleContactUtil::saveGoogleContact();
 
         var_dump(GoogleContactUtil::saveGoogleContact());
 
+        $view = new ViewModel(array(
+                'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
+                'user' => $this->getUserTable()->fetchAll(),
+//                'google_contact' => $google_contact,
+            )
+        );
+
+
+
 //        $view->setTemplate('pidzhak/admin/index.phtml');
         $view->setTemplate('pidzhak/admin/oauth.phtml');
+//        $view->setTemplate('pidzhak/test/user-example.php');
         return $view;
     }
 
