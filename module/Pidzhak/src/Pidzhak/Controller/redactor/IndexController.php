@@ -29,12 +29,14 @@ use Zend\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
 
+    protected $orderTable;
     protected $orderclothesTable;
     protected $orderclothesTableEn;
     protected $systemcodeTable;
     protected $styleTable;
     protected $bodyMeasureTable;
     protected $clotherMeasureTable;
+    protected $customerTable;
 
     public function indexAction()
     {
@@ -231,6 +233,11 @@ class IndexController extends AbstractActionController
 
     public function compareAction()
     {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+
+        $xls_data='';
+
         $form = new UploadForm('upload-form');
         $tempFile = null;
 
@@ -240,11 +247,11 @@ class IndexController extends AbstractActionController
         } elseif (is_array($prg)) {
             if ($form->isValid()) {
                 $data = $form->getData();
-                var_dump("<cr>");
-                var_dump($data);
+//                var_dump("<cr>");
+//                var_dump($data);
                 $file_name = $data['excel-file']['tmp_name'];
-                $xls_data = $this->excelReader($file_name);
-                echo $xls_data;
+                $xls_data = $this->excelReader($file_name, $id);
+//                echo $xls_data;
                 // Form is valid, save the form!
                 //return $this->redirect()->toRoute('upload-form/success');
             } else {
@@ -257,20 +264,119 @@ class IndexController extends AbstractActionController
             }
         }
 
-        $view = new ViewModel(array('form' => $form,
-                'tempFile' => $tempFile,)
+        $view = new ViewModel(
+            array(
+                'form' => $form,
+                'tempFile' => $tempFile,
+                'id' => $id,
+                'xls_data' => $xls_data
+                )
         );
-        $view->setTemplate('pidzhak/redactor/upload-form.phtml');
+        $view->setTemplate('pidzhak/redactor/compareCodes.phtml');
         return $view;
     }
 
-
-    private function excelReader($filename)
+    private function excelReader($filename, $id)
     {
+
+        try {
+            $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
+            $systemCodeList = $this->getSystemCodesTable()->getSystemCodeList($id);
+            $order = $this->getOrderTable()->getOrder($orderclothes->order_id);
+            $client = $this->getCustomerTable()->getCustomer($order->customer_id);
+        } catch (\Exception $ex) {
+            var_dump($ex);
+//            return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+        }
+
+
+        $systemClientFullName = $client->lastname.' '.$client->firstname.' '.$client->middlename;
+        $clientNameCheck = false;
+
+        $systemFabricNumber = $orderclothes->textile_id;
+        $fabricNumberCheck = false;
+
+        $systemMeasurementType = $orderclothes->typeof_measure;
+        $measurementTypeCheck = false;
+
+        $fileCodesArray = array();
+        $systemCodesArray = array();
+
+        $fileMeasurements = array();
+        $systemMeasurements = array();
+
+        $codesError = '';
+        $measurementsError = '';
+        $clientNameError = '';
+        $measurementTypeError = '';
+        $fabricNumberError = '';
+
+        foreach($systemCodeList as $temp){
+            array_push($systemCodesArray, $temp->code);
+            if($temp->fabric_optional!=null)
+                array_push($systemCodesArray, $temp->fabric_optional);
+        }
+
+        if($systemMeasurementType==1){
+            $measurements = $this->getBodyMeasureTable()->getMeasure($orderclothes->product_id, $orderclothes->order_id);
+            array_push($systemMeasurements, $measurements->growth);
+            array_push($systemMeasurements, $measurements->weight);
+            array_push($systemMeasurements, $measurements->arm_position);
+            array_push($systemMeasurements, $measurements->neck);
+            array_push($systemMeasurements, $measurements->chest);
+            array_push($systemMeasurements, $measurements->stomach);
+            array_push($systemMeasurements, $measurements->seat);
+            array_push($systemMeasurements, $measurements->thigh);
+            array_push($systemMeasurements, $measurements->knee_finished);
+            array_push($systemMeasurements, $measurements->pant_bottom_finished);
+            array_push($systemMeasurements, $measurements->otseam_l_and_r);
+            array_push($systemMeasurements, $measurements->nape_to_waist);
+            array_push($systemMeasurements, $measurements->front_waist_length);
+            array_push($systemMeasurements, $measurements->back_waist_height);
+            array_push($systemMeasurements, $measurements->front_waist_height);
+            array_push($systemMeasurements, $measurements->biceps);
+            array_push($systemMeasurements, $measurements->back_shoulder);
+            array_push($systemMeasurements, $measurements->right_sleeve);
+            array_push($systemMeasurements, $measurements->left_sleeve);
+            array_push($systemMeasurements, $measurements->back_length);
+            array_push($systemMeasurements, $measurements->overcoat_back_length);
+            array_push($systemMeasurements, $measurements->waist);
+            array_push($systemMeasurements, $measurements->right_wrist);
+            array_push($systemMeasurements, $measurements->left_wrist);
+            array_push($systemMeasurements, $measurements->butt_position);
+            array_push($systemMeasurements, $measurements->u_rise_auto);
+            array_push($systemMeasurements, 1);
+        } else {
+            $measurements = $this->getClotherMeasureTable()->getMeasure($orderclothes->product_id, $orderclothes->order_id);
+            array_push($systemMeasurements, $measurements->growth);
+            array_push($systemMeasurements, $measurements->weight);
+            array_push($systemMeasurements, $measurements->chest_finished);
+            array_push($systemMeasurements, $measurements->stomach_finished);
+            array_push($systemMeasurements, $measurements->jacket_seat_finished);
+            array_push($systemMeasurements, $measurements->biceps_finished);
+            array_push($systemMeasurements, $measurements->left_sleeve_finished);
+            array_push($systemMeasurements, $measurements->right_sleeve_finished);
+            array_push($systemMeasurements, $measurements->back_length_finished);
+            array_push($systemMeasurements, $measurements->front_length_finished);
+            array_push($systemMeasurements, $measurements->shoulder_finished);
+            array_push($systemMeasurements, $measurements->waist_finished);
+            array_push($systemMeasurements, $measurements->seat_finished);
+            array_push($systemMeasurements, $measurements->thigh_finished);
+            array_push($systemMeasurements, $measurements->outsteam_l_and_r_finished);
+            array_push($systemMeasurements, $measurements->knee_finished);
+            array_push($systemMeasurements, $measurements->pant_bottom_finished);
+            array_push($systemMeasurements, $measurements->u_rise_finished);
+            array_push($systemMeasurements, $measurements->right_cuff);
+            array_push($systemMeasurements, $measurements->left_cuff);
+            array_push($systemMeasurements, $measurements->shirt_neck);
+            array_push($systemMeasurements, 1);
+        }
+
+        $systemMeasurements = $this->removeNulls($systemMeasurements);
+
         $result_str = '';
         if (!file_exists($filename)){
             return $result_str;
-
         }
 
         $objPHPExcel = PHPExcel_IOFactory::load($filename);
@@ -282,13 +388,81 @@ class IndexController extends AbstractActionController
                 $cellIterator = $row->getCellIterator();
                 foreach ($cellIterator as $cell) {
                     if (!is_null($cell)) {
+
+                        if(strpos($cell->getCalculatedValue(), ':') !== false){
+                            array_push($fileCodesArray, substr($cell->getCalculatedValue(), 0, 4));
+                        }
+
+                        if(strpos($cell->getCalculatedValue(), 'Body Measurements') !== false){
+                            if($systemMeasurementType==1) $measurementTypeCheck = true;
+                        }
+
+                        if(strpos($cell->getCalculatedValue(), 'Finished Measurements') !== false){
+                            if($systemMeasurementType==2) $measurementTypeCheck = true;
+                        }
+
+                        if(is_numeric($cell->getCalculatedValue())){
+                            array_push($fileMeasurements, $cell->getCalculatedValue());
+                        }
+
+                        if($cell->getCalculatedValue()==$systemClientFullName){
+                            $clientNameCheck = true;
+                        }
+
+                        if($cell->getCalculatedValue()==$systemFabricNumber){
+                            $fabricNumberCheck = true;
+                        }
+
                         $result_str = $result_str .$cell->getCalculatedValue()." ";
                     }
                 }
             }
         }
 
-        return $result_str;
+//        var_dump($fileCodesArray);
+//        var_dump($systemCodesArray);
+        $codesError = $this->compareArrays($fileCodesArray, $systemCodesArray);
+        if($codesError=='different amount'){
+            $codesError = 'Количества кодов в системе отличается от количества кодов в файле';
+        } else if($codesError=='different elements'){
+            $codesError = 'Коды в системе отличаются от кодов в файле';
+        }
+
+//        var_dump($fileMeasurements);
+//        var_dump($systemMeasurements);
+        $measurementsError = $this->compareArrays($fileMeasurements, $systemMeasurements);
+        if($measurementsError=='different amount'){
+            $measurementsError = 'Количества замеров в системе отличается от количества замеров в файле';
+        } else if($codesError=='different elements'){
+            $measurementsError = 'Замеры в системе отличаются от замеров в файле';
+        }
+
+        if(!$clientNameCheck){
+            $clientNameError='ФИО клиента в системе отличается от ФИО клиента в файле';
+        }
+
+        if(!$fabricNumberCheck){
+            $fabricNumberError='Номер ткани в системе отличается от номера ткани в файле';
+        }
+
+        if(!$measurementTypeCheck){
+            $measurementTypeError='Тип замера в системе отличается от типа замера в файле';
+        }
+
+//        var_dump($codesError);
+//        var_dump($measurementsError);
+//
+//        var_dump($systemMeasurementType);
+//        var_dump($clientNameCheck);
+
+        $result_array = array(
+            'codesError'=>$codesError,
+            'measurementsError'=>$measurementsError,
+            'clientNameError'=>$clientNameError,
+            'measurementTypeError'=>$measurementTypeError,
+            'fabricNumberError'=>$fabricNumberError);
+
+        return $result_array;
     }
 
     public function getOrderClothesTable()
@@ -341,5 +515,43 @@ class IndexController extends AbstractActionController
             $this->clotherMeasureTable = $sm->get('Pidzhak\Model\Seller\ClotherMeasureTable');
         }
         return $this->clotherMeasureTable;
+    }
+
+    public function getOrderTable()
+    {
+        if (!$this->orderTable) {
+            $sm = $this->getServiceLocator();
+            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
+        }
+        return $this->orderTable;
+    }
+
+    public function getCustomerTable()
+    {
+        if (!$this->customerTable) {
+            $sm = $this->getServiceLocator();
+            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
+        }
+        return $this->customerTable;
+    }
+
+    public function removeNulls($array){
+        foreach($array as $elem){
+            if($elem==null) unset($array[array_search($elem, $array)]);
+        }
+        return $array;
+    }
+
+    public function compareArrays($array1, $array2){
+        $result = '';
+
+        if(count($array1)==count($array2)){
+            if(count(array_diff($array1, $array2))>0 || count(array_diff($array2, $array1))>0)
+                $result = 'different elements';
+        } else {
+            $result = 'different amount';
+        }
+
+        return $result;
     }
 }

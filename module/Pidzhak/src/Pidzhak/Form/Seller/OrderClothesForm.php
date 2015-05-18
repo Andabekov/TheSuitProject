@@ -171,7 +171,7 @@ class OrderClothesForm extends Form
             'options' => array(
                 'label' => 'Номер стиля',
                 'empty_option' => 'Выберите номер стиля',
-                    'value_options' => $this->getTableForSelect('stylestable', 'style_num', 'style_code'),
+                    'value_options' => $this->getTableForSelect(),
             ),
         ));
         $this->add(array(
@@ -379,18 +379,18 @@ class OrderClothesForm extends Form
         return $selectData;
     }
 
-    public function getTableForSelect($table, $idcolumn, $valuecolumn )
+    public function getTableForSelect()
     {
 
         $dbAdapter = $this->adapter;
-        $sql       = 'SELECT  '.$idcolumn.', '.$valuecolumn.' FROM '.$table.'';
+        $sql       = 'SELECT DISTINCT(style_num) FROM stylestable';
         $statement = $dbAdapter->query($sql);
         $result    = $statement->execute();
 
         $selectData = array();
 
         foreach ($result as $res) {
-            $selectData[$res[$idcolumn]] = $res[$valuecolumn];
+            $selectData[$res['style_num']] = $res['style_num'];
         }
         return $selectData;
     }

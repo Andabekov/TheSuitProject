@@ -1,12 +1,55 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Abu Andabekov
- * Date: 01/05/2015
- * Time: 15:40
- */
-?>
 
 <div class="header">
     Сверить КОДы
 </div>
+
+<?php
+    if($xls_data!=''){
+?>
+    <h3>
+        Сверка кодов прошла <span style="color: red">НЕ УСПЕШНО!</span>
+    </h3>
+    <h4>Причины:<br>
+        <ul>
+            <?php if($xls_data['codesError']!='')           echo '<li>'.$xls_data['codesError'].'</li>'; ?>
+            <?php if($xls_data['measurementsError']!='')    echo '<li>'.$xls_data['measurementsError'].'</li>'; ?>
+            <?php if($xls_data['clientNameError']!='')      echo '<li>'.$xls_data['clientNameError'].'</li>'; ?>
+            <?php if($xls_data['measurementTypeError']!='') echo '<li>'.$xls_data['measurementTypeError'].'</li>'; ?>
+            <?php if($xls_data['fabricNumberError']!='')    echo '<li>'.$xls_data['fabricNumberError'].'</li>'; ?>
+        </ul>
+    </h4>
+<?php
+    } else{
+?>
+    <h3>
+        Сверка кодов прошла <span style="color: green">УСПЕШНО!</span>
+    </h3>
+    <h4>
+        Статус заказа был изменен.
+    </h4>
+<?php
+    }
+?>
+
+
+<div style="padding-bottom: 10px;">
+    Для того чтобы <i>сверить коды</i>, введенные в систему редактором, с выгруженными кодами (с другой системы) выберите нужный <i>Exel файл</i>:
+</div>
+
+<?php
+$form->setAttribute('action', $this->url('redactor', array('action' => 'compare', 'id' => $id)));
+$form->setAttribute('class', 'form-horizontal');
+?>
+<?php $form->prepare(); // The correct enctype is set here ?>
+<?php echo $this->form()->openTag($form); ?>
+
+<div style="padding-bottom: 10px;">
+    <?php $fileElement = $form->get('excel-file');?>
+    <!--    --><?php //echo $this->formLabel($fileElement); ?>
+    <?php echo $this->formFile($fileElement);  ?>
+    <?php echo $this->formElementErrors($fileElement); ?>
+</div>
+
+<button class="btn btn-primary">Сравнить</button>
+
+<?php echo $this->form()->closeTag(); ?>

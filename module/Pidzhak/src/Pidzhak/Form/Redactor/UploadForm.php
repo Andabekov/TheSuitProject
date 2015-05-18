@@ -21,16 +21,14 @@ class UploadForm extends Form
     {
         // File Input
         $file = new Element\File('excel-file');
-        $file->setLabel('Excel Upload')
-            ->setAttribute('id', 'excel-file');
+//        $file->setLabel('Excel Upload')
+        $file->setAttribute('id', 'excel-file');
         $this->add($file);
     }
 
     public function addInputFilter()
     {
         $inputFilter = new InputFilter();
-
-
 
         // File Input
         $fileInput = new FileInput('excel-file');

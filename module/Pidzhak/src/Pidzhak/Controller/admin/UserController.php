@@ -28,7 +28,8 @@ class UserController extends AbstractActionController
                 'user' => $this->getUserTable()->fetchAll(),
             )
         );
-        $view->setTemplate('pidzhak/admin/index.phtml');
+//        $view->setTemplate('pidzhak/admin/index.phtml');
+        $view->setTemplate('pidzhak/admin/oauth.phtml');
         return $view;
     }
 

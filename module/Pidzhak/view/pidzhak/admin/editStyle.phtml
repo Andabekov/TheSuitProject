@@ -28,53 +28,87 @@ echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 ?>
 
-    <div class="form-group">
-        <?php $element = $form->get('style_num'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('cloth_type'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('style_code'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('style_code_fabric'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('style_code_desc'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <a class="btn btn-default cancel-btn" href="/styles">Отменить</a>
-            <?php echo $this->formSubmit($form->get('submit')); ?>
-        </div>
+    <table class="myTable">
+
+        <tr>
+            <td>
+                <?php $element = $form->get('style_num'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td>
+                <?php echo $this->formText($element); ?>
+                <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <?php $element = $form->get('cloth_type'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td>
+                <?php echo $this->formSelect($element); ?>
+                <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+            </td>
+        </tr>
+
+    </table>
+
+    <hr>
+
+    <?php
+        $sc_form->setAttribute('class', 'form-horizontal');
+        $sc_form->prepare();
+        echo $this->form()->openTag($sc_form);
+    ?>
+    <div id="testModel">
+        <?php
+        $systemCodeForm = $sc_form->get('systemcode');
+        echo $this->formCollection($systemCodeForm);
+        ?>
     </div>
 
+    <?php
+        echo $this->formHidden($sc_form->get('csrf'));
+    ?>
+    <button type="button" class="btn btn-default" onclick="addCode()">Добавить строку</button>
+
+    <hr>
+
+
+    <a class="btn btn-default cancel-btn" href="/styles">Отменить</a>
+    <?php echo $this->formSubmit($form->get('submit')); ?>
+
 <?php
-echo $this->form()->closeTag();
+    echo $this->form()->closeTag();
 ?>
+
+
+<script>
+    $(function() {
+        styleRows();
+        var fieldsets = $('#testModel').find('fieldset');
+        for(i=0; i<fieldsets.length; i++){
+            if(i!=0 && i!=1) $(fieldsets[i]).find('span').remove();
+        }
+    });
+
+    function addCode(){
+        var currentCount = $('#testModel').find('fieldset').length;
+        var template = $('#testModel').find('span').last().data('template');
+        template = template.replace(/__mycount__/g, currentCount);
+
+        $('#testModel').find('fieldset').last().after(template);
+        $('#testModel').find('fieldset').last().find('span').remove();
+        styleRows();
+        return false;
+    }
+
+    function deleteRowClick(row){
+        row.parent().remove();
+    }
+
+    function styleRows(){
+        $('#testModel').find('fieldset').find('label').css('margin-right', '5px');
+    }
+</script>

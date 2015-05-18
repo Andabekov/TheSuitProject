@@ -1,3 +1,12 @@
+
+<div class="header">
+    Сверить КОДы
+</div>
+
+<div style="padding-bottom: 10px;">
+Для того чтобы <i>сверить коды</i>, введенные в систему редактором, с выгруженными кодами (с другой системы) выберите нужный <i>Exel файл</i>:
+</div>
+
 <?php
 $form->setAttribute('action', $this->url('redactor', array('action' => 'compare')));
 $form->setAttribute('class', 'form-horizontal');
@@ -5,13 +14,13 @@ $form->setAttribute('class', 'form-horizontal');
 <?php $form->prepare(); // The correct enctype is set here ?>
 <?php echo $this->form()->openTag($form); ?>
 
-<div class="form-element">
-    <?php $fileElement = $form->get('excel-file'); ?>
-    <?php echo $this->formLabel($fileElement); ?>
-    <?php echo $this->formFile($fileElement); ?>
+<div style="padding-bottom: 10px;">
+    <?php $fileElement = $form->get('excel-file');?>
+<!--    --><?php //echo $this->formLabel($fileElement); ?>
+    <?php echo $this->formFile($fileElement);  ?>
     <?php echo $this->formElementErrors($fileElement); ?>
 </div>
 
-<button>Submit</button>
+<button class="btn btn-primary">Сравнить</button>
 
 <?php echo $this->form()->closeTag(); ?>

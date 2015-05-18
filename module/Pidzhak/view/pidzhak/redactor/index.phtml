@@ -56,6 +56,7 @@
                     {
                         return "<button type=\"button\" class=\"btn btn-xs btn-default enterCodes\" data-row-id=\"" + row.my_id + "\">Ввести коды</button><br />" +
                             "<button type=\"button\" class=\"btn btn-xs btn-default checkCodes\" data-row-id=\"" + row.my_id + "\">Просмотреть коды</button> <br />"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-default compareCodes\" data-row-id=\"" + row.my_id + "\">Сравнить коды</button> <br />"+
                             "<button type=\"button\" class=\"btn btn-xs btn-default presubmit\" data-row-id=\"" + row.my_id + "\">Presubmit</button> ";
                     }
                 }
@@ -68,6 +69,9 @@
                 }).end().find(".checkCodes").on("click", function(e)
                 {
                     window.location="redactor/watchcodes/"+$(this).data("row-id");
+                }).end().find(".compareCodes").on("click", function(e)
+                {
+                    window.location="redactor/compare/"+$(this).data("row-id");
                 }).end().find(".presubmit").on("click", function(e)
                 {
                     myId=$(this).data("row-id");

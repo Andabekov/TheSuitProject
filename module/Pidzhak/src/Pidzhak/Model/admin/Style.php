@@ -85,7 +85,7 @@ class Style implements InputFilterAwareInterface
             ));
             $inputFilter->add(array(
                 'name'     => 'style_code',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -103,7 +103,7 @@ class Style implements InputFilterAwareInterface
             ));
             $inputFilter->add(array(
                 'name'     => 'style_code_fabric',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -121,7 +121,7 @@ class Style implements InputFilterAwareInterface
             ));
             $inputFilter->add(array(
                 'name'     => 'style_code_desc',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),

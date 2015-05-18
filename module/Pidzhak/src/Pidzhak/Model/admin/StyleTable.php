@@ -36,7 +36,12 @@ class StyleTable
         $select = $sql->select();
         $select->from($this->tableGateway->table)
             ->join('clothers', 'stylestable.cloth_type = clothers.id');
-        $select->columns(array(new Expression('DISTINCT style_num, cloth_type')));
+
+        $select->group(new Expression('stylestable.style_num, stylestable.cloth_type'));
+
+        $select->columns(array('*', new Expression('stylestable.id as tempcol')
+
+        ));
 
         if ($rowCount < 0)
             $select->offset(0);
@@ -71,6 +76,13 @@ class StyleTable
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function getStyleCodeList($style_num, $cloth_type){
+
+        $rowset = $this->tableGateway->select(array('style_num' => $style_num, 'cloth_type' => $cloth_type));
+
+        return $rowset;
     }
 
     public function getStyleByIdAndClothType($id, $clothType){
@@ -127,5 +139,10 @@ class StyleTable
     public function deleteStyle($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
+    }
+
+    public function deleteStyleList($style_num, $cloth_type)
+    {
+        $this->tableGateway->delete(array('style_num' => $style_num, 'cloth_type' => $cloth_type));
     }
 }

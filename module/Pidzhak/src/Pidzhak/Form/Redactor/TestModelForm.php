@@ -53,6 +53,7 @@ class TestModelForm extends Form
             'csrf',
             'systemcode' => array(
                 'code',
+                'fabric_optional',
                 'description',
             ),
         ));

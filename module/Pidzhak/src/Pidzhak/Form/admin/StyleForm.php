@@ -24,22 +24,29 @@ class StyleForm extends Form
             'name' => 'style_num',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'required' => 'true'
             ),
             'options' => array(
                 'label' => 'Номер стиля',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
             'name' => 'cloth_type',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Тип изделия',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'empty_option' => 'Не выбрано',
+                'value_options' => array(
+                    '1' => 'Пиджак',
+                    '2' => 'Брюки',
+                    '3' => 'Сорочка',
+                    '4' => 'Жилетка',
+                    '5' => 'Пальто',
+                ),
             ),
         ));
         $this->add(array(
@@ -79,7 +86,7 @@ class StyleForm extends Form
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Добавить стиль',
                 'id' => 'submitbutton',
                 'class' => 'btn btn-primary'
             ),
