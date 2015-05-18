@@ -31,9 +31,9 @@ XML;
 
     public static function buildCategory(){
         $category_xml = <<<XML
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" xmlns:atom='http://www.w3.org/2005/Atom'?>
 <atom:category scheme='http://schemas.google.com/g/2005#kind'
-               term='http://schemas.google.com/contact/2008#contact' />
+               term='http://schemas.google.com/contact/2008#contact'/>
 XML;
         $category = new SimpleXMLElement($category_xml);
 

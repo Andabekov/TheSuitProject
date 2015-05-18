@@ -9,6 +9,7 @@
 namespace Pidzhak\Controller\admin;
 
 use Pidzhak\Form\admin\UserForm;
+use Pidzhak\GoogleContact\GoogleContactUtil;
 use Pidzhak\Model\admin\User;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -28,6 +29,9 @@ class UserController extends AbstractActionController
                 'user' => $this->getUserTable()->fetchAll(),
             )
         );
+
+        var_dump(GoogleContactUtil::saveGoogleContact());
+
 //        $view->setTemplate('pidzhak/admin/index.phtml');
         $view->setTemplate('pidzhak/admin/oauth.phtml');
         return $view;
