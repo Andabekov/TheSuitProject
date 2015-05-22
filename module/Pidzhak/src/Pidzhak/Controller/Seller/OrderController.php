@@ -161,6 +161,8 @@ class OrderController extends AbstractActionController
         $order_form_id = 0;
         $order_error = "";
         $customer_id = (int)$this->params()->fromRoute('id', 0);
+        $measureTypeSelect = (int)$this->params()->fromRoute('measureTypeSelect', 0);
+
         $orderclothesform = 0;
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
@@ -171,6 +173,7 @@ class OrderController extends AbstractActionController
         $cform = new OrderClothesForm($dbAdapter);
         $cform->get('orderclothessubmit')->setValue('Сохранить изделие');
         $cform->get('orderclothescancel')->setValue('Отменить');
+        $cform->get('typeof_measure')->setValue($measureTypeSelect);
 
 
         $request = $this->getRequest();
@@ -202,6 +205,7 @@ class OrderController extends AbstractActionController
                     }
                     if ($order_form_id) {
                         $orderclothes->exchangeArray($cform->getData());
+                        $orderclothes->typeof_measure = $measureTypeSelect;
                         $orderclothes->order_id = $order_form_id;
                         $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
                     }
@@ -251,6 +255,7 @@ class OrderController extends AbstractActionController
         $view = new ViewModel(array(
                 'order_form_id' => $order_form_id,
                 'id' => $customer_id,
+                'measureTypeSelect' => $measureTypeSelect,
                 'form' => $form,
                 'cform' => $cform,
                 'customer' => $customer,

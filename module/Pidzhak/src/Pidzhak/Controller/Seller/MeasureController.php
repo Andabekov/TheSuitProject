@@ -288,7 +288,8 @@ class MeasureController extends AbstractActionController
                 return $this->redirect()->toRoute('order'
                     , array(
                         'action' => 'thirdstep',
-                        'id' => $idval
+                        'id' => $idval,
+                        'measureTypeSelect' => $bodymeasure->measureTypeSelect
                     ));
             }else {
                 $form->highlightErrorElements();

@@ -1970,6 +1970,23 @@ class MeasureForm extends Form
                 'disabled' => 'true'
             ),
         ));
+        $this->add(array(
+            'name' => 'measureTypeSelect',
+            'type' => 'select',
+            'attributes' => array(
+                'id' => 'measureTypeSelect',
+                'class' => 'form-control',
+                'onchange' => 'changeMeasureType();',
+                'style' => 'display: inline-block; width: auto;',
+            ),
+            'options' => array(
+                'label' => 'Выберите тип замера',
+                'value_options' => array(
+                    '1' => 'По фигуре',
+                    '2' => 'По изделию',
+                ),
+            ),
+        ));
     }
 
 }

@@ -20,7 +20,10 @@ class OrderClothesRestController extends AbstractRestfulController
         $searchPhrase = $data['searchPhrase'];
         $id = $data['id'];
         $order_id = $data['order_id'];
-        $seller_name = $data['seller_name'];
+        if(!empty($data['seller_name']))
+            $seller_name = $data['seller_name'];
+        else
+            $seller_name = '';
 
         $offset = intval($rowCount) * (intval($current)-1);
         $customers= $this->getOrderClothesTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase, $order_id, $seller_name);

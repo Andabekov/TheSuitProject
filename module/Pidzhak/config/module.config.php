@@ -88,7 +88,7 @@ return array(
             'order' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/order[/:action][/:id]',
+                    'route' => '/order[/:action][/:id][/:measureTypeSelect]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',

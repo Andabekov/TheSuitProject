@@ -86,6 +86,10 @@ class OrderClothes  implements InputFilterAwareInterface
                 'name' => 'fabric_class',
                 'required' => false,
             ));
+            $this->inputFilter->add(array(
+                'name' => 'typeof_measure',
+                'required' => false,
+            ));
 
         }
 

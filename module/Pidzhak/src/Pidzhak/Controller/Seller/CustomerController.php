@@ -135,8 +135,11 @@ class CustomerController extends AbstractActionController
                 $mobile_phone=$request->getPost()->mobilephone;
                 $access_token=$request->getPost()->access_token;
 
-                GoogleContactXmlParser::createContactFinal($full_name,$mobile_phone,$access_token);
-
+                try {
+                    GoogleContactXmlParser::createContactFinal($full_name,$mobile_phone,$access_token);
+                }
+                catch (\Exception $ex) {
+                }
 
                 $customer->exchangeArray($form->getData());
                 $this->getCustomerTable()->saveCustomer($customer);

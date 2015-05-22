@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
 <h1 xmlns="http://www.w3.org/1999/html"><?php echo $this->escapeHtml($title); ?></h1>
 <?php
-$form->setAttribute('action', $this->url('order', array('action' => 'thirdstep', 'id' => $this->id,)));
+$form->setAttribute('action', $this->url('order', array('action' => 'thirdstep', 'id' => $this->id,'measureTypeSelect' => $this->measureTypeSelect,)));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
