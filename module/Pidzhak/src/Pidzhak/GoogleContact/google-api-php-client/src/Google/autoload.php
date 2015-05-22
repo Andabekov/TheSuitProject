@@ -19,6 +19,7 @@ function google_api_php_client_autoload($className)
 {
   $classPath = explode('_', $className);
   if ($classPath[0] != 'Google') {
+//  if ($classPath[0] != 'C:/Users/Abu Andabekov/Desktop/PIDZHAK/module/Pidzhak/src/Pidzhak/GoogleContact/google-api-php-client/src/Google') {
     return;
   }
   // Drop 'Google', and maximum class file path depth in this project is 3.

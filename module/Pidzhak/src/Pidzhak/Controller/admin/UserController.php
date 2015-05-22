@@ -25,22 +25,33 @@ class UserController extends AbstractActionController
         }
 
 //        $google_contact = GoogleContactUtil::saveGoogleContact();
+//        var_dump(dirname(__FILE__));
 
-//        var_dump(GoogleContactUtil::saveGoogleContact());
+//        $url = GoogleContactUtil::saveGoogleContact();
+
 
         $view = new ViewModel(array(
                 'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
                 'user' => $this->getUserTable()->fetchAll(),
-//                'google_contact' => $google_contact,
             )
         );
 
-
-
-//        $view->setTemplate('pidzhak/admin/index.phtml');
-        $view->setTemplate('pidzhak/admin/oauth.phtml');
-//        $view->setTemplate('pidzhak/test/user-example.php');
+        $view->setTemplate('pidzhak/admin/index.phtml');
+//        $view->setTemplate('pidzhak/admin/oauth.phtml');
+//        $view->setTemplate('Pidzhak/googlecontact/google-api-php-cient/examples/index.php');
         return $view;
+    }
+
+    public function createcontactAction(){
+        $access_token = $this->params()->fromRoute('id', 0);
+
+        if (!$access_token) {
+            return $this->redirect()->toRoute('admin');
+        }
+
+        var_dump(GoogleContactUtil::createGoogleContact($access_token));
+
+//        return $this->redirect()->toRoute('admin');
     }
 
     public function addAction()
@@ -106,6 +117,15 @@ class UserController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                switch($user->access_type_id){
+                    case 'Продавец': $user->access_type_id=1; break;
+                    case 'Редактор': $user->access_type_id=2; break;
+                    case 'Бухгалтер': $user->access_type_id=3; break;
+                    case 'Директор': $user->access_type_id=4; break;
+                    case 'Курьер': $user->access_type_id=5; break;
+                    case 'Админ': $user->access_type_id=6; break;
+                }
+
                 $this->getUserTable()->saveUser($user);
 
                 return $this->redirect()->toRoute('admin');

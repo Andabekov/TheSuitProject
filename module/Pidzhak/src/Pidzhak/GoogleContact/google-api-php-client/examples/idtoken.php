@@ -24,15 +24,15 @@ require_once realpath(dirname(__FILE__) . '/../src/Google/autoload.php');
   the redirect URI is to this page, e.g:
   http://localhost:8080/user-example.php
  ************************************************/
-$client_id = '<YOUR_CLIENT_ID>';
-$client_secret = '<YOUR_CLIENT_SECRET>';
-$redirect_uri = '<YOUR_REDIRECT_URI>';
+$client_id = '953149846914-4mahib5a15dkpnor8c72d1am9sp120c7.apps.googleusercontent.com';
+$client_secret = 'W7UNgwbIfmdnlRnkwaZRQbl4';
+$redirect_uri = 'http://localhost:8888';
 
 $client = new Google_Client();
 $client->setClientId($client_id);
 $client->setClientSecret($client_secret);
 $client->setRedirectUri($redirect_uri);
-$client->setScopes('email');
+$client->setScopes('https://www.googleapis.com/auth/contacts');
 
 /************************************************
   If we're logging out we just need to clear our

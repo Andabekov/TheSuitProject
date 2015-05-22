@@ -2,7 +2,7 @@
 <head>
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script src="https://apis.google.com/js/client.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<!--    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
 
     <script>
         function auth() {
@@ -11,6 +11,7 @@
                 'scope': 'https://www.google.com/m8/feeds'
             };
             gapi.auth.authorize(config, function() {
+//                fetch(gapi.auth.getCode());
                 fetch(gapi.auth.getToken());
             });
         }
@@ -19,22 +20,61 @@
 
             alert(token.access_token);
 
-            $.ajax({
-                url: "https://www.google.com/m8/feeds/contacts/default/full?access_token=" + token.access_token + "&alt=json",
-                dataType: "jsonp",
-                success:function(data) {
-                    console.log(JSON.stringify(data));
-                },
-                error : function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.status);
-                    console.log(thrownError);
-                }
-            });
+//            $.ajax({
+//                method: "POST",
+////                url: "https://www.google.com/m8/feeds/contacts/default/full?access_token=" + token.access_token + "&alt=json",
+//                url: "https://www.google.com/m8/feeds/contacts/andabekov1@gmail.com/full?access_token=" + token.access_token,
+//                dataType: "json",
+//                data: {entry : {name: {givenName: 'Test', familyName: 'Testov', fullName: 'Testov Test'}}},
+//                success:function(data) {
+//                    console.log(JSON.stringify(data));
+//                },
+//                error : function (xhr, ajaxOptions, thrownError) {
+//                    console.log(xhr.status);
+//                    console.log(thrownError);
+//                }
+//            });
+
+
+//            gapi.client.request({
+//                    method : 'POST',
+//                    path:'m8/feeds/contacts/default/full?access_token=' + token.access_token,
+//                    body : {"version":"1.0","encoding":"UTF-8",entry : 'shit'},
+////                    body : {"version":"1.0","encoding":"UTF-8", name: {givenName: 'Test', familyName: 'Testov', fullName: 'Testov Test'}},
+//                    callback : function(data) {
+//                        console.log(data);
+//                    }
+//            });
+        }
+
+        function testFunction(){
+            console.log('<?php echo $url;?>');
         }
     </script>
 </head>
 
-<body>
+<body onload="testFunction();">
 <button onclick="auth();">GET CONTACTS FEED</button>
+
+<br /><br />
+
+<button onclick="createContact()">CREATE NEW CONTACT</button>
+
+<script>
+    function createContact(){
+        var config = {
+            'client_id': '293748932350-ttdh6gkvjb095gj5fuhhjqs32d5dnq2l.apps.googleusercontent.com',
+            'scope': 'https://www.google.com/m8/feeds'
+        };
+        gapi.auth.authorize(config, function() {
+            fetch(gapi.auth.getToken());
+        });
+    }
+    function fetch(token) {
+        window.location = 'admin/createcontact/'+token.access_token;
+    }
+</script>
+
+
 </body>
 </html>

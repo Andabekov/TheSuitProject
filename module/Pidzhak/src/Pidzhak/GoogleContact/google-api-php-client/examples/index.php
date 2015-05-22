@@ -1,4 +1,5 @@
 <?php
+
 include_once "templates/base.php";
 if (!isWebRequest()) {
   echo "To view this page on a webserver using PHP 5.4 or above run: \n\t

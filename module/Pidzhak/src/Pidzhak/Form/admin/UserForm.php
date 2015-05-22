@@ -23,6 +23,7 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'username',
+            'required' => true,
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -34,9 +35,11 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'password',
+            'required' => true,
             'type' => 'password',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'required' => 'true'
             ),
             'options' => array(
                 'label' => 'Пароль',
@@ -46,6 +49,7 @@ class UserForm extends Form
         $this->add(array(
             'name' => 'access_type_id',
             'type' => 'select',
+            'required' => true,
             'attributes' => array(
                 'class' => 'form-control'
             ),
@@ -65,6 +69,7 @@ class UserForm extends Form
         $this->add(array(
             'name' => 'name',
             'type' => 'Text',
+            'required' => true,
             'attributes' => array(
                 'class' => 'form-control'
             ),
@@ -75,6 +80,7 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'surname',
+            'required' => true,
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'
@@ -86,6 +92,7 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'email',
+            'required' => true,
             'type' => 'Email',
             'attributes' => array(
                 'class' => 'form-control'
@@ -97,6 +104,7 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'phone',
+            'required' => true,
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control'

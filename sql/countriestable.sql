@@ -11,3 +11,4 @@ INSERT INTO pidzhak.countriestable (id, country_name) VALUES (2, 'Россия')
 INSERT INTO pidzhak.countriestable (id, country_name) VALUES (3, 'Украина');
 INSERT INTO pidzhak.countriestable (id, country_name) VALUES (4, 'Кыргызстан');
 INSERT INTO pidzhak.countriestable (id, country_name) VALUES (5, 'Узбекистан');
+INSERT INTO pidzhak.countriestable (id, country_name) VALUES (6, 'Азербайджан');

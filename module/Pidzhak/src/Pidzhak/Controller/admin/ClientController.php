@@ -8,6 +8,7 @@
 
 namespace Pidzhak\Controller\admin;
 
+use Pidzhak\GoogleContact\GoogleContactXmlParser;
 use Pidzhak\Model\Seller\Customer;
 use Pidzhak\Form\Seller\CustomerForm;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -39,6 +40,14 @@ class ClientController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                $full_name=$request->getPost()->firstname.' '.$request->getPost()->lastname.' '.$request->getPost()->middlename;
+                $mobile_phone=$request->getPost()->mobilephone;
+                $access_token=$request->getPost()->access_token;
+
+                GoogleContactXmlParser::createContactFinal($full_name,$mobile_phone,$access_token);
+
+//                var_dump(GoogleContactXmlParser::createContactFinal($full_name,$mobile_phone,$access_token));
+
                 $customer->exchangeArray($form->getData());
                 $this->getCustomerTable()->saveCustomer($customer);
 

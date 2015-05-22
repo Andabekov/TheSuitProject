@@ -7,6 +7,10 @@
  */
 ?>
 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script src="https://apis.google.com/js/client.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
+
 <div class="header">
     Добавление нового пользывателя
 </div>
@@ -20,19 +24,30 @@ echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 ?>
 
-
     <?= $this->render('/pidzhak/customer/fields.phtml') ?>
 
+    <input name="access_token" style="display:none" />
 
 <?php
-
-
-echo $this->form()->closeTag();
+    echo $this->form()->closeTag();
 ?>
 
 
 <script>
     $(function(){
         $("#mobilephone").mask("99999999999");
+        setTimeout(function(){ createContact(); }, 1000);
     })
+    function createContact(){
+        var config = {
+            'client_id': '293748932350-ttdh6gkvjb095gj5fuhhjqs32d5dnq2l.apps.googleusercontent.com',
+            'scope': 'https://www.google.com/m8/feeds'
+        };
+        gapi.auth.authorize(config, function() {
+            doSmth(gapi.auth.getToken());
+        });
+    }
+    function doSmth(access_token){
+        $('input[name=access_token]').val(access_token.access_token);
+    }
 </script>

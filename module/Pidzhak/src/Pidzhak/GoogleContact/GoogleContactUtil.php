@@ -20,8 +20,12 @@ class GoogleContactUtil
 
         $contact_xml = GoogleContactXmlParser::buildContact($contact);
 
-        $sent = GoogleContactXmlParser::sendContactToUrl($contact_xml);
+        return GoogleContactXmlParser::sendContactToUrl($contact_xml);
 
-        return $sent;
+//        return $sent;
+    }
+
+    public static function createGoogleContact($access_token){
+        return GoogleContactXmlParser::createContact($access_token);
     }
 }
