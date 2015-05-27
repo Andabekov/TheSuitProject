@@ -24,9 +24,10 @@ class OrderClothesRestController extends AbstractRestfulController
             $seller_name = $data['seller_name'];
         else
             $seller_name = '';
+        $order_status = $data['order_status'];
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $customers= $this->getOrderClothesTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase, $order_id, $seller_name);
+        $customers= $this->getOrderClothesTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase, $order_id, $seller_name, $order_status);
         $count= $this->getOrderClothesTable()->getCount();
 
         return new JsonModel(array(

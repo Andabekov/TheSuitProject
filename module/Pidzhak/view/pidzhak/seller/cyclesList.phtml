@@ -1,0 +1,99 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 26/05/2015
+ * Time: 13:57
+ */
+?>
+
+<div class="header">
+    Список циклов
+</div>
+
+<div style="margin-bottom: 10px;">
+    Показать список:
+    <select id="cyclesSelect" class="form-control" style="display: inline-block; width: auto;" onchange="sortCycles()">
+        <option value="0">всех циклов</option>
+        <option value="1">активных циклов</option>
+    </select>
+</div>
+
+
+<div class="col-md-9" id="all_cycles_grid">
+    <table id="cycle-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="id">№ Цикла</th>
+            <th data-column-id="order_accept_start_date">Дата начала приема заказов</th>
+            <th data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
+            <th data-column-id="order_check_deadline_date" data-order="desc">Дэдлайн сверки заказа</th>
+            <th data-column-id="submit_deadline_date" data-order="desc">Дэдлайн предзаказа</th>
+            <th data-column-id="ship_deadline_date" data-order="desc">Дэдлайн отправки заказа</th>
+            <th data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div class="col-md-9" id="active_cycles_grid" style="display: none;">
+    <table id="active-cycle-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="id">№ Цикла</th>
+            <th data-column-id="order_accept_start_date">Дата начала приема заказов</th>
+            <th data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
+            <th data-column-id="order_check_deadline_date" data-order="desc">Дэдлайн сверки заказа</th>
+            <th data-column-id="submit_deadline_date" data-order="desc">Дэдлайн предзаказа</th>
+            <th data-column-id="ship_deadline_date" data-order="desc">Дэдлайн отправки заказа</th>
+            <th data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<script>
+    $(function () {
+        initAllCycles();
+    });
+
+    function initAllCycles() {
+        $("#cycle-grid").bootgrid({
+            ajax: true,
+            post: function () {
+                /* To accumulate custom parameter with the request object */
+                return {
+                    id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                    active_cycles: '0'
+                };
+            },
+            url: "/restcycle"
+        });
+    }
+
+    function initActiveCycles() {
+        $("#active-cycle-grid").bootgrid({
+            ajax: true,
+            post: function () {
+                /* To accumulate custom parameter with the request object */
+                return {
+                    id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                    active_cycles: '1'
+                };
+            },
+            url: "/restcycle"
+        });
+    }
+
+    function sortCycles(){
+        switch($('#cyclesSelect').val()){
+            case '0': $('#all_cycles_grid').show(); $('#active_cycles_grid').hide(); break;
+            case '1': initActiveCycles(); $('#all_cycles_grid').hide(); $('#active_cycles_grid').show(); break;
+        }
+    }
+
+</script>

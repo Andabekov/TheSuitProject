@@ -23,7 +23,7 @@ class OrderClothesTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $order_id, $seller_name)
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $order_id, $seller_name, $order_status)
     {
         $sql = new Sql($this->tableGateway->adapter);
         $select = $sql->select();

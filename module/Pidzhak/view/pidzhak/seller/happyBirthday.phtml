@@ -1,0 +1,228 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 26/05/2015
+ * Time: 21:06
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Поздравительные смс
+</div>
+
+<div style="margin-bottom: 10px;">
+    Показать клиентов, у которых день рождение:
+    <select id="bdselect" class="form-control" style="display: inline-block; width: auto;" onchange="sortbds()">
+        <option value="0">сегодня</option>
+        <option value="1">в ближайшие 3 дня</option>
+        <option value="2">в ближайшие 10 дней</option>
+    </select>
+</div>
+
+<div class="col-md-9" id="bdtodaymode">
+    <table id="customer-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="firstname">Имя</th>
+            <th data-column-id="lastname" data-order="desc">Фамилия</th>
+            <th data-column-id="middlename" data-order="desc">Отчество</th>
+            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+            <th data-column-id="email" data-order="desc">Емайл</th>
+            <th data-column-id="city" data-order="desc">Город</th>
+            <th data-column-id="address" data-order="desc">Адрес</th>
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div class="col-md-9" id="bd3mode" style="display: none;">
+    <table id="customer-grid-3" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="firstname">Имя</th>
+            <th data-column-id="lastname" data-order="desc">Фамилия</th>
+            <th data-column-id="middlename" data-order="desc">Отчество</th>
+            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+            <th data-column-id="email" data-order="desc">Емайл</th>
+            <th data-column-id="city" data-order="desc">Город</th>
+            <th data-column-id="address" data-order="desc">Адрес</th>
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div class="col-md-9" id="bd10mode" style="display: none;">
+    <table id="customer-grid-10" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="firstname">Имя</th>
+            <th data-column-id="lastname" data-order="desc">Фамилия</th>
+            <th data-column-id="middlename" data-order="desc">Отчество</th>
+            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+            <th data-column-id="email" data-order="desc">Емайл</th>
+            <th data-column-id="city" data-order="desc">Город</th>
+            <th data-column-id="address" data-order="desc">Адрес</th>
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div id="myModal" style="display: none;">
+    <table>
+        <tr>
+            <td>Номер телефона:</td>
+            <td><input required="true" class="form-control" type="text" readonly="true" id="telnum" /></td>
+        </tr>
+        <tr>
+            <td>Текст поздравления:</td>
+            <td><textarea required="true" id="smstext" class="form-control"></textarea></td>
+        </tr>
+    </table>
+
+    <button onclick="sendSms();" class="btn btn-primary" style="float: right; margin-top: 8px; margin-right:10px;">Отправить</button>
+    <button onclick="closeDlg()" class="btn btn-default" style="float: right; margin-top: 8px; margin-right:10px;">Отмена</button>
+
+</div>
+
+<script>
+    $(function () {
+        initToday();
+    });
+
+    function initToday() {
+        var grid = $("#customer-grid").bootgrid({
+            ajax: true,
+            post: function () {
+                /* To accumulate custom parameter with the request object */
+                return {
+                    id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                    bdmode: 0
+                };
+            },
+            url: "/restcustomer",
+            formatters: {
+                "commands": function(column, row)
+                {
+                    return "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.mobilephone + "\"><span class=\"glyphicon glyphicon-envelope\"></span></button>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function()
+        {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e)
+            {
+                openSmsDlg($(this).data("row-id"), $(this).data("row-fullname"));
+            });
+        });
+    }
+
+    function init3() {
+        var grid = $("#customer-grid-3").bootgrid({
+            ajax: true,
+            post: function () {
+                /* To accumulate custom parameter with the request object */
+                return {
+                    id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                    bdmode: 1
+                };
+            },
+            url: "/restcustomer",
+            formatters: {
+                "commands": function(column, row)
+                {
+                    return "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.mobilephone + "\"><span class=\"glyphicon glyphicon-envelope\"></span></button>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function()
+        {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e)
+            {
+                openSmsDlg($(this).data("row-id"), $(this).data("row-fullname"));
+            });
+        });
+    }
+
+    function init10() {
+        var grid = $("#customer-grid-10").bootgrid({
+            ajax: true,
+            post: function () {
+                /* To accumulate custom parameter with the request object */
+                return {
+                    id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                    bdmode: 2
+                };
+            },
+            url: "/restcustomer",
+            formatters: {
+                "commands": function(column, row)
+                {
+                    return "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.mobilephone + "\"><span class=\"glyphicon glyphicon-envelope\"></span></button>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function()
+        {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e)
+            {
+                openSmsDlg($(this).data("row-id"), $(this).data("row-fullname"));
+            });
+        });
+    }
+
+    function sortbds(){
+        switch($('#bdselect').val()){
+            case '0': $('#bdtodaymode').show(); $('#bd3mode').hide(); $('#bd10mode').hide(); break;
+            case '1': init3(); $('#bdtodaymode').hide(); $('#bd3mode').show(); $('#bd10mode').hide(); break;
+            case '2': init10(); $('#bdtodaymode').hide(); $('#bd3mode').hide(); $('#bd10mode').show(); break;
+        }
+    }
+
+    function closeDlg(){
+        $('#myModal').dialog('close');
+    }
+
+    function openSmsDlg(phone, fullname){
+        $('#smstext').css('height', '175px');
+        $('#telnum').val(phone);
+
+        fullname = fullname.replace("null", "");
+
+        $('#smstext').text('Уважаемый '+fullname+
+        ', позвольте поздравить Вас с днем рождения! Желаем Вам здоровье, счастья, и любви! \nС/у Pidzhak.kz');
+
+        $('#myModal').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 450,
+            height: 335,
+            title: 'Форма отправления смс'
+        });
+    }
+
+    function sendSms(){
+        if($('#telnum').val()!='' && $('#smstext').text()!='')
+            window.location = 'happybd?num='+$('#telnum').val()+'&text='+$('#smstext').text();
+    }
+
+</script>

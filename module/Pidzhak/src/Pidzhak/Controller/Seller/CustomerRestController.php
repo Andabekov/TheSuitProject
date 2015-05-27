@@ -32,11 +32,12 @@ class CustomerRestController extends AbstractRestfulController
         $sortType = $sort[$sortField];
         $searchPhrase = $data['searchPhrase'];
         $id = $data['id'];
+        $bdmode = $data['bdmode'];
 
 
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
+        $customers= $this->getCustomerTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase, $bdmode);
         $count= $this->getCustomerTable()->getCount();
 
 

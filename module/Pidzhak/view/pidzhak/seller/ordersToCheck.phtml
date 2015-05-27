@@ -1,8 +1,14 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 26/05/2015
+ * Time: 21:02
+ */
 ?>
 
 <div class="header">
-    Список изделии в обработке
+    Изделия отправленные редактором для проверки
 </div>
 
 <div class="col-md-9">
@@ -17,7 +23,7 @@
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
             <th data-column-id="dateofsale">Дата продажи</th>
-<!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
+            <!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
             <th data-column-id="status_name" data-order="desc">Статус</th>
             <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
         </tr>
@@ -39,7 +45,7 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
                         order_id: -1,
                         seller_name: '<?php echo $current_user_id;?>',
-                        order_status: 3
+                        order_status: 1
                     };
                 },
                 url: "/restorderclothes"

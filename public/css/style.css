@@ -324,3 +324,9 @@ a.active {
     font-size: 16px;
     text-decoration: underline;
 }
+
+.ui-dialog-titlebar {
+    background-color: #333;
+    background-image: none;
+    color: #000;
+}

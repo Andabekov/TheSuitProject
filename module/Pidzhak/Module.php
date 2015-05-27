@@ -110,6 +110,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
             ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')->allow('seller', 'order-rest')
+            ->allow('seller', 'cycle-rest')
+            ->allow('seller', 'fabric-rest')
             ->allow('redactor', 'redactor')
             ->allow('redactor', 'order')->allow('redactor', 'order-rest')
             ->allow('redactor', 'orderclothes')->allow('redactor', 'orderclothes-rest')
@@ -182,17 +184,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $authService->setStorage($sm->get('Pidzhak\Model\AuthStorage'));
 
                     return $authService;
-                },
-                'Pidzhak\Model\Seller\SellerTable' =>  function($sm) {
-                    $tableGateway = $sm->get('SellerTableGateway');
-                    $table = new SellerTable($tableGateway);
-                    return $table;
-                },
-                'SellerTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Seller());
-                    return new TableGateway('seller', $dbAdapter, null, $resultSetPrototype);
                 },
                 'Pidzhak\Model\Seller\CustomerTable' =>  function($sm) {
                     $tableGateway = $sm->get('CustomerTableGateway');

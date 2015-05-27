@@ -1,6 +1,8 @@
 <?php
 namespace Pidzhak\Controller\Seller;
 
+use Pidzhak\Model\admin\Sms;
+use Pidzhak\Sms\SmsUtil;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Pidzhak\Model\Seller\Seller;
@@ -8,111 +10,130 @@ use Pidzhak\Form\Seller\SellerForm;
 
 class SellerController extends AbstractActionController
 {
-    protected $sellerTable;
+    protected $cycleTable;
+    protected $fabricTable;
+    protected $smsTable;
+    protected $orderTable;
+    protected $authservice;
+
 
     public function indexAction()
     {
-        return new ViewModel(array(
-            'sellers' => $this->getSellerTable()->fetchAll(),
+        return $this->redirect()->toRoute('order');
+    }
+
+    public function cycleslistAction()
+    {
+        $view = new ViewModel(array(
+            'cycle' => $this->getCycleTable()->fetchAll(),
         ));
+        $view->setTemplate('pidzhak/seller/cycleslist.phtml');
+        return $view;
     }
 
-    public function addAction()
+    public function fabricslistAction()
     {
-        $form = new SellerForm();
-        $form->get('submit')->setValue('Add');
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $seller = new Seller();
-            $form->setInputFilter($seller->getInputFilter());
-            $form->setData($request->getPost());
-
-            if ($form->isValid()) {
-                $seller->exchangeArray($form->getData());
-                $this->getSellerTable()->saveSeller($seller);
-
-                // Redirect to list of sellers
-                return $this->redirect()->toRoute('seller');
-            }
-        }
-        return array('form' => $form);
+        $view = new ViewModel(array(
+                'fabric' => $this->getFabricTable()->fetchAll(),
+        ));
+        $view->setTemplate('pidzhak/seller/fabricslist.phtml');
+        return $view;
     }
 
-    public function editAction()
-    {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('seller', array(
-                'action' => 'add'
-            ));
-        }
-
-        try {
-            $seller = $this->getSellerTable()->getSeller($id);
-        }
-        catch (\Exception $ex) {
-            return $this->redirect()->toRoute('seller', array(
-                'action' => 'index'
-            ));
-        }
-
-        $form  = new SellerForm();
-        $form->bind($seller);
-        $form->get('submit')->setAttribute('value', 'Edit');
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $form->setInputFilter($seller->getInputFilter());
-            $form->setData($request->getPost());
-
-            if ($form->isValid()) {
-                $this->getSellerTable()->saveSeller($seller);
-
-                // Redirect to list of sellers
-                return $this->redirect()->toRoute('seller');
-            }
-        }
-
-        return array(
-            'id' => $id,
-            'form' => $form,
-        );
-    }
-
-    public function deleteAction()
-    {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('seller');
-        }
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-
-            if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
-                $this->getSellerTable()->deleteSeller($id);
-            }
-
-            // Redirect to list of sellers
-            return $this->redirect()->toRoute('seller');
-        }
-
-        return array(
-            'id'    => $id,
-            'seller' => $this->getSellerTable()->getSeller($id)
-        );
-    }
-
-    /*Inversion of Control*/
-    public function getSellerTable()
-    {
-        if (!$this->sellerTable) {
+    public function getCycleTable(){
+        if (!$this->cycleTable) {
             $sm = $this->getServiceLocator();
-            $this->sellerTable = $sm->get('Pidzhak\Model\Seller\SellerTable');
+            $this->cycleTable = $sm->get('Pidzhak\Model\admin\CycleTable');
         }
-        return $this->sellerTable;
+        return $this->cycleTable;
+    }
+
+    public function getFabricTable(){
+        if (!$this->fabricTable) {
+            $sm = $this->getServiceLocator();
+            $this->fabricTable = $sm->get('Pidzhak\Model\admin\FabricTable');
+        }
+        return $this->fabricTable;
+    }
+
+    public function orderstocheckAction(){
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/seller/ordersToCheck.phtml');
+        return $view;
+    }
+
+    public function readyforfittingAction(){
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/seller/ordersForFitting.phtml');
+        return $view;
+    }
+
+    public function infittingAction(){
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/seller/ordersInFitting.phtml');
+        return $view;
+    }
+
+    public function intailorsAction(){
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/seller/ordersInTailors.phtml');
+        return $view;
+    }
+
+    public function happybdAction(){
+
+        $phone = $this->params()->fromQuery('num');
+        $text = $this->params()->fromQuery('text');
+
+        if($phone!=null && $phone!='' && $text!=null && $text!=''){
+            $sms = new Sms();
+            $sms->number=$phone;
+            $sms->text=$text;
+            SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
+
+            return $this->redirect()->toRoute('seller', array('action' => 'happybd'));
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/happyBirthday.phtml');
+        return $view;
+    }
+
+    public function getSmsTable()
+    {
+        if (!$this->smsTable) {
+            $sm = $this->getServiceLocator();
+            $this->smsTable = $sm->get('Pidzhak\Model\admin\SmsTable');
+        }
+        return $this->smsTable;
+    }
+
+    public function getOrderTable()
+    {
+        if (!$this->orderTable) {
+            $sm = $this->getServiceLocator();
+            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
+        }
+        return $this->orderTable;
+    }
+
+    public function getAuthService()
+    {
+        if (! $this->authservice) {
+            $this->authservice = $this->getServiceLocator()->get('AuthService');
+        }
+        return $this->authservice;
     }
 }

@@ -8,6 +8,10 @@
 
 namespace Pidzhak\Model\admin;
 
+use DateTime;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -26,15 +30,36 @@ class CycleTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
-            if($rowCount<0)
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $active_cycles){
+        if($active_cycles=='0'){
+            $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
+                if($rowCount<0)
+                    $select->offset(0);
+                else
+                    $select->limit($rowCount)->offset($offset);
+                $select->order($orderby);
+
+            });
+        } else{
+            $sql = new Sql($this->tableGateway->adapter);
+            $select = $sql->select();
+            $select->from($this->tableGateway->table);
+
+            if ($rowCount < 0)
                 $select->offset(0);
             else
                 $select->limit($rowCount)->offset($offset);
-            $select->order($orderby);
 
-        });
+            $where = new  Where();
+            $where->greaterThan('order_accept_finish_date', date('Y-m-d H:i:s'));
+            $select->where($where);
+
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $result = $statement->execute();
+
+            $resultSet = new ResultSet();
+            $resultSet->initialize($result);
+        }
 
         return $resultSet;
     }

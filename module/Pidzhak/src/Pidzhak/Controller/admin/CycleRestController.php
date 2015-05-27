@@ -24,9 +24,10 @@ class CycleRestController extends AbstractRestfulController
         $sortType = $sort[$sortField];
         $searchPhrase = $data['searchPhrase'];
         $id = $data['id'];
+        $active_cycles = $data['active_cycles'];
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $cycles= $this->getCycleTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
+        $cycles= $this->getCycleTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase, $active_cycles);
         $count= $this->getCycleTable()->getCount();
 
         return new JsonModel(array(

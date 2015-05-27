@@ -1,8 +1,13 @@
 <?php
 namespace Pidzhak\Model\Seller;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Form\Element\DateTime;
 
 class CustomerTable
 {
@@ -19,17 +24,55 @@ class CustomerTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
-            if($rowCount<0)
-                $select->offset(0);
-            else
-                $select->limit($rowCount)->offset($offset);
-            $select->order($orderby);
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $bdmode){
 
-            if($searchPhrase)
-                $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');
-        });
+        if($bdmode==-1){
+            $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
+                if($rowCount<0)
+                    $select->offset(0);
+                else
+                    $select->limit($rowCount)->offset($offset);
+                $select->order($orderby);
+
+                if($searchPhrase)
+                    $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');
+            });
+        } else {
+
+            $dbAdapter = $this->tableGateway->adapter;
+            $sql       = "select id, firstname, lastname, middlename, birthday, mobilephone, email, country, city, address, homephone, work, position, workaddress, workphone, DATE_FORMAT(birthday,'%m-%d') as bdmonthday from customer";
+            $statement = $dbAdapter->query($sql);
+            $result    = $statement->execute();
+
+            $bdtoday = array();
+            $bd3 = array();
+            $bd10 = array();
+
+            $monthday = date('m-d');
+            $month = date('m');
+            $day = date('d');
+            $day3_1 = $day-3;
+            $day3_2 = $day+3;
+            $day10_1 = $day-10;
+            $day10_2 = $day+10;
+
+            foreach ($result as $res) {
+                if($res['bdmonthday']==$monthday) array_push($bdtoday, $res);
+                if($month.'-'.$day3_1<$res['bdmonthday'] && $res['bdmonthday']<$month.'-'.$day3_2) array_push($bd3, $res);
+                if($month.'-'.$day10_1<$res['bdmonthday'] && $res['bdmonthday']<$month.'-'.$day10_2) array_push($bd10, $res);
+            }
+
+            if($bdmode==0)
+                $finalres=$bdtoday;
+            else if($bdmode==1)
+                $finalres=$bd3;
+            else
+                $finalres=$bd10;
+
+            $resultSet = new ResultSet();
+            $resultSet->initialize($finalres);
+
+        }
 
         return $resultSet;
     }
