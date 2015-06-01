@@ -7,6 +7,158 @@
  */
 ?>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <div class="header">
-    Изделия, которые у портных
+    Изделия у портных
 </div>
+
+<div class="col-md-9">
+    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
+            <th data-column-id="dateofsale">Дата продажи</th>
+            <!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
+            <th data-column-id="status_name" data-order="desc">Статус</th>
+            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+            <th data-header-css-class="sellerColumnBtn2" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
+        </tr>
+        </thead>
+
+    </table>
+    <!--/div-->
+</div>
+
+<div id="myModal" style="display: none;">
+    <table style="width: 100%">
+        <tr>
+            <td>Номер телефона:</td>
+            <td><input required="true" class="form-control" type="text" readonly="true" id="telnum" /></td>
+        </tr>
+        <tr>
+            <td>Текст поздравления:</td>
+            <td><textarea required="true" id="smstext" class="form-control"></textarea></td>
+        </tr>
+    </table>
+
+    <button onclick="sendSms();" class="btn btn-primary" style="float: right; margin-top: 8px; margin-right:10px;">Отправить</button>
+    <button onclick="closeDlg()" class="btn btn-default" style="float: right; margin-top: 8px; margin-right:10px;">Отмена</button>
+
+</div>
+
+<div id="fittingDateDlg" style="display: none;">
+
+    Выберите дату примерки: <input type="text" id="datepicker" />
+    <input type="text" id="hiddenId" style="display: none;" />
+    <br /> <span id="dateError" style="color: red;"></span>
+
+    <div style="text-align: center; margin-top: 15px;">
+        <button onclick="closeFittingDateDlg()" class="btn btn-default">Отмена</button>
+        <button onclick="setFittingDate()" class="btn btn-primary">Назначить</button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd'});
+
+        function init() {
+            var grid = $("#order-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '<?php echo $current_user_id;?>',
+                        order_status: 7
+                    };
+                },
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-phone=\"" + row.mobilephone + "\" data-row-id=\"" + row.order_id + "\">Отправить смс</button><br />"+
+                            "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary setFittingDate\" data-row-phone=\"" + row.mobilephone + "\" data-row-id=\"" + row.order_id + "\">Назначить дату</button><br />";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    openSmsDlg($(this).data("row-phone"), $(this).data("row-fullname"));
+                }).end().find(".setFittingDate").on("click", function(e)
+                {
+                    openFittingDateDlg($(this).data("row-id"));
+                });
+            });
+        }
+        init();
+    });
+
+    function openSmsDlg(phone, fullname){
+        $('#smstext').css('height', '175px');
+        $('#telnum').val(phone);
+
+        fullname = fullname.replace("null", "");
+
+        $('#smstext').text('Уважаемый '+fullname+
+        ', ваше изделие прибыло. Вы можете позвонить нашему портному, чтобы записаться на примерку. Спасибо. \nС/у Pidzhak.kz');
+
+        $('#myModal').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Форма отправления смс'
+        });
+    }
+
+    function closeDlg(){
+        $('#myModal').dialog('close');
+    }
+
+    function sendSms(){
+        if($('#telnum').val()!='' && $('#smstext').text()!='')
+            window.location = 'sendsms?num='+$('#telnum').val()+'&text='+$('#smstext').text()+'&url=intailors';
+    }
+
+    function openFittingDateDlg(id){
+        $('#fittingDateDlg').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 460,
+            height: 150
+        });
+
+        $('#hiddenId').val(id);
+    }
+
+    function setFittingDate(){
+        if($('#datepicker').val()==''){
+            $('#dateError').text('Выберите дату');
+        } else{
+            window.location = 'setfittingdate?id='+$('#hiddenId').val()+'&date='+$('#datepicker').val()+'&url=intailors';
+        }
+    }
+
+    function closeFittingDateDlg(){
+        $('#dateError').text('');
+        $('#datepicker').val('');
+        $('#fittingDateDlg').dialog('close');
+    }
+</script>

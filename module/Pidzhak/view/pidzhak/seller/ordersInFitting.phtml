@@ -8,7 +8,7 @@
 ?>
 
 <div class="header">
-    Изделия на примерке (ждущие примерку)
+    Изделия на примерке
 </div>
 
 <div class="col-md-9">
@@ -26,6 +26,9 @@
             <!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
             <th data-column-id="status_name" data-order="desc">Статус</th>
             <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+            <th data-header-css-class="sellerColumnBtn3" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
         </tr>
         </thead>
 
@@ -37,7 +40,7 @@
     $(function () {
 
         function init() {
-            $("#order-grid").bootgrid({
+           var grid = $("#order-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -48,7 +51,56 @@
                         order_status: 8
                     };
                 },
-                url: "/restorderclothes"
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary IrinaTook\" data-row-id=\"" + row.order_id + "\">Ирина забрала</button><br />" +
+                            "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary MayaTook\" data-row-id=\"" + row.order_id + "\">Мая забрала</button><br />" +
+                            "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary ClientTook\" data-row-id=\"" + row.order_id + "\">Выдали</button>";
+
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".IrinaTook").on("click", function(e)
+                {
+                    var myId = $(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что данное изделие было отправлено потрному - Ирина?", function(result) {
+                        if(result){
+                            window.location ='givetotailor?id='+myId+'&tailor_id=1';
+                        }
+                    });
+                }).end().find(".MayaTook").on("click", function(e)
+                {
+                    var myId = $(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что данное изделие было отправлено потрному - Мая?", function(result) {
+                        if(result){
+                            window.location ='givetotailor?id='+myId+'&tailor_id=2';
+                        }
+                    });
+                }).end().find(".ClientTook").on("click", function(e)
+                {
+                    var myId = $(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что данное изделие было выдано клиенту?", function(result) {
+                        if(result){
+                            window.location ='givetoclient?id='+myId;
+                        }
+                    });
+                });
             });
         }
 

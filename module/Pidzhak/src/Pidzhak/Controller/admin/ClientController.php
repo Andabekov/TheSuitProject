@@ -90,7 +90,7 @@ class ClientController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($customer->getInputFilter());
+
             $form->setData($request->getPost());
 
             if ($form->isValid()) {

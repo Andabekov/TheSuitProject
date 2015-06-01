@@ -2,6 +2,7 @@
 namespace Pidzhak\Model\Seller;
 
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Ddl\Column\Date;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
@@ -112,6 +113,143 @@ class OrderClothesTable
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function setFittingDate($date, $id){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'fitting_date' => $date,
+            'status_id' => 8
+        ));
+        $update->where(array('order_id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function giveToClient($id){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'finished_date' => date('Y-m-d'),
+            'status_id' => 9
+        ));
+        $update->where(array('order_id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function giveToTailor($id, $tailorId){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'tailor_id' => $tailorId,
+            'status_id' => 10
+        ));
+        $update->where(array('order_id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function rollBackOrder($id, $comment){
+
+        $dbAdapter = $this->tableGateway->adapter;
+        $sql       = "update orderclothes set seller_comment=CONCAT(COALESCE(seller_comment), ' Причина отката: ".$comment."', status_id=1) where id=".$id;
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function confirmOrder($id){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 4
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function sendToProd($id, $startDate, $endDate){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'production_start_date' => $startDate,
+            'production_finish_date' => $endDate,
+            'status_id' => 5
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function setShipDate($id, $date){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'shipping_date' => $date,
+            'status_id' => 6
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
     }
 
     public function saveOrderClothes(OrderClothes $orderclothes)

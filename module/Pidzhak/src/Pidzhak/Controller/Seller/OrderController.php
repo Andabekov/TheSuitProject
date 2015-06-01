@@ -348,13 +348,13 @@ class OrderController extends AbstractActionController
             $order_total_price = $order_total_price + $res['actual_amount'];
         }
 
-        foreach($director_phones as $phone){
-            $sms = new Sms();
-            $sms->number=$phone;
-            $sms->text=' Postupil noviy zakaz ot klienta '.$client_name.' ('.$client_phone.') na summu-'.$order_total_price.'KZT. Zakaz prinyal '.$seller_name;
-
-            SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
-        }
+//        foreach($director_phones as $phone){
+//            $sms = new Sms();
+//            $sms->number=$phone;
+//            $sms->text=' Postupil noviy zakaz ot klienta '.$client_name.' ('.$client_phone.') na summu-'.$order_total_price.'KZT. Zakaz prinyal '.$seller_name;
+//
+//            SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
+//        }
 
 //        foreach($director_phones as $phone){
 //            $sms = new Sms();

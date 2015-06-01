@@ -23,9 +23,11 @@
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
             <th data-column-id="dateofsale">Дата продажи</th>
-            <!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
             <th data-column-id="status_name" data-order="desc">Статус</th>
             <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+            <th data-header-css-class="sellerColumnBtn" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
         </tr>
         </thead>
 
@@ -37,7 +39,7 @@
     $(function () {
 
         function init() {
-            $("#order-grid").bootgrid({
+            var grid = $("#order-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -48,10 +50,22 @@
                         order_status: 1
                     };
                 },
-                url: "/restorderclothes"
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-id=\"" + row.my_id + "\">Проверить</button><br />";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    window.location="orderstocheck/"+$(this).data("row-id");
+                });
             });
         }
-
         init();
     })
 </script>

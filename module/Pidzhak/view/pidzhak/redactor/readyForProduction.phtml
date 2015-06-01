@@ -1,0 +1,142 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 01/06/2015
+ * Time: 12:39
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Отправить на производство
+</div>
+
+<div class="col-md-9">
+    <table id="ordercloth-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
+            <th data-column-id="dateofsale">Дата продажи</th>
+            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>
+            <th data-column-id="status_name" data-order="desc">Статус</th>
+            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+            <th data-header-css-class="redactorColumnBtn2" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<div id="productionDlg" style="display: none;">
+    <input type="text" id="hiddenId" style="display: none;" />
+    <table>
+        <tr>
+            <td>
+                Дата начало производство:<br />
+                (production start date)
+            </td>
+            <td>
+                <input type="text" id="datepicker1" /><br />
+                <span id="dateError1" style="color: red;"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Дата окончания производство:<br />
+                (production end date)
+            </td>
+            <td>
+                <input type="text" id="datepicker2" /><br />
+                <span id="dateError2" style="color: red;"></span>
+            </td>
+        </tr>
+    </table>
+
+
+    <div style="text-align: center; margin-top: 15px;">
+        <button onclick="closeDlg()" class="btn btn-default">Отмена</button>
+        <button onclick="sendToProd()" class="btn btn-primary">Отправить</button>
+    </div>
+</div>
+
+<script>
+    var test;
+
+    $(function () {
+
+        $("#datepicker1").datepicker({ dateFormat: 'yy-mm-dd'});
+        $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd'});
+
+        function init() {
+            var grid = $("#ordercloth-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '',
+                        order_status: 1
+                    };
+                },
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-id=\"" + row.my_id + "\">Отправить</button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    openDlg($(this).data("row-id"));
+                });
+            });
+        }
+        init();
+    });
+
+
+    function openDlg(id){
+        $('#productionDlg').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 210
+        });
+
+        $('#hiddenId').val(id);
+    }
+
+    function closeDlg(){
+        $('#productionDlg').dialog('close');
+        $('#dateError1').text('');
+        $('#dateError2').text('');
+        $('#datepicker1').val('');
+        $('#datepicker2').val('');
+    }
+
+    function sendToProd(){
+        if($('#datepicker1').val()==''){
+            $('#dateError1').text('Выберите дату');
+            $('#dateError2').text('');
+        } else if($('#datepicker2').val()==''){
+            $('#dateError1').text('');
+            $('#dateError2').text('Выберите дату');
+        } else{
+            window.location = 'readyforprod?id='+$('#hiddenId').val()+'&date1='+$('#datepicker1').val()+'&date2='+$('#datepicker2').val();
+        }
+    }
+</script>

@@ -49,6 +49,49 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
+    public function readyforprodAction(){
+
+        $id = $this->params()->fromQuery('id');
+        $startDate = $this->params()->fromQuery('date1');
+        $endDate = $this->params()->fromQuery('date2');
+
+        if($startDate!=null && $startDate!='' && $endDate!=null && $endDate!='' && $id!=null && $id!=''){
+            $this->getOrderClothesTable()->sendToProd($id, $startDate, $endDate);
+
+            return $this->redirect()->toRoute('redactor', array('action' => 'readyforprod'));
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/redactor/readyForProduction.phtml');
+        return $view;
+    }
+
+    public function presubmitAction(){
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if($id) {
+            $this->getOrderClothesTable()->presubmit($id);
+        }
+
+        return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+    }
+
+    public function readyforshippingAction(){
+
+        $id = $this->params()->fromQuery('id');
+        $date = $this->params()->fromQuery('date');
+
+        if($date!=null && $date!='' && $id!=null && $id!=''){
+            $this->getOrderClothesTable()->setShipDate($id, $date);
+
+            return $this->redirect()->toRoute('redactor', array('action' => 'readyforshipping'));
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/redactor/readyForShipping.phtml');
+        return $view;
+    }
+
     public function entercodesAction(){
 
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -224,7 +267,6 @@ class IndexController extends AbstractActionController
     public function comparecodesAction(){
         $view = new ViewModel(array(
 //                'form' => $form,
-//                'back' => '/clients',
             )
         );
         $view->setTemplate('pidzhak/redactor/compareCodes.phtml');
@@ -236,7 +278,7 @@ class IndexController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
 
-        $xls_data='';
+        $xls_data='firsttime';
 
         $form = new UploadForm('upload-form');
         $tempFile = null;

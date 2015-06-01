@@ -302,7 +302,7 @@ a.active {
     padding-bottom: 2px;
 }
 
-.enterCodes, .checkCodes, .compareCodes {
+.enterCodes, .checkCodes, .compareCodes, .IrinaTook, .MayaTook, .ClientTook {
     margin-bottom: 5px;
 }
 
@@ -310,10 +310,37 @@ a.active {
     padding-right: 20px;
     padding-bottom: 3px;
 }
+.measureTable td{
+    padding-right: 20px;
+    padding-bottom: 3px;
+}
 
 .redactorColumnBtn{
     text-align: center;
     width: 130px !important;
+}
+.redactorColumnBtn2{
+    text-align: center;
+    width: 80px !important;
+}
+.redactorColumnBtn3{
+    text-align: center;
+    width: 95px !important;
+}
+.sellerColumnBtn{
+    text-align: center;
+    font-weight: bold;
+    width: 80px !important;
+}
+.sellerColumnBtn2{
+    text-align: center;
+    font-weight: bold;
+    width: 105px !important;
+}
+.sellerColumnBtn3{
+    text-align: center;
+    font-weight: bold;
+    width: 105px !important;
 }
 .redactorNumColumns{
     max-width: 85px !important;

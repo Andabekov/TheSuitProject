@@ -4,7 +4,7 @@
 </div>
 
 <?php
-    if($xls_data!=''){
+    if($xls_data!='' && $xls_data!='firsttime'){
 ?>
     <h3>
         Сверка кодов прошла <span style="color: red">НЕ УСПЕШНО!</span>
@@ -19,7 +19,7 @@
         </ul>
     </h4>
 <?php
-    } else{
+    } else if($xls_data==''){
 ?>
     <h3>
         Сверка кодов прошла <span style="color: green">УСПЕШНО!</span>
