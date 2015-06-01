@@ -163,11 +163,8 @@ class SellerController extends AbstractActionController
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
         }
-
-
-        if (!$request->isPost()) {
-            $form->bind($orderclothes);
-        }
+        
+        $form->bind($orderclothes);
         $form->get('orderclothessubmit')->setValue('Откатить назад с исправлениями');
 
         //            $en_form->bind($orderclothesEN);
