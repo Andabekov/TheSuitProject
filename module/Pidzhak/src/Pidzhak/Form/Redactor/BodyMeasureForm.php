@@ -353,5 +353,14 @@ class BodyMeasureForm extends Form
                 ),
             ),
         ));
+
+        $this->add(array(
+            'name' => 'submit',
+            'type' => 'Submit',
+            'attributes' => array(
+                'value' => 'Go',
+                'class' => 'btn btn-primary'
+            ),
+        ));
     }
 }

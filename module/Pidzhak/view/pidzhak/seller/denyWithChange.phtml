@@ -8,11 +8,16 @@
 
 $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product_id')->getValue()!='4';
 
-$form->setAttribute('action', $this->url('seller', array('action' => 'orderdenychange')));
+$form->setAttribute('action', $this->url('seller', array('action' => 'orderdenychange', 'id' => $id)));
 $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 echo $this->form()->openTag($form);
+$form->get('c_id')->setValue($id);
 echo $this->formHidden($form->get('c_id'));
+
+//$en_form->setAttribute('class', 'form-horizontal');
+//$en_form->prepare();
+//echo $this->form()->openTag($en_form);
 
 ?>
 
@@ -244,11 +249,16 @@ echo $this->formHidden($form->get('c_id'));
     Замеры сделанные продавцом по <?php if($measurement_type==1) echo "фигуре"; else echo "изделию"; ?>:
 </div>
 
+<input name='paytype_id' style="display: none" value='<?php echo $form->get('paytype_id')->getValue();?>'/>
+
 <?php
 if($measurement_type==1){
     $bm_form->setAttribute('class', 'form-horizontal');
     $bm_form->prepare();
     echo $this->form()->openTag($bm_form);
+    echo $this->formHidden($bm_form->get('id'));
+    echo $this->formHidden($bm_form->get('clother_id'));
+    echo $this->formHidden($bm_form->get('customer_id'));
     ?>
     <table class="measureTable">
         <tr>
@@ -449,13 +459,12 @@ if($measurement_type==1){
         </tr>
     </table>
     <?php
-    echo $this->form()->closeTag();
+//    echo $this->form()->closeTag();
 } else {
-    ?>
-    <?php
     $cm_form->setAttribute('class', 'form-horizontal');
     $cm_form->prepare();
     echo $this->form()->openTag($cm_form);
+    echo $this->formHidden($cm_form->get('id'));
     ?>
     <table class="measureTable">
         <tr>
@@ -607,6 +616,7 @@ if($measurement_type==1){
         </tr>
     </table>
     <?php
+//    echo $this->form()->closeTag();
 }
 ?>
 
@@ -622,6 +632,7 @@ if($measurement_type==1){
     $systemCodeForm = $sc_form->get('systemcode');
     echo $this->formCollection($systemCodeForm);
     echo $this->formHidden($sc_form->get('csrf'));
+//    echo $this->form()->closeTag($sc_form);
     ?>
 </div>
 
@@ -630,12 +641,16 @@ if($measurement_type==1){
 <a class="btn btn-default" onclick="goBack()">Отмена</a>
 
 <?php
+    echo $this->formSubmit($bm_form->get('submit'));
     echo $this->formSubmit($form->get('orderclothessubmit'));
     echo $this->form()->closeTag();
 ?>
 
 <script>
     $(function() {
+
+        $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
+
         $('.disabledColumn').find('input').attr('disabled', 'true');
         $('.disabledColumn').find('select').attr('disabled', 'true');
         $('.disabledColumn').find('textarea').attr('disabled', 'true');

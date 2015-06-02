@@ -7,6 +7,8 @@ use Zend\InputFilter\InputFilterInterface;
 
 class ClotherMeasure  implements InputFilterAwareInterface
 {
+    public $inputFilter;
+
     public $id;
     public $clother_id;
     public $customer_id;

@@ -63,7 +63,8 @@ class OrderClothesForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+                'disabled' => 'true',
+                'required' => 'false',
             ),
             'options' => array(
                 'label' => 'Дата прибытие по циклу',
@@ -101,6 +102,7 @@ class OrderClothesForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'false',
             ),
             'options' => array(
                 'label' => 'Класс Ткани',

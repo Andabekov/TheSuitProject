@@ -7,6 +7,8 @@ use Pidzhak\Form\Redactor\OrderClothesEnForm;
 use Pidzhak\Form\redactor\TestModelForm;
 use Pidzhak\Form\Seller\OrderClothesForm;
 use Pidzhak\Model\admin\Sms;
+use Pidzhak\Model\Seller\BodyMeasure;
+use Pidzhak\Model\Seller\ClotherMeasure;
 use Pidzhak\Model\Seller\OrderClothes;
 use Pidzhak\Sms\SmsUtil;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -148,12 +150,7 @@ class SellerController extends AbstractActionController
         $cm_form = new ClothMeasureForm($dbAdapter);
 
         if(!$id) {
-            $view = new ViewModel(array(
-                'orders' => $this->getOrderTable()->fetchAll(),
-                'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
-            ));
-            $view->setTemplate('pidzhak/seller/ordersToCheck.phtml');
-            return $view;
+            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
         }
 
         try {
@@ -163,11 +160,11 @@ class SellerController extends AbstractActionController
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
         }
-        
+
         $form->bind($orderclothes);
         $form->get('orderclothessubmit')->setValue('Откатить назад с исправлениями');
 
-        //            $en_form->bind($orderclothesEN);
+//            $en_form->bind($orderclothesEN);
 
         $measurement_type = $orderclothes->typeof_measure;
         $cloth_type = $orderclothes->product_id;
@@ -176,8 +173,10 @@ class SellerController extends AbstractActionController
         if($measurement_type==1){
             $measurements = $this->getBodyMeasureTable()->getMeasure($cloth_type, $order_id);
             $bm_form->bind($measurements);
+//            var_dump($measurements);
         } else {
             $measurements = $this->getClotherMeasureTable()->getMeasure($cloth_type, $order_id);
+            var_dump($measurements);
             $cm_form->bind($measurements);
         }
 
@@ -196,29 +195,63 @@ class SellerController extends AbstractActionController
 
         if ($request->isPost()) {
 
-            $form->setData($request->getPost());
-
-            var_dump($form->isValid());
-
-            var_dump($form->getMessages());
+//            $temp2 = new BodyMeasure();
+//            $temp3 = new ClotherMeasure();
 //
-//            if ($form->isValid()) {
+//            $bm_form->setInputFilter($measurements->getInputFilter());
+//            $cm_form->setInputFilter($temp3->getInputFilter());
+
+            $form->setData($request->getPost());
+            if($measurement_type==1){
+                $bm_form->setInputFilter($measurements->getInputFilter());
+                $bm_form->setData($request->getPost());
+            }  else {
+                $cm_form->setInputFilter($measurements->getInputFilter());
+                $cm_form->setData($request->getPost());
+            }
+
+            if ($form->isValid()) {
+
+                var_dump($form->isValid());
+
+//                var_dump($orderclothes);
 //                $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+
+                if($measurement_type==1 && $bm_form->isValid()){
+//                    var_dump($bm_form->getData());
+                    var_dump($bm_form->getData());
+                    var_dump($bm_form->getMessages());
+                }  else if($measurement_type==2 && $cm_form->isValid()){
+                    var_dump($measurements);
+                }
 //
 //                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
-//            } else{
-//                var_dump($form->getMessages());
-//            }
+            } else{
+
+                if($measurement_type==1 && $bm_form->isValid()){
+//                    var_dump($bm_form->getData());
+                    var_dump($measurements);
+                }  else if($measurement_type==2 && $cm_form->isValid()){
+                    var_dump($measurements);
+                }
+
+//                var_dump($form->getData());
+
+
+                $form->highlightErrorElements();
+            }
 
         }
 
         $view = new ViewModel(array(
+            'id' => $id,
             'form' => $form,
             'en_form' => $en_form,
             'bm_form' => $bm_form,
             'cm_form' => $cm_form,
             'measurement_type' => $measurement_type,
             'sc_form' => $sc_form,
+            'orderclothes' => $orderclothes
         ));
         $view->setTemplate('pidzhak/seller/denyWithChange.phtml');
         return $view;

@@ -13,7 +13,7 @@ class OrderClothes  implements InputFilterAwareInterface
     public $cycle_id;
     public $preferred_date;
     public $textile_id;
-    //public $textile_class;
+    public $textile_class;
     public $pricelistnum;
     public $actual_amount;
     public $paytype_id;
@@ -41,7 +41,7 @@ class OrderClothes  implements InputFilterAwareInterface
         $this->cycle_id = (!empty($data['cycle_id'])) ? $data['cycle_id'] : null;
         $this->preferred_date = (!empty($data['preferred_date'])) ? $data['preferred_date'] : null;
         $this->product_id = (!empty($data['product_id'])) ? $data['product_id'] : null;
-        //$this->textile_class = (!empty($data['textile_class'])) ? $data['textile_class'] : null;
+        $this->textile_class = (!empty($data['textile_class'])) ? $data['textile_class'] : null;
         $this->pricelistnum = (!empty($data['pricelistnum'])) ? $data['pricelistnum'] : null;
         $this->actual_amount = (!empty($data['actual_amount'])) ? $data['actual_amount'] : null;
         $this->paytype_id = (!empty($data['paytype_id'])) ? $data['paytype_id'] : null;
@@ -83,7 +83,7 @@ class OrderClothes  implements InputFilterAwareInterface
                 'required' => false,
             ));
             $this->inputFilter->add(array(
-                'name' => 'fabric_class',
+                'name' => 'textile_class',
                 'required' => false,
             ));
             $this->inputFilter->add(array(

@@ -656,6 +656,9 @@ if($measurement_type==1){
 
 <script>
     $(function() {
+
+        $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
+
         $('input').attr('disabled', 'true');
         $('select').attr('disabled', 'true');
         $('textarea').attr('disabled', 'true');

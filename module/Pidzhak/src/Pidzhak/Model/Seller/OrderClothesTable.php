@@ -92,23 +92,31 @@ class OrderClothesTable
 
     public function getOrderClothes($id)
     {
-        $id = (int)$id;
-        $sql = new Sql($this->tableGateway->adapter);
-        $select = $sql->select();
-        $select->from($this->tableGateway->table)
-            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
+//        $id = (int)$id;
+//        $sql = new Sql($this->tableGateway->adapter);
+//        $select = $sql->select();
+//        $select->from($this->tableGateway->table)
+//            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
+//
+//        $where = new  Where();
+//        $where->equalTo('orderclothes.id', $id);
+//        $select->where($where);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $result = $statement->execute();
+//
+//        $resultSet = new ResultSet();
+//        $resultSet->initialize($result);
+//
+//        $row = $resultSet->current();
+//        if (!$row) {
+//            throw new \Exception("Could not find row $id");
+//        }
+//        return $row;
 
-        $where = new  Where();
-        $where->equalTo('orderclothes.id', $id);
-        $select->where($where);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
-
-        $resultSet = new ResultSet();
-        $resultSet->initialize($result);
-
-        $row = $resultSet->current();
+        $id  = (int) $id;
+        $rowset = $this->tableGateway->select(array('id' => $id));
+        $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
         }
