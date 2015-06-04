@@ -342,6 +342,11 @@ a.active {
     font-weight: bold;
     width: 105px !important;
 }
+.sellerColumnBtn4{
+    text-align: center;
+    font-weight: bold;
+    width: 138px !important;
+}
 .redactorNumColumns{
     max-width: 85px !important;
 }

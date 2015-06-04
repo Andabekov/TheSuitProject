@@ -145,10 +145,17 @@ class CustomerController extends AbstractActionController
                 $this->getCustomerTable()->saveCustomer($customer);
                 $idval = $this->getCustomerTable()->insertedCustomer();
 
-                return $this->redirect()->toRoute('measure'
+//                return $this->redirect()->toRoute('measure'
+//                    , array(
+//                        'action' => 'secondstep',
+//                        'id' => $idval,
+//                    ));
+
+                return $this->redirect()->toRoute('order'
                     , array(
-                        'action' => 'secondstep',
+                        'action' => 'thirdstep',
                         'id' => $idval,
+                        'measureTypeSelect' => 1
                     ));
 
                 //return $this->redirect()->toRoute('customer');

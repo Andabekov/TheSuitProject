@@ -337,6 +337,46 @@ class OrderClothesTable
 
     }
 
+    public function sendClothToRedactor($id){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 1
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function changeCloth($id)
+    {
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 10
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
     public function deleteOrderClothes($id)
     {
         $this->tableGateway->delete(array('id' => (int)$id));

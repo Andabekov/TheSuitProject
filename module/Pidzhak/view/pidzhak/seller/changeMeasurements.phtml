@@ -24,6 +24,15 @@ if($measurement_type==1){
     <table class="measureTable">
         <tr>
             <td>
+                <b>ФИО клиента</b>
+            </td>
+            <td class="sellerColumn">
+                <input style="width: 300px" class="form-control" value="<?php echo $clientName;?>" disabled>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
                 <?php $element = $bm_form->get('growth'); ?>
                 <?php echo $this->formLabel($element); ?>
             </td>
@@ -231,6 +240,16 @@ if($measurement_type==1){
     echo $this->formHidden($cm_form->get('id'));
     ?>
     <table class="measureTable">
+
+        <tr>
+            <td>
+                <b>ФИО клиента</b>
+            </td>
+            <td class="sellerColumn">
+                <input style="width: 300px" class="form-control" value="<?php echo $clientName;?>" disabled>
+            </td>
+        </tr>
+
         <tr>
             <td>
                 <?php $element = $cm_form->get('growth'); ?>
@@ -387,13 +406,8 @@ if($measurement_type==1){
 ?>
 
 <script>
-    $(function() {
-        $('.measureTable').find('input').removeAttr('disabled');
-        $('.measureTable').find('select').removeAttr('disabled');
-        $('.measureTable').find('textarea').removeAttr('disabled');
-    });
 
     function goBack(){
-        window.location = '../orderstocheck';
+        window.location = '../changeorder';
     }
 </script>

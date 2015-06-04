@@ -173,7 +173,7 @@ class OrderController extends AbstractActionController
         $cform = new OrderClothesForm($dbAdapter);
         $cform->get('orderclothessubmit')->setValue('Сохранить изделие');
         $cform->get('orderclothescancel')->setValue('Отменить');
-        $cform->get('typeof_measure')->setValue($measureTypeSelect);
+//        $cform->get('typeof_measure')->setValue($measureTypeSelect);
 
 
         $request = $this->getRequest();
@@ -205,7 +205,7 @@ class OrderController extends AbstractActionController
                     }
                     if ($order_form_id) {
                         $orderclothes->exchangeArray($cform->getData());
-                        $orderclothes->typeof_measure = $measureTypeSelect;
+//                        $orderclothes->typeof_measure = $measureTypeSelect;
                         $orderclothes->order_id = $order_form_id;
                         $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
                     }
@@ -230,7 +230,7 @@ class OrderController extends AbstractActionController
                     } else{
                         $order = $this->getOrderTable()->getOrder($order_form_id);
                         $this->sendSms($order);
-                        return $this->redirect()->toRoute('order');
+                        return $this->redirect()->toRoute('seller', array('action' => 'fillmeasure'));
                     }
                 } else {
                     $order_error = "Заполните заказ";

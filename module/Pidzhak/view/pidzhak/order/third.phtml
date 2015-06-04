@@ -25,8 +25,8 @@ echo $this->formHidden($form->get('status'));
     </div>
 
     <a class="navBtn">1 Шаг - Данные клиента</a>
-    <a class="navBtn">2 Шаг - Замеры клиента</a>
-    <a class="navBtn active">3 Шаг - Заказ клиента</a>
+<!--    <a class="navBtn">2 Шаг - Замеры клиента</a>-->
+    <a class="navBtn active">2 Шаг - Данные заказа</a>
 
 
     <div id="chosenClient">
@@ -76,12 +76,12 @@ echo $this->form()->closeTag();
 
 <?php
 if (!$orderclothesform) { ?>
-    <div class="col-md-9">
+<!--    <div class="col-md-9">-->
         <?php echo $this->form()->openTag($form);
         echo $this->formHidden($order_form_id_elem); ?>
-        <input type='submit' name='sendordersubmit' id='sendordersubmit' class='btn btn-primary'   value='Отправить заказ'/>
+        <input type='submit' name='sendordersubmit' id='sendordersubmit' class='btn btn-primary' style="margin-left: 40px; margin-top: 10px"  value='Сохранить и ввести замеры'/>
         <?php echo $this->form()->closeTag(); ?>
-    </div>
+<!--    </div>-->
 <?php } ?>
 
 

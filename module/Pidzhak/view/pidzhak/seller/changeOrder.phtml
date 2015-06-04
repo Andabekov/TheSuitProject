@@ -1,0 +1,79 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 26/05/2015
+ * Time: 21:02
+ */
+?>
+
+<div class="header">
+    Редактировать заказ
+</div>
+
+<div class="col-md-9">
+    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
+            <th data-column-id="dateofsale">Дата продажи</th>
+            <th data-column-id="status_name" data-order="desc">Статус</th>
+            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+            <th data-header-css-class="sellerColumnBtn4" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
+        </tr>
+        </thead>
+
+    </table>
+    <!--/div-->
+</div>
+
+<script>
+    $(function () {
+
+        function init() {
+            var grid = $("#order-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '<?php echo $current_user_id;?>',
+                        order_status: 1
+                    };
+                },
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button style='margin-bottom: 3px' type=\"button\" class=\"btn btn-xs btn-primary changeStyle\" data-row-id=\"" + row.my_id + "\">Изменить стиль</button><br />"+
+                                "<button style='margin-bottom: 3px' type=\"button\" class=\"btn btn-xs btn-primary changeMeasure\" data-row-id=\"" + row.my_id + "\">Изменить замеры</button><br />"+
+                                "<button type=\"button\" class=\"btn btn-xs btn-primary sendToRedactor\" data-row-id=\"" + row.my_id + "\">Отправить редактору</button><br />";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".changeStyle").on("click", function(e)
+                {
+                    window.location="changegen/"+$(this).data("row-id");
+                }).end().find(".changeMeasure").on("click", function(e)
+                {
+                    window.location="changemeas/"+$(this).data("row-id");
+                }).end().find(".sendToRedactor").on("click", function(e)
+                {
+                    window.location="sendred/"+$(this).data("row-id");
+                });
+            });
+        }
+        init();
+    })
+</script>

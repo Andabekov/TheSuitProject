@@ -35,19 +35,61 @@ class SellerController extends AbstractActionController
         return $this->redirect()->toRoute('order');
     }
 
+    public function fillmeasureAction(){
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/seller/fillMeasurements.phtml');
+        return $view;
+    }
+
+    public function sendredAction(){
+        $id = (int)$this->params()->fromRoute('id', 0);
+
+        if(!$id) {
+            return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
+        }
+
+        $this->getOrderClothesTable()->sendClothToRedactor($id);
+
+        return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
+    }
+
+    public function changeclothAction(){
+        $id = (int)$this->params()->fromRoute('id', 0);
+
+        if(!$id) {
+            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+        }
+
+        $this->getOrderClothesTable()->changeCloth($id);
+
+        return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
+    }
+
+    public function changeorderAction(){
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+//            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/seller/changeOrder.phtml');
+        return $view;
+    }
+
     public function changegenAction(){
 
         $id = (int)$this->params()->fromRoute('id', 0);
         $request = $this->getRequest();
 
         if(!$id) {
-            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
         }
 
         try {
             $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
         }
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
@@ -63,7 +105,7 @@ class SellerController extends AbstractActionController
 
             if ($form->isValid()) {
                 $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
-                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+                return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
             } else{
                 $form->highlightErrorElements();
             }
@@ -83,13 +125,13 @@ class SellerController extends AbstractActionController
         $request = $this->getRequest();
 
         if(!$id) {
-            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
         }
 
         try {
             $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
         }
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
@@ -116,19 +158,23 @@ class SellerController extends AbstractActionController
 
             if ($measurement_type==1 && $bm_form->isValid()) {
                 $this->getBodyMeasureTable()->saveBodyMeasure($measurements);
-                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+                return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
             }
             if ($measurement_type==2 && $cm_form->isValid()) {
                 $this->getClotherMeasureTable()->saveClotherMeasure($orderclothes);
-                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+                return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
             }
         }
+
+        $clientName = $this->getOrderClothesTable()->getClientName($orderclothes->order_id);
+        $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
 
         $view = new ViewModel(array(
             'id' => $id,
             'measurement_type' => $measurement_type ,
             'bm_form' => $bm_form,
             'cm_form' => $cm_form,
+            'clientName' => $clientName,
         ));
         $view->setTemplate('pidzhak/seller/changeMeasurements.phtml');
         return $view;

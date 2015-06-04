@@ -8,7 +8,6 @@ class OrderRestController extends AbstractRestfulController
 {
     protected $orderTable;
 
-
     public function create($data)
     {
 
@@ -19,8 +18,6 @@ class OrderRestController extends AbstractRestfulController
         $sortType = $sort[$sortField];
         $searchPhrase = $data['searchPhrase'];
         $id = $data['id'];
-
-
 
         $offset = intval($rowCount) * (intval($current)-1);
         $customers= $this->getOrderTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);

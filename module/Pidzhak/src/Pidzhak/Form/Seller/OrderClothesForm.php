@@ -139,7 +139,7 @@ class OrderClothesForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+//                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Вид замера',

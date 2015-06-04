@@ -11,7 +11,6 @@ class CustomerRestController extends AbstractRestfulController
 
     public function get($id)
     {
-
         $customer= $this->getCustomerTable()->getCustomer($id);
         return new JsonModel(array(
             'firstname' => $customer->firstname,

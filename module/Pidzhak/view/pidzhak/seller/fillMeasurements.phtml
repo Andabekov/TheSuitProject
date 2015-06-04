@@ -1,0 +1,44 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 04/06/2015
+ * Time: 17:48
+ */
+?>
+
+<div class="header">
+    Редактировать замеры
+</div>
+
+
+<div class="col-md-9">
+    <table id="customer-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="pointofsale">Место продажи</th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<script>
+    $(function () {
+        function init() {
+            var grid = $("#customer-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                    };
+                },
+                url: "/restorder"
+            });
+        }
+        init();
+    })
+
+</script>

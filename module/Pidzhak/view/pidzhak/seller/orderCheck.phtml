@@ -625,8 +625,7 @@ if($measurement_type==1){
 
 <hr>
 <a class="btn btn-danger" onclick="denyDlg()">Изменить коды</a>
-<a class="btn btn-danger" onclick="changeGeneral()">Изменить осн. инф.</a>
-<a class="btn btn-danger" onclick="changeMeasure()">Изменить замеры</a>
+<a class="btn btn-danger" onclick="changeCloth()">Редактировать изделие</a>
 <a class="btn btn-success" onclick="confirmDlg()">Подтвердить</a>
 
 <div id="denyDlg" style="display: none; font-weight: bold;">
@@ -699,16 +698,9 @@ if($measurement_type==1){
         });
     }
 
-    function denyWithChange(){
-        window.location = '../orderdenychange/'+window.location.href.split('/')[window.location.href.split('/').length-1];
-    }
 
-    function changeGeneral(){
-        window.location = '../changegen/'+window.location.href.split('/')[window.location.href.split('/').length-1];
-    }
-
-    function changeMeasure(){
-        window.location = '../changemeas/'+window.location.href.split('/')[window.location.href.split('/').length-1];
+    function changeCloth(){
+        window.location = '../changecloth/'+window.location.href.split('/')[window.location.href.split('/').length-1];
     }
 
     function confirm(){

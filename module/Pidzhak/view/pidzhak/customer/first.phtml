@@ -16,8 +16,8 @@ echo $this->formHidden($form->get('id'));
 
 <div style="text-align:center;">
     <a class="navBtn active">1 Шаг - Данные клиента</a>
-    <a class="navBtn">2 Шаг - Замеры клиента</a>
-    <a class="navBtn">3 Шаг - Заказ клиента</a>
+<!--    <a class="navBtn">2 Шаг - Замеры клиента</a>-->
+    <a class="navBtn">2 Шаг - Данные заказа</a>
 
     <hr />
 
@@ -156,7 +156,7 @@ echo $this->formHidden($form->get('id'));
     }
 
     function continueChosenClient(){
-        window.location= "/measure/secondstep/"+myId;
+        window.location= "/order/thirdstep/"+myId+'/1';
     }
 
     $(function(){

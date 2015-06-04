@@ -31,14 +31,18 @@ echo $this->formHidden($form->get('customer_id_5'));
     </div>
 
     <a class="navBtn">1 Шаг - Данные клиента</a>
-    <a class="navBtn active">2 Шаг - Замеры клиента</a>
-    <a class="navBtn">3 Шаг - Заказ клиента</a>
+<!--    <a class="navBtn active">2 Шаг - Замеры клиента</a>-->
+    <a class="navBtn">2 Шаг - Данные заказа</a>
 
         <div id="chosenClient">
             <?php
             echo 'Выбранный клиент: '.$customer->lastname." ".$customer->firstname.", ".$customer->mobilephone;
             ?>
         </div>
+</div>
+
+<div>
+
 </div>
 
 <div style="margin-bottom: 10px;">

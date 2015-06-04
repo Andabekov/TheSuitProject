@@ -37,7 +37,7 @@
             <b>ФИО клиента</b>
         </td>
         <td class="sellerColumn">
-            <input class="form-control" value="<?php echo $clientName;?>" disabled>
+            <input style="width: 300px" class="form-control" value="<?php echo $clientName;?>" disabled>
         </td>
     </tr>
     <tr>
@@ -74,6 +74,13 @@
             <?php echo $this->formLabel($element); ?>
         </td>
         <td><?php echo $this->formSelect($element); ?></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $form->get('preferred_date'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
     </tr>
     <tr>
         <td>
@@ -171,6 +178,6 @@
     });
 
     function goBack(){
-        window.location = '../orderstocheck';
+        window.location = '../changeorder';
     }
 </script>

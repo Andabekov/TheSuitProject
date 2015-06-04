@@ -109,7 +109,9 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('sms-rest'))
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'order')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')->allow('seller', 'order-rest')
+            ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')
+            ->allow('seller', 'order')
+            ->allow('seller', 'order-rest')
             ->allow('seller', 'cycle-rest')
             ->allow('seller', 'fabric-rest')
             ->allow('redactor', 'redactor')

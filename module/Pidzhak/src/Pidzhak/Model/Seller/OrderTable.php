@@ -36,9 +36,9 @@ class OrderTable
         /*if($searchPhrase)
             $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');*/
 
-        $where = new  Where();
-        $where->equalTo('status', 1) ;
-        $select->where($where);
+//        $where = new  Where();
+//        $where->equalTo('status', 1) ;
+//        $select->where($where);
 
         //you can check your query by echo-ing :
         // echo $select->getSqlString();
@@ -49,8 +49,6 @@ class OrderTable
         $resultSet->initialize($result);
 
         return $resultSet;
-
-
     }
 
     public function getCount(){
