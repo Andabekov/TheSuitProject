@@ -1,6 +1,7 @@
 <?php
 namespace Pidzhak\Model\Seller;
 
+use Pidzhak\Model\seller\OrderClothes as OrderClothesSeller;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Ddl\Column\Date;
 use Zend\Db\Sql\Expression;
@@ -74,6 +75,33 @@ class OrderClothesTable
         return $resultSet;
     }
 
+    public function getClientName($orderId){
+        $id = (int)$orderId;
+        $sql = new Sql($this->tableGateway->adapter);
+
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->join('ordertable', 'orderclothes.order_id = ordertable.id')
+            ->join('customer', 'ordertable.customer_id = customer.id')
+        ;
+
+        $where = new  Where();
+        $where->equalTo('orderclothes.order_id', $id);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        $row = $resultSet->current();
+        if (!$row) {
+            throw new \Exception("newnew Could not find row $id");
+        }
+        return $row;
+    }
+
     public function getCount()
     {
         $resultSet = $this->tableGateway->select();
@@ -92,35 +120,45 @@ class OrderClothesTable
 
     public function getOrderClothes($id)
     {
-//        $id = (int)$id;
-//        $sql = new Sql($this->tableGateway->adapter);
-//        $select = $sql->select();
-//        $select->from($this->tableGateway->table)
-//            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
-//
-//        $where = new  Where();
-//        $where->equalTo('orderclothes.id', $id);
-//        $select->where($where);
-//
-//        $statement = $sql->prepareStatementForSqlObject($select);
-//        $result = $statement->execute();
-//
-//        $resultSet = new ResultSet();
-//        $resultSet->initialize($result);
-//
-//        $row = $resultSet->current();
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id');
+
+        $where = new  Where();
+        $where->equalTo('orderclothes.id', $id);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        $row = $resultSet->current();
+        if (!$row) {
+            throw new \Exception("New Could not find row $id");
+        }
+
+        $result = new OrderClothesSeller($this->tableGateway->adapter);
+
+        foreach ($row as $key => $value)
+        {
+            $result->$key = $value;
+        }
+
+        return $result;
+
+
+
+//        $id  = (int) $id;
+//        $rowset = $this->tableGateway->select(array('id' => $id));
+//        $row = $rowset->current();
 //        if (!$row) {
 //            throw new \Exception("Could not find row $id");
 //        }
 //        return $row;
-
-        $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $id");
-        }
-        return $row;
     }
 
     public function setFittingDate($date, $id){

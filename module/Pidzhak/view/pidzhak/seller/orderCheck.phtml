@@ -624,18 +624,19 @@ if($measurement_type==1){
 </div>
 
 <hr>
-<a class="btn btn-danger" onclick="denyDlg()">Откатить назад</a>
-<a class="btn btn-danger" onclick="denyWithChange()">Откатить назад с исправлением</a>
+<a class="btn btn-danger" onclick="denyDlg()">Изменить коды</a>
+<a class="btn btn-danger" onclick="changeGeneral()">Изменить осн. инф.</a>
+<a class="btn btn-danger" onclick="changeMeasure()">Изменить замеры</a>
 <a class="btn btn-success" onclick="confirmDlg()">Подтвердить</a>
 
 <div id="denyDlg" style="display: none; font-weight: bold;">
-    Вы дейстивтельно хотите откатить назад к редактору даное изделие?<br /><br />
-    Ваш комментарии: <textarea id="denyDlgText"></textarea>
+    Коды может изменять только редактор.<br />
+    Напишите свои замечания по кодам: <textarea id="denyDlgText" style="width: 400px"></textarea>
     <span id="denyError" style="color: red;"></span>
 
     <div style="text-align: center; margin-top: 10px;">
         <a class="btn btn-default" style="margin: 5px;" onclick="$('#denyDlg').dialog('close');">Отмена</a>
-        <a class="btn btn-danger" style="margin: 5px;" onclick="deny()">Откатить</a>
+        <a class="btn btn-danger" style="margin: 5px;" onclick="deny()">Отправить редатору</a>
     </div>
 </div>
 <div id="denyWithChangeDlg" style="display: none;">
@@ -700,6 +701,14 @@ if($measurement_type==1){
 
     function denyWithChange(){
         window.location = '../orderdenychange/'+window.location.href.split('/')[window.location.href.split('/').length-1];
+    }
+
+    function changeGeneral(){
+        window.location = '../changegen/'+window.location.href.split('/')[window.location.href.split('/').length-1];
+    }
+
+    function changeMeasure(){
+        window.location = '../changemeas/'+window.location.href.split('/')[window.location.href.split('/').length-1];
     }
 
     function confirm(){

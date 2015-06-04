@@ -138,25 +138,34 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'typeof_measure',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
                 'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Вид замера',
+                'empty_option' => 'Выберите вид замера',
+                'value_options' => array(
+                    '1' => 'По фигуре',
+                    '2' => 'По изделию',
+                ),
             ),
         ));
 
         $this->add(array(
             'name' => 'label_brand',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Этикетка бранда',
+                'value_options' => array(
+                    '1' => 'Да',
+                    '2' => 'Нет',
+                ),
             ),
         ));
         $this->add(array(

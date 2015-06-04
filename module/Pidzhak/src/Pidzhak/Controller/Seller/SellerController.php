@@ -35,6 +35,105 @@ class SellerController extends AbstractActionController
         return $this->redirect()->toRoute('order');
     }
 
+    public function changegenAction(){
+
+        $id = (int)$this->params()->fromRoute('id', 0);
+        $request = $this->getRequest();
+
+        if(!$id) {
+            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+        }
+
+        try {
+            $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+        }
+
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new OrderClothesForm($dbAdapter);
+        $form->bind($orderclothes);
+        $form->get('orderclothessubmit')->setValue('Сохранить');
+
+        $clientName = $this->getOrderClothesTable()->getClientName($orderclothes->order_id);
+        $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
+
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            } else{
+                $form->highlightErrorElements();
+            }
+        }
+
+        $view = new ViewModel(array(
+            'id' => $id,
+            'form' => $form,
+            'clientName'=>$clientName
+        ));
+        $view->setTemplate('pidzhak/seller/changeGeneral.phtml');
+        return $view;
+    }
+
+    public function changemeasAction(){
+        $id = (int)$this->params()->fromRoute('id', 0);
+        $request = $this->getRequest();
+
+        if(!$id) {
+            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+        }
+
+        try {
+            $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+        }
+
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $measurement_type = $orderclothes->typeof_measure;
+        $cloth_type = $orderclothes->product_id;
+        $order_id = $orderclothes->order_id;
+
+        $bm_form = new BodyMeasureForm($dbAdapter);
+        $cm_form = new ClothMeasureForm($dbAdapter);
+
+        if($measurement_type==1){
+            $measurements = $this->getBodyMeasureTable()->getMeasure($cloth_type, $order_id);
+            $bm_form->bind($measurements);
+        }
+        else {
+            $measurements = $this->getClotherMeasureTable()->getMeasure($cloth_type, $order_id);
+            $cm_form->bind($measurements);
+        }
+
+        if ($request->isPost()) {
+            $bm_form->setData($request->getPost());
+            $bm_form->setInputFilter($measurements->getInputFilter());
+            $cm_form->setData($request->getPost());
+
+            if ($measurement_type==1 && $bm_form->isValid()) {
+                $this->getBodyMeasureTable()->saveBodyMeasure($measurements);
+                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            }
+            if ($measurement_type==2 && $cm_form->isValid()) {
+                $this->getClotherMeasureTable()->saveClotherMeasure($orderclothes);
+                return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
+            }
+        }
+
+        $view = new ViewModel(array(
+            'id' => $id,
+            'measurement_type' => $measurement_type ,
+            'bm_form' => $bm_form,
+            'cm_form' => $cm_form,
+        ));
+        $view->setTemplate('pidzhak/seller/changeMeasurements.phtml');
+        return $view;
+    }
+
     public function cycleslistAction()
     {
         $view = new ViewModel(array(
@@ -215,12 +314,13 @@ class SellerController extends AbstractActionController
                 var_dump($form->isValid());
 
 //                var_dump($orderclothes);
-//                $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
+                $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
 
                 if($measurement_type==1 && $bm_form->isValid()){
 //                    var_dump($bm_form->getData());
-                    var_dump($bm_form->getData());
-                    var_dump($bm_form->getMessages());
+//                    var_dump($bm_form->getData());
+//                    var_dump($bm_form->getMessages());
+                    $this->getBodyMeasureTable()->saveBodyMeasure($measurements);
                 }  else if($measurement_type==2 && $cm_form->isValid()){
                     var_dump($measurements);
                 }

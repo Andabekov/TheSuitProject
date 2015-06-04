@@ -29,6 +29,11 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
 <table class="myTable">
 
     <tr>
+        <td><b>ФИО клиента</b></td>
+        <td colspan="3"> <input disabled class="form-control" value='<?php echo $clientName; ?>'/></td>
+    </tr>
+
+    <tr>
         <td>
             <?php $element = $form->get('cycle_id'); ?>
             <?php echo $this->formLabel($element); ?>
@@ -89,7 +94,7 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
             <?php $element = $form->get('typeof_measure'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
 
         <td>
             <?php if($monogramFlag) $element = $form->get('second_monogram_location'); ?>
@@ -104,7 +109,7 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
             <?php echo $this->formLabel($element); ?>
         </td>
         <td>
-            <?php echo $this->formText($element); ?>
+            <?php echo $this->formSelect($element); ?>
             <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
         </td>
 
@@ -171,7 +176,13 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
 <table class="myTable" width="600px">
 
     <tr>
+        <td><b>ФИО клиента</b></td>
+        <td colspan="3"> <input disabled class="form-control" value='<?php echo $clientName; ?>'/></td>
+    </tr>
+
+    <tr>
         <td>
+            <input name="cloth_type" value="<?php echo $form->get('product_id')->getValue();?>" style="display: none">
             <?php $en_form->get('cloth_type')->setValue($form->get('product_id')->getValue()); ?>
             <?php $element = $en_form->get('cloth_type'); ?>
             <?php echo $this->formLabel($element); ?>
@@ -179,6 +190,7 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
         <td><?php echo $this->formSelect($element); ?></td>
 
         <td>
+            <input name="fabric_id" value="<?php echo $form->get('textile_id')->getValue();?>" style="display: none;">
             <?php $en_form->get('fabric_id')->setValue($form->get('textile_id')->getValue()); ?>
             <?php $element = $en_form->get('fabric_id'); ?>
             <?php echo $this->formLabel($element); ?>
@@ -188,13 +200,16 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
 
     <tr>
         <td>
+            <input name="measurement_type" value="<?php echo $form->get('typeof_measure')->getValue(); ?>" style="display: none;">
             <?php $element = $en_form->get('measurement_type'); ?>
             <?php $element->setValue($form->get('typeof_measure')->getValue()); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo $this->formSelect($element); ?></td>
 
         <td>
+            <input name="brand_label" value="<?php echo $form->get('label_brand')->getValue(); ?>" style="display: none;">
+            <?php $en_form->get('brand_label')->setValue($form->get('label_brand')->getValue())?>
             <?php $element = $en_form->get('brand_label'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
@@ -217,27 +232,13 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
 
     <tr>
         <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram1_font'); ?>
+            <?php if($monogramFlag) { $en_form->get('monogram1_font')->setValue($form->get('first_monogram_font')->getValue()); $element = $en_form->get('monogram1_font'); }?>
             <?php if($monogramFlag) echo $this->formLabel($element); ?>
         </td>
         <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
 
         <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram2_font'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram1_color_font'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram2_color_font'); ?>
+            <?php if($monogramFlag) { $en_form->get('monogram1_font')->setValue($form->get('second_monogram_font')->getValue()); $element = $en_form->get('monogram2_font'); } ?>
             <?php if($monogramFlag) echo $this->formLabel($element); ?>
         </td>
         <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
@@ -245,13 +246,27 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
 
     <tr>
         <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram1_text'); ?>
+            <?php if($monogramFlag) { $en_form->get('monogram1_color_font')->setValue($form->get('first_monogram_font_color')->getValue()); $element = $en_form->get('monogram1_color_font'); }?>
             <?php if($monogramFlag) echo $this->formLabel($element); ?>
         </td>
         <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
 
         <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram2_text'); ?>
+            <?php if($monogramFlag) { $en_form->get('monogram2_color_font')->setValue($form->get('second_monogram_font_color')->getValue()); $element = $en_form->get('monogram2_color_font'); } ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+    </tr>
+
+    <tr>
+        <td>
+            <?php if($monogramFlag) { $en_form->get('monogram1_text')->setValue($form->get('first_monogram_caption')->getValue()); $element = $en_form->get('monogram1_text');} ?>
+            <?php if($monogramFlag) echo $this->formLabel($element); ?>
+        </td>
+        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+
+        <td>
+            <?php if($monogramFlag) { $en_form->get('monogram2_text')->setValue($form->get('second_monogram_caption')->getValue()); $element = $en_form->get('monogram2_text'); } ?>
             <?php if($monogramFlag) echo $this->formLabel($element); ?>
         </td>
         <td><?php if($monogramFlag) echo $this->formText($element); ?></td>

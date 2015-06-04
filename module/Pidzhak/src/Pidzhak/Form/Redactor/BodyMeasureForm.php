@@ -19,7 +19,7 @@ class BodyMeasureForm extends Form
     {
         $this->adapter = $dbAdapter;
 
-        parent::__construct('orderclothes');
+        parent::__construct('bodymeasure');
 
         $this->add(array(
             'name' => 'id',
@@ -38,7 +38,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Рост',
@@ -49,7 +49,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Вес',
@@ -60,7 +60,7 @@ class BodyMeasureForm extends Form
             'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Положение рук (Arm position)',
@@ -77,7 +77,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Положение ягодицы',
@@ -88,7 +88,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Шея (Neck)',
@@ -99,7 +99,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Грудь (Chest)',
@@ -110,7 +110,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Живот (Stomach)',
@@ -121,7 +121,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Зад (Seat)',
@@ -132,7 +132,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Бедро (Thigh)',
@@ -143,7 +143,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Колено (Knee Finished)',
@@ -154,7 +154,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Низ брюк (Pant bottom Finished)',
@@ -165,7 +165,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Шов сиденья (U-rise)',
@@ -176,7 +176,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Шов сиденья (auto)',
@@ -187,7 +187,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина брюк (Otseam L and R)',
@@ -198,7 +198,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина до талии спины (ДТС) (Nape to waist)',
@@ -209,7 +209,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина до талии полочки (ДТП) (Front waist length)',
@@ -220,7 +220,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Расстояние от талии спины до пояса брюк (Back waist height)',
@@ -231,7 +231,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Расстояние от талии полочки до пояса брюк (Front waist height)',
@@ -242,7 +242,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Бицепс (Biceps)',
@@ -253,7 +253,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Ширина спины (Back shoulder)',
@@ -264,7 +264,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Правый рукав (Right sleeve)',
@@ -275,7 +275,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Левый рукав (Left sleeve)',
@@ -286,7 +286,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина изделия со спины (Back length)',
@@ -297,7 +297,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина пальто cо спины (Overcoat back length)',
@@ -308,7 +308,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Брючная талия (Waist)',
@@ -319,7 +319,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Запястье (правое) (Right wrist)',
@@ -330,7 +330,7 @@ class BodyMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Запястье (левое) (Left wrist)',
@@ -341,7 +341,7 @@ class BodyMeasureForm extends Form
             'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Приталенность (Style)',
@@ -358,7 +358,7 @@ class BodyMeasureForm extends Form
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Сохранить',
                 'class' => 'btn btn-primary'
             ),
         ));

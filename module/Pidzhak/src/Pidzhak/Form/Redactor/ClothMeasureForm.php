@@ -38,7 +38,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Рост',
@@ -49,7 +49,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Вес',
@@ -60,7 +60,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Грудь (Chest Finished)',
@@ -71,7 +71,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Живот (Stomach Finished)',
@@ -82,7 +82,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Зад Пиджака (Seat Finished)',
@@ -93,7 +93,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Бицепс (Biceps Finished)',
@@ -104,7 +104,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Левый рукав (Left sleeve Finished)',
@@ -115,7 +115,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Правый рукав (Right sleeve Finished)',
@@ -126,7 +126,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина изделия со спины (Back length Finished)',
@@ -137,7 +137,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина изделия спереди (Front length Finished)',
@@ -148,7 +148,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Ширина спины (Shoulder Finished)',
@@ -159,7 +159,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Брючная талия (Waist Finished)',
@@ -170,7 +170,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Зад Брюк (Seat Finished)',
@@ -181,7 +181,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Бедро (Thigh Finished)',
@@ -192,7 +192,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Длина брюк (Outseam L and R Finished)',
@@ -203,7 +203,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Колено (Knee Finished)',
@@ -214,7 +214,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Низ брюк (Pant bottom Finished)',
@@ -225,7 +225,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Шов сиденья (U-rise Finished)',
@@ -236,7 +236,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Правый манжет (Right cuff)',
@@ -247,7 +247,7 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Левый манжет (Left cuff)',
@@ -258,10 +258,19 @@ class ClothMeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Шея сорочки (Shirt neck)',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'submit',
+            'type' => 'Submit',
+            'attributes' => array(
+                'value' => 'Сохранить',
+                'class' => 'btn btn-primary'
             ),
         ));
     }

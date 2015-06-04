@@ -134,7 +134,8 @@ class IndexController extends AbstractActionController
             $sc_form = new TestModelForm();
             $sc_form->populateValues(array("systemcode"=>$arrayMy));
         } else {
-            $style = $this->getStyleTable()->getStyleByIdAndClothType($orderclothes['style_id'], $orderclothes['product_id']);
+//            $style = $this->getStyleTable()->getStyleByIdAndClothType($orderclothes['style_id'], $orderclothes['product_id']);
+            $style = $this->getStyleTable()->getStyleByIdAndClothType($orderclothes->style_id, $orderclothes->product_id);
             $arrayMy = array();
 
             foreach($style as $temp){
@@ -182,6 +183,7 @@ class IndexController extends AbstractActionController
                 if($orderclothesEN==null){
                     $orderclothesEN = new OrderClothes();
                     $orderclothesEN->exchangeArray($en_form->getData());
+                    $orderclothesEN->order_cloth_id=$id;
                 }
 
                 $orderclothesENTable = $this->getOrderClothesTableEn();
@@ -196,12 +198,16 @@ class IndexController extends AbstractActionController
             }
         }
 
+        $clientName = $this->getOrderClothesTable()->getClientName($orderclothes->order_id);
+        $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
+
         $view = new ViewModel(array(
                 'form' => $form,
                 'sc_form' => $sc_form,
                 'en_form' => $en_form,
                 'style_form'   => $style,
                 'orderClothId' => $id,
+                'clientName' => $clientName,
             )
         );
         $view->setTemplate('pidzhak/redactor/enterCodes.phtml');
@@ -211,6 +217,8 @@ class IndexController extends AbstractActionController
     public function watchcodesAction(){
 
         $id = (int) $this->params()->fromRoute('id', 0);
+
+//        var_dump($id);
         if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
 
         try {
@@ -219,6 +227,7 @@ class IndexController extends AbstractActionController
             $systemCodeList = $this->getSystemCodesTable()->getSystemCodeList($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+//            var_dump($ex);
         }
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
@@ -252,12 +261,16 @@ class IndexController extends AbstractActionController
             $cm_form->bind($measurements);
         }
 
+        $clientName = $this->getOrderClothesTable()->getClientName($orderclothes->order_id);
+        $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
+
         $view = new ViewModel(array(
                 'en_form' => $en_form,
                 'sc_form' => $sc_form,
                 'bm_form' => $bm_form,
                 'cm_form' => $cm_form,
-                'measurement_type' => $measurement_type
+                'measurement_type' => $measurement_type,
+                'clientName' => $clientName,
             )
         );
         $view->setTemplate('pidzhak/redactor/watchCodes.phtml');

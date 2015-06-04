@@ -36,8 +36,8 @@ class OrderClothesEnForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'required'
-//                'readonly' => 'readonly'
+                'required' => 'required',
+                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Item',
@@ -48,14 +48,17 @@ class OrderClothesEnForm extends Form
 
         $this->add(array(
             'name' => 'measurement_type',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'required'
-//                'readonly' => 'readonly'
+                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Measurement type',
+                'value_options' => array(
+                    '1' => 'По фигуре',
+                    '2' => 'По изделию',
+                ),
             ),
         ));
 
@@ -64,8 +67,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'required'
-//                'readonly' => 'readonly'
+                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Fabric number',
@@ -77,7 +79,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'required'
+                'disabled' => 'disabled'
             ),
             'options' => array(
                 'label' => 'Brand label',
@@ -104,7 +106,7 @@ class OrderClothesEnForm extends Form
             'name' => 'monogram1_font',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-control'
             ),
             'options' => array(
                 'label' => '1. Monogram (font)',

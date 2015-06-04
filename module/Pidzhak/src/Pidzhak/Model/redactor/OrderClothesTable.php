@@ -50,7 +50,7 @@ class OrderClothesTable
         $rowset = $this->tableGateway->select(array('order_cloth_id' => $id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("test Could not find row $id");
         }
         return $row;
     }
