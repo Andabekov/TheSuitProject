@@ -1,0 +1,107 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 19/06/2015
+ * Time: 19:57
+ */
+?>
+
+<div class="header">
+    Изделия на сверке кодов изделия
+</div>
+
+<div class="col-md-9">
+    <table id="ordercloth-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
+            <th data-column-id="customer_full_name" >Клиент</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
+            <th data-column-id="seller_full_name">Продовец</th>
+
+            <th data-header-css-class="redactorColumnBtn4" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    var test;
+
+    $(function () {
+        function init() {
+            var grid = $("#ordercloth-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '',
+                        order_status: 2
+                    };
+                },
+                url: "/restorderclothes",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return   "<button type=\"button\" class=\"btn btn-xs btn-primary compareCodes\" data-row-id=\"" + row.my_id + "\">Сравнить коды</button><br>"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-success presubmit\" data-row-id=\"" + row.my_id + "\">Отправить на <br>производство без <br>сравнения кодов</button><br>"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-danger denyCloth\" data-row-id=\"" + row.my_id + "\">Вернуть в <br>обработку</button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    window.location="redactor/entercodes/"+$(this).data("row-id");
+                }).end().find(".checkCodes").on("click", function(e)
+                {
+                    window.location="redactor/watchcodes/"+$(this).data("row-id");
+                }).end().find(".compareCodes").on("click", function(e)
+                {
+                    window.location="compare/"+$(this).data("row-id");
+                }).end().find(".presubmit").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("" +
+                        "Вы уверены что хотите оправить на производство данное изделие без сверки кодов?"
+                        , function(result) {
+                            if(result){
+                                $.post( "setstatus4/"+myId, { id: myId } ).done(function( data ) {
+                                    $('#ordercloth-grid').bootgrid('reload');
+                                });
+                            }
+                        });
+                }).end().find(".denyCloth").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("" +
+                        "Вы уверены что хотите вернуть данное изделие в обработку?"
+                        , function(result) {
+                            if(result){
+                                $.post( "setstatus1/"+myId, { id: myId } ).done(function( data ) {
+                                    $('#ordercloth-grid').bootgrid('reload');
+                                });
+                            }
+                        });
+                });
+            });
+        }
+        init();
+    })
+
+</script>

@@ -45,22 +45,6 @@ echo $this->formHidden($form->get('id'));
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>
     <div class="form-group">
-        <?php $element = $form->get('start_date'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formDate($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
-        <?php $element = $form->get('end_date'); ?>
-        <?php echo $this->formLabel($element); ?>
-        <div class="col-xs-10">
-            <?php echo $this->formDate($element); ?>
-        </div>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-    </div>
-    <div class="form-group">
         <div class="col-xs-offset-2 col-xs-10">
             <a class="btn btn-default cancel-btn" href="/prices">Отменить</a>
             <?php echo $this->formSubmit($form->get('submit')); ?>

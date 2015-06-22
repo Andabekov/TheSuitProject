@@ -22,7 +22,6 @@ class Fabric implements InputFilterAwareInterface
     {
         $this->id                           = (isset($data['id'])) ? $data['id'] : null;
         $this->fabric_class                 = (isset($data['fabric_class'])) ? $data['fabric_class'] : null;
-        $this->fabric_available_start_date  = (isset($data['fabric_available_start_date'])) ? $data['fabric_available_start_date'] : null;
     }
 
     public function getArrayCopy()
@@ -42,20 +41,21 @@ class Fabric implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name'     => 'fabric_class',
+                'name'     => 'id',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
             ));
+
             $inputFilter->add(array(
-                'name'     => 'fabric_available_start_date',
+                'name'     => 'fabric_class',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
-                )
+                ),
             ));
 
             $this->inputFilter = $inputFilter;

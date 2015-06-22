@@ -206,7 +206,7 @@ class MeasureController extends AbstractActionController
         $form->get('customer_id_3') ->setValue($customer_id);
         $form->get('customer_id_4') ->setValue($customer_id);
         $form->get('customer_id_5') ->setValue($customer_id);
-        $form->get('c_customer_id_2') ->setValue($customer_id);
+        $form->get('c_customer_id_1') ->setValue($customer_id);
         $form->get('c_customer_id_2') ->setValue($customer_id);
 
         try {

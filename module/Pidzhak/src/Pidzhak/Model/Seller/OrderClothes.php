@@ -29,10 +29,7 @@ class OrderClothes  implements InputFilterAwareInterface
     public $second_monogram_font_color;
     public $second_monogram_caption;
     public $seller_comment;
-
-
-
-
+    public $discount_amount; // discount_amount
 
     public function exchangeArray($data)
     {
@@ -42,7 +39,7 @@ class OrderClothes  implements InputFilterAwareInterface
         $this->preferred_date = (!empty($data['preferred_date'])) ? $data['preferred_date'] : null;
         $this->product_id = (!empty($data['product_id'])) ? $data['product_id'] : null;
         $this->textile_class = (!empty($data['textile_class'])) ? $data['textile_class'] : null;
-        $this->pricelistnum = (!empty($data['pricelistnum'])) ? $data['pricelistnum'] : null;
+//        $this->pricelistnum = (!empty($data['pricelistnum'])) ? $data['pricelistnum'] : null;
         $this->actual_amount = (!empty($data['actual_amount'])) ? $data['actual_amount'] : null;
         $this->paytype_id = (!empty($data['paytype_id'])) ? $data['paytype_id'] : null;
         $this->textile_id = (!empty($data['textile_id'])) ? $data['textile_id'] : null;
@@ -58,6 +55,7 @@ class OrderClothes  implements InputFilterAwareInterface
         $this->second_monogram_font_color = (!empty($data['second_monogram_font_color'])) ? $data['second_monogram_font_color'] : null;
         $this->second_monogram_caption = (!empty($data['second_monogram_caption'])) ? $data['second_monogram_caption'] : null;
         $this->seller_comment = (!empty($data['seller_comment'])) ? $data['seller_comment'] : null;
+        $this->discount_amount = (!empty($data['discount_amount'])) ? $data['discount_amount'] : null;
     }
 
     public function getArrayCopy()
@@ -78,6 +76,19 @@ class OrderClothes  implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $this->inputFilter = $inputFilter;
+
+            $this->inputFilter->add(array(
+                'name' => 'textile_id',
+                'required' => true,
+            ));
+            $this->inputFilter->add(array(
+                'name' => 'actual_amount',
+                'required' => true,
+            ));
+            $this->inputFilter->add(array(
+                'name' => 'discount_amount',
+                'required' => true,
+            ));
             $this->inputFilter->add(array(
                 'name' => 'cycle_date',
                 'required' => false,
@@ -88,9 +99,12 @@ class OrderClothes  implements InputFilterAwareInterface
             ));
             $this->inputFilter->add(array(
                 'name' => 'typeof_measure',
+                'required' => true,
+            ));
+            $this->inputFilter->add(array(
+                'name' => 'style_id',
                 'required' => false,
             ));
-
         }
 
         return $this->inputFilter;

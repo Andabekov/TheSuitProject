@@ -1,0 +1,102 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 18/06/2015
+ * Time: 20:41
+ */
+?>
+
+<div class="header">
+    Создать новый звонок
+</div>
+
+<?php
+$form->setAttribute('action', $this->url('seller', array('action' => 'createcall2', 'id' => $this->id)));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+
+<input style="display: none" name="client_id" />
+<input value="<?php echo date('Y-m-d');?>" style="display: none" name="call_date" />
+
+<div style="text-align:center;">
+    <a class="navBtn">1 Шаг - Данные клиента</a>
+    <a class="navBtn active">2 Шаг - Данные звонка</a>
+
+    <hr />
+
+    <div id="chosenClient">
+        <?php
+        echo 'Выбранный клиент: '.$customer->lastname." ".$customer->firstname.", ".$customer->mobilephone;
+        ?>
+    </div>
+</div>
+
+<table class="myTable">
+    <tr>
+        <td>
+            <?php $element = $form->get('appoint_date'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formDate($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $form->get('appoint_comment'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formTextArea($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $form->get('remind_date'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formDate($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $form->get('remind_comment'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formTextArea($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $form->get('media'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+    <tr>
+        <td>
+            <?php $element = $form->get('seller_id'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formSelect($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+
+</table>
+
+<br />
+<a class="btn btn-default" href="../">Отменить</a>
+
+<?php
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+?>
+
+<script>
+    $(function() {
+        $('input[name=client_id]').val(window.location.href.split('/')[window.location.href.split('/').length-1]);
+    });
+</script>

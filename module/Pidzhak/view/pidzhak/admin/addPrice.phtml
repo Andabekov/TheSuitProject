@@ -25,7 +25,7 @@ echo $this->formHidden($form->get('id'));
     <?php $element = $form->get('fabric_class'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formSelect($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
@@ -33,7 +33,7 @@ echo $this->formHidden($form->get('id'));
     <?php $element = $form->get('cloth_type'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formText($element); ?>
+        <?php echo $this->formSelect($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
@@ -41,23 +41,23 @@ echo $this->formHidden($form->get('id'));
         <?php $element = $form->get('price'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">
-            <?php echo $this->formText($element); ?>
+            <?php echo $this->formNumber($element); ?>
         </div>
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>
     <div class="form-group">
-        <?php $element = $form->get('start_date'); ?>
+        <?php $element = $form->get('profit'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">
-            <?php echo $this->formDate($element); ?>
+            <?php echo $this->formNumber($element); ?>
         </div>
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>
     <div class="form-group">
-        <?php $element = $form->get('end_date'); ?>
+        <?php $element = $form->get('max_discount'); ?>
         <?php echo $this->formLabel($element); ?>
         <div class="col-xs-10">
-            <?php echo $this->formDate($element); ?>
+            <?php echo $this->formNumber($element); ?>
         </div>
         <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
     </div>

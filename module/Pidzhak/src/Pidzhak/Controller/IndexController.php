@@ -52,8 +52,8 @@ class IndexController extends AbstractActionController
 
         if ($this->getAuthService()->hasIdentity()){
             switch($this->getAuthService()->getStorage()->read()['access_type_id']){
-                case 1: return $this->redirect()->toRoute('order'); break;
-                case 2: return $this->redirect()->toRoute('redactor'); break;
+                case 1: return $this->redirect()->toRoute('seller', array('action' => 'myday')); break;
+                case 2: return $this->redirect()->toRoute('redactor', array('action' => 'myday')); break;
                 case 3: return $this->redirect()->toRoute('accountant'); break;
                 case 4: return $this->redirect()->toRoute('director'); break;
                 case 5: return $this->redirect()->toRoute('delivery'); break;
@@ -74,8 +74,8 @@ class IndexController extends AbstractActionController
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()){
             switch($this->getAuthService()->getStorage()->read()['access_type_id']){
-                case 1: return $this->redirect()->toRoute('order'); break;
-                case 2: return $this->redirect()->toRoute('redactor'); break;
+                case 1: return $this->redirect()->toRoute('seller', array('action' => 'myday')); break;
+                case 2: return $this->redirect()->toRoute('redactor', array('action' => 'myday')); break;
                 case 3: return $this->redirect()->toRoute('accountant'); break;
                 case 4: return $this->redirect()->toRoute('director'); break;
                 case 5: return $this->redirect()->toRoute('delivery'); break;
@@ -141,15 +141,13 @@ class IndexController extends AbstractActionController
                         $route = '';
 
                         switch($resultRow->access_type_id){
-                            case 1: $route='order'; break;
-                            case 2: $route='redactor'; break;
-                            case 3: $route='accountant'; break;
-                            case 4: $route='director'; break;
-                            case 5: $route='deliver'; break;
-                            case 6: $route='admin'; break;
+                            case 1: return $this->redirect()->toRoute('seller', array('action' => 'myday')); break;
+                            case 2: return $this->redirect()->toRoute('redactor', array('action' => 'myday')); break;
+                            case 3: return $this->redirect()->toRoute('accountant'); break;
+                            case 4: return $this->redirect()->toRoute('director'); break;
+                            case 5: return $this->redirect()->toRoute('delivery'); break;
+                            case 6: return $this->redirect()->toRoute('admin'); break;
                         }
-
-                        return $this->redirect()->toRoute($route);
                     }
                 }
             }

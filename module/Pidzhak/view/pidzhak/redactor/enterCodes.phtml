@@ -66,7 +66,7 @@ $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product
             <?php $element = $form->get('textile_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formSelect($element); ?></td>
+        <td><?php echo $this->formInput($element); ?></td>
 
         <td>
             <?php if($monogramFlag) $element = $form->get('first_monogram_font_color'); ?>
@@ -190,7 +190,6 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
         <td><?php echo $this->formSelect($element); ?></td>
 
         <td>
-            <input name="fabric_id" value="<?php echo $form->get('textile_id')->getValue();?>" style="display: none;">
             <?php $en_form->get('fabric_id')->setValue($form->get('textile_id')->getValue()); ?>
             <?php $element = $en_form->get('fabric_id'); ?>
             <?php echo $this->formLabel($element); ?>
@@ -238,7 +237,7 @@ echo $this->formHidden($en_form->get('order_cloth_id'));
         <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
 
         <td>
-            <?php if($monogramFlag) { $en_form->get('monogram1_font')->setValue($form->get('second_monogram_font')->getValue()); $element = $en_form->get('monogram2_font'); } ?>
+            <?php if($monogramFlag) { $en_form->get('monogram2_font')->setValue($form->get('second_monogram_font')->getValue()); $element = $en_form->get('monogram2_font'); } ?>
             <?php if($monogramFlag) echo $this->formLabel($element); ?>
         </td>
         <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
@@ -327,6 +326,11 @@ echo $this->form()->closeTag();
         for(i=0; i<fieldsets.length; i++){
             if(i!=0 && i!=1) $(fieldsets[i]).find('span').remove();
         }
+
+        if($('textarea[name=redactor_comment]').val()=='')
+            $('textarea[name=redactor_comment]').val('Order no: \n' +
+                                                 'Наличие ткани: да/нет \n');
+
     });
 
     function addCode(){

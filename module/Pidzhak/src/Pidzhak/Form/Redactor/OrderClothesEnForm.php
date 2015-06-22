@@ -67,7 +67,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'disabled'
+//                'readonly' => 'readonly'
             ),
             'options' => array(
                 'label' => 'Fabric number',
@@ -106,7 +106,8 @@ class OrderClothesEnForm extends Form
             'name' => 'monogram1_font',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'readonly'=> 'readonly'
             ),
             'options' => array(
                 'label' => '1. Monogram (font)',
@@ -118,6 +119,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'readonly'=> 'readonly'
             ),
             'options' => array(
                 'label' => '1. Monogram (colour font)',
@@ -129,6 +131,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'readonly'=> 'readonly'
             ),
             'options' => array(
                 'label' => '1. Monogram (Text)',
@@ -151,6 +154,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'readonly'=> 'readonly'
             ),
             'options' => array(
                 'label' => '2. Monogram (font)',
@@ -162,6 +166,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'readonly'=> 'readonly'
             ),
             'options' => array(
                 'label' => '2. Monogram (colour font)',
@@ -173,6 +178,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'readonly'=> 'readonly'
             ),
             'options' => array(
                 'label' => '2. Monogram (Text)',

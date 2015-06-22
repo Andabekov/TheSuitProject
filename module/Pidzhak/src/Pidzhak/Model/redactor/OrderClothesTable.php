@@ -9,6 +9,7 @@
 namespace Pidzhak\Model\redactor;
 
 use Pidzhak\Model\redactor\OrderClothes;
+use Zend\Db\Sql\Sql;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -80,9 +81,31 @@ class OrderClothesTable
         $id = (int) $orderClothes->id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
+
+            $sql = new Sql($this->tableGateway->adapter);
+            $update = $sql->update();
+            $update->table('orderclothes');
+            $update->set(array(
+                'textile_id' => $orderClothes->fabric_id
+            ));
+
+            $update->where(array('id' => $orderClothes->order_cloth_id));
+            $statement = $sql->prepareStatementForSqlObject($update);
+            $statement->execute();
         } else {
             if ($this->getOrderClothes($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
+
+                $sql = new Sql($this->tableGateway->adapter);
+                $update = $sql->update();
+                $update->table('orderclothes');
+                $update->set(array(
+                    'textile_id' => $orderClothes->fabric_id
+                ));
+
+                $update->where(array('id' => $orderClothes->order_cloth_id));
+                $statement = $sql->prepareStatementForSqlObject($update);
+                $statement->execute();
             } else {
                 throw new \Exception('OrderClothId does not exist');
             }

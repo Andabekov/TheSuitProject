@@ -18,8 +18,16 @@ class FabricForm extends Form
 
         $this->add(array(
             'name' => 'id',
-            'type' => 'Hidden',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Номер ткани',
+                'label_attributes' => array('class' => 'control-label col-xs-2')
+            ),
         ));
+
         $this->add(array(
             'name' => 'fabric_class',
             'type' => 'Text',
@@ -28,17 +36,6 @@ class FabricForm extends Form
             ),
             'options' => array(
                 'label' => 'Класс ткани',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
-            ),
-        ));
-        $this->add(array(
-            'name' => 'fabric_available_start_date',
-            'type' => 'Date',
-            'attributes' => array(
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Дата наличия ткани',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));

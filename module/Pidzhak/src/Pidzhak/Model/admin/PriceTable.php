@@ -8,6 +8,9 @@
 
 namespace Pidzhak\Model\admin;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Sql;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -27,16 +30,38 @@ class PriceTable
     }
 
     public function fetchPage($rowCount, $offset, $orderby, $searchPhrase){
-        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
-            if($rowCount<0)
-                $select->offset(0);
-            else
-                $select->limit($rowCount)->offset($offset);
-            $select->order($orderby);
+//        $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
+//            if($rowCount<0)
+//                $select->offset(0);
+//            else
+//                $select->limit($rowCount)->offset($offset);
+//            $select->order($orderby);
+//
+//        });
+//        return $resultSet;
 
-        });
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->join('clothers', 'pricestable.cloth_type = clothers.id')
+            ->columns(array(
+                '*', new Expression("clothers.clother as cloth_type")
+            ))
+        ;
+        if ($rowCount < 0)
+            $select->offset(0);
+        else
+            $select->limit($rowCount)->offset($offset);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
 
         return $resultSet;
+
+
     }
 
     public function getCount(){
@@ -60,8 +85,8 @@ class PriceTable
             'fabric_class'  => $price->fabric_class,
             'cloth_type' => $price->cloth_type,
             'price' => $price->price,
-            'start_date' => $price->start_date,
-            'end_date' => $price->end_date,
+            'profit' => $price->profit,
+            'max_discount' => $price->max_discount,
         );
 
         $id = (int) $price->id;

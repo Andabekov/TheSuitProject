@@ -88,7 +88,7 @@ class Customer  implements InputFilterAwareInterface
 
             $inputFilter->add(array(
                 'name'     => 'country',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -107,7 +107,7 @@ class Customer  implements InputFilterAwareInterface
 
             $inputFilter->add(array(
                 'name'     => 'city',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -126,7 +126,7 @@ class Customer  implements InputFilterAwareInterface
 
             $inputFilter->add(array(
                 'name'     => 'mobilephone',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -140,6 +140,24 @@ class Customer  implements InputFilterAwareInterface
                             'max'      => 100,
                         ),
                     ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'birthday',
+                'required' => false,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'email',
+                'required' => false,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
                 ),
             ));
 

@@ -1,0 +1,301 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 19/06/2015
+ * Time: 14:54
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Мой день
+</div>
+
+<table class="myTable">
+    <tr>
+        <td><b>Выберите даты:</b></td>
+        <td>
+            <input value="<?php echo $from_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="from_date" />
+            -
+            <input value="<?php echo $to_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="to_date" />
+        </td>
+        <td><a class="btn btn-default" onclick="clearInputs()">Очистить</a>
+            <a class="btn btn-primary" onclick="sortTable()">Сортировать</a></td>
+    <tr/>
+</table>
+<br>
+
+<div class="subHeaderNew">
+    ЗАПЛАНИРОВАННЫЕ СОБЫТИЯ
+</div>
+<div class="subSubHeader">
+    Запланированные примерки:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата примерки</th>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>Тип изделия</th>
+            <th>Wish Date</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($fittings as $fitting) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$fitting->fitting_date)[2].'/'.explode("-",$fitting->fitting_date)[1].'/'.explode("-",$fitting->fitting_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($fitting->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($fitting->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml($fitting->clother);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$fitting->preferred_date)[2].'/'.explode("-",$fitting->preferred_date)[1].'/'.explode("-",$fitting->preferred_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($fitting->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Записи в шоурум:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата записи</th>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>Заметки записи</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($appoints as $appoint) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$appoint->appoint_date)[2].'/'.explode("-",$appoint->appoint_date)[1].'/'.explode("-",$appoint->appoint_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($appoint->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($appoint->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml($appoint->appoint_comment);?></td>
+                <td><?php echo $this->escapeHtml($appoint->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Нужно напомнить клиентам:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата напоминания</th>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>Заметки напоминания</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($reminds as $remind) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$remind->remind_date)[2].'/'.explode("-",$remind->remind_date)[1].'/'.explode("-",$remind->remind_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($remind->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($remind->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml($remind->remind_comment);?></td>
+                <td><?php echo $this->escapeHtml($remind->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Дни рождения клиентов:  <a class="btn btn-primary" href="happybd">Поздравить</a>
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>День рождения</th>
+        </tr>
+
+        <?php foreach($bdays as $bday) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($bday->firstname.' '.$bday->lastname.' '.$bday->middlename);?></td>
+                <td><?php echo $this->escapeHtml($bday->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$bday->birthday)[2].'/'.explode("-",$bday->birthday)[1].'/'.explode("-",$bday->birthday)[0]);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subHeaderNew">
+    ДЭДЛАЙНЫ
+</div>
+<div class="subSubHeader">
+    Дэдлайн выдачи:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>Тип изделия</th>
+            <th>Wish Date</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($deadlines as $deadline) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($deadline->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($deadline->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml($deadline->clother);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$deadline->preferred_date)[2].'/'.explode("-",$deadline->preferred_date)[1].'/'.explode("-",$deadline->preferred_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($deadline->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Начался следующий цикл:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата начало</th>
+            <th>Дата конца</th>
+            <th>Номер цикла</th>
+            <th>Дата прибытие</th>
+        </tr>
+
+        <?php foreach($startcycles as $startcycle) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$startcycle->order_accept_start_date)[2].'/'.explode("-",$startcycle->order_accept_start_date)[1].'/'.explode("-",$startcycle->order_accept_start_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$startcycle->order_accept_finish_date)[2].'/'.explode("-",$startcycle->order_accept_finish_date)[1].'/'.explode("-",$startcycle->order_accept_finish_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($startcycle->id);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$startcycle->arrive_deadline_date)[2].'/'.explode("-",$startcycle->arrive_deadline_date)[1].'/'.explode("-",$startcycle->arrive_deadline_date)[0]);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Внимание, конец цикла:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата начало</th>
+            <th>Дата конца</th>
+            <th>Номер цикла</th>
+            <th>Дата прибытие</th>
+        </tr>
+
+        <?php foreach($endcycles as $endcycle) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$endcycle->order_accept_start_date)[2].'/'.explode("-",$endcycle->order_accept_start_date)[1].'/'.explode("-",$endcycle->order_accept_start_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$endcycle->order_accept_finish_date)[2].'/'.explode("-",$endcycle->order_accept_finish_date)[1].'/'.explode("-",$endcycle->order_accept_finish_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($endcycle->id);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$endcycle->arrive_deadline_date)[2].'/'.explode("-",$endcycle->arrive_deadline_date)[1].'/'.explode("-",$endcycle->arrive_deadline_date)[0]);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subHeaderNew">
+    ИТОГИ
+</div>
+<div class="subSubHeader">
+    Продажи:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата продажи</th>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>Тип изделия</th>
+            <th>Wish Date</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($orderclothes as $ordercloth) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$ordercloth->dateofsale)[2].'/'.explode("-",$ordercloth->dateofsale)[1].'/'.explode("-",$ordercloth->dateofsale)[0]);?></td>
+                <td><?php echo $this->escapeHtml($ordercloth->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($ordercloth->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml($ordercloth->clother);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$ordercloth->preferred_date)[2].'/'.explode("-",$ordercloth->preferred_date)[1].'/'.explode("-",$ordercloth->preferred_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($ordercloth->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Выданные сертификаты:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата продажи</th>
+            <th>Сумма</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($certs as $cert) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$cert->given_date)[2].'/'.explode("-",$cert->given_date)[1].'/'.explode("-",$cert->given_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($cert->cost);?></td>
+                <td><?php echo $this->escapeHtml($cert->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Выдачи:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата выдачи</th>
+            <th>ФИО Клиента</th>
+            <th>Телефон</th>
+            <th>Тип изделия</th>
+            <th>Wish Date</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($givenclothes as $givencloth) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$givencloth->finished_date)[2].'/'.explode("-",$givencloth->finished_date)[1].'/'.explode("-",$givencloth->finished_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($givencloth->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($givencloth->mobilephone);?></td>
+                <td><?php echo $this->escapeHtml($givencloth->clother);?></td>
+                <td><?php echo $this->escapeHtml(explode("-",$givencloth->preferred_date)[2].'/'.explode("-",$givencloth->preferred_date)[1].'/'.explode("-",$givencloth->preferred_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($givencloth->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+<div class="subSubHeader">
+    Звонки:
+</div>
+    <table class="myNewTable" border="1">
+        <tr>
+            <th>Дата продажи</th>
+            <th>ФИО клиента</th>
+            <th>Медия-формат</th>
+            <th>Продавец</th>
+        </tr>
+
+        <?php foreach($calls as $call) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml(explode("-",$call->call_date)[2].'/'.explode("-",$call->call_date)[1].'/'.explode("-",$call->call_date)[0]);?></td>
+                <td><?php echo $this->escapeHtml($call->customer_full_name);?></td>
+                <td><?php echo $this->escapeHtml($call->media);?></td>
+                <td><?php echo $this->escapeHtml($call->seller_full_name);?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+
+<script>
+    $(function () {
+//        hideMenu();
+        $( "#from_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+        $( "#to_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+    });
+
+    function clearInputs(){
+        $( "#from_date").val('');
+        $( "#to_date").val('');
+    }
+
+    function sortTable(){
+        window.location = "?from_date="+$('#from_date').val()+"&to_date="+$('#to_date').val();
+    }
+</script>

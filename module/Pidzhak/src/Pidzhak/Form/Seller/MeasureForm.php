@@ -39,6 +39,10 @@ class MeasureForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'order_cloth_id_1',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
             'name' => 'growth_1',
             'type' => 'text',
             'attributes' => array(
@@ -371,6 +375,10 @@ class MeasureForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'order_cloth_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
             'name' => 'growth_2',
             'type' => 'text',
             'attributes' => array(
@@ -614,6 +622,10 @@ class MeasureForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'order_cloth_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
             'name' => 'growth_3',
             'type' => 'text',
             'attributes' => array(
@@ -845,6 +857,10 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'customer_id_4',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'order_cloth_id_4',
             'type' => 'Hidden',
         ));
         $this->add(array(
@@ -1084,6 +1100,10 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'customer_id_5',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'order_cloth_id_5',
             'type' => 'Hidden',
         ));
         $this->add(array(
@@ -1328,6 +1348,10 @@ class MeasureForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'c_order_cloth_id_1',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
             'name' => 'c_growth_1',
             'type' => 'Text',
             'attributes' => array(
@@ -1565,6 +1589,10 @@ class MeasureForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'c_order_cloth_id_2',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
             'name' => 'c_growth_2',
             'type' => 'Text',
             'attributes' => array(
@@ -1747,6 +1775,10 @@ class MeasureForm extends Form
         ));
         $this->add(array(
             'name' => 'c_customer_id_3',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'c_order_cloth_id_3',
             'type' => 'Hidden',
         ));
         $this->add(array(
@@ -1968,23 +2000,6 @@ class MeasureForm extends Form
             'options' => array(
                 'label' => 'Шея сорочки (Shirt neck)',
                 'disabled' => 'true'
-            ),
-        ));
-        $this->add(array(
-            'name' => 'measureTypeSelect',
-            'type' => 'select',
-            'attributes' => array(
-                'id' => 'measureTypeSelect',
-                'class' => 'form-control',
-                'onchange' => 'changeMeasureType();',
-                'style' => 'display: inline-block; width: auto;',
-            ),
-            'options' => array(
-                'label' => 'Выберите тип замера',
-                'value_options' => array(
-                    '1' => 'По фигуре',
-                    '2' => 'По изделию',
-                ),
             ),
         ));
     }

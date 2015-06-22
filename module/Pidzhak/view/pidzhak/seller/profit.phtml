@@ -1,0 +1,102 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 18/06/2015
+ * Time: 17:42
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Мои продажи
+</div>
+
+<table class="myTable">
+    <tr>
+        <td><b>Выберите продавца:</b></td>
+        <td>
+            <select id="seller_id" style="display: inline;" class="form-control">
+                <option value="0">Все</option>
+                <?php
+                    foreach ($sellers as $seller) {
+                        echo "<option value='".$seller['id']."'>".$seller['name'].' '.$seller['surname']."</option>";
+                    }
+                ?>
+            </select>
+        </td>
+    <tr/>
+
+    <tr>
+        <td><b>Выберите даты:</b></td>
+        <td>
+            <input value="<?php echo $from_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="from_date" />
+            -
+            <input value="<?php echo $to_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="to_date" />
+        </td>
+    <tr/>
+
+</table>
+<div style="margin-top: 10px;">
+    <a class="btn btn-default" onclick="clearInputs()">Очистить</a>
+    <a class="btn btn-primary" onclick="sortTable()">Сортировать</a>
+</div>
+
+<table class="myNewTable" border="1">
+    <tr>
+        <th>ФИО клиента</th>
+        <th>Тип изделия</th>
+        <th>Класс ткани</th>
+        <th>Дата продажи</th>
+        <th>Оффишл прайс</th>
+        <th>Cкидка</th>
+        <th>Оплачено</th>
+        <th>Прибыль</th>
+        <th>Прибыль за минусом скидки</th>
+        <th>Продавец</th>
+    </tr>
+
+    <?php $ordercloth?>
+    <?php foreach($orderclothes as $ordercloth) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($ordercloth->customer_full_name);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->clother);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->fabric_class);?></td>
+            <td><?php echo $this->escapeHtml(explode("-",$ordercloth->dateofsale)[2].'/'.explode("-",$ordercloth->dateofsale)[1].'/'.explode("-",$ordercloth->dateofsale)[0]);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->price);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->discount_amount);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->actual_amount);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->profit);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->profit-$ordercloth->discount_amount);?></td>
+            <td><?php echo $this->escapeHtml($ordercloth->seller_full_name);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<b>
+    Общий обьем продажи: <?php echo $profitSum->current()->sum_actual_cost;?> тенге
+    <br />
+    Общий обьем прибыли: <?php echo $profitSum->current()->sum_actual_profit;?> тенге
+</b>
+<script>
+    $(function () {
+
+        hideMenu();
+
+        $( "#from_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+        $( "#to_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+
+        $('#seller_id').val(<?php echo $seller_id; ?>);
+    });
+
+    function clearInputs(){
+        $('#seller_id').val(0);
+        $( "#from_date").val('');
+        $( "#to_date").val('');
+    }
+
+    function sortTable(){
+        window.location = "?from_date="+$('#from_date').val()+"&to_date="+$('#to_date').val()+"&seller_id="+$('#seller_id').val();
+    }
+</script>

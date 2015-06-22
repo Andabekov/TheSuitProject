@@ -1,0 +1,198 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 21/06/2015
+ * Time: 20:22
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Мой день
+</div>
+
+<table class="myTable">
+    <tr>
+        <td><b>Выберите даты:</b></td>
+        <td>
+            <input value="<?php echo $from_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="from_date" />
+            -
+            <input value="<?php echo $to_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="to_date" />
+        </td>
+        <td><a class="btn btn-default" onclick="clearInputs()">Очистить</a>
+            <a class="btn btn-primary" onclick="sortTable()">Сортировать</a></td>
+    <tr/>
+</table>
+<br>
+
+<div class="subHeaderNew">
+    ДЭДЛАЙНЫ ПО СУПЕР-ЭКПРЕСС ИЗДЕЛИЯМ (order rushing (-2) and immediate shipping, total 10 days)
+</div>
+<div class="subSubHeader">
+    Submission дэдлайны:
+</div>
+<table class="myNewTable" border="1">
+    <tr>
+        <th>Дата продажи</th>
+        <th>ФИО клиента</th>
+        <th>Тип изделия</th>
+        <th>Класс ткани</th>
+        <th>Ткань</th>
+        <th>Статус</th>
+    </tr>
+
+    <?php foreach($super_submit_dead as $s_p_d) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml(explode("-",$s_p_d->dateofsale)[2].'/'.explode("-",$s_p_d->dateofsale)[1].'/'.explode("-",$s_p_d->dateofsale)[0]);?></td>
+            <td><?php echo $this->escapeHtml($s_p_d->customer_full_name);?></td>
+            <td><?php echo $this->escapeHtml($s_p_d->clother);?></td>
+            <td><?php echo $this->escapeHtml($s_p_d->fabric_class);?></td>
+            <td><?php echo $this->escapeHtml($s_p_d->textile_id);?></td>
+            <td><?php echo $this->escapeHtml($s_p_d->status_name);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<div class="subSubHeader">
+    Shipping дэдлайны:
+</div>
+<table class="myNewTable" border="1">
+    <tr>
+        <th>Дата продажи</th>
+        <th>ФИО клиента</th>
+        <th>Тип изделия</th>
+        <th>Класс ткани</th>
+        <th>Ткань</th>
+        <th>Статус</th>
+    </tr>
+
+    <?php foreach($super_ship_dead as $s_s_d) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml(explode("-",$s_s_d->dateofsale)[2].'/'.explode("-",$s_s_d->dateofsale)[1].'/'.explode("-",$s_s_d->dateofsale)[0]);?></td>
+            <td><?php echo $this->escapeHtml($s_s_d->customer_full_name);?></td>
+            <td><?php echo $this->escapeHtml($s_s_d->clother);?></td>
+            <td><?php echo $this->escapeHtml($s_s_d->fabric_class);?></td>
+            <td><?php echo $this->escapeHtml($s_s_d->textile_id);?></td>
+            <td><?php echo $this->escapeHtml($s_s_d->status_name);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+
+
+<div class="subHeaderNew">
+    ДЭДЛАЙНЫ ПО УСКОРЕННЫМ ИЗДЕЛИЯМ (no order rushing, but immediate shipping, total 14 days)
+</div>
+<div class="subSubHeader">
+    Submission дэдлайны:
+</div>
+<table class="myNewTable" border="1">
+    <tr>
+        <th>Дата продажи</th>
+        <th>ФИО клиента</th>
+        <th>Тип изделия</th>
+        <th>Класс ткани</th>
+        <th>Ткань</th>
+        <th>Статус</th>
+    </tr>
+
+    <?php foreach($fast_submit_dead as $f_p_d) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml(explode("-",$f_p_d->dateofsale)[2].'/'.explode("-",$f_p_d->dateofsale)[1].'/'.explode("-",$f_p_d->dateofsale)[0]);?></td>
+            <td><?php echo $this->escapeHtml($f_p_d->customer_full_name);?></td>
+            <td><?php echo $this->escapeHtml($f_p_d->clother);?></td>
+            <td><?php echo $this->escapeHtml($f_p_d->fabric_class);?></td>
+            <td><?php echo $this->escapeHtml($f_p_d->textile_id);?></td>
+            <td><?php echo $this->escapeHtml($f_p_d->status_name);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<div class="subSubHeader">
+    Shipping дэдлайны:
+</div>
+<table class="myNewTable" border="1">
+    <tr>
+        <th>Дата продажи</th>
+        <th>ФИО клиента</th>
+        <th>Тип изделия</th>
+        <th>Класс ткани</th>
+        <th>Ткань</th>
+        <th>Статус</th>
+    </tr>
+
+    <?php foreach($fast_ship_dead as $f_s_d) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml(explode("-",$f_s_d->dateofsale)[2].'/'.explode("-",$f_s_d->dateofsale)[1].'/'.explode("-",$f_s_d->dateofsale)[0]);?></td>
+            <td><?php echo $this->escapeHtml($f_s_d->customer_full_name);?></td>
+            <td><?php echo $this->escapeHtml($f_s_d->clother);?></td>
+            <td><?php echo $this->escapeHtml($f_s_d->fabric_class);?></td>
+            <td><?php echo $this->escapeHtml($f_s_d->textile_id);?></td>
+            <td><?php echo $this->escapeHtml($f_s_d->status_name);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+
+
+<div class="subHeaderNew">
+    ДЭДЛАЙНЫ ПО ОБЫЧНЫМ ИЗДЕЛИЯМ (no order rushing, no immediate shipping)
+</div>
+<div class="subSubHeader">
+    Submission дэдлайны:
+</div>
+<table class="myNewTable" border="1">
+    <tr>
+        <th>Цикл</th>
+        <th>Submission Date</th>
+        <th>Shipping Date</th>
+    </tr>
+
+    <?php foreach($slow_submit_dead as $s_p_d) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($s_p_d->id);?></td>
+            <td><?php echo $this->escapeHtml(explode("-",$s_p_d->submit_deadline_date)[2].'/'.explode("-",$s_p_d->submit_deadline_date)[1].'/'.explode("-",$s_p_d->submit_deadline_date)[0]);?></td>
+            <td><?php echo $this->escapeHtml(explode("-",$s_p_d->ship_deadline_date)[2].'/'.explode("-",$s_p_d->ship_deadline_date)[1].'/'.explode("-",$s_p_d->ship_deadline_date)[0]);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<div class="subSubHeader">
+    Shipping дэдлайны:
+</div>
+<table class="myNewTable" border="1">
+    <tr>
+        <th>Цикл</th>
+        <th>Submission Date</th>
+        <th>Shipping Date</th>
+    </tr>
+
+    <?php foreach($slow_ship_dead as $s_s_d) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($s_s_d->id);?></td>
+            <td><?php echo $this->escapeHtml(explode("-",$s_s_d->submit_deadline_date)[2].'/'.explode("-",$s_s_d->submit_deadline_date)[1].'/'.explode("-",$s_s_d->submit_deadline_date)[0]);?></td>
+            <td><?php echo $this->escapeHtml(explode("-",$s_s_d->ship_deadline_date)[2].'/'.explode("-",$s_s_d->ship_deadline_date)[1].'/'.explode("-",$s_s_d->ship_deadline_date)[0]);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+
+
+<script>
+    $(function () {
+        $( "#from_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+        $( "#to_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+    });
+
+    function clearInputs(){
+        $( "#from_date").val('');
+        $( "#to_date").val('');
+    }
+
+    function sortTable(){
+        window.location = "?from_date="+$('#from_date').val()+"&to_date="+$('#to_date').val();
+    }
+</script>

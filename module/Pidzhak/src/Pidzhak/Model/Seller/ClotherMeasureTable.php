@@ -48,6 +48,16 @@ class ClotherMeasureTable
         return $row;
     }
 
+    public function getMeasureByOrderClothId($order_cloth_id){
+        $order_cloth_id  = (int) $order_cloth_id;
+        $rowset = $this->tableGateway->select(array('order_cloth_id'=> $order_cloth_id));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $order_cloth_id");
+        }
+        return $row;
+    }
+
     public function getMeasure($cloth_type, $order_id){
         $sql = new Sql($this->tableGateway->adapter);
         $select = $sql->select();
@@ -108,6 +118,7 @@ class ClotherMeasureTable
             'right_cuff' => $clothermeasure->right_cuff,
             'left_cuff' => $clothermeasure->left_cuff,
             'shirt_neck' => $clothermeasure->shirt_neck,
+            'order_cloth_id' => $clothermeasure->order_cloth_id,
         );
 
         $id = (int)$clothermeasure->id;

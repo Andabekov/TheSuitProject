@@ -1,0 +1,170 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 10/06/2015
+ * Time: 16:12
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="col-md-9">
+    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="customer_full_name" data-order="desc">Клиент</th>
+            <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+            <th data-type="datetime"  data-column-id="dateofsale">Продажа</th>
+            <th data-type="datetime"  data-column-id="finished_date">Выдача</th>
+            <!--            <th data-type="datetime" data-column-id="fitting_date">Примерка</th>-->
+            <!--            <th data-column-id="arrival_comment">Дост. комм</th>-->
+            <th data-column-id="seller_full_name">Продавец</th>
+
+            <th data-header-css-class="sellerColumnBtn5" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
+        </tr>
+        </thead>
+
+    </table>
+    <!--/div-->
+</div>
+
+
+<div id="myModal" style="display: none; text-align: center">
+
+    <input style="display: none" id="order_cloth_id" />
+    <input style="display: none;" id="oldComment" />
+    <input style="display: none;" id="tailorName" />
+
+    <table style="width: 100%; text-align: left;">
+        <tr>
+            <td>Отзыв:</td>
+            <td><textarea required="true" id="comment" class="form-control" style="width: 350px;"></textarea></td>
+        </tr>
+    </table>
+
+    <button onclick="closeDlg()" class="btn btn-default" style="margin-top: 8px; margin-right:10px;">Отмена</button>
+    <button onclick="setArrived();" class="btn btn-primary" style="margin-top: 8px;">Отправить</button>
+
+</div>
+
+<div id="tracking" style="display: none;">
+</div>
+
+<script>
+    $(function () {
+
+        $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd'});
+
+        function init() {
+            var grid = $("#order-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '<?php echo $clientId ?>',
+                        order_status: 777
+                    };
+                },
+                url: "/restorderclothes",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button data-row-tailor='"+row.tailor_id+"' type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-comment='"+row.arrival_comment+"'  data-row-id=\"" + row.my_id + "\">Показать замеры</button><br />"+
+                            "<button data-row-comment='"+row.arrival_comment+"' type=\"button\" class=\"btn btn-xs btn-primary showComment\">Показать отчёт</button><br />";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+                    window.open(url, 'Старые замеры', "height=800,width=800");
+//                    openDlg($(this).data("row-id"), $(this).data("row-comment"), $(this).data("row-tailor"));
+                }).end().find(".showComment").on("click", function(e)
+                {
+                    showCommentDlg($(this).data("row-comment"));
+                });
+            });
+        }
+        init();
+    });
+
+    function openDlg(id, comment, tailorId){
+
+        $('#order_cloth_id').val(id);
+        $('#comment').css('width','500px');
+        $('#oldComment').val(comment);
+
+        switch (tailorId){
+            case 1: $('#tailorName').val('Ирина'); break;
+            case 2: $('#tailorName').val('Мая'); break;
+        }
+
+        $('#myModal').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 600,
+            height: 200,
+            title: 'Оставить отзыв клиента'
+        });
+    }
+
+    function closeDlg(){
+        $('#myModal').dialog('close');
+    }
+
+    function setArrived(){
+        if($('#order_cloth_id').val()!='')
+            $.post( "feedback", { id: $('#order_cloth_id').val(), comment: $('#oldComment').val() +'<br>' +'Отзыв оставлен '+getToday()+': '+ $('#comment').val() } ).done(function( data ) {
+                closeDlg();
+                $('#order-grid').bootgrid('reload');
+            });
+    }
+
+    function showCommentDlg(comment){
+        $('#tracking').html(comment);
+
+        $('#tracking').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Комментарий'
+        });
+    }
+
+    function getToday(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+        var today = dd+'/'+mm+'/'+yyyy;
+
+        return today;
+    }
+</script>

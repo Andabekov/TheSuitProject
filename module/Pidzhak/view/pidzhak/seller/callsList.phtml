@@ -1,0 +1,97 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 07/06/2015
+ * Time: 16:42
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Список звонков
+</div>
+
+<table class="myTable">
+    <tr>
+        <td><b>Выберите продавца:</b></td>
+        <td>
+            <select id="seller_id" style="display: inline;" class="form-control">
+                <option value="0">Все</option>
+                <?php
+                foreach ($sellers as $seller) {
+                    echo "<option value='".$seller['id']."'>".$seller['name'].' '.$seller['surname']."</option>";
+                }
+                ?>
+            </select>
+        </td>
+    <tr/>
+
+    <tr>
+        <td><b>Выберите даты:</b></td>
+        <td>
+            <input value="<?php echo $from_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="from_date" />
+            -
+            <input value="<?php echo $to_date; ?>" style="width: 120px; display: inline;" class="form-control" type="text" id="to_date" />
+        </td>
+    <tr/>
+
+</table>
+
+<div style="margin-top: 10px;">
+    <a class="btn btn-default" onclick="clearInputs()">Очистить</a>
+    <a class="btn btn-primary" onclick="sortTable()">Сортировать</a>
+</div>
+
+<table class="myNewTable" border="1">
+    <tr>
+        <th>ФИО клиента</th>
+        <th>Телефон</th>
+        <th>Дата звонка</th>
+        <th>Дата записи</th>
+        <th>Заметки записи</th>
+        <th>Дата напоминания</th>
+        <th>Заметки напоминания</th>
+        <th>Медия-формат</th>
+        <th>Продавец</th>
+    </tr>
+
+    <?php foreach($calls as $call) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($call->customer_full_name);?></td>
+            <td><?php echo $this->escapeHtml($call->mobilephone);?></td>
+            <td><?php echo $this->escapeHtml($call->call_date);?></td>
+            <td><?php echo $this->escapeHtml($call->appoint_date);?></td>
+            <td><?php echo $this->escapeHtml($call->appoint_comment);?></td>
+            <td><?php echo $this->escapeHtml($call->remind_date);?></td>
+            <td><?php echo $this->escapeHtml($call->remind_comment);?></td>
+            <td><?php echo $this->escapeHtml($call->media);?></td>
+            <td><?php echo $this->escapeHtml($call->seller_full_name);?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+
+<script>
+    $(function () {
+
+//        hideMenu();
+
+        $( "#from_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+        $( "#to_date" ).datepicker({ dateFormat: 'yy-mm-dd'});
+
+        $('#seller_id').val(<?php echo $seller_id; ?>);
+    });
+
+    function clearInputs(){
+        $('#seller_id').val(0);
+        $( "#from_date").val('');
+        $( "#to_date").val('');
+    }
+
+    function sortTable(){
+        window.location = "?from_date="+$('#from_date').val()+"&to_date="+$('#to_date').val()+"&seller_id="+$('#seller_id').val();
+    }
+</script>

@@ -35,9 +35,10 @@ class ClotherMeasure  implements InputFilterAwareInterface
     public $left_cuff;
     public $shirt_neck;
 
-
     private $postfix;
     private $prefix;
+
+    public $order_cloth_id;
 
     public function exchangeArray($data)
     {
@@ -63,9 +64,12 @@ class ClotherMeasure  implements InputFilterAwareInterface
         $this->pant_bottom_finished = (!empty($data[$this->prefix.'pant_bottom_finished'.$this->postfix])) ? $data[$this->prefix.'pant_bottom_finished'.$this->postfix] : null;
         $this->u_rise_finished = (!empty($data[$this->prefix.'u_rise_finished'.$this->postfix])) ? $data[$this->prefix.'u_rise_finished'.$this->postfix] : null;
 
+        $this->order_cloth_id = (!empty($data[$this->prefix.'order_cloth_id'.$this->postfix])) ? $data[$this->prefix.'order_cloth_id'.$this->postfix] : null;
+
         $this->right_cuff = (!empty($data[$this->prefix.'right_cuff'.$this->postfix])) ? $data[$this->prefix.'right_cuff'.$this->postfix] : null;
         $this->left_cuff = (!empty($data[$this->prefix.'left_cuff'.$this->postfix])) ? $data[$this->prefix.'left_cuff'.$this->postfix] : null;
         $this->shirt_neck = (!empty($data[$this->prefix.'shirt_neck'.$this->postfix])) ? $data[$this->prefix.'shirt_neck'.$this->postfix] : null;
+
     }
 
     public function getArrayCopy()

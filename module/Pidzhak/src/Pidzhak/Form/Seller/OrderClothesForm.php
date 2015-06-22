@@ -24,18 +24,12 @@ class OrderClothesForm extends Form
             'type' => 'Hidden',
         ));
 
-        $this->add(array(
-            'name' => 'pricelistnum',
-            'type' => 'Hidden',
-        ));
-
 
         $this->add(array(
             'name' => 'product_id',
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-                'onchange' => 'resetMonograms(); resetStylesSelect();'
             ),
             'options' => array(
                 'label' => 'Наименование изделия',
@@ -86,15 +80,12 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'textile_id',
-            'type' => 'Select',
+            'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'onchange' => 'changeTextile()'
             ),
             'options' => array(
                 'label' => 'Номер ткани',
-                'empty_option' => 'Выберите ткань',
-                'value_options' => $this->getTextileForSelect(),
             ),
         ));
         $this->add(array(
@@ -123,14 +114,12 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'paytype_id',
-            'type' => 'Select',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Способ оплаты',
-                'empty_option' => 'Выберите тип оплаты',
-                'value_options' => $this->getTableForSelect('paymenttypes', 'id', 'payment_type_name'),
+                'label' => 'Подробности оплаты (см. выше)',
             ),
         ));
 
@@ -139,7 +128,6 @@ class OrderClothesForm extends Form
             'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control',
-//                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Вид замера',
@@ -169,7 +157,7 @@ class OrderClothesForm extends Form
             'name' => 'style_id',
             'type' => 'Select',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'Номер стиля',
@@ -177,6 +165,22 @@ class OrderClothesForm extends Form
                     'value_options' => $this->getTableForSelect(),
             ),
         ));
+
+
+        $this->add(array(
+            'name' => 'discount_amount',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Скидка в тенге*',
+            ),
+        ));
+
+
+
+
         $this->add(array(
             'name' => 'first_monogram_location',
             'type' => 'Text',
@@ -302,10 +306,8 @@ class OrderClothesForm extends Form
         }
     }
 
-
     public function getProductsForSelect()
     {
-
         $dbAdapter = $this->adapter;
         $sql       = 'SELECT id, clother FROM clothers ORDER BY id ASC';
         $statement = $dbAdapter->query($sql);

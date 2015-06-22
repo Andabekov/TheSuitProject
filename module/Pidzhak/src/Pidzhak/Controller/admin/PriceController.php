@@ -32,7 +32,9 @@ class PriceController extends AbstractActionController
     }
 
     public function ajaxaddAction(){
-        $form = new PriceForm();
+
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new PriceForm($dbAdapter);
         $request = $this->getRequest();
         $response   = $this->getResponse();
         $messages = array();
@@ -72,7 +74,8 @@ class PriceController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new PriceForm();
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form = new PriceForm($dbAdapter);
         $form->get('submit')->setValue('Добавить');
 
         $request = $this->getRequest();
@@ -113,7 +116,8 @@ class PriceController extends AbstractActionController
             return $this->redirect()->toRoute('prices', array('action' => 'index'));
         }
 
-        $form  = new PriceForm();
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        $form  = new PriceForm($dbAdapter);
         $form->bind($price);
         $form->get('submit')->setAttribute('value', 'Сохранить');
 

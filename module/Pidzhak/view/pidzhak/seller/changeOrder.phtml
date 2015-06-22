@@ -8,7 +8,7 @@
 ?>
 
 <div class="header">
-    Редактировать заказ
+    Редактировать изделия
 </div>
 
 <div class="col-md-9">
@@ -16,15 +16,17 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+<!--            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>-->
+            <th data-header-css-class="cycleCol" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name">Клиент</th>
-            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
-            <th data-column-id="fabric_class">Класс ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
-            <th data-column-id="dateofsale">Дата продажи</th>
-            <th data-column-id="status_name" data-order="desc">Статус</th>
-            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+            <th data-column-id="firstname">Имя Клиент</th>
+            <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+<!--            <th data-column-id="fabric_class">Класс ткани</th>-->
+<!--            <th data-header-css-class="fabricCol" data-type="numeric" data-column-id="textile_id">Ткань</th>-->
+            <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="dateofsale">Продажа</th>
+            <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="preferred_date">Wish date</th>
+            <th data-type="datetime" data-header-css-class="wishDateCol2" data-column-id="cycle_date">Дост. цикл</th>
+            <th data-column-id="seller_full_name">Продавец</th>
 
             <th data-header-css-class="sellerColumnBtn4" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
 
@@ -47,16 +49,25 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
                         order_id: -1,
                         seller_name: '<?php echo $current_user_id;?>',
-                        order_status: 1
+                        order_status: 10
                     };
                 },
                 url: "/restorderclothes",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    }
+                },
                 formatters: {
                     "commands": function(column, row)
                     {
                         return "<button style='margin-bottom: 3px' type=\"button\" class=\"btn btn-xs btn-primary changeStyle\" data-row-id=\"" + row.my_id + "\">Изменить стиль</button><br />"+
                                 "<button style='margin-bottom: 3px' type=\"button\" class=\"btn btn-xs btn-primary changeMeasure\" data-row-id=\"" + row.my_id + "\">Изменить замеры</button><br />"+
-                                "<button type=\"button\" class=\"btn btn-xs btn-primary sendToRedactor\" data-row-id=\"" + row.my_id + "\">Отправить редактору</button><br />";
+                                "<button type=\"button\" class=\"btn btn-xs btn-success sendToRedactor\" data-row-id=\"" + row.my_id + "\">Отправить редактору</button><br />";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()
@@ -70,7 +81,26 @@
                     window.location="changemeas/"+$(this).data("row-id");
                 }).end().find(".sendToRedactor").on("click", function(e)
                 {
-                    window.location="sendred/"+$(this).data("row-id");
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы действительно хотите отправить данное изделие редактору? " +
+                    "<br /> Тем самым вы подтверждаете что ввели все необходимые данные, такие как:" +
+                        "<ul>"+
+                        "<li>тип изделия</li>"+
+                        "<li>номер ткани</li>"+
+                        "<li>цикл</li>"+
+                        "<li>замеры</li>"+
+                        "</ul>",
+                        function(result) {
+                        if(result){
+                            $.post( "sendred/"+myId, { id: myId } ).done(function( data ) {
+                                $('#order-grid').bootgrid('reload');
+                            });
+                        };
+                    });
                 });
             });
         }

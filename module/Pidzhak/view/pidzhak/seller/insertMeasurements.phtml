@@ -1,0 +1,80 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 04/06/2015
+ * Time: 19:56
+ */
+?>
+
+<div class="header">
+    Ввести замеры
+</div>
+
+<?php
+    $form->setAttribute('action', $this->url('seller', array('action' => 'insertmeasure', 'id' => $id)));
+    $form->setAttribute('class', 'form-horizontal');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+
+    echo $this->formHidden($form->get('id_1'));
+    echo $this->formHidden($form->get('id_2'));
+    echo $this->formHidden($form->get('id_3'));
+    echo $this->formHidden($form->get('id_4'));
+    echo $this->formHidden($form->get('id_5'));
+
+    echo $this->formHidden($form->get('clother_id_1')->setValue(1));
+    echo $this->formHidden($form->get('clother_id_2')->setValue(2));
+    echo $this->formHidden($form->get('clother_id_3')->setValue(3));
+    echo $this->formHidden($form->get('clother_id_4')->setValue(4));
+    echo $this->formHidden($form->get('clother_id_5')->setValue(5));
+
+    echo $this->formHidden($form->get('customer_id_1'));
+    echo $this->formHidden($form->get('customer_id_2'));
+    echo $this->formHidden($form->get('customer_id_3'));
+    echo $this->formHidden($form->get('customer_id_4'));
+    echo $this->formHidden($form->get('customer_id_5'));
+
+    echo $this->formHidden($form->get('c_customer_id_1'));
+    echo $this->formHidden($form->get('c_customer_id_2'));
+
+    echo $this->formHidden($form->get('order_cloth_id_1'));
+    echo $this->formHidden($form->get('order_cloth_id_2'));
+    echo $this->formHidden($form->get('order_cloth_id_3'));
+    echo $this->formHidden($form->get('order_cloth_id_4'));
+    echo $this->formHidden($form->get('order_cloth_id_5'));
+
+    echo $this->formHidden($form->get('c_order_cloth_id_1'));
+    echo $this->formHidden($form->get('c_order_cloth_id_2'));
+
+?>
+
+<div class="subHeaderNew">
+    Замеры по фигуре:
+</div>
+<div>
+    <?= $this->render('bodyfields.phtml') ?>
+</div>
+
+<?php
+    echo $this->formHidden($form->get('c_id_1'));
+    echo $this->formHidden($form->get('c_id_2'));
+
+    echo $this->formHidden($form->get('c_clother_id_1')->setValue(1));
+    echo $this->formHidden($form->get('c_clother_id_2')->setValue(2));
+
+    echo $this->formHidden($form->get('c_customer_id_1'));
+    echo $this->formHidden($form->get('c_customer_id_2'));
+?>
+
+<hr>
+<div class="subHeaderNew">
+    Замеры по изделию:
+</div>
+<div>
+    <?= $this->render('clothefields.phtml') ?>
+</div>
+    <br />
+    <a class="btn btn-default" onclick="window.location = '../fillmeasure';">Отмена</a>
+    <?php echo $this->formSubmit($form->get('submit'))  ; ?>

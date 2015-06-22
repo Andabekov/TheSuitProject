@@ -37,6 +37,17 @@ class IndexController extends AbstractActionController
     protected $bodyMeasureTable;
     protected $clotherMeasureTable;
     protected $customerTable;
+    protected $authservice;
+
+    public function searchAction(){
+
+        $view = new ViewModel(array(
+            'orders' => $this->getOrderTable()->fetchAll(),
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+        ));
+        $view->setTemplate('pidzhak/redactor/search.phtml');
+        return $view;
+    }
 
     public function indexAction()
     {
@@ -47,6 +58,83 @@ class IndexController extends AbstractActionController
         $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
         $view->setTemplate('pidzhak/redactor/index.phtml');
         return $view;
+    }
+
+    public function mydayAction(){
+        $from_date = $this->params()->fromQuery('from_date');
+        $to_date   = $this->params()->fromQuery('to_date');
+
+        $super_submit_dead = $this->getOrderClothesTable()->getSuperSubmit();
+        $super_ship_dead = $this->getOrderClothesTable()->getSuperShip();
+
+        $fast_submit_dead = $this->getOrderClothesTable()->getFastSubmit();
+        $fast_ship_dead = $this->getOrderClothesTable()->getFastShip();
+
+        $slow_submit_dead = $this->getOrderClothesTable()->getSlowSubmit($from_date, $to_date);
+        $slow_ship_dead = $this->getOrderClothesTable()->getSlowShip($from_date, $to_date);
+
+        $view = new ViewModel(array(
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'super_submit_dead' => $super_submit_dead,
+            'super_ship_dead' => $super_ship_dead,
+            'fast_submit_dead' => $fast_submit_dead,
+            'fast_ship_dead' => $fast_ship_dead,
+            'slow_submit_dead' => $slow_submit_dead,
+            'slow_ship_dead' => $slow_ship_dead
+
+        ));
+        $view->setTemplate('pidzhak/redactor/myday.phtml');
+        return $view;
+    }
+
+    public function setstatus3Action(){
+        $id = $this->params()->fromPost('id');
+        if($id!=''){
+            $this->getOrderClothesTable()->setStatus3($id);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'inredactor'));
+    }
+
+    public function setstatus4Action(){
+        $id = $this->params()->fromPost('id');
+        if($id!=''){
+            $this->getOrderClothesTable()->setStatus4($id);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'inredactor'));
+    }
+
+    public function setstatus1Action(){
+        $id = $this->params()->fromPost('id');
+        if($id!=''){
+            $this->getOrderClothesTable()->setStatus1($id);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'inredactor'));
+    }
+
+    public function insellerAction(){
+        $view = new ViewModel(array(
+            //
+        ));
+        $view->setTemplate('pidzhak/redactor/inseller.phtml');
+        return $view;
+    }
+
+    public function inredactorAction(){
+        $view = new ViewModel(array(
+            //
+        ));
+        $view->setTemplate('pidzhak/redactor/inredactor.phtml');
+        return $view;
+    }
+
+    public function denyclothAction(){
+        $id = (int) $this->params()->fromPost('id', 0);
+        if($id) {
+            $this->getOrderClothesTable()->setStatus10redactor($id);
+        }
+
+        return $this->redirect()->toRoute('redactor', array('action' => 'index'));
     }
 
     public function readyforprodAction(){
@@ -198,7 +286,7 @@ class IndexController extends AbstractActionController
             }
         }
 
-        $clientName = $this->getOrderClothesTable()->getClientName($orderclothes->order_id);
+        $clientName = $this->getOrderClothesTable()->getClientName2($orderclothes->order_id);
         $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
 
         $view = new ViewModel(array(
@@ -248,20 +336,18 @@ class IndexController extends AbstractActionController
 
         $measurement_type = $orderclothesEN->measurement_type;
         $order_cloth_id = $orderclothesEN->order_cloth_id;
-        $cloth_type = $orderclothesEN->cloth_type;
-        $order_id = $orderclothes->order_id;
 
         $bm_form = new BodyMeasureForm($dbAdapter);
         $cm_form = new ClothMeasureForm($dbAdapter);
         if($measurement_type==1){
-            $measurements = $this->getBodyMeasureTable()->getMeasure($cloth_type, $order_id);
+            $measurements = $this->getBodyMeasureTable()->getMeasureByOrderClothId($order_cloth_id);
             $bm_form->bind($measurements);
         } else {
-            $measurements = $this->getClotherMeasureTable()->getMeasure($cloth_type, $order_id);
+            $measurements = $this->getClotherMeasureTable()->getMeasureByOrderClothId($order_cloth_id);
             $cm_form->bind($measurements);
         }
 
-        $clientName = $this->getOrderClothesTable()->getClientName($orderclothes->order_id);
+        $clientName = $this->getOrderClothesTable()->getClientName2($orderclothes->order_id);
         $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
 
         $view = new ViewModel(array(
@@ -306,6 +392,13 @@ class IndexController extends AbstractActionController
 //                var_dump($data);
                 $file_name = $data['excel-file']['tmp_name'];
                 $xls_data = $this->excelReader($file_name, $id);
+
+                if($xls_data==''){
+                    $this->getOrderClothesTable()->setStatus4($id);
+                }
+
+                // change status to 4
+
 //                echo $xls_data;
                 // Form is valid, save the form!
                 //return $this->redirect()->toRoute('upload-form/success');
@@ -608,5 +701,14 @@ class IndexController extends AbstractActionController
         }
 
         return $result;
+    }
+
+
+    public function getAuthService()
+    {
+        if (!$this->authservice) {
+            $this->authservice = $this->getServiceLocator()->get('AuthService');
+        }
+        return $this->authservice;
     }
 }

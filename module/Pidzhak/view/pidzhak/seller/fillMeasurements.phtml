@@ -17,7 +17,16 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="pointofsale">Место продажи</th>
+
+<!--            <th data-column-id="my_id" data-order="desc">Номер заказа</th>-->
+            <th data-column-id="customer_full_name" data-order="desc">ФИО клиента</th>
+            <th data-column-id="city_name">Город</th>
+            <th data-column-id="pointofsale">Место</th>
+            <th data-type="datetime" data-column-id="dateofsale">Дата продажи</th>
+            <th data-column-id="seller_full_name">Продавец</th>
+
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
         </thead>
 
@@ -32,10 +41,33 @@
                 post: function () {
                     /* To accumulate custom parameter with the request object */
                     return {
-                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        status_id: 11
                     };
                 },
-                url: "/restorder"
+                url: "/restorder",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-primary command-edit\" data-row-id=\"" + row.my_id + "\">Ввести замеры</button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".command-edit").on("click", function(e)
+                {
+                    window.location="insertmeasure/"+$(this).data("row-id");
+                });
             });
         }
         init();

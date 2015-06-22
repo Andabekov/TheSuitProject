@@ -46,6 +46,16 @@ class BodyMeasureTable
         return $row;
     }
 
+    public function getMeasureByOrderClothId($order_cloth_id){
+        $order_cloth_id  = (int) $order_cloth_id;
+        $rowset = $this->tableGateway->select(array('order_cloth_id'=> $order_cloth_id));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $order_cloth_id");
+        }
+        return $row;
+    }
+
     public function getMeasure($cloth_type, $order_id){
         $sql = new Sql($this->tableGateway->adapter);
         $select = $sql->select();
@@ -65,8 +75,6 @@ class BodyMeasureTable
 
         return $this->getBodyMeasureByCustomerAndClother($row->customer_id, $cloth_type);
     }
-
-
 
     public function getBodyMeasureByCustomerAndClother($customer_id, $clother_id)
     {
@@ -113,6 +121,7 @@ class BodyMeasureTable
             'style' => $bodymeasure->style,
             'butt_position' => $bodymeasure->butt_position,
             'u_rise_auto' => $bodymeasure->u_rise_auto,
+            'order_cloth_id' => $bodymeasure->order_cloth_id,
         );
 
         $id = (int) $bodymeasure->id;

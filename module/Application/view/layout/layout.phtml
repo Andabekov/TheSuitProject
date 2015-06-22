@@ -64,51 +64,64 @@
                     $sellerMenu = '
                             <button id="hideBtn" class="btn btn-default" onclick="hideMenu();"><span style="top: 2px;" class="glyphicon glyphicon-arrow-left"></span> Скрыть меню </button>
 
-                            <a class="menuBtn header" href="/order">Мои заказы</a>
-                            <a class="menuBtn child" href="/customer/firststep">Создать новый заказ</a>
-                            <a class="menuBtn child" href="/seller/fillmeasure">Редактировать замеры</a>
-                            <a class="menuBtn child" href="/seller/changeorder">Редактировать заказ</a>
-                            <a class="menuBtn child" href="/seller/orderstocheck">Проверить изделия</a>
-                            <a class="menuBtn child" href="/seller/readyforfitting">Изделия в офисе</a>
-                            <a class="menuBtn child" href="/seller/infitting">Изделия на примерке</a>
-                            <a class="menuBtn child" href="/seller/intailors">Изделия у портных</a>
-                            <a class="menuBtn child" href="/order">Поставить оценку</a>
-                            <a class="menuBtn child" href="/order">Список изделии в процессе</a>
+                            <a class="menuBtn header" href="#">Календарь</a>
+                            <a class="menuBtn child" href="/seller/myday">Мой день</a>
 
-                            <a class="menuBtn header" href="/order">Мои клиенты</a>
+                            <a class="menuBtn header" href="#">Звонки</a>
+                            <a class="menuBtn child" href="/seller/calls">Звонки</a>
+                            <a class="menuBtn child" href="/seller/createcall">Создать новый звонок</a>
+
+                            <a class="menuBtn header" href="#">Мои заказы</a>
+                            <a class="menuBtn child" href="/customer/firststep">1. Создать новый заказ</a>
+                            <a class="menuBtn child" style="padding-left: 25px" href="/seller/fillmeasure">1.1. Редактировать замеры</a>
+                            <a class="menuBtn child" style="padding-left: 25px" href="/seller/changeorder">1.2. Редактировать изделия</a>
+                            <a class="menuBtn child" style="padding-left: 25px" href="/seller/orderstocheck">1.3. Проверить изделия</a>
+                            <a class="menuBtn child" href="/seller/comingorders">2. Изделия в пути (до Астаны)</a>
+
+                            <a class="menuBtn2 child" href="#">3. Изделия в офисе</a>
+                            <a class="menuBtn child" style="padding-left: 25px; font-size: 13.4px;" href="/seller/readyforfitting">3.1. Неприглашенные на примерку</a>
+                            <a class="menuBtn child" style="padding-left: 25px" href="/seller/infitting">3.2. Приглашенные на примерку</a>
+                            <a class="menuBtn child" href="/seller/intailors">4. Изделия у портных</a>
+                            <a class="menuBtn child" href="/seller/givencloth">5. Оставить отзыв клиента</a>
+
+                            <a class="menuBtn header" href="#">Мои клиенты</a>
                             <a class="menuBtn child" href="/order">Поиск клиентов и изделии</a>
-                            <a class="menuBtn child" href="/order">Изменить данные клиента</a>
                             <a class="menuBtn child" href="/seller/happybd">Поздравить клиента с Д.Р.</a>
 
-                            <a class="menuBtn header" href="/order">Мои финансы</a>
-                            <a class="menuBtn child" href="/order">Внести финансовые операции</a>
-                            <a class="menuBtn child" href="/order">Мои продажи</a>
+                            <a class="menuBtn header" href="#">Мои финансы</a>
+                            <a class="menuBtn child" href="/seller/finance">Финансовые операции</a>
+                            <a class="menuBtn child" href="/seller/cert">Сертификаты</a>
+                            <a class="menuBtn child" href="/seller/profit">Мои продажи</a>
 
-                            <a class="menuBtn header" href="/order">Мои документы</a>
-                            <a class="menuBtn child" href="/seller/fabricslist">Список тканей</a>
-                            <a class="menuBtn child" href="/seller/cycleslist">Список циклов</a>
-                            <a class="menuBtn child" href="/order">Инструкция замеров</a>
-                            <a class="menuBtn child" href="/order">Инструкция пользывателя</a>';
+                            <a class="menuBtn header" href="#">Мои документы</a>
+                            <a class="menuBtn child" href="/seller/cycleslist">Список циклов</a>';
 
                     $redactorMenu = '
                              <button id="hideBtn" class="btn btn-default" onclick="hideMenu();"><span style="top: 2px;" class="glyphicon glyphicon-arrow-left"></span> Скрыть меню </button>
 
-                             <a class="menuBtn header" href="/redactor">Мои заказы</a>
-                             <a class="menuBtn child" href="/redactor">Обработать изделия</a>
-                             <a class="menuBtn child" href="/redactor">Сверка кодов изделия</a>
-                             <a class="menuBtn child" href="/redactor/readyforprod">Отправить на производство</a>
-                             <a class="menuBtn child" href="/redactor/readyforshipping">Организовать доставку</a>
-                             <a class="menuBtn child" href="/redactor">Изменить коды на изделия</a>
+                             <a class="menuBtn header" href="#">Календарь</a>
+                             <a class="menuBtn child" href="/redactor/myday">Мой день</a>
 
-                             <a class="menuBtn header" href="/redactor">Мои клиенты</a>
-                             <a class="menuBtn child" href="/redactor">Поиск клиентов и изделии</a>
+                             <a class="menuBtn header" href="#">Мои заказы</a>
+                             <a class="menuBtn child" href="/redactor">1. Обработать изделия</a>
+                             <a class="menuBtn child" href="#">2. Сверка кодов изделия</a>
+                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/inseller">2.1. У продавца</a>
+                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/inredactor">2.2. У редактора</a>
+                             <a class="menuBtn child" href="/redactor/readyforprod">3. Отправить на производство</a>
+                             <a class="menuBtn child" href="/redactor/readyforshipping">4. Организовать доставку</a>
 
-                             <a class="menuBtn header" href="/redactor">Мои документы</a>
+                             <a class="menuBtn header" href="#">Мои клиенты</a>
+                             <a class="menuBtn child" href="/redactor/search">Поиск клиентов и изделии</a>
+
+                             <a class="menuBtn header" href="#">Мои документы</a>
                              <a class="menuBtn child" href="/redactor">Список тканей</a>
                              <a class="menuBtn child" href="/redactor">Список циклов</a>
                              <a class="menuBtn child" href="/redactor">Инструкция пользывателя</a>';
 
-                    $accountantMenu = '';
+                    $accountantMenu = '
+                                        <a class="menuBtn child" href="/accountant">Финансовые операции</a>
+                                        <a class="menuBtn child" href="/accountant/cert">Сертификаты</a>
+                    ';
 
                     $directorMenu = '
                             <button id="hideBtn" class="btn btn-default" onclick="hideMenu();"><span style="top: 2px;" class="glyphicon glyphicon-arrow-left"></span> Скрыть меню </button>

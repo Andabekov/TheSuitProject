@@ -17,22 +17,23 @@ $form->setAttribute('class', 'form-horizontal');
 $form->prepare();
 
 echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('id'));
 ?>
 
+
 <div class="form-group">
-    <?php $element = $form->get('fabric_class'); ?>
+    <?php $element = $form->get('id'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
         <?php echo $this->formText($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
+
 <div class="form-group">
-    <?php $element = $form->get('fabric_available_start_date'); ?>
+    <?php $element = $form->get('fabric_class'); ?>
     <?php echo $this->formLabel($element); ?>
     <div class="col-xs-10">
-        <?php echo $this->formDate($element); ?>
+        <?php echo $this->formText($element); ?>
     </div>
     <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
 </div>
@@ -44,5 +45,5 @@ echo $this->formHidden($form->get('id'));
 </div>
 
 <?php
-echo $this->form()->closeTag();
+    echo $this->form()->closeTag();
 ?>

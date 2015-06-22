@@ -19,18 +19,21 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-header-css-class="cycleCol" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name">Клиент</th>
-            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
-            <th data-column-id="fabric_class">Класс ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
-            <th data-column-id="dateofsale">Дата продажи</th>
-            <!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
-            <th data-column-id="status_name" data-order="desc">Статус</th>
-            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+            <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+            <!--            <th data-column-id="fabric_class">Класс ткани</th>-->
+            <!--            <th data-header-css-class="fabricCol" data-type="numeric" data-column-id="textile_id">Ткань</th>-->
+            <th data-type="datetime"  data-column-id="dateofsale">Продажа</th>
+            <th data-type="datetime"  data-column-id="preferred_date">Wish date</th>
+            <th data-type="datetime"  data-column-id="cycle_date">Дост. цикл</th>
+            <th data-type="datetime" data-column-id="arrival_date">Дост. факт</th>
+            <th data-type="datetime" data-column-id="fitting_date">Примерка</th>
+<!--            <th data-column-id="arrival_comment">Дост. комм</th>-->
+            <th data-column-id="seller_full_name">Продавец</th>
+            <th data-type="tailor" data-column-id="tailor_id">Портной</th>
 
-            <th data-header-css-class="sellerColumnBtn2" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+            <th data-header-css-class="sellerColumnBtn5" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
 
         </tr>
         </thead>
@@ -39,37 +42,32 @@
     <!--/div-->
 </div>
 
-<div id="myModal" style="display: none;">
-    <table style="width: 100%">
+
+<div id="myModal" style="display: none; text-align: center">
+
+    <input style="display: none" id="order_cloth_id" />
+    <input style="display: none;" id="oldComment" />
+    <input style="display: none;" id="tailorName" />
+
+    <table style="width: 100%; text-align: left;">
         <tr>
-            <td>Номер телефона:</td>
-            <td><input required="true" class="form-control" type="text" readonly="true" id="telnum" /></td>
-        </tr>
-        <tr>
-            <td>Текст поздравления:</td>
-            <td><textarea required="true" id="smstext" class="form-control"></textarea></td>
+            <td><span style="text-decoration: underline">Комментарии</span> <br />(соответствует ли прибывшое изделие заказу клиента):</td>
+            <td><textarea required="true" id="comment" class="form-control"></textarea></td>
         </tr>
     </table>
 
-    <button onclick="sendSms();" class="btn btn-primary" style="float: right; margin-top: 8px; margin-right:10px;">Отправить</button>
-    <button onclick="closeDlg()" class="btn btn-default" style="float: right; margin-top: 8px; margin-right:10px;">Отмена</button>
+    <button onclick="closeDlg()" class="btn btn-default" style="margin-top: 8px; margin-right:10px;">Отмена</button>
+    <button onclick="setArrived();" class="btn btn-primary" style="margin-top: 8px;">Подтвердить</button>
 
 </div>
 
-<div id="fittingDateDlg" style="display: none;">
-
-    Выберите дату примерки: <input type="text" id="datepicker" />
-    <input type="text" id="hiddenId" style="display: none;" />
-    <br /> <span id="dateError" style="color: red;"></span>
-
-    <div style="text-align: center; margin-top: 15px;">
-        <button onclick="closeFittingDateDlg()" class="btn btn-default">Отмена</button>
-        <button onclick="setFittingDate()" class="btn btn-primary">Назначить</button>
-    </div>
+<div id="tracking" style="display: none;">
 </div>
 
 <script>
     $(function () {
+
+        hideMenu();
 
         $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd'});
 
@@ -82,15 +80,33 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
                         order_id: -1,
                         seller_name: '<?php echo $current_user_id;?>',
-                        order_status: 7
+                        order_status: 12
                     };
                 },
                 url: "/restorderclothes",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    },
+                    tailor: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            switch(value){
+                                case '1': return 'Ирина'; break;
+                                case '2': return 'Мая'; break;
+                            }
+                        }
+                    }
+                },
                 formatters: {
                     "commands": function(column, row)
                     {
-                        return "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-phone=\"" + row.mobilephone + "\" data-row-id=\"" + row.order_id + "\">Отправить смс</button><br />"+
-                            "<button data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary setFittingDate\" data-row-phone=\"" + row.mobilephone + "\" data-row-id=\"" + row.order_id + "\">Назначить дату</button><br />";
+                        return "<button data-row-tailor='"+row.tailor_id+"' type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-comment='"+row.arrival_comment+"'  data-row-id=\"" + row.my_id + "\">Портной вернул <br /> в офис</button><br />"+
+                            "<button data-row-comment='"+row.arrival_comment+"' type=\"button\" class=\"btn btn-xs btn-primary showComment\">Показать отчёт</button><br />";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()
@@ -98,32 +114,35 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".enterCodes").on("click", function(e)
                 {
-                    openSmsDlg($(this).data("row-phone"), $(this).data("row-fullname"));
-                }).end().find(".setFittingDate").on("click", function(e)
+                    openDlg($(this).data("row-id"), $(this).data("row-comment"), $(this).data("row-tailor"));
+                }).end().find(".showComment").on("click", function(e)
                 {
-                    openFittingDateDlg($(this).data("row-id"));
+                    showCommentDlg($(this).data("row-comment"));
                 });
             });
         }
         init();
     });
 
-    function openSmsDlg(phone, fullname){
-        $('#smstext').css('height', '175px');
-        $('#telnum').val(phone);
+    function openDlg(id, comment, tailorId){
 
-        fullname = fullname.replace("null", "");
+        $('#order_cloth_id').val(id);
+        $('#comment').css('width','300px');
+        $('#comment').val('Все корректировки выполнены');
+        $('#oldComment').val(comment);
 
-        $('#smstext').text('Уважаемый '+fullname+
-        ', ваше изделие прибыло. Вы можете позвонить нашему портному, чтобы записаться на примерку. Спасибо. \nС/у Pidzhak.kz');
+        switch (tailorId){
+            case 1: $('#tailorName').val('Ирина'); break;
+            case 2: $('#tailorName').val('Мая'); break;
+        }
 
         $('#myModal').dialog({
             modal: true,
             resizable: false,
             draggable: false,
-            width: 500,
-            height: 335,
-            title: 'Форма отправления смс'
+            width: 600,
+            height: 200,
+            title: 'Подтвердить прибытие изделия в офис'
         });
     }
 
@@ -131,34 +150,41 @@
         $('#myModal').dialog('close');
     }
 
-    function sendSms(){
-        if($('#telnum').val()!='' && $('#smstext').text()!='')
-            window.location = 'sendsms?num='+$('#telnum').val()+'&text='+$('#smstext').text()+'&url=intailors';
+    function setArrived(){
+        if($('#order_cloth_id').val()!='')
+            $.post( "setarrived", { id: $('#order_cloth_id').val(), comment: $('#oldComment').val() +'<br>' +$('#tailorName').val()+' вернула '+getToday()+': '+ $('#comment').val() } ).done(function( data ) {
+                closeDlg();
+                $('#order-grid').bootgrid('reload');
+            });
     }
 
-    function openFittingDateDlg(id){
-        $('#fittingDateDlg').dialog({
+    function showCommentDlg(comment){
+        $('#tracking').html(comment);
+
+        $('#tracking').dialog({
             modal: true,
             resizable: false,
             draggable: false,
-            width: 460,
-            height: 150
+            width: 500,
+            height: 335,
+            title: 'Комментарий'
         });
-
-        $('#hiddenId').val(id);
     }
 
-    function setFittingDate(){
-        if($('#datepicker').val()==''){
-            $('#dateError').text('Выберите дату');
-        } else{
-            window.location = 'setfittingdate?id='+$('#hiddenId').val()+'&date='+$('#datepicker').val()+'&url=intailors';
+    function getToday(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
         }
-    }
+        if(mm<10){
+            mm='0'+mm
+        }
+        var today = dd+'/'+mm+'/'+yyyy;
 
-    function closeFittingDateDlg(){
-        $('#dateError').text('');
-        $('#datepicker').val('');
-        $('#fittingDateDlg').dialog('close');
+        return today;
     }
 </script>

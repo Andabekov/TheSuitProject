@@ -5,22 +5,15 @@
 <!--        <th data-column-id="id" data-type="numeric">ID</th>-->
 <!--        <th data-column-id="order_id" data-order="desc">Номер заказа</th>-->
         <th data-column-id="cycle_id" data-order="desc">Номер цикла</th>
-        <th data-column-id="clother" data-order="desc">Тип изделия</th>
-        <th data-column-id="fabric_class" data-order="desc">Класс ткани</th>
-        <th data-column-id="textile_id" data-order="desc">Номер ткани</th>
+        <th data-column-id="clother">Тип изделия</th>
+<!--        <th data-column-id="fabric_class" data-order="desc">Класс ткани</th>-->
+        <th data-column-id="textile_id">Номер ткани</th>
         <!--<th data-column-id="typeof_measure" data-order="desc">typeof_measure</th>
         <th data-column-id="label_brand" data-order="desc">label_brand</th>
         <th data-column-id="style_id" data-order="desc">style_id</th>
-        <th data-column-id="first_monogram_location" data-order="desc">first_monogram_location</th>
-        <th data-column-id="first_monogram_font" data-order="desc">first_monogram_font</th>
-        <th data-column-id="first_monogram_font_color" data-order="desc">first_monogram_font_color</th>
-        <th data-column-id="first_monogram_caption" data-order="desc">first_monogram_caption</th>
-        <th data-column-id="second_monogram_location" data-order="desc">second_monogram_location</th>
-        <th data-column-id="second_monogram_font" data-order="desc">second_monogram_font</th>
-        <th data-column-id="second_monogram_font_color" data-order="desc">second_monogram_font_color</th>
-        <th data-column-id="second_monogram_caption" data-order="desc">second_monogram_caption</th>
-        <th data-column-id="seller_comment" data-order="desc">seller_comment</th>
-        <th data-column-id="link" data-formatter="link" data-sortable="false">Link</th>-->
+-->
+        <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
     </tr>
     </thead>
 </table>
@@ -28,38 +21,49 @@
 
 <script>
     $(function () {
+
+//        alert(<?//=$customer->id?>//);
+//        alert(<?//= $order_form_id ?>//);
+
         function init() {
-            $("#orderclothes-grid").bootgrid({
+            var grid = $("#orderclothes-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
                     return {
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
                         order_id: <?= $order_form_id ?>,
-                        order_status: 11
+                        order_status: 14
                     };
                 },
                 url: "/restorderclothes",
                 formatters: {
-                    "link": function (column, row) {
-                        return "<a href=\"orderclothes/edit/" + row.id + "\">" + column.id + "</a>";
-
-
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.my_id + "\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
                     }
-                },
-                templates: {
-                    header: "<div id=\"{{ctx.id}}\" class=\"{{css.header}}\"><div class=\"row\"><div class=\"col-sm-12 actionBar\"><p class=\"{{css.search}}\"></p><p class=\"{{css.actions}}\"></p></div></div></div>"
                 }
-            }).on("loaded.rs.jquery.bootgrid", function () {
-                /*$(".addClothes").click(function () {
-                    $("#myModal").modal('show');
-                });*/
-
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".command-delete").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
+                        if(result){
+                            $.post( "../../deletecloth/"+myId, { id: myId } ).done(function( data ) {
+                                $('#orderclothes-grid').bootgrid('reload');
+                            });
+                        }
+                    });
+                });
             });
         }
-
         init();
-
     })
 
 </script>

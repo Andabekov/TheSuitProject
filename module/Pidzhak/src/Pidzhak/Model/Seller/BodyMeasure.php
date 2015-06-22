@@ -40,9 +40,12 @@ class BodyMeasure  implements InputFilterAwareInterface
     public $butt_position;
     public $u_rise_auto;
 
+    public $order_cloth_id;
+
     public $measureTypeSelect;
 
     private $postfix;
+
 
     public function exchangeArray($data)
     {
@@ -78,6 +81,8 @@ class BodyMeasure  implements InputFilterAwareInterface
 
         $this->butt_position = (!empty($data['butt_position'.$this->postfix])) ? $data['butt_position'.$this->postfix] : null;
         $this->u_rise_auto = (!empty($data['u_rise_auto'.$this->postfix])) ? $data['u_rise_auto'.$this->postfix] : null;
+
+        $this->order_cloth_id = (!empty($data['order_cloth_id'.$this->postfix])) ? $data['order_cloth_id'.$this->postfix] : null;
 
         $this->measureTypeSelect = (!empty($data['measureTypeSelect'])) ? $data['measureTypeSelect'] : null;
     }

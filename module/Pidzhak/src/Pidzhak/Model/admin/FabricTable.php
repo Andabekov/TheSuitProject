@@ -32,8 +32,9 @@ class FabricTable
                 $select->offset(0);
             else
                 $select->limit($rowCount)->offset($offset);
+            if($searchPhrase)
+                $select->where->like('id', '%'.strtolower($searchPhrase).'%')->OR->like('fabric_class', '%'.strtolower($searchPhrase).'%');
             $select->order($orderby);
-
         });
 
         return $resultSet;
@@ -57,8 +58,8 @@ class FabricTable
     public function saveFabric(Fabric $fabric)
     {
         $data = array(
+            'id' => $fabric->id,
             'fabric_class' => $fabric->fabric_class,
-            'fabric_available_start_date' => $fabric->fabric_available_start_date,
         );
 
         $id = (int) $fabric->id;

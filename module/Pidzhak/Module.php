@@ -8,6 +8,7 @@
 
 namespace Pidzhak;
 
+use Pidzhak\Model\accountant\CertificateTable;
 use Pidzhak\Model\admin\Cycle;
 use Pidzhak\Model\admin\CycleTable;
 use Pidzhak\Model\admin\Fabric;
@@ -28,8 +29,13 @@ use Pidzhak\Model\redactor\TestModel;
 use Pidzhak\Model\Seller\BodyMeasure;
 use Pidzhak\Model\Seller\BodyMeasureTable;
 
+use Pidzhak\Model\accountant\Certificate;
 use Pidzhak\Model\Seller\ClotherMeasure;
 use Pidzhak\Model\Seller\ClotherMeasureTable;
+use Pidzhak\Model\Seller\FinanceOperations;
+use Pidzhak\Model\Seller\FinanceOperationsTable;
+use Pidzhak\Model\Seller\PhoneCall;
+use Pidzhak\Model\Seller\PhoneCallTable;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -95,6 +101,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 			->addResource(new Resource('order'))
             ->addResource(new Resource('orderclothes'))
 			->addResource(new Resource('orderclothes-rest'))
+			->addResource(new Resource('finance-rest'))
+			->addResource(new Resource('cert-rest'))
 			->addResource(new Resource('order-rest'))
 			->addResource(new Resource('clients'))
             ->addResource(new Resource('cycles'))
@@ -109,16 +117,21 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             ->addResource(new Resource('sms-rest'))
 		;
         $acl->allow('nobody', 'home')->allow('nobody', 'pidzhak')
-            ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'orderclothes')->allow('seller', 'orderclothes-rest')
+            ->allow('seller', 'seller')->allow('seller', 'customer')->allow('seller', 'measure')->allow('seller', 'customer-rest')->allow('seller', 'orderclothes')
+            ->allow('seller', 'orderclothes-rest')
+            ->allow('seller', 'finance-rest')
             ->allow('seller', 'order')
             ->allow('seller', 'order-rest')
             ->allow('seller', 'cycle-rest')
             ->allow('seller', 'fabric-rest')
+            ->allow('seller', 'cert-rest')
             ->allow('redactor', 'redactor')
             ->allow('redactor', 'order')->allow('redactor', 'order-rest')
             ->allow('redactor', 'orderclothes')->allow('redactor', 'orderclothes-rest')
 
             ->allow('accountant', 'accountant')
+            ->allow('accountant', 'finance-rest')
+            ->allow('accountant', 'cert-rest')
             ->allow('director', 'director')
             ->allow('delivery', 'delivery')
             ->allow('admin', 'admin')->allow('admin', 'admin-rest')->allow('admin', 'clients')->allow('admin', 'customer-rest')
@@ -331,6 +344,39 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new OrderClothesEn());
                     return new TableGateway('orderclothredactor', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\Seller\FinanceOperationsTable' =>  function($sm) {
+                    $tableGateway = $sm->get('FinanceOperationsTableGateway');
+                    $table = new FinanceOperationsTable($tableGateway);
+                    return $table;
+                },
+                'FinanceOperationsTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new FinanceOperations());
+                    return new TableGateway('accounting', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\accountant\CertificateTable' =>  function($sm) {
+                    $tableGateway = $sm->get('CertificateTableGateway');
+                    $table = new CertificateTable($tableGateway);
+                    return $table;
+                },
+                'CertificateTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Certificate());
+                    return new TableGateway('certificates', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Pidzhak\Model\Seller\PhoneCallTable' =>  function($sm) {
+                    $tableGateway = $sm->get('PhoneCallTableGateway');
+                    $table = new PhoneCallTable($tableGateway);
+                    return $table;
+                },
+                'PhoneCallTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new PhoneCall());
+                    return new TableGateway('phonecalls', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

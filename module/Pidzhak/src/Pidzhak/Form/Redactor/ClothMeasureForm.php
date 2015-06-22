@@ -34,6 +34,10 @@ class ClothMeasureForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'order_cloth_id',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
             'name' => 'growth',
             'type' => 'Text',
             'attributes' => array(

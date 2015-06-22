@@ -61,7 +61,7 @@ class FabricController extends AbstractActionController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = $this->params()->fromRoute('id');
         if (!$id) {
             return $this->redirect()->toRoute('fabrics', array('action' => 'add'));
         }

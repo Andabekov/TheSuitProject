@@ -18,9 +18,10 @@ class OrderRestController extends AbstractRestfulController
         $sortType = $sort[$sortField];
         $searchPhrase = $data['searchPhrase'];
         $id = $data['id'];
+        $status_id = $data['status_id'];
 
         $offset = intval($rowCount) * (intval($current)-1);
-        $customers= $this->getOrderTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase);
+        $customers= $this->getOrderTable()->fetchPage(intval($rowCount), $offset, $sortField.' '.$sortType, $searchPhrase, $status_id);
         $count= $this->getOrderTable()->getCount();
 
         return new JsonModel(array(

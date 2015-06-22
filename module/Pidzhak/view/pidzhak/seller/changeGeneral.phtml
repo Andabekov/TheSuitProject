@@ -27,9 +27,10 @@
 <input name="order_id" style="display: none" value="<?php echo $form->get('order_id')->getValue()?>">
 <input name="preferred_date" style="display: none" value="<?php echo $form->get('preferred_date')->getValue()?>">
 <input name="textile_class" style="display: none" value="<?php echo $form->get('textile_class')->getValue()?>">
-<input name="pricelistnum" style="display: none" value="<?php echo $form->get('pricelistnum')->getValue()?>">
+<!--<input name="pricelistnum" style="display: none" value="--><?php //echo $form->get('pricelistnum')->getValue()?><!--">-->
 <input name="actual_amount" style="display: none" value="<?php echo $form->get('actual_amount')->getValue()?>">
 <input name="typeof_measure" style="display: none" value="<?php echo $form->get('typeof_measure')->getValue()?>">
+<input name="discount_amount" style="display: none" value="<?php echo $form->get('discount_amount')->getValue()?>">
 
 <table class="myTable">
     <tr>
@@ -87,7 +88,7 @@
             <?php $element = $form->get('textile_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formSelect($element); ?></td>
+        <td><?php echo $this->formInput($element); ?></td>
     </tr>
     <tr>
         <td>
@@ -163,6 +164,7 @@
     </tr>
 </table>
 
+
 <a class="btn btn-default" onclick="goBack()">Отмена</a>
 <?php
     echo $this->formSubmit($form->get('orderclothessubmit'));
@@ -172,12 +174,24 @@
 
 <script>
     $(function() {
+
+        $('select[name=style_id]').prop('required', 'true');
+
         $('select[name=product_id]').prop('disabled', 'true');
 
         $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
+
+        $('select[name=typeof_measure]').prop('disabled', 'true');
+
+        $('input[name=textile_id]').prop('readonly', 'readonly');
+
     });
 
     function goBack(){
         window.location = '../changeorder';
+    }
+
+    function changeCycleDate(){
+        $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
     }
 </script>

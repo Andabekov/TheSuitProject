@@ -1,8 +1,11 @@
 <?php
 ?>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <div class="header">
-    Список изделии в обработке
+    Поиск клиентов и изделий
 </div>
 
 <div class="col-md-9">
@@ -10,16 +13,17 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
+            <th data-header-css-class="cycleCol" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name">Клиент</th>
-            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
-            <th data-column-id="fabric_class">Класс ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
-            <th data-column-id="dateofsale">Дата продажи</th>
-<!--            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>-->
+            <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+            <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="dateofsale">Продажа</th>
+            <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="preferred_date">Wish date</th>
+            <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="cycle_date">Доставка</th>
+            <th data-column-id="seller_full_name">Продавец</th>
             <th data-column-id="status_name" data-order="desc">Статус</th>
-            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+
+            <th data-header-css-class="sellerColumnBtn6" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
         </tr>
         </thead>
 
@@ -27,11 +31,16 @@
     <!--/div-->
 </div>
 
+<div id="tracking" style="display: none;">
+</div>
+
 <script>
     $(function () {
 
+        hideMenu();
+
         function init() {
-            $("#order-grid").bootgrid({
+            grid = $("#order-grid").bootgrid({
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -39,13 +48,170 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
                         order_id: -1,
                         seller_name: '<?php echo $current_user_id;?>',
-                        order_status: 3
+                        order_status: -1
                     };
                 },
-                url: "/restorderclothes"
+                url: "/restorderclothes",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary IrinaTook\" data-row-id=\"" + row.my_id + "\">Показать замеры</button><br />" +
+                            "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary MayaTook\" data-row-id=\"" + row.my_id + "\">Показать стиль</button><br />" +
+                            "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' type=\"button\" class=\"btn btn-xs btn-primary showComment2\">Показать отчёт</button><br />"+
+                            "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-danger delete\" data-row-id=\"" + row.my_id + "\">Удалить</button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".IrinaTook").on("click", function(e)
+                {
+                    if($(this).data("row-status")==11 || $(this).data("row-status")==14 || $(this).data("row-status")==15){
+                        alert('У данного изделия еще нет замеров!');
+                    } else{
+                        var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+                        window.open(url, 'Старые замеры', "height=800,width=800");
+                    }
+                }).end().find(".MayaTook").on("click", function(e)
+                {
+                    if($(this).data("row-status")==1 || $(this).data("row-status")==10 || $(this).data("row-status")==11 || $(this).data("row-status")==14 || $(this).data("row-status")==15){
+                        alert('У данного изделия еще кодов!');
+                    } else{
+                        var url="http://localhost:8080/seller/watcholdcodes/"+$(this).data("row-id")
+                        window.open(url, 'Старый стиль', "height=800,width=800");
+                    }
+                    openDlg($(this).data("row-id"), 2, $(this).data("row-comment"));
+                }).end().find(".delete").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("" +
+                        "Вы уверены что хотите удалить данное изделие?"
+                        , function(result) {
+                            if(result){
+                                $.post( "seller/setstatus15/"+myId, { id: myId } ).done(function( data ) {
+                                    $('#order-grid').bootgrid('reload');
+                                });
+                            }
+                        });
+
+//                    showFinalDlg($(this).data("row-id"), $(this).data("row-comment"));
+                }).end().find(".showComment2").on("click", function(e)
+                {
+                    showCommentDlg($(this).data("row-comment"));
+                });
             });
         }
 
         init();
-    })
+    });
+
+    function showCommentDlg(comment){
+
+        $('#tracking').html(comment);
+
+        $('#tracking').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Комментарий'
+        });
+    }
+
+    function openDlg(id, tailorid, comment){
+
+        $('#orderclothid').val(id);
+        $('#tailorid').val(tailorid);
+        $('#oldComment').val(comment);
+
+        $('#sendToTailor').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Отправить портному'
+        });
+    }
+
+    function showFinalDlg(id, comment){
+        $('#orderclothid1').val(id);
+        $('#oldComment1').val(comment);
+
+        $('#giveToClient').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Выдать клиенту'
+        });
+    }
+
+    function sendToTailor(){
+        if($('#sendComments').val()==''){
+            $('#error').text('Комментрий не может быть пустым');
+        } else{
+            $('#error').text('');
+
+            $.post( "givetotailor", { id: $('#orderclothid').val(), comment: $('#oldComment').val()+"<br> Была примерка "+ getToday() + ": " + $('#sendComments').val(), tailor_id: $('#tailorid').val() } ).done(function( data ) {
+                closeDlg();
+                $('#order-grid').bootgrid('reload');
+            });
+
+        }
+    }
+
+    function getToday(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+        var today = dd+'/'+mm+'/'+yyyy;
+
+        return today;
+    }
+
+    function closeDlg(){
+        $('#error').text('');
+        $('#sendToTailor').dialog('close');
+    }
+
+    function closeSendDlg(){
+        $('#error2').text('');
+        $('#giveToClient').dialog('close');
+    }
+
+    function sentToClient(){
+        if($('#lastComment').val()==''){
+            $('#error2').text('Комментрий не может быть пустым');
+        } else{
+
+            $.post( "givetoclient", { id: $('#orderclothid1').val(), comment: $('#oldComment1').val()+"<br> Изделие выдано "+ getToday() + ": " + $('#lastComment').val() } ).done(function( data ) {
+                closeSendDlg();
+                $('#order-grid').bootgrid('reload');
+            });
+        }
+    }
 </script>

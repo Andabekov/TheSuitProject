@@ -58,8 +58,8 @@ class CustomerTable
 
             foreach ($result as $res) {
                 if($res['bdmonthday']==$monthday) array_push($bdtoday, $res);
-                if($month.'-'.$day3_1<$res['bdmonthday'] && $res['bdmonthday']<$month.'-'.$day3_2) array_push($bd3, $res);
-                if($month.'-'.$day10_1<$res['bdmonthday'] && $res['bdmonthday']<$month.'-'.$day10_2) array_push($bd10, $res);
+                if($month.'-'.$day<=$res['bdmonthday'] && $res['bdmonthday']<$month.'-'.$day3_2) array_push($bd3, $res);
+                if($month.'-'.$day<=$res['bdmonthday'] && $res['bdmonthday']<$month.'-'.$day10_2) array_push($bd10, $res);
             }
 
             if($bdmode==0)

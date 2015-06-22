@@ -4,6 +4,8 @@
 
 <table class="myTable">
 
+
+
     <tr>
         <td>
             <?php $element = $cform->get('product_id'); ?>
@@ -45,17 +47,8 @@
             <?php $element = $cform->get('textile_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('textile_class'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span id="fabric_error" class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
     <tr>
@@ -64,15 +57,25 @@
             <?php echo $this->formLabel($element); ?>
         </td>
         <td><?php echo $this->formText($element); ?></td>
-        <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
+
+    <tr>
+        <td>
+            <?php $element = $cform->get('discount_amount'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formText($element); ?></td>
+        <td><span id="discount_error" class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+
 
     <tr>
         <td>
             <?php $element = $cform->get('paytype_id'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formSelect($element); ?></td>
+        <td><?php echo $this->formTextArea($element); ?></td>
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
@@ -85,104 +88,15 @@
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
-    <tr>
-        <td>
-            <?php $element = $cform->get('label_brand'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
+    <select style="display: none;" name="style_id" value="0"> </select>
 
-    <tr>
-        <td>
-            <?php $element = $cform->get('style_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
+    <select id="testsuka" style="display: none;" name="label_brand" value="2">
+        <option value="2">1</option>
+    </select>
 
-    <tr>
-        <td>
-            <?php $element = $cform->get('first_monogram_location'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('first_monogram_font'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('first_monogram_font_color'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('first_monogram_caption'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('second_monogram_location'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('second_monogram_font'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('second_monogram_font_color'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('second_monogram_caption'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('seller_comment'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
+    <span style="font-style: italic; margin-bottom: 10px;">
+        В пункте <b>подробности оплаты</b> заполняется вся информация о заказе, и пишется только на первое изделие.
+    </span><br><br>
 
     <tr>
         <td></td>
@@ -198,51 +112,12 @@
 
 
 <script>
-    function resetMonograms(){
-        switch ($('select[name=product_id]').val()){
-            case '1': showMonograms();  break;
-            case '2': hideMonograms(); break;
-            case '3': showMonograms(); break;
-            case '4': hideMonograms(); break;
-            case '5': showMonograms(); break;
-            case '6': hideMonograms(); break;
-            case '7': hideMonograms(); break;
-            case '8': hideMonograms(); break;
-            case '9': hideMonograms(); break;
-            case '10': hideMonograms(); break;
-            case '11': hideMonograms(); break;
-        }
-    }
 
-    function showMonograms(){
-        $('input[name=first_monogram_location]').parent().parent().show();
-        $('input[name=first_monogram_font]').parent().parent().show();
-        $('input[name=first_monogram_font_color]').parent().parent().show();
-        $('input[name=first_monogram_caption]').parent().parent().show();
-        $('input[name=second_monogram_location]').parent().parent().show();
-        $('input[name=second_monogram_font]').parent().parent().show();
-        $('input[name=second_monogram_font_color]').parent().parent().show();
-        $('input[name=second_monogram_caption]').parent().parent().show();
-    }
-
-    function hideMonograms(){
-        $('input[name=first_monogram_location]').parent().parent().hide();
-        $('input[name=first_monogram_font]').parent().parent().hide();
-        $('input[name=first_monogram_font_color]').parent().parent().hide();
-        $('input[name=first_monogram_caption]').parent().parent().hide();
-        $('input[name=second_monogram_location]').parent().parent().hide();
-        $('input[name=second_monogram_font]').parent().parent().hide();
-        $('input[name=second_monogram_font_color]').parent().parent().hide();
-        $('input[name=second_monogram_caption]').parent().parent().hide();
-    }
 
     function changeCycleDate(){
         $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
     }
 
-    function changeTextile(){
-        $('select[name=textile_class]').val($('select[name=textile_id]').val());
-    }
     function resetStylesSelect(){
         $.ajax({
             url: '/order/resetstylestoselect',
@@ -273,7 +148,92 @@
     $(function() {
         $($('select[name=style_id] option')[0]).val('0');
         $($('select[name=product_id] option')[0]).val('0');
-        $($('select[name=textile_id] option')[0]).val('0');
-        $('select[name=textile_id]').val('0');
+        $('input[name=textile_id]').val('');
+
+        $('#orderclothessubmit').prop('disabled',true);
+
+        $('textarea[name=paytype_id]').css('height', '100px');
+        $('textarea[name=paytype_id]').css('width', '300px');
+
+        $('textarea[name=paytype_id]').val('1 часть суммы: сумма - тенге \n' +
+                                            '1 часть суммы: способ оплаты - \n' +
+                                            '2 часть суммы: сумма - тенге \n' +
+                                            '2 часть суммы: способ оплаты - \n' +
+                                            'Итого в кассе шоурума: тенге \n'
+        );
     });
+
+    $('input[name=textile_id]').focusout(function() {
+        fabricAjax();
+        if($('input[name=discount_amount]').val()!='' && $('select[name=product_id]').val()!=0)
+            discountAjax();
+    });
+
+    $('input[name=discount_amount]').focusout(function() {
+        if($('input[name=textile_id]').val()!='' && $('select[name=product_id]').val()!=0)
+            discountAjax();
+    });
+
+    var discountFlag = false;
+    var fabricFlag   = false;
+
+    function discountAjax(){
+        $.ajax({
+            url: '/order/discountajax',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {
+                    fabric: $('input[name=textile_id]').val(),
+                    cloth_type: $('select[name=product_id]').val(),
+                    discount: $('input[name=discount_amount]').val()
+            },
+            success: function (data) {
+
+                if(data.message=='false'){
+                    $('#discount_error').text('Для данной ткани скидка превышает норму');
+                    discountFlag = false;
+                } else{
+                    $('#discount_error').text('');
+                    discountFlag = true;
+                }
+                checkFlags();
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function fabricAjax(){
+        $.ajax({
+            url: '/order/fabricajax',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {fabric_id: $('input[name=textile_id]').val()},
+            success: function (data) {
+                if(data.message=='false'){
+                    $('#fabric_error').text('Такой ткани не существует');
+                    fabricFlag = false;
+                } else{
+                    $('#fabric_error').text('');
+                    fabricFlag = true;
+                }
+                checkFlags();
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function checkFlags(){
+        if(discountFlag && fabricFlag){
+            $('#orderclothessubmit').prop('disabled',false);
+        } else{
+            $('#orderclothessubmit').prop('disabled',true);
+        }
+    }
+
 </script>

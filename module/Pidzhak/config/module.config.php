@@ -36,6 +36,8 @@ return array(
             'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',
 			'Pidzhak\Controller\Seller\OrderClothesRest' => 'Pidzhak\Controller\Seller\OrderClothesRestController',
 			'Pidzhak\Controller\Seller\OrderRest' => 'Pidzhak\Controller\Seller\OrderRestController',
+			'Pidzhak\Controller\Seller\Finance' => 'Pidzhak\Controller\Seller\FinanceOperationsRest',
+			'Pidzhak\Controller\accountant\Cert' => 'Pidzhak\Controller\accountant\CertificateRest',
 		)    ),
 
     'router' => array(
@@ -136,6 +138,26 @@ return array(
                     'route' => '/restorderclothes',
                     'defaults' => array(
                         'controller' => 'Pidzhak\Controller\Seller\OrderClothesRest',
+                    ),
+                ),
+            ),
+
+            'finance-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restfinance',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\Seller\Finance',
+                    ),
+                ),
+            ),
+
+            'cert-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restcert',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\accountant\Cert',
                     ),
                 ),
             ),

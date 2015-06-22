@@ -18,8 +18,9 @@ class Price implements InputFilterAwareInterface
     public $fabric_class;
     public $cloth_type;
     public $price;
-    public $start_date;
-    public $end_date;
+    public $profit;
+    public $max_discount;
+
 
     public function exchangeArray($data)
     {
@@ -27,8 +28,8 @@ class Price implements InputFilterAwareInterface
         $this->fabric_class = (isset($data['fabric_class'])) ? $data['fabric_class'] : null;
         $this->cloth_type   = (isset($data['cloth_type'])) ? $data['cloth_type'] : null;
         $this->price        = (isset($data['price'])) ? $data['price'] : null;
-        $this->start_date   = (isset($data['start_date'])) ? $data['start_date'] : null;
-        $this->end_date     = (isset($data['end_date'])) ? $data['end_date'] : null;
+        $this->profit       = (isset($data['profit'])) ? $data['profit'] : null;
+        $this->max_discount = (isset($data['max_discount'])) ? $data['max_discount'] : null;
     }
 
     public function getArrayCopy()
@@ -59,8 +60,7 @@ class Price implements InputFilterAwareInterface
                 'name'     => 'cloth_type',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
+                    array('name' => 'Int'),
                 ),
             ));
             $inputFilter->add(array(
@@ -70,19 +70,9 @@ class Price implements InputFilterAwareInterface
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
-                ),
             ));
             $inputFilter->add(array(
-                'name'     => 'start_date',
+                'name'     => 'profit',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -90,7 +80,7 @@ class Price implements InputFilterAwareInterface
                 ),
             ));
             $inputFilter->add(array(
-                'name'     => 'end_date',
+                'name'     => 'max_discount',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),

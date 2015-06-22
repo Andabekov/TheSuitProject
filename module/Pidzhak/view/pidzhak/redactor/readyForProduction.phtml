@@ -19,16 +19,12 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>
-            <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
+            <th data-column-id="customer_full_name" >Клиент</th>
             <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
             <th data-column-id="fabric_class">Класс ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">#Ткани</th>
-            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="cycle_id">#Цикла</th>
-            <th data-column-id="dateofsale">Дата продажи</th>
-            <th data-column-id="seller_full_name" data-order="desc">Продовец</th>
-            <th data-column-id="status_name" data-order="desc">Статус</th>
-            <th data-column-id="redactor_notes" data-order="desc">Заметки редактора</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
+            <th data-column-id="seller_full_name">Продовец</th>
 
             <th data-header-css-class="redactorColumnBtn2" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
@@ -85,14 +81,14 @@
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
                         order_id: -1,
                         seller_name: '',
-                        order_status: 1
+                        order_status: 4
                     };
                 },
                 url: "/restorderclothes",
                 formatters: {
                     "commands": function(column, row)
                     {
-                        return "<button type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-id=\"" + row.my_id + "\">Отправить</button>";
+                        return "<button type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-id=\"" + row.my_id + "\">Выбрать даты</button>";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()

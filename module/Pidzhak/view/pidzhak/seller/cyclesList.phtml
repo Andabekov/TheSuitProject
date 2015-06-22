@@ -25,13 +25,10 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="id">№ Цикла</th>
-            <th data-column-id="order_accept_start_date">Дата начала приема заказов</th>
-            <th data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
-            <th data-column-id="order_check_deadline_date" data-order="desc">Дэдлайн сверки заказа</th>
-            <th data-column-id="submit_deadline_date" data-order="desc">Дэдлайн предзаказа</th>
-            <th data-column-id="ship_deadline_date" data-order="desc">Дэдлайн отправки заказа</th>
-            <th data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
+            <th data-header-css-class="cycleCol" data-column-id="id">Цикл</th>
+            <th data-type="datetime" data-column-id="order_accept_start_date">Дата начала приема заказов</th>
+            <th data-type="datetime" data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
+            <th data-type="datetime" data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
         </tr>
         </thead>
 
@@ -43,13 +40,10 @@
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-column-id="id">№ Цикла</th>
-            <th data-column-id="order_accept_start_date">Дата начала приема заказов</th>
-            <th data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
-            <th data-column-id="order_check_deadline_date" data-order="desc">Дэдлайн сверки заказа</th>
-            <th data-column-id="submit_deadline_date" data-order="desc">Дэдлайн предзаказа</th>
-            <th data-column-id="ship_deadline_date" data-order="desc">Дэдлайн отправки заказа</th>
-            <th data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
+            <th data-column-id="id">Цикл</th>
+            <th data-type="datetime" data-column-id="order_accept_start_date">Дата начала приема заказов</th>
+            <th data-type="datetime" data-column-id="order_accept_finish_date" data-order="desc">Дата окончания приема заказов</th>
+            <th data-type="datetime" data-column-id="arrive_deadline_date" data-order="desc">Дэдлайн доставки заказа</th>
         </tr>
         </thead>
 
@@ -59,6 +53,8 @@
 <script>
     $(function () {
         initAllCycles();
+
+        hideMenu();
     });
 
     function initAllCycles() {
@@ -71,7 +67,16 @@
                     active_cycles: '0'
                 };
             },
-            url: "/restcycle"
+            url: "/restcycle",
+            converters: {
+                datetime: {
+                    from: function (value) { return value; },
+                    to: function (value) {
+                        temp = value.split('-');
+                        return temp[2]+'/'+temp[1]+'/'+temp[0];
+                    }
+                }
+            }
         });
     }
 
@@ -85,7 +90,16 @@
                     active_cycles: '1'
                 };
             },
-            url: "/restcycle"
+            url: "/restcycle",
+            converters: {
+                datetime: {
+                    from: function (value) { return value; },
+                    to: function (value) {
+                        temp = value.split('-');
+                        return temp[2]+'/'+temp[1]+'/'+temp[0];
+                    }
+                }
+            }
         });
     }
 

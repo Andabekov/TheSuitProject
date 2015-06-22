@@ -1,0 +1,183 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 18/06/2015
+ * Time: 20:40
+ */
+
+
+$form->setAttribute('action', $this->url('seller', array('action' => 'createcall')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+
+<div class="header">
+    Создать новый звонок
+</div>
+
+<div style="text-align:center;">
+    <a class="navBtn active">1 Шаг - Данные клиента</a>
+    <a class="navBtn">2 Шаг - Данные звонка</a>
+
+    <hr />
+
+    <div id="chooseContent">
+        <b><div id="choosedContent"></div></b>
+        <a class="btn btn-primary circleBtn chooseClient" >Выбрать существующего клиента</a>
+        <a class="btn btn-default clientChosen" onclick="cancelChosenClient()">Отменить выбор</a>
+        <a class="btn btn-primary clientChosen" onclick="continueChosenClient()">Продолжить</a>
+    </div>
+
+    <div class="newClientDiv">
+        <div>
+            ИЛИ
+        </div>
+        <div style="margin-bottom: 10px; font-weight: bold;">
+            Зарегистрировать нового клиента:
+        </div>
+
+        <?= $this->render('fields.phtml') ?>
+
+        <input name="access_token" style="display:none" />
+
+        <?php
+
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+
+</div>
+
+<div id="myModal" class="modal large fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Выбор клиента</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                <table id="customer-grid" class="table table-condensed table-hover table-striped" >
+                    <thead>
+                    <tr>
+                        <th data-column-id="firstname">Имя</th>
+                        <th data-column-id="lastname" data-order="desc">Фамилия</th>
+                        <th data-column-id="middlename" data-order="desc">Отчество</th>
+                        <th data-column-id="birthday" data-order="desc">День рождение</th>
+                        <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+                        <th data-column-id="email" data-order="desc">Email</th>
+                        <th data-column-id="city" data-order="desc">Город</th>
+                        <th data-column-id="address" data-order="desc">Адрес</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+                    </tr>
+                    </thead>
+                </table>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        init();
+
+        $(".chooseClient").click(function(){
+            $('#customer-grid').bootgrid('reload');
+            $("#myModal").modal('show');
+        });
+
+        function init() {
+            grid = $("#customer-grid").bootgrid({
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        bdmode: -1
+                    };
+                },
+                url: "/restcustomer",
+                /*                selection: true,
+                 multiSelect: true,
+                 rowSelect: true,
+                 keepSelection: true,*/
+                formatters: {
+                    /*"link": function (column, row) {
+                     return "<a href=\"customer/edit/"+row.id+"\">" + column.id + "</a>";
+                     }*/
+                    "commands": function(column, row)
+                    {
+                        return    "<button type=\"button\"  class=\"btn btn-xs btn-default command-choose-client\" data-row-id=\"" + row.id + "\">Выбрать</button>";
+                    }
+                }
+            }).on("selected.rs.jquery.bootgrid", function(e, rows)
+            {
+                var rowIds = [];
+                for (var i = 0; i < rows.length; i++)
+                {
+                    rowIds.push(rows[i].id);
+                }
+                alert("Select: " + rowIds.join(","));
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".command-choose-client").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+
+                    $('input[name=id]').val(myId);
+
+                    $.get( "/restcustomer/"+myId, { } ).done(function( data ) {
+                        $('#choosedContent').html(" Выбранный клиент: " +data.lastname +" "+data.firstname+ ", "+ data.mobilephone);
+                        $('.newClientDiv').hide();
+                        $('.chooseClient').hide();
+                        $('.clientChosen').show();
+                    });
+
+                    $('#myModal').modal('hide');
+                });
+            });
+        }
+    });
+
+    function cancelChosenClient(){
+        $('input[name=id]').val('');
+        $('#choosedContent').html('');
+        $('.chooseClient').show();
+        $('.newClientDiv').show();
+        $('.clientChosen').hide();
+    }
+
+    function continueChosenClient(){
+        window.location= "/seller/createcall2/"+myId;
+    }
+
+    $(function(){
+        $("#mobilephone").mask("99999999999");
+        setTimeout(function(){ createContact(); }, 1000);
+    });
+
+    function createContact(){
+        var config = {
+            'client_id': '293748932350-ttdh6gkvjb095gj5fuhhjqs32d5dnq2l.apps.googleusercontent.com',
+            'scope': 'https://www.google.com/m8/feeds'
+        };
+        gapi.auth.authorize(config, function() {
+            doSmth(gapi.auth.getToken());
+        });
+    }
+    function doSmth(access_token){
+        $('input[name=access_token]').val(access_token.access_token);
+    }
+</script>
+
+

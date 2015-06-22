@@ -8,12 +8,19 @@
 
 namespace Pidzhak\Form\admin;
 
+use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
 
 class PriceForm extends Form
 {
-    public function __construct($name = null)
+
+    protected $adapter;
+
+    public function __construct(AdapterInterface $dbAdapter = null, $name = null)
     {
+
+        $this->adapter =$dbAdapter;
+
         parent::__construct('prices');
 
         $this->add(array(
@@ -22,29 +29,33 @@ class PriceForm extends Form
         ));
         $this->add(array(
             'name' => 'fabric_class',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Класс ткани',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Не выбрано',
+                'value_options' => $this->getFabricClass(),
             ),
         ));
         $this->add(array(
             'name' => 'cloth_type',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Тип изделия',
-                'label_attributes' => array('class' => 'control-label col-xs-2')
+                'label_attributes' => array('class' => 'control-label col-xs-2'),
+                'empty_option' => 'Не выбрано',
+                'value_options' => $this->getProductsForSelect(),
             ),
         ));
         $this->add(array(
             'name' => 'price',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'class' => 'form-control'
             ),
@@ -54,24 +65,24 @@ class PriceForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'start_date',
-            'type' => 'Date',
+            'name' => 'profit',
+            'type' => 'Number',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Дата начала',
+                'label' => 'Прибыль',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
         $this->add(array(
-            'name' => 'end_date',
-            'type' => 'Date',
+            'name' => 'max_discount',
+            'type' => 'Number',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Дата окончание',
+                'label' => 'Макс скидка',
                 'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -104,5 +115,34 @@ class PriceForm extends Form
                 return $element->getMessages();
             }
         }
+    }
+
+    public function getProductsForSelect()
+    {
+        $dbAdapter = $this->adapter;
+        $sql       = 'SELECT id, clother FROM clothers ORDER BY id ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id']] = $res['clother'];
+        }
+        return $selectData;
+    }
+
+    public function getFabricClass(){
+        $dbAdapter = $this->adapter;
+        $sql       = 'select DISTINCT(fabric_class) from fabricstable ORDER BY fabric_class ASC';
+        $statement = $dbAdapter->query($sql);
+        $result    = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['fabric_class']] = $res['fabric_class'];
+        }
+        return $selectData;
     }
 }

@@ -31,7 +31,7 @@
             <th data-column-id="firstname">Имя</th>
             <th data-column-id="lastname" data-order="desc">Фамилия</th>
             <th data-column-id="middlename" data-order="desc">Отчество</th>
-            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-type="datetime" data-column-id="birthday" data-order="desc">День рождения</th>
             <th data-column-id="mobilephone" data-order="desc">Телефон</th>
             <th data-column-id="email" data-order="desc">Емайл</th>
             <th data-column-id="city" data-order="desc">Город</th>
@@ -52,7 +52,7 @@
             <th data-column-id="firstname">Имя</th>
             <th data-column-id="lastname" data-order="desc">Фамилия</th>
             <th data-column-id="middlename" data-order="desc">Отчество</th>
-            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-type="datetime" data-column-id="birthday" data-order="desc">День рождения</th>
             <th data-column-id="mobilephone" data-order="desc">Телефон</th>
             <th data-column-id="email" data-order="desc">Емайл</th>
             <th data-column-id="city" data-order="desc">Город</th>
@@ -73,7 +73,7 @@
             <th data-column-id="firstname">Имя</th>
             <th data-column-id="lastname" data-order="desc">Фамилия</th>
             <th data-column-id="middlename" data-order="desc">Отчество</th>
-            <th data-column-id="birthday" data-order="desc">День рождения</th>
+            <th data-type="datetime" data-column-id="birthday" data-order="desc">День рождения</th>
             <th data-column-id="mobilephone" data-order="desc">Телефон</th>
             <th data-column-id="email" data-order="desc">Емайл</th>
             <th data-column-id="city" data-order="desc">Город</th>
@@ -106,6 +106,8 @@
 <script>
     $(function () {
         initToday();
+
+        hideMenu();
     });
 
     function initToday() {
@@ -119,6 +121,15 @@
                 };
             },
             url: "/restcustomer",
+            converters: {
+                datetime: {
+                    from: function (value) { return value; },
+                    to: function (value) {
+                        temp = value.split('-');
+                        return temp[2]+'/'+temp[1]+'/'+temp[0];
+                    }
+                }
+            },
             formatters: {
                 "commands": function(column, row)
                 {
@@ -146,6 +157,15 @@
                 };
             },
             url: "/restcustomer",
+            converters: {
+                datetime: {
+                    from: function (value) { return value; },
+                    to: function (value) {
+                        temp = value.split('-');
+                        return temp[2]+'/'+temp[1]+'/'+temp[0];
+                    }
+                }
+            },
             formatters: {
                 "commands": function(column, row)
                 {
@@ -173,6 +193,15 @@
                 };
             },
             url: "/restcustomer",
+            converters: {
+                datetime: {
+                    from: function (value) { return value; },
+                    to: function (value) {
+                        temp = value.split('-');
+                        return temp[2]+'/'+temp[1]+'/'+temp[0];
+                    }
+                }
+            },
             formatters: {
                 "commands": function(column, row)
                 {

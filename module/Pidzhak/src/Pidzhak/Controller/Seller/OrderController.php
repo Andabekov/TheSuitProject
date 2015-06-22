@@ -1,6 +1,7 @@
 <?php
 namespace Pidzhak\Controller\Seller;
 
+use Pidzhak\Form\admin\PriceForm;
 use Pidzhak\Model\admin\Sms;
 use Pidzhak\Model\Seller\OrderClothes;
 use Pidzhak\Sms\SmsUtil;
@@ -21,7 +22,7 @@ class OrderController extends AbstractActionController
 
     public function getAuthService()
     {
-        if (! $this->authservice) {
+        if (!$this->authservice) {
             $this->authservice = $this->getServiceLocator()->get('AuthService');
         }
         return $this->authservice;
@@ -35,32 +36,33 @@ class OrderController extends AbstractActionController
         ));
     }
 
-    public function resetstylestoselectAction(){
+    public function resetstylestoselectAction()
+    {
         $request = $this->getRequest();
-        $response   = $this->getResponse();
+        $response = $this->getResponse();
         $messages = array();
 
         if ($request->isPost()) {
 
-            $cloth_type=$request->getPost()['cloth_type_id'];
+            $cloth_type = $request->getPost()['cloth_type_id'];
 
             $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-            $sql       = 'SELECT DISTINCT(style_num) FROM stylestable where cloth_type='.$cloth_type;
+            $sql = 'SELECT DISTINCT(style_num) FROM stylestable where cloth_type=' . $cloth_type;
             $statement = $dbAdapter->query($sql);
-            $result    = $statement->execute();
+            $result = $statement->execute();
 
             $selectData = array();
 
             foreach ($result as $res) {
-                array_push($selectData,$res['style_num']);
+                array_push($selectData, $res['style_num']);
             }
 
-            if(!empty($selectData) && $selectData!=null)
+            if (!empty($selectData) && $selectData != null)
                 $message = $selectData;
             else
                 $message = 'empty';
 
-            $response->setContent(\Zend\Json\Json::encode(array('success'=>1,'styles'=>$message)));
+            $response->setContent(\Zend\Json\Json::encode(array('success' => 1, 'styles' => $message)));
 
             return $response;
         }
@@ -155,6 +157,16 @@ class OrderController extends AbstractActionController
         );
     }
 
+    public function deleteclothAction(){
+
+        $id = (int)$this->params()->fromPost('id');
+        if ($id) {
+            $this->getOrderClothesTable()->deleteOrderClothes($id);
+        }
+
+        return $this->redirect()->toRoute('order');
+    }
+
 
     public function thirdstepAction()
     {
@@ -175,7 +187,6 @@ class OrderController extends AbstractActionController
         $cform->get('orderclothescancel')->setValue('Отменить');
 //        $cform->get('typeof_measure')->setValue($measureTypeSelect);
 
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $order = new Order();
@@ -193,10 +204,12 @@ class OrderController extends AbstractActionController
             if (!empty($request->getPost()['orderclothessubmit'])) {
                 $orderclothesform = 1;
                 $form_valid = $form->isValid();
-                $cform_valid= $cform->isValid();
+                $cform_valid = $cform->isValid();
                 if (!$form_valid || !$cform_valid) {
                     $form->highlightErrorElements();
                     $cform->highlightErrorElements();
+//                    var_dump($form->getMessages());
+//                    var_dump($cform->getMessages());
                 } else {
                     if (!$order_form_id) {
                         $order->exchangeArray($form->getData());
@@ -214,9 +227,9 @@ class OrderController extends AbstractActionController
             }
 
             if (!empty($request->getPost()['addclothessubmit'])) {
-                if($form->isValid()){
+                if ($form->isValid()) {
                     $orderclothesform = 1;
-                }else{
+                } else {
                     $orderclothesform = 0;
                     $form->highlightErrorElements();
                 }
@@ -225,11 +238,16 @@ class OrderController extends AbstractActionController
             if (!empty($request->getPost()['sendordersubmit'])) {
                 if ($order_form_id) {
                     $clothes_count = $this->getOrderClothesTable()->getCountOfClothesByOrder($order_form_id);
-                    if ($clothes_count <= 0){
-                        $order_error = "Нельзя отправить закас с пустыми изделиями";
-                    } else{
+                    if ($clothes_count <= 0) {
+                        $order_error = "Нельзя отправить заказ с пустыми изделиями";
+                    } else {
                         $order = $this->getOrderTable()->getOrder($order_form_id);
                         $this->sendSms($order);
+
+                        $this->getOrderClothesTable()->changeStatusTo11($order->id);
+
+                        $this->getOrderClothesTable()->accounting($order);
+
                         return $this->redirect()->toRoute('seller', array('action' => 'fillmeasure'));
                     }
                 } else {
@@ -297,7 +315,8 @@ class OrderController extends AbstractActionController
         return $this->orderclothesTable;
     }
 
-    public function sendSms($order){
+    public function sendSms($order)
+    {
 
         $redactor_phones = array();
         $director_phones = array();
@@ -308,41 +327,41 @@ class OrderController extends AbstractActionController
 
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
 
-        $sql       = 'SELECT firstname, lastname, mobilephone FROM customer where id='.$order->customer_id;
+        $sql = 'SELECT firstname, lastname, mobilephone FROM customer where id=' . $order->customer_id;
         $statement = $dbAdapter->query($sql);
-        $result    = $statement->execute();
+        $result = $statement->execute();
         foreach ($result as $res) {
-            $client_name= $res['firstname'].' '.$res['lastname'];
+            $client_name = $res['firstname'] . ' ' . $res['lastname'];
             $client_phone = $res['mobilephone'];
         }
 
-        $sql       = 'SELECT phone FROM userstable where access_type_id=4';
+        $sql = 'SELECT phone FROM userstable where access_type_id=4';
         $statement = $dbAdapter->query($sql);
-        $result    = $statement->execute();
+        $result = $statement->execute();
 
         foreach ($result as $res) {
             array_push($director_phones, $res['phone']);
         }
 
-        $sql       = 'SELECT phone FROM userstable where access_type_id=2';
+        $sql = 'SELECT phone FROM userstable where access_type_id=2';
         $statement = $dbAdapter->query($sql);
-        $result    = $statement->execute();
+        $result = $statement->execute();
 
         foreach ($result as $res) {
             array_push($redactor_phones, $res['phone']);
         }
 
-        $sql       = 'SELECT name, surname FROM userstable where id='.$order->seller_id;
+        $sql = 'SELECT name, surname FROM userstable where id=' . $order->seller_id;
         $statement = $dbAdapter->query($sql);
-        $result    = $statement->execute();
+        $result = $statement->execute();
 
         foreach ($result as $res) {
-            $seller_name = $res['name'].' '.$res['surname'];
+            $seller_name = $res['name'] . ' ' . $res['surname'];
         }
 
-        $sql       = 'SELECT actual_amount FROM orderclothes where order_id='.$order->id;
+        $sql = 'SELECT actual_amount FROM orderclothes where order_id=' . $order->id;
         $statement = $dbAdapter->query($sql);
-        $result    = $statement->execute();
+        $result = $statement->execute();
 
         foreach ($result as $res) {
             $order_total_price = $order_total_price + $res['actual_amount'];
@@ -373,5 +392,45 @@ class OrderController extends AbstractActionController
             $this->smsTable = $sm->get('Pidzhak\Model\admin\SmsTable');
         }
         return $this->smsTable;
+    }
+
+    public function discountajaxAction(){
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $message = '';
+
+        if ($request->isPost()) {
+            $fabric=$request->getPost()->fabric;
+            $discount=$request->getPost()->discount;
+            $cloth_type=$request->getPost()->cloth_type;
+
+            if($this->getOrderClothesTable()->checkDiscount($fabric, $cloth_type, $discount)=='nothing'){
+                $message='false';
+            } else{
+                $message='true';
+            }
+        }
+
+        $response->setContent(\Zend\Json\Json::encode(array('success' => 1, 'message' => $message)));
+        return $response;
+    }
+
+    public function fabricajaxAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $message = '';
+
+        if ($request->isPost()) {
+            $fabric_id=$request->getPost()->fabric_id;
+            if($this->getOrderClothesTable()->getFabric($fabric_id)=='nothing'){
+                $message='false';
+            } else{
+                $message='true';
+            }
+        }
+
+        $response->setContent(\Zend\Json\Json::encode(array('success' => 1, 'message' => $message)));
+        return $response;
     }
 }

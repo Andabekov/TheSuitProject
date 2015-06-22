@@ -1,0 +1,72 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 18/06/2015
+ * Time: 16:19
+ */
+?>
+
+<div class="header">
+    Выдача нового сертификата
+</div>
+<?php
+    $form->setAttribute('action', $this->url('seller', array('action' => 'addcert')));
+    $form->setAttribute('class', 'form-horizontal');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+?>
+
+    <input name="given_date" style="display: none" value="<?php echo date('Y-m-d');?>">
+
+    <table class="myTable">
+        <tr>
+            <td>
+                <?php $element = $form->get('cert_num'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formInput($element); ?></td>
+            <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('valid_date'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formDate($element); ?></td>
+            <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('cost'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formInput($element); ?></td>
+            <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('seller_id'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formSelect($element); ?></td>
+            <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('comment'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formTextArea($element); ?></td>
+            <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+        </tr>
+    </table>
+
+<br />
+<a class="btn btn-default" href="cert">Отменить</a>
+
+<?php
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+?>

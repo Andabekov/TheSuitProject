@@ -1,0 +1,81 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 17/06/2015
+ * Time: 17:53
+ */
+?>
+
+<div class="header">
+    Добавление новой финансовой операции
+</div>
+
+<?php
+$form->setAttribute('action', $this->url('seller', array('action' => 'addfinance')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+
+    <input name="oper_date" style="display: none" value="<?php echo date('Y-m-d');?>">
+
+    <span style="font-style: italic"><b>Способы оплат</b>: карточка, наличные, сертификат (указать номер), рассрочка. </span><br>
+    <span style="font-style: italic"><b>Счета</b>: АТФ Банк, Каспий Банк, Шоурум касса, Казком карточка, Фортебанк карточка</span><br><br>
+
+    <table class="myTable">
+        <tr>
+            <td>
+                <?php $element = $form->get('oper_type'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formSelect($element); ?></td>
+        </tr>
+
+        <tr>
+            <td>
+                <?php $element = $form->get('oper_comment'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formTextArea($element); ?></td>
+        </tr>
+    </table>
+
+    <br />
+    <a class="btn btn-default" href="finance">Отменить</a>
+<?php
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+?>
+
+<script>
+    $(function() {
+        $('textarea[name=oper_comment]').css('width', '320px');
+        $('textarea[name=oper_comment]').css('height', '110px');
+
+        $('select[name=oper_type]').change(function() {
+            switch($(this).val()){
+                case 'Поступление': $('textarea[name=oper_comment]').val(
+                                                                            'Способ оплаты: \n' +
+                                                                            'Счет поступления: \n' +
+                                                                            'Итого оплачено: тенге \n' +
+                                                                            'Итого в кассе шоурума: тенге \n'
+                ); break;
+                case 'Перевод': $('textarea[name=oper_comment]').val(
+                                                                        'Счет списания: \n' +
+                                                                        'Счет поступления: \n' +
+                                                                        'Итого переведено: тенге \n' +
+                                                                        'Итого в кассе шоурума: тенге \n'
+                ); break;
+                case 'Затраты': $('textarea[name=oper_comment]').val(
+                                                                        'Счет списания: \n' +
+                                                                        'Итого затрат: тенге \n' +
+                                                                        'Итого в кассе шоурума: тенге \n'
+                ); break;
+            }
+        });
+    });
+
+
+</script>
