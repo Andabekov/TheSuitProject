@@ -6,7 +6,7 @@
  * Time: 17:23
  */
 
-namespace Pidzhak\Controller\Seller;
+namespace Pidzhak\Controller\seller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
@@ -41,7 +41,7 @@ class FinanceOperationsRest extends AbstractRestfulController
     {
         if (!$this->financeOperationsTable) {
             $sm = $this->getServiceLocator();
-            $this->financeOperationsTable = $sm->get('Pidzhak\Model\Seller\FinanceOperationsTable');
+            $this->financeOperationsTable = $sm->get('Pidzhak\Model\seller\FinanceOperationsTable');
         }
         return $this->financeOperationsTable;
     }

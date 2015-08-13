@@ -7,6 +7,9 @@
  */
 ?>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <div class="header">
     Создать новый звонок
 </div>
@@ -35,7 +38,42 @@ echo $this->formHidden($form->get('id'));
     </div>
 </div>
 
+
+
 <table class="myTable">
+
+    <tr>
+        <td>
+            <b>Вид звонка:</b>
+        </td>
+        <td>
+            <select id="call_type" class="form-control" onchange="callTypeChange()">
+                <option value="0">Не выбрано</option>
+                <option value="1">Входящий звонок: потенциальный клиент</option>
+                <option value="2">Входящий звонок: рекламная компания/оптовый заказ</option>
+                <option value="3">Входящий звонок: подгонка изделий</option>
+                <option value="4">Исходящий звонок: холодный звонок новому клиенту</option>
+                <option value="5">Исходящий звонок: оценка клиента  /бонусная карта</option>
+                <option value="6">Исходящий звонок: холодный звонок старому клиенту</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Результат звонка:</b>
+        </td>
+        <td>
+            <select id="call_result" class="form-control" onchange="callResultChange()">
+                <option value="0">Не выбрано</option>
+                <option value="1">Запись к портному с напоминанием</option>
+                <option value="2">Запись к портному без напоминания</option>
+                <option value="3">Напомнить в определенное время</option>
+                <option value="4">Напомнить через три месяца</option>
+                <option value="5">Звонок без результата</option>
+            </select>
+        </td>
+    </tr>
+
     <tr>
         <td>
             <?php $element = $form->get('appoint_date'); ?>
@@ -87,8 +125,25 @@ echo $this->formHidden($form->get('id'));
 
 </table>
 
+<div id="myModal" style="display: none;">
+    <table>
+        <tr>
+            <td>Номер телефона:</td>
+            <td><input required="true" class="form-control" type="text" readonly="true" id="telnum" /></td>
+        </tr>
+        <tr>
+            <td>Текст поздравления:</td>
+            <td><textarea required="true" id="smstext" class="form-control"></textarea></td>
+        </tr>
+    </table>
+
+    <button onclick="sendSms();" class="btn btn-primary" style="float: right; margin-top: 8px; margin-right:10px;">Отправить</button>
+    <button onclick="closeDlg()" class="btn btn-default" style="float: right; margin-top: 8px; margin-right:10px;">Без отрпавки смс</button>
+</div>
+
 <br />
 <a class="btn btn-default" href="../">Отменить</a>
+<a class="btn btn-primary" onclick="add()">Добавить</a>
 
 <?php
     echo $this->formSubmit($form->get('submit'));
@@ -97,6 +152,122 @@ echo $this->formHidden($form->get('id'));
 
 <script>
     $(function() {
+
+        hideAppoint();
+        hideRemind();
+        hideMedia();
+
+        $('textarea[name=appoint_comment]').css('height','130px');
+        $('textarea[name=remind_comment]').css('height','130px');
+
+        $('input[name=submit]').hide();
         $('input[name=client_id]').val(window.location.href.split('/')[window.location.href.split('/').length-1]);
     });
+
+    function callTypeChange(){
+        switch($('#call_type').val()){
+            case '0': $('textarea[name=appoint_comment]').val('Вид звонка - не выбрано'); break;
+            case '1': $('textarea[name=appoint_comment]').val('Вид звонка - Входящий звонок: потенциальный клиент'); break;
+            case '2': $('textarea[name=appoint_comment]').val('Вид звонка - Входящий звонок: рекламная компания/оптовый заказ'); break;
+            case '3': $('textarea[name=appoint_comment]').val('Вид звонка - Входящий звонок: подгонка изделий'); break;
+            case '4': $('textarea[name=appoint_comment]').val('Вид звонка - Исходящий звонок: холодный звонок новому клиенту'); break;
+            case '5': $('textarea[name=appoint_comment]').val('Вид звонка - Исходящий звонок: оценка клиента/бонусная карта'); break;
+            case '6': $('textarea[name=appoint_comment]').val('Вид звонка - Исходящий звонок: холодный звонок старому клиенту'); break;
+        }
+    }
+
+    function callResultChange(){
+        switch($('#call_result').val()){
+            case '0': hideAppoint(); hideRemind(); hideMedia(); break;
+            case '1': showAppoint(); showRemind(); showMedia(); break;
+            case '2': showAppoint(); hideRemind(); showMedia(); break;
+            case '3': hideAppoint(); showRemind(); showMedia(); break;
+            case '4': hideAppoint(); showRemind(); showMedia(); break;
+            case '5':
+                hideAppoint(); hideRemind(); hideMedia();
+                $('label[for=appoint_comment]').text('Заметки (укажите причину безрезультатного звонка):');
+                $('label[for=appoint_comment]').show();
+                $('textarea[name=appoint_comment]').show();
+                break;
+        }
+    }
+
+    function add(){
+
+        if($('#call_type').val()==0){
+            alert('Выберите тип звонка!');
+        } else if($('#call_result').val()==0) {
+            alert('Выберите результат звонка!');
+        } else if($('select[name=seller_id]').val()==0){
+            alert('Выберите продавца!');
+        } else {
+            $('#smstext').css('height', '225px');
+            $('#telnum').val(<?=$customer->mobilephone?>);
+            $('#smstext').text('Уважаемый(ая) <?=$customer->lastname." ".$customer->firstname?>, выражаем Вам благодарность за Ваш звонок. ' +
+            'Наши контакты: +7(7172) 727 555, '+
+            'Наш адрес: Байтурсынова 1, ЖК "Хайвил", блок А2, Шоурум "PIDZHAK.kz"');
+
+            $('#myModal').dialog({
+                modal: true,
+                resizable: false,
+                draggable: false,
+                width: 450,
+                height: 400,
+                title: 'Форма отправления смс'
+            });
+        }
+    }
+
+    function closeDlg(){
+        $('#myModal').dialog('close');
+        $('input[name=submit]').trigger( "click" );
+    }
+
+    function sendSms(){
+        if($('#telnum').val()!='' && $('#smstext').text()!=''){
+            if($('select[name=seller_id]').val()=='' || $('select[name=seller_id]').val()==null){
+                alert('Выберите продавца!');
+            } else {
+                $.post( "../callsms", { phone: $('#telnum').val(), text: $('#smstext').text() } ).done(function( data ) {
+                    $('input[name=submit]').trigger( "click" );
+                });
+            }
+        }
+//            window.location = 'happybd?num='+$('#telnum').val()+'&text='+$('#smstext').text();
+    }
+
+    function hideAppoint(){
+        $('label[for=appoint_date]').hide();
+        $('input[name=appoint_date]').hide();
+        $('label[for=appoint_comment]').hide();
+        $('textarea[name=appoint_comment]').hide();
+    }
+    function hideRemind(){
+        $('label[for=remind_date]').hide();
+        $('input[name=remind_date]').hide();
+        $('label[for=remind_comment]').hide();
+        $('textarea[name=remind_comment]').hide();
+    }
+    function hideMedia(){
+        $('label[for=media]').hide();
+        $('select[name=media]').hide();
+    }
+
+    function showAppoint(){
+        $('label[for=appoint_date]').show();
+        $('input[name=appoint_date]').show();
+        $('label[for=appoint_comment]').show();
+        $('textarea[name=appoint_comment]').show();
+    }
+    function showRemind(){
+        $('label[for=remind_date]').show();
+        $('input[name=remind_date]').show();
+        $('label[for=remind_comment]').show();
+        $('textarea[name=remind_comment]').show();
+    }
+    function showMedia(){
+        $('label[for=media]').show();
+        $('select[name=media]').show();
+    }
+
 </script>

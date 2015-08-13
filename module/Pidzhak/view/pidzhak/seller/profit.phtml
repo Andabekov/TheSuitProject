@@ -58,8 +58,17 @@
         <th>Продавец</th>
     </tr>
 
-    <?php $ordercloth?>
+    <?php $ordercloth;
+            $actual_sum=0;
+            $profit_sum=0;
+    ?>
     <?php foreach($orderclothes as $ordercloth) : ?>
+
+        <?php
+            $actual_sum=$actual_sum+$ordercloth->actual_amount;
+            $profit_sum=$profit_sum+($ordercloth->profit-$ordercloth->discount_amount);
+        ?>
+
         <tr>
             <td><?php echo $this->escapeHtml($ordercloth->customer_full_name);?></td>
             <td><?php echo $this->escapeHtml($ordercloth->clother);?></td>
@@ -75,9 +84,9 @@
     <?php endforeach; ?>
 </table>
 <b>
-    Общий обьем продажи: <?php echo $profitSum->current()->sum_actual_cost;?> тенге
+    Общий обьем продажи: <?php echo $actual_sum;?> тенге
     <br />
-    Общий обьем прибыли: <?php echo $profitSum->current()->sum_actual_profit;?> тенге
+    Общий обьем прибыли: <?php echo $profit_sum; ?> тенге
 </b>
 <script>
     $(function () {

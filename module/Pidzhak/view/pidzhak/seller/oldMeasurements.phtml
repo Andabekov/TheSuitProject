@@ -61,6 +61,7 @@
 
         function init() {
             var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -93,7 +94,8 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".enterCodes").on("click", function(e)
                 {
-                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+//                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id");
+                    var url="http://adminpidzhak.kz/watchold/"+$(this).data("row-id");
                     window.open(url, 'Старые замеры', "height=800,width=800");
 //                    openDlg($(this).data("row-id"), $(this).data("row-comment"), $(this).data("row-tailor"));
                 }).end().find(".showComment").on("click", function(e)
@@ -113,7 +115,7 @@
 
         switch (tailorId){
             case 1: $('#tailorName').val('Ирина'); break;
-            case 2: $('#tailorName').val('Мая'); break;
+            case 2: $('#tailorName').val('Майя'); break;
         }
 
         $('#myModal').dialog({

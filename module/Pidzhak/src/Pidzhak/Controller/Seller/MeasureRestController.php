@@ -6,7 +6,7 @@
  * Time: 17:41
  */
 
-namespace Pidzhak\Controller\Seller;
+namespace Pidzhak\Controller\seller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
@@ -43,7 +43,7 @@ class MeasureRestController extends AbstractRestfulController{
     {
         if (!$this->bodyMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\Seller\BodyMeasureTable');
+            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\seller\BodyMeasureTable');
         }
         return $this->bodyMeasureTable;
     }

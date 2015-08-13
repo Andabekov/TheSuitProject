@@ -9,8 +9,8 @@
 namespace Pidzhak\Controller\admin;
 
 use Pidzhak\GoogleContact\GoogleContactXmlParser;
-use Pidzhak\Model\Seller\Customer;
-use Pidzhak\Form\Seller\CustomerForm;
+use Pidzhak\Model\seller\Customer;
+use Pidzhak\Form\seller\CustomerForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -136,7 +136,7 @@ class ClientController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\seller\CustomerTable');
         }
         return $this->customerTable;
     }

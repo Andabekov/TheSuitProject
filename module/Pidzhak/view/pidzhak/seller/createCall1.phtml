@@ -97,12 +97,13 @@ echo $this->formHidden($form->get('id'));
 
         function init() {
             grid = $("#customer-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
                     return {
                         id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
-                        bdmode: -1
+                        bdmode: -2
                     };
                 },
                 url: "/restcustomer",

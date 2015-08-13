@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\Db\TableGateway\TableGateway;
 
@@ -29,7 +29,7 @@ class SellerTable
         return $row;
     }
 
-    public function saveSeller(Seller $seller)
+    public function saveSeller(seller $seller)
     {
         $data = array(
             'description' => $seller->description,
@@ -43,7 +43,7 @@ class SellerTable
             if ($this->getSeller($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
-                throw new \Exception('Seller id does not exist');
+                throw new \Exception('seller id does not exist');
             }
         }
     }

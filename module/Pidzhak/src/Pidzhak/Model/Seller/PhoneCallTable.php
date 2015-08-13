@@ -6,7 +6,7 @@
  * Time: 16:48
  */
 
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Expression;

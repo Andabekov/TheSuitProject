@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Form\Seller;
+namespace Pidzhak\Form\seller;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
@@ -169,17 +169,14 @@ class OrderClothesForm extends Form
 
         $this->add(array(
             'name' => 'discount_amount',
-            'type' => 'Text',
+            'type' => 'number',
             'attributes' => array(
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Скидка в тенге*',
+                'label' => 'Скидка в тенге',
             ),
         ));
-
-
-
 
         $this->add(array(
             'name' => 'first_monogram_location',
@@ -323,9 +320,9 @@ class OrderClothesForm extends Form
 
     public function getCycleForSelect()
     {
-
         $dbAdapter = $this->adapter;
-        $sql       = 'SELECT id FROM cyclestable where CURDATE()<=order_accept_finish_date ORDER BY id ASC';
+//        $sql       = 'SELECT id FROM cyclestable where CURDATE()<=order_accept_finish_date ORDER BY id ASC';
+        $sql       = 'SELECT id FROM cyclestable ORDER BY id ASC';
         $statement = $dbAdapter->query($sql);
         $result    = $statement->execute();
 
@@ -355,14 +352,15 @@ class OrderClothesForm extends Form
 
     public function getCycleDates(){
         $dbAdapter = $this->adapter;
-        $sql       = 'SELECT id, arrive_deadline_date FROM cyclestable where CURDATE()<=order_accept_finish_date ORDER BY id ASC';
+//        $sql       = 'SELECT id, arrive_deadline_date FROM cyclestable where CURDATE()<=order_accept_finish_date ORDER BY id ASC';
+        $sql       = 'SELECT id, arrive_deadline_date FROM cyclestable ORDER BY id ASC';
         $statement = $dbAdapter->query($sql);
         $result    = $statement->execute();
 
         $selectData = array();
 
         foreach ($result as $res) {
-            $selectData[$res['id']] = $res['arrive_deadline_date'];
+            $selectData[$res['id']] = explode('-',$res['arrive_deadline_date'])[2].'.'.explode('-',$res['arrive_deadline_date'])[1].'.'.explode('-',$res['arrive_deadline_date'])[0];
         }
         return $selectData;
     }

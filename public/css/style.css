@@ -331,7 +331,7 @@ a.active {
     padding-bottom: 2px;
 }
 
-.enterCodes, .checkCodes, .compareCodes, .IrinaTook, .MayaTook, .ClientTook, .denyCloth, .setFittingDate, .presubmit, .showComment2 {
+.enterCodes, .checkCodes, .compareCodes, .IrinaTook, .MayaTook, .ClientTook, .denyCloth, .setFittingDate, .presubmit, .showComment2, .inOffice {
     margin-bottom: 5px;
 }
 
@@ -384,7 +384,7 @@ a.active {
 .sellerColumnBtn3{
     text-align: center;
     font-weight: bold;
-    width: 105px !important;
+    width: 115px !important;
 }
 .sellerColumnBtn4{
     text-align: center;
@@ -408,6 +408,9 @@ a.active {
 }
 .cycleCol{
     width: 63px !important;
+}
+.cycleCol2{
+    width: 47px !important;
 }
 .clothCol{
     width: 87px !important;

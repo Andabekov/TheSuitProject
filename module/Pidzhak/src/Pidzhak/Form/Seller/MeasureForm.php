@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Form\Seller;
+namespace Pidzhak\Form\seller;
 
 use Zend\Form\Form;
 
@@ -124,7 +124,7 @@ class MeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+//                'disabled' => 'true'
             ),
             'options' => array(
                 'label' => 'Зад (Seat)',
@@ -681,7 +681,7 @@ class MeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+//                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1035,7 +1035,7 @@ class MeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+//                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1169,7 +1169,7 @@ class MeasureForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'disabled' => 'true'
+//                'disabled' => 'true'
             ),
         ));
         $this->add(array(
@@ -1282,7 +1282,8 @@ class MeasureForm extends Form
             'name' => 'back_length_5',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'disabled' => 'true'
             ),
         ));
         $this->add(array(

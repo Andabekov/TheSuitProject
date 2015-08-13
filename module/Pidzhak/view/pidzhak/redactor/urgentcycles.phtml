@@ -1,0 +1,223 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: abu.andabekov
+ * Date: 10.04.2015
+ * Time: 15:20
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Изделия в обработке (срочные циклы)
+</div>
+
+<span style="float: right;">Поисковик работает только с помеченными (*) столбцами. Например: "14+Пиджак".</span>
+
+<div class="col-md-9">
+    <table id="ordercloth-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл*</th>
+            <th data-column-id="customer_full_name" >Клиент*</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID*</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="excel_order_id">HK_ID</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие*</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
+            <th data-type="code" data-column-id="code_status">Code status</th>
+            <th data-type="fabric_status" data-column-id="fabric_status">Fabric status</th>
+            <th data-column-id="seller_full_name">Продовец*</th>
+
+            <th data-header-css-class="redactorColumnBtn" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+
+<div id="sendToAssistDlg" style="display: none;" title="Отправить помощнику">
+
+    <input type="text" id="hiddenId" style="display: none;" />
+
+    Выберите помощника:
+    <select id="assist_id" name="assist_id" class="form-control" style="width: 250px; display: inline;">
+        <option value="0">Не выбрано</option>
+        <?php
+        foreach($this->assistants as $key => $item){
+            echo '<option value="'.$key.'">'.$item.'</option>';
+        }
+        ?>
+    </select>
+
+    <div style="text-align: center; margin-top: 15px;">
+        <span id="assist_error" style="color: red;"></span><br>
+
+        <button onclick="closeDlg()" class="btn btn-default">Отмена</button>
+        <button onclick="sendToAssist()" class="btn btn-primary">Отправить</button>
+    </div>
+</div>
+
+
+<script>
+    var test;
+
+    var redactor_ids='';
+
+    $(function () {
+
+        hideMenu();
+
+        function init() {
+            var grid = $("#ordercloth-grid").bootgrid({
+                rowCount: [50, 25, 10],
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '',
+                        order_status: 101
+                    };
+                },
+                url: "/restorderclothes",
+                converters: {
+                    code: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){
+                                return 'New';
+                            } else if(value==1){
+                                return 'Some codes';
+                            } else if(value==2){
+                                return 'Waiting fabric';
+                            } else if(value==3){
+                                return 'Ready';
+                            } else if(value==4){
+                                return 'Returned';
+                            }  else if(value==5){
+                                return 'Waiting response';
+                            } else if(value==6){
+                                return 'Need to order fabric';
+                            } else if(value==111){
+                                return 'Аннулированный';
+                            }
+                        }
+                    },
+                    fabric_status: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){
+                                return 'New';
+                            } else if(value==2){
+                                return 'Waiting fabric';
+                            } else if(value==3){
+                                return 'Ready';
+                            } else if(value==6){
+                                return 'Need to order fabric';
+                            }
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-id=\"" + row.my_id + "\">Ввести коды</button><br />" +
+                            "<button type=\"button\" class=\"btn btn-xs btn-primary checkCodes\" data-row-id=\"" + row.my_id + "\">Отправить <br>помощнику</button> <br />"+
+//                            "<button type=\"button\" class=\"btn btn-xs btn-primary compareCodes\" data-row-id=\"" + row.my_id + "\">Сравнить коды</button> <br />"+
+//                            "<button type=\"button\" class=\"btn btn-xs btn-success presubmit\" data-row-id=\"" + row.my_id + "\">Отправить <br>на проверку <br>продавцу</button><br>"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-danger denyCloth\" data-row-id=\"" + row.my_id + "\">Аннулировать</button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+//                    window.location="redactor/entercodes/"+$(this).data("row-id");
+                    window.open("entercodes/"+$(this).data("row-id"), '_blank');
+                }).end().find(".checkCodes").on("click", function(e)
+                {
+                    if(redactor_ids=='') {
+                        <?php
+                            $js_array = json_encode($ids);
+                            echo "redactor_ids = ". $js_array . ";\n";
+                        ?>
+                    }
+
+                    if(redactor_ids.indexOf($(this).data("row-id"))==-1){
+                        alert('Введите коды, прежде чем просмотреть их!')
+                    } else{
+                        openDlg($(this).data("row-id"));
+                    }
+                }).end().find(".denyCloth").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что хотите вернуть данное изделие продавцу для исправления?"
+                        , function(result) {
+                            if(result){
+                                $.post( "denycloth/"+myId, { id: myId } ).done(function( data ) {
+                                    $('#ordercloth-grid').bootgrid('reload');
+                                });
+                            }
+                        });
+                });
+            });
+
+            $('button[title=Refresh]').click(function(){
+                $.ajax({
+                    url: '/redactor/idsajax',
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+                    data: {},
+                    success: function (data) {
+                        redactor_ids=data.message;
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        }
+        init();
+
+    });
+
+
+    function openDlg(id){
+        $('#sendToAssistDlg').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 180
+        });
+
+        $('#hiddenId').val(id);
+    }
+    function closeDlg(){
+        $('#sendToAssistDlg').dialog('close');
+        $('#assist_error').text('');
+    }
+
+    function sendToAssist(){
+        if($('#assist_id').val()==0){
+            $('#assist_error').text('Выберите помощника');
+        } else{
+            $.post( "sendtoassitant/"+$('#hiddenId').val(), { id: $('#hiddenId').val(), assist_id: $('#assist_id').val() } ).done(function( data ) {
+                $('#ordercloth-grid').bootgrid('reload');
+                closeDlg();
+            });
+        }
+    }
+
+</script>

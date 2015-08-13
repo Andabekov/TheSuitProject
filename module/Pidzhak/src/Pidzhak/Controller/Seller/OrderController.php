@@ -1,15 +1,15 @@
 <?php
-namespace Pidzhak\Controller\Seller;
+namespace Pidzhak\Controller\seller;
 
 use Pidzhak\Form\admin\PriceForm;
 use Pidzhak\Model\admin\Sms;
-use Pidzhak\Model\Seller\OrderClothes;
+use Pidzhak\Model\seller\OrderClothes;
 use Pidzhak\Sms\SmsUtil;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\Seller\Order;
-use Pidzhak\Form\Seller\OrderForm;
-use Pidzhak\Form\Seller\OrderClothesForm;
+use Pidzhak\Model\seller\Order;
+use Pidzhak\Form\seller\OrderForm;
+use Pidzhak\Form\seller\OrderClothesForm;
 
 class OrderController extends AbstractActionController
 {
@@ -167,9 +167,12 @@ class OrderController extends AbstractActionController
         return $this->redirect()->toRoute('order');
     }
 
-
     public function thirdstepAction()
     {
+
+
+        $cycles_and_accept_dates = $this->getOrderClothesTable()->getCyclesAndAcceptDates();
+
         $order_form_id = 0;
         $order_error = "";
         $customer_id = (int)$this->params()->fromRoute('id', 0);
@@ -220,6 +223,12 @@ class OrderController extends AbstractActionController
                         $orderclothes->exchangeArray($cform->getData());
 //                        $orderclothes->typeof_measure = $measureTypeSelect;
                         $orderclothes->order_id = $order_form_id;
+                        if($orderclothes->discount_amount==null) $orderclothes->discount_amount=0;
+
+                        $officialPrice = $this->getOrderClothesTable()->getFabric($orderclothes->textile_id, $orderclothes->product_id);
+
+                        $orderclothes->actual_amount=$officialPrice->price-$orderclothes->discount_amount;
+
                         $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
                     }
                     $orderclothesform = 0;
@@ -242,7 +251,23 @@ class OrderController extends AbstractActionController
                         $order_error = "Нельзя отправить заказ с пустыми изделиями";
                     } else {
                         $order = $this->getOrderTable()->getOrder($order_form_id);
-                        $this->sendSms($order);
+
+                        $directors = $this->getOrderClothesTable()->getDirectorNums();
+
+                        $orderSum = $this->getOrderClothesTable()->getOrderSum($order_form_id);
+                        $final_sum = 0;
+
+                        foreach ($orderSum as $sum) {
+                            $final_sum=$final_sum+$sum['actual_amount'];
+                        }
+
+                        foreach($directors as $director){
+                            $sms = new Sms();
+                            $sms->number=$director['phone'];
+
+                            $sms->text='Новый заказ на сумму: '.$final_sum.' тенге';
+                            SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
+                        }
 
                         $this->getOrderClothesTable()->changeStatusTo11($order->id);
 
@@ -270,6 +295,8 @@ class OrderController extends AbstractActionController
             $customer = $this->getCustomerTable()->getCustomer($customer_id);
         }
 
+        $url = $this->getOrderClothesTable()->getFabricUrl()['url'];
+
         $view = new ViewModel(array(
                 'order_form_id' => $order_form_id,
                 'id' => $customer_id,
@@ -279,6 +306,8 @@ class OrderController extends AbstractActionController
                 'customer' => $customer,
                 'order_error' => $order_error,
                 'orderclothesform' => $orderclothesform,
+                'url' => $url,
+                'cycles_and_accept_dates' =>$cycles_and_accept_dates
             )
         );
         $view->setTemplate('pidzhak/order/third.phtml');
@@ -291,7 +320,7 @@ class OrderController extends AbstractActionController
     {
         if (!$this->orderTable) {
             $sm = $this->getServiceLocator();
-            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
+            $this->orderTable = $sm->get('Pidzhak\Model\seller\OrderTable');
         }
         return $this->orderTable;
     }
@@ -300,7 +329,7 @@ class OrderController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\seller\CustomerTable');
         }
         return $this->customerTable;
     }
@@ -310,7 +339,7 @@ class OrderController extends AbstractActionController
     {
         if (!$this->orderclothesTable) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\seller\OrderClothesTable');
         }
         return $this->orderclothesTable;
     }
@@ -423,10 +452,14 @@ class OrderController extends AbstractActionController
 
         if ($request->isPost()) {
             $fabric_id=$request->getPost()->fabric_id;
-            if($this->getOrderClothesTable()->getFabric($fabric_id)=='nothing'){
+            $cloth_type=$request->getPost()->cloth_type;
+
+            $result = $this->getOrderClothesTable()->getFabric($fabric_id, $cloth_type);
+
+            if($result=='nothing' || !$result || $result==null){
                 $message='false';
-            } else{
-                $message='true';
+            } else {
+                $message=$result->price;
             }
         }
 

@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -31,6 +31,9 @@ class OrderClothes  implements InputFilterAwareInterface
     public $seller_comment;
     public $discount_amount; // discount_amount
 
+    public $code_status;
+    public $fabric_status;
+
     public function exchangeArray($data)
     {
         $this->id = (!empty($data['c_id'])) ? $data['c_id'] : null;
@@ -56,6 +59,7 @@ class OrderClothes  implements InputFilterAwareInterface
         $this->second_monogram_caption = (!empty($data['second_monogram_caption'])) ? $data['second_monogram_caption'] : null;
         $this->seller_comment = (!empty($data['seller_comment'])) ? $data['seller_comment'] : null;
         $this->discount_amount = (!empty($data['discount_amount'])) ? $data['discount_amount'] : null;
+
     }
 
     public function getArrayCopy()
@@ -82,12 +86,23 @@ class OrderClothes  implements InputFilterAwareInterface
                 'required' => true,
             ));
             $this->inputFilter->add(array(
+                'name' => 'preferred_date',
+                'required' => true,
+            ));
+            $this->inputFilter->add(array(
                 'name' => 'actual_amount',
+                'required' => false,
+            ));
+            $this->inputFilter->add(array(
+                'name' => 'paytype_id',
                 'required' => true,
             ));
             $this->inputFilter->add(array(
                 'name' => 'discount_amount',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
             ));
             $this->inputFilter->add(array(
                 'name' => 'cycle_date',

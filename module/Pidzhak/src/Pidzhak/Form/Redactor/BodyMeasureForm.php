@@ -6,7 +6,7 @@
  * Time: 19:53
  */
 
-namespace Pidzhak\Form\Redactor;
+namespace Pidzhak\Form\redactor;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
@@ -76,17 +76,36 @@ class BodyMeasureForm extends Form
                 ),
             ),
         ));
+//        $this->add(array(
+//            'name' => 'butt_position',
+//            'type' => 'Text',
+//            'attributes' => array(
+//                'class' => 'form-control',
+////                'disabled' => 'disabled'
+//            ),
+//            'options' => array(
+//                'label' => 'Положение ягодицы',
+//            ),
+//        ));
+
         $this->add(array(
             'name' => 'butt_position',
-            'type' => 'Text',
+            'type' => 'select',
             'attributes' => array(
-                'class' => 'form-control',
-//                'disabled' => 'disabled'
+                'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Положение ягодицы',
+                'value_options' => array(
+                    '0' => 'Не выбрано',
+                    '1' => 'Normal',
+                    '2' => 'Prominent',
+                    '3' => 'Drop',
+                    '4' => 'Flat',
+                ),
             ),
         ));
+
         $this->add(array(
             'name' => 'neck',
             'type' => 'Text',

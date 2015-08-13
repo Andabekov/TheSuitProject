@@ -28,9 +28,9 @@
             <th data-type="datetime" data-column-id="valid_date">Действителен до</th>
             <th  data-column-id="cost">Сумма</th>
             <th data-column-id="seller_name">Продавец</th>
-            <!--<th data-column-id="oper_comment">Комментарии</th>-->
             <th data-type="status" data-column-id="status">Статус</th>
             <th data-type="valid" data-column-id="valid">Срок</th>
+            <th data-column-id="comment">Комментарии</th>
 
 <!--            <th data-header-css-class="sellerColumnBtn5" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>-->
 
@@ -72,6 +72,7 @@
 
         function init() {
             var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -115,7 +116,8 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".enterCodes").on("click", function(e)
                 {
-                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+//                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+                    var url="http://adminpidzhak.kz/seller/watchold/"+$(this).data("row-id");
                     window.open(url, 'Старые замеры', "height=800,width=800");
 //                    openDlg($(this).data("row-id"), $(this).data("row-comment"), $(this).data("row-tailor"));
                 }).end().find(".showComment").on("click", function(e)
@@ -135,7 +137,7 @@
 
         switch (tailorId){
             case 1: $('#tailorName').val('Ирина'); break;
-            case 2: $('#tailorName').val('Мая'); break;
+            case 2: $('#tailorName').val('Майя'); break;
         }
 
         $('#myModal').dialog({

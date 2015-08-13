@@ -6,7 +6,7 @@
  * Time: 11:25
  */
 
-namespace Pidzhak\Form\Redactor;
+namespace Pidzhak\Form\redactor;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
@@ -67,7 +67,7 @@ class OrderClothesEnForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-//                'readonly' => 'readonly'
+                'readonly' => 'readonly'
             ),
             'options' => array(
                 'label' => 'Fabric number',
@@ -192,7 +192,7 @@ class OrderClothesEnForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Заметеки редактора',
+                'label' => 'Заметки редактора',
             ),
         ));
 

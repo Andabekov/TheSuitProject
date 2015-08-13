@@ -1,0 +1,22 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 24/06/2015
+ * Time: 15:01
+ */
+?>
+
+URL: <input id="url" style="display: inline; width: 500px" class="form-control" value="<?=$url?>"/>
+<button class="btn btn-primary" onclick="saveUrl()">Сохранить</button>
+
+<script>
+    function saveUrl(){
+        if($('#url').val()=='') alert('Введите данные!');
+        else{
+            $.post( "fabricurl", { url: $('#url').val() } ).done(function( data ) {
+                location.reload();
+            });
+        }
+    }
+</script>

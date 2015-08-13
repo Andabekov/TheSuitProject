@@ -60,7 +60,7 @@ class UserForm extends Form
                     '2' => 'Редактор',
                     '3' => 'Бухгалтер',
                     '4' => 'Директор',
-                    '5' => 'Курьер',
+                    '5' => 'Помощник редактора',
                     '6' => 'Админ',
                 ),
                 'label_attributes' => array('class' => 'control-label col-xs-2')

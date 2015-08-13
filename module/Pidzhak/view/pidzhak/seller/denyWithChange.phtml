@@ -6,7 +6,7 @@
  * Time: 23:14
  */
 
-$monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product_id')->getValue()!='4';
+$monogramFlag = $form->get('product_id')->getValue()=='1' || $form->get('product_id')->getValue()=='5' || $form->get('product_id')->getValue()=='4';
 
 $form->setAttribute('action', $this->url('seller', array('action' => 'orderdenychange', 'id' => $id)));
 $form->setAttribute('class', 'form-horizontal');
@@ -287,7 +287,7 @@ if($measurement_type==1){
                 <?php $element = $bm_form->get('butt_position'); ?>
                 <?php echo $this->formLabel($element); ?>
             </td>
-            <td><?php echo $this->formText($element); ?></td>
+            <td><?php echo $this->formSelect($element); ?></td>
         </tr>
         <tr>
             <td>

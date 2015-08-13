@@ -56,7 +56,6 @@ class UserController extends AbstractActionController
 
     public function addAction()
     {
-
         $form = new UserForm();
         $form->get('submit')->setValue('Добавить');
 

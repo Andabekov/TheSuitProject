@@ -19,13 +19,15 @@
 <!--            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="order_id">#Заказа</th>-->
             <th data-header-css-class="cycleCol" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name">Клиент</th>
-            <th data-column-id="firstname">Имя Клиент</th>
             <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+            <th data-column-id="textile_id">Ткань</th>
 <!--            <th data-column-id="fabric_class">Класс ткани</th>-->
 <!--            <th data-header-css-class="fabricCol" data-type="numeric" data-column-id="textile_id">Ткань</th>-->
             <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="dateofsale">Продажа</th>
             <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="preferred_date">Wish date</th>
             <th data-type="datetime" data-header-css-class="wishDateCol2" data-column-id="cycle_date">Дост. цикл</th>
+            <th data-type="style" data-column-id="style_id">Стиль</th>
+            <th data-type="code_status" data-column-id="code_status">Code status</th>
             <th data-column-id="seller_full_name">Продавец</th>
 
             <th data-header-css-class="sellerColumnBtn4" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
@@ -40,8 +42,11 @@
 <script>
     $(function () {
 
+        hideMenu();
+
         function init() {
             var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -60,14 +65,29 @@
                             temp = value.split('-');
                             return temp[2]+'/'+temp[1]+'/'+temp[0];
                         }
+                    },
+                    style: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null) return "Нет";
+                            else return "Есть";
+                        }
+                    },
+                    code_status: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null) return "New";
+                            else if(value==111) return "Аннулированный";
+                        }
                     }
-                },
+                }
+                ,
                 formatters: {
                     "commands": function(column, row)
                     {
                         return "<button style='margin-bottom: 3px' type=\"button\" class=\"btn btn-xs btn-primary changeStyle\" data-row-id=\"" + row.my_id + "\">Изменить стиль</button><br />"+
                                 "<button style='margin-bottom: 3px' type=\"button\" class=\"btn btn-xs btn-primary changeMeasure\" data-row-id=\"" + row.my_id + "\">Изменить замеры</button><br />"+
-                                "<button type=\"button\" class=\"btn btn-xs btn-success sendToRedactor\" data-row-id=\"" + row.my_id + "\">Отправить редактору</button><br />";
+                                "<button data-row-style=\"" + row.style_id + "\" data-row-cycle_id=\"" + row.cycle_id + "\" type=\"button\" class=\"btn btn-xs btn-success sendToRedactor\" data-row-id=\"" + row.my_id + "\">Отправить редактору</button><br />";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()
@@ -75,32 +95,39 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".changeStyle").on("click", function(e)
                 {
-                    window.location="changegen/"+$(this).data("row-id");
+//                    window.location="changegen/"+$(this).data("row-id");
+                    window.open('changegen/'+$(this).data("row-id"), '_blank');
                 }).end().find(".changeMeasure").on("click", function(e)
                 {
-                    window.location="changemeas/"+$(this).data("row-id");
+                    window.open("changemeas/"+$(this).data("row-id"), '_blank');
                 }).end().find(".sendToRedactor").on("click", function(e)
                 {
-                    myId=$(this).data("row-id");
-                    bootbox.setDefaults({
-                        locale: "ru",
-                        className: "my-modal"
-                    });
-                    bootbox.confirm("Вы действительно хотите отправить данное изделие редактору? " +
-                    "<br /> Тем самым вы подтверждаете что ввели все необходимые данные, такие как:" +
-                        "<ul>"+
-                        "<li>тип изделия</li>"+
-                        "<li>номер ткани</li>"+
-                        "<li>цикл</li>"+
-                        "<li>замеры</li>"+
-                        "</ul>",
-                        function(result) {
-                        if(result){
-                            $.post( "sendred/"+myId, { id: myId } ).done(function( data ) {
-                                $('#order-grid').bootgrid('reload');
-                            });
-                        };
-                    });
+                    if(!$(this).data("row-style")){
+                        alert("Выберите стиль для данного изделия, прежде чем отправить его редактору!");
+                    } else{
+                        myId=$(this).data("row-id");
+                        cycle_id=$(this).data("row-cycle_id");
+                        bootbox.setDefaults({
+                            locale: "ru",
+                            className: "my-modal"
+                        });
+                        bootbox.confirm("Вы действительно хотите отправить данное изделие редактору? " +
+                        "<br /> Тем самым вы подтверждаете что ввели все необходимые данные, такие как:" +
+                            "<ul>"+
+                            "<li>тип изделия</li>"+
+                            "<li>номер ткани</li>"+
+                            "<li>цикл</li>"+
+                            "<li>замеры</li>"+
+                            "</ul>",
+                            function(result) {
+                            if(result){
+                                $.post( "sendred/"+myId, { id: myId, cycle_id: cycle_id } ).done(function( data ) {
+                                    $('#order-grid').bootgrid('reload');
+    //                                console.log(data);
+                                });
+                            };
+                        });
+                    }
                 });
             });
         }

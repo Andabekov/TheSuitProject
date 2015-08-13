@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 11/08/2015
+ * Time: 15:46
+ */
+?>
+<br><br><b>Тип запроса:</b>
+<select id="email_type" class="form-control" style="display: inline">
+    <option value="0">Не выбрано</option>
+    <option value="Редактор mid-wage">Редактор mid-wage</option>
+    <option value="Редактор final-wage">Редактор final-wage</option>
+    <option value="Редактор пустое">Редактор пустое</option>
+</select>
+<br><br>
+
+<b>Комментарий:</b><br>
+<textarea id="comment" class="form-control" style="height: 300px;"></textarea><br>
+
+<a href="requests" class="btn btn-default">Отмена</a>
+<button class="btn btn-primary" onclick="sendEmail()">Отправить</button>
+
+<script>
+
+    $(function() {
+        $('#email_type').change(function(){
+            switch($('#email_type').val()){
+                case '0': $('#comment').val(''); break;
+                case 'Редактор mid-wage': $('#comment').val('Уважаемый бухгалтер, отправьте емайл на redaktor.smoking@gmail.com с информацией промежуточной зарплаты следующего сотрудника.' +
+                '\n\nДата начала продаж: ' +
+                '\nДата окончания продаж: ' +
+                ''); break;
+                case 'Редактор final-wage': $('#comment').val('Уважаемый бухгалтер, отправьте емайл на redaktor.smoking@gmail.com с информацией месячной зарплаты следующего сотрудника.' +
+                '\n\nДата начала продаж: ' +
+                '\nДата окончания продаж: ' +
+                ''); break;
+                case 'Редактор пустое': $('#comment').val(''); break;
+            }
+        });
+    });
+
+    function sendEmail(){
+        if($('#email_type').val()==0){
+            alert('Выберите тип запроса!');
+        } else {
+            $.post( "addrequest", { request_body: $('#comment').val(), request_type: $('#email_type').val()} ).done(function( data ) {
+                window.location='requests';
+            });
+        }
+    }
+</script>

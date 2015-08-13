@@ -11,326 +11,250 @@
     Ввести КОДы
 </div>
 
-<div class="subHeader">
-    Данные, которые вводил продавец:
+<div style="float: left;">
+
+    <div class="subHeader">
+        Данные, которые вводил продавец:
+    </div>
+
+    <?php
+        $form->setAttribute('class', 'form-horizontal');
+        $form->prepare();
+
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('c_id'));
+
+        $monogramFlag = $form->get('product_id')->getValue()=='1' || $form->get('product_id')->getValue()=='5' || $form->get('product_id')->getValue()=='4';
+    ?>
+
+    <table class="myTable" width="600px">
+
+        <tr>
+            <td><b>ФИО клиента</b></td>
+            <td colspan="3"> <input disabled class="form-control" value='<?php echo $clientName; ?>'/></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('cycle_id'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formText($element); ?></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('first_monogram_location'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('product_id'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formSelect($element); ?></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('first_monogram_font'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('textile_id'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formInput($element); ?></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('first_monogram_font_color'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('fabric_class'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formText($element); ?></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('first_monogram_caption'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formTextarea($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('typeof_measure'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formSelect($element); ?></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('second_monogram_location'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('label_brand'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td>
+                <?php echo $this->formSelect($element); ?>
+                <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
+            </td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('second_monogram_font'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('style_id'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formText($element); ?></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('second_monogram_font_color'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+
+            <td>
+                <?php if($monogramFlag) $element = $form->get('second_monogram_caption'); ?>
+                <?php if($monogramFlag) echo $this->formLabel($element); ?>
+            </td>
+            <td><?php if($monogramFlag) echo $this->formTextarea($element); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php $element = $form->get('seller_comment'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td colspan="3"><?php echo $this->formTextArea($element); ?></td>
+        </tr>
+        <tr>
+            <td><b>Заметки редактора</b></td>
+            <td colspan="3"><textarea class="form-control" name="redactor_comment"><?=$redactor_comment;?></textarea></td>
+        </tr>
+
+    </table>
+
+    <?php
+        echo $this->form()->closeTag();
+    ?>
+
 </div>
 
-<?php
-$form->setAttribute('class', 'form-horizontal');
-$form->prepare();
+<div style="float: left; width:710px;">
 
-echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('c_id'));
+    <?php
+        $sc_form->setAttribute('class', 'form-horizontal');
+        $sc_form->prepare();
+        echo $this->form()->openTag($sc_form);
+    ?>
 
-$monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product_id')->getValue()!='4';
-//var_dump($form);
-?>
+    <div class="subHeader">
+        Системные коды:
+    </div>
 
-<table class="myTable">
+    <div id="testModel">
+        <?php
+            $systemCodeForm = $sc_form->get('systemcode');
+            echo $this->formCollection($systemCodeForm);
+        ?>
+    </div>
 
-    <tr>
-        <td><b>ФИО клиента</b></td>
-        <td colspan="3"> <input disabled class="form-control" value='<?php echo $clientName; ?>'/></td>
-    </tr>
+    <?php
+        echo $this->formHidden($sc_form->get('csrf'));
+    ?>
 
-    <tr>
-        <td>
-            <?php $element = $form->get('cycle_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
+    <button type="button" class="btn btn-default" onclick="addCode()">Добавить строку</button><br /><br />
 
-        <td>
-            <?php if($monogramFlag) $element = $form->get('first_monogram_location'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
+    <table>
+        <tr>
+            <td>
+                <span><b>Выберите статус кодов:</b></span>
+            </td>
+            <td>
+                <select name="custom_status" class="form-control" style="width: 200px; display: inline; margin-right: 15px;">
+                    <option value="0">New</option>
+                    <option value="1">Some code</option>
+                    <option value="5">Waiting response</option>
+                    <option value="3">Ready</option>
+                    <option value="4">Returned by Seller</option>
+                    <option value="7">Returned by Assistant</option>
+                    <option value="111">Аннулированный</option>
+                </select>
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            <?php $element = $form->get('product_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
+        <tr>
+            <td>
+                <span><b>Выберите статус ткани:</b></span>
+            </td>
+            <td>
+                <select name="fabric_status" class="form-control" style="width: 200px; display: inline; margin-right: 15px;">
+                    <option value="0">New</option>
+                    <option value="6">Order fabric</option>
+                    <option value="2">Waiting fabric</option>
+                    <option value="3">Ready</option>
+                </select>
+            </td>
+        </tr>
+    </table>
 
-        <td>
-            <?php if($monogramFlag) $element = $form->get('first_monogram_font'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
+    <br><br>
+    <a class="btn btn-default cancel-btn" href="/redactor">Отменить</a>
 
-    <tr>
-        <td>
-            <?php $element = $form->get('textile_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formInput($element); ?></td>
+    <textarea name="redactor_comment_2" style="display: none;"></textarea>
 
-        <td>
-            <?php if($monogramFlag) $element = $form->get('first_monogram_font_color'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
+    <?php
+        echo $this->formSubmit($sc_form->get('submit'));
+        echo $this->form()->closeTag();
+    ?>
 
-    <tr>
-        <td>
-            <?php $element = $form->get('fabric_class'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) $element = $form->get('first_monogram_caption'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $form->get('typeof_measure'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) $element = $form->get('second_monogram_location'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $form->get('label_brand'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td>
-            <?php echo $this->formSelect($element); ?>
-            <span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span>
-        </td>
-
-        <td>
-            <?php if($monogramFlag) $element = $form->get('second_monogram_font'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $form->get('style_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) $element = $form->get('second_monogram_font_color'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td></td>
-        <td></td>
-
-        <td>
-            <?php if($monogramFlag) $element = $form->get('second_monogram_caption'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $form->get('seller_comment'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td colspan="3"><?php echo $this->formTextArea($element); ?></td>
-    </tr>
-
-</table>
-
-<?php
-echo $this->form()->closeTag();
-?>
-
-<hr>
-
-<div class="subHeader">
-    Данные, для ввода редактором:
 </div>
-
-<?php
-$en_form->setAttribute('action', $this->url('redactor', array('action' => 'entercodes', 'id' => $this->orderClothId,)));
-$en_form->setAttribute('class', 'form-horizontal');
-$en_form->prepare();
-echo $this->form()->openTag($en_form);
-echo $this->formHidden($en_form->get('order_cloth_id'));
-?>
-
-<table class="myTable" width="600px">
-
-    <tr>
-        <td><b>ФИО клиента</b></td>
-        <td colspan="3"> <input disabled class="form-control" value='<?php echo $clientName; ?>'/></td>
-    </tr>
-
-    <tr>
-        <td>
-            <input name="cloth_type" value="<?php echo $form->get('product_id')->getValue();?>" style="display: none">
-            <?php $en_form->get('cloth_type')->setValue($form->get('product_id')->getValue()); ?>
-            <?php $element = $en_form->get('cloth_type'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-
-        <td>
-            <?php $en_form->get('fabric_id')->setValue($form->get('textile_id')->getValue()); ?>
-            <?php $element = $en_form->get('fabric_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <input name="measurement_type" value="<?php echo $form->get('typeof_measure')->getValue(); ?>" style="display: none;">
-            <?php $element = $en_form->get('measurement_type'); ?>
-            <?php $element->setValue($form->get('typeof_measure')->getValue()); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-
-        <td>
-            <input name="brand_label" value="<?php echo $form->get('label_brand')->getValue(); ?>" style="display: none;">
-            <?php $en_form->get('brand_label')->setValue($form->get('label_brand')->getValue())?>
-            <?php $element = $en_form->get('brand_label'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formSelect($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram1_pos'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) $element = $en_form->get('monogram2_pos'); ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php if($monogramFlag) { $en_form->get('monogram1_font')->setValue($form->get('first_monogram_font')->getValue()); $element = $en_form->get('monogram1_font'); }?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) { $en_form->get('monogram2_font')->setValue($form->get('second_monogram_font')->getValue()); $element = $en_form->get('monogram2_font'); } ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php if($monogramFlag) { $en_form->get('monogram1_color_font')->setValue($form->get('first_monogram_font_color')->getValue()); $element = $en_form->get('monogram1_color_font'); }?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) { $en_form->get('monogram2_color_font')->setValue($form->get('second_monogram_font_color')->getValue()); $element = $en_form->get('monogram2_color_font'); } ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php if($monogramFlag) { $en_form->get('monogram1_text')->setValue($form->get('first_monogram_caption')->getValue()); $element = $en_form->get('monogram1_text');} ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-
-        <td>
-            <?php if($monogramFlag) { $en_form->get('monogram2_text')->setValue($form->get('second_monogram_caption')->getValue()); $element = $en_form->get('monogram2_text'); } ?>
-            <?php if($monogramFlag) echo $this->formLabel($element); ?>
-        </td>
-        <td><?php if($monogramFlag) echo $this->formText($element); ?></td>
-    </tr>
-
-    <tr>
-        <td>
-            <?php $element = $en_form->get('redactor_comment'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td colspan="3"><?php echo $this->formTextArea($element); ?></td>
-    </tr>
-</table>
-
-<?php
-//echo $this->form()->closeTag();
-?>
-
-<hr>
-
-
-
-<?php
-
-$sc_form->setAttribute('class', 'form-horizontal');
-$sc_form->prepare();
-
-echo $this->form()->openTag($sc_form);
-?>
-<div id="testModel">
-<?php
-    $systemCodeForm = $sc_form->get('systemcode');
-    echo $this->formCollection($systemCodeForm);
-//    echo $systemCodeForm->formHidden('order_cloth_id')->value=$orderClothId;
-?>
-</div>
-
-<?php
-    echo $this->formHidden($sc_form->get('csrf'));
-?>
-
-<button type="button" class="btn btn-default" onclick="addCode()">Добавить строку</button><br /><br />
-
-<a class="btn btn-default cancel-btn" href="/redactor">Отменить</a>
-<?php
-    echo $this->formSubmit($en_form->get('submit'));
-    echo $this->form()->closeTag();
-?>
-
-<?php
-echo $this->form()->closeTag();
-?>
 
 <script>
     $(function() {
+
+        hideMenu();
+
+        $('textarea[name=seller_comment]').css('height','170px');
+        $('textarea[name=redactor_comment]').css('height','100px');
+
         styleRows();
         var fieldsets = $('#testModel').find('fieldset');
         for(i=0; i<fieldsets.length; i++){
             if(i!=0 && i!=1) $(fieldsets[i]).find('span').remove();
         }
 
-        if($('textarea[name=redactor_comment]').val()=='')
-            $('textarea[name=redactor_comment]').val('Order no: \n' +
-                                                 'Наличие ткани: да/нет \n');
+        if($('textarea[name=redactor_comment]').val()==''){
+            $('textarea[name=redactor_comment]').val('Цикл:'+$('input[name=cycle_id]').val()+'\nВсе ОК');
+            $('textarea[name=redactor_comment_2]').val('Цикл:'+$('input[name=cycle_id]').val()+'\nВсе ОК');
+        } else {
+            $('textarea[name=redactor_comment_2]').val($('textarea[name=redactor_comment]').val());
+        }
 
+        $('textarea[name=redactor_comment]').change(function() {
+            $('textarea[name=redactor_comment_2]').val($(this).val());
+        });
+
+
+        $('select[name=custom_status').val(<?=$code_status?>);
+        $('select[name=fabric_status').val(<?=$fabric_status?>);
     });
 
     function addCode(){

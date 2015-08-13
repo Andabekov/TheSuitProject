@@ -1,0 +1,140 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 12/08/2015
+ * Time: 14:11
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Поручения сотрудникам
+</div>
+
+<div class="col-md-9">
+    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="cycleCol2" data-column-id="id" data-order="desc">ID</th>
+            <th data-column-id="task_type">Ответственный</th>
+            <th data-type="datetime" data-column-id="task_given_date">Дата поручения</th>
+            <th data-type="datetime" data-column-id="task_due_date">Сроки выполнения</th>
+            <th data-column-id="task_status">Статус поручения</th>
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
+        </tr>
+        </thead>
+
+    </table>
+    <!--/div-->
+</div>
+
+<div id="tracking" style="display: none;">
+    <textarea id="comment_details" class="form-control" style="height: 260px;" disabled>
+    </textarea>
+</div>
+
+
+<script>
+    $(function () {
+
+//        hideMenu();
+
+//        $('.right-section').css('width', '100%');
+
+        function init() {
+            var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        task_type: 'redactor'
+                    };
+                },
+                url: "/resttask",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    },
+                    status: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value=='0') return 'Не отвечен';
+                            else return 'Отвечен';
+                        }
+                    }
+                }
+                ,
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return  "<button data-row-comment='"+row.task_body+"' type=\"button\" class=\"btn btn-xs btn-primary showComment\">Подробности</button>"+
+                            "<button style='margin-left: 3px; margin-right: 3px;' type=\"button\" class=\"btn btn-xs btn-default confirm2\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-time\"></span></button>"+
+                            "<button type=\"button\" class=\"btn btn-xs btn-default confirm\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-ok\"></span></button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".confirm").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что данный поручение было выполнено?", function(result) {
+                        if(result){
+                            $.post( "taskfinished/"+myId, { id: myId } ).done(function( data ) {
+                                $('#order-grid').bootgrid('reload');
+                            });
+                        };
+                    });
+                }).end().find(".confirm2").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что приступили к выполнению данного поручения?", function(result) {
+                        if(result){
+                            $.post( "taskstarted/"+myId, { id: myId } ).done(function( data ) {
+                                $('#order-grid').bootgrid('reload');
+                            });
+                        };
+                    });
+                }).end().find(".showComment").on("click", function(e)
+                {
+                    showCommentDlg($(this).data("row-comment"));
+                });
+            });
+        }
+        init();
+    });
+
+    function showCommentDlg(comment){
+        $('#comment_details').val(comment);
+
+        $('#tracking').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Комментарий'
+        });
+    }
+
+</script>

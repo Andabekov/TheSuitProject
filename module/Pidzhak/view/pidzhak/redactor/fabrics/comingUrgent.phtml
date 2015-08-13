@@ -1,0 +1,112 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 13/08/2015
+ * Time: 11:38
+ */
+?>
+
+<div class="header">
+    Срочные ткани в пути
+</div>
+
+
+<div class="col-md-9">
+    <table id="ordercloth-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл*</th>
+            <th data-column-id="customer_full_name" >Клиент*</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID*</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="excel_order_id">HK_ID</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие*</th>
+            <th data-column-id="fabric_class">Класс ткани</th>
+            <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
+            <th data-type="code" data-column-id="code_status">Code status</th>
+            <th data-type="fabric_status" data-column-id="fabric_status">Fabric status</th>
+            <th data-column-id="seller_full_name">Помощник*</th>
+
+            <th data-header-css-class="redactorColumnBtn" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+
+<script>
+
+    $(function () {
+
+        hideMenu();
+
+        function init() {
+            var grid = $("#ordercloth-grid").bootgrid({
+                rowCount: [50, 25, 10],
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        order_id: -1,
+                        seller_name: '',
+                        order_status: 23
+                    };
+                },
+                url: "/restorderclothes",
+                converters: {
+                    code: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){ return 'New';
+                            } else if(value==1){ return 'Some codes';
+                            } else if(value==3){ return 'Ready';
+                            } else if(value==4){ return 'Returned by Seller';
+                            } else if(value==5){ return 'Waiting response';
+                            } else if(value==111){ return 'Аннулированный';
+                            } else if(value==7){ return 'Returned by Assistant';
+                            }
+                        }
+                    },
+                    fabric_status: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){ return 'New';
+                            } else if(value==2){ return 'В пути';
+                            } else if(value==3){ return 'Готово';
+                            } else if(value==6){ return 'В корзине';
+                            }
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-success enterCodes\" data-row-id=\"" + row.my_id + "\">Ткань готова</button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                grid.find(".enterCodes").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы уверены что данная ткань готова?"
+                        , function(result) {
+                            if(result){
+                                $.post( "fabricready/"+myId, { id: myId } ).done(function( data ) {
+                                    $('#ordercloth-grid').bootgrid('reload');
+                                });
+                            }
+                        });
+                });
+            });
+        }
+        init();
+    });
+
+</script>

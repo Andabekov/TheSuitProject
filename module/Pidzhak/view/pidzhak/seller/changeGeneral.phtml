@@ -12,7 +12,7 @@
 </div>
 
 <?php
-    $monogramFlag = $form->get('product_id')->getValue()!='2' && $form->get('product_id')->getValue()!='4';
+    $monogramFlag = $form->get('product_id')->getValue()=='1' || $form->get('product_id')->getValue()=='5' || $form->get('product_id')->getValue()=='4';
 
     $form->setAttribute('action', $this->url('seller', array('action' => 'changegen', 'id' => $id)));
     $form->setAttribute('class', 'form-horizontal');
@@ -38,7 +38,7 @@
             <b>ФИО клиента</b>
         </td>
         <td class="sellerColumn">
-            <input style="width: 300px" class="form-control" value="<?php echo $clientName;?>" disabled>
+            <input style="width: 500px" class="form-control" value="<?php echo $clientName;?>" disabled>
         </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@
             <?php $element = $form->get('preferred_date'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
-        <td><?php echo $this->formText($element); ?></td>
+        <td><?php echo '<input class="form-control" disabled value="'.(explode('-',$form->get('preferred_date')->getValue())[2].'.'.explode('-',$form->get('preferred_date')->getValue())[1].'.'.explode('-',$form->get('preferred_date')->getValue())[0]).'" />'; ?></td>
     </tr>
     <tr>
         <td>
@@ -175,6 +175,51 @@
 <script>
     $(function() {
 
+
+//        product_id
+//        seller_comment
+        if($('textarea[name=seller_comment]').val()==''){
+            switch($('select[name=product_id]').val()){
+                case '1': $('textarea[name=seller_comment]').val(
+                    'Номер подкладки: \n' +
+                    '1)\n2)\n3)\n4)\n5)'
+                    ); break; // пиджак
+                case '5': $('textarea[name=seller_comment]').val(
+                    'Номер подкладки: \n' +
+                    '1)\n2)\n3)\n4)\n5)'
+                ); break; // пальто
+
+                case '4': $('textarea[name=seller_comment]').val(
+                    'Ворот: \n' +
+                    'Манжет: \n' +
+                    '1)\n2)\n3)\n4)\n5)'
+                ); break; // сорочка
+                case '9': $('textarea[name=seller_comment]').val(
+                    'Ворот: \n' +
+                    'Манжет: \n' +
+                    '1)\n2)\n3)\n4)\n5)'
+                ); break; // Манжет
+                case '10': $('textarea[name=seller_comment]').val(
+                    'Ворот: \n' +
+                    'Манжет: \n' +
+                    '1)\n2)\n3)\n4)\n5)'
+                ); break; // Ворот
+
+                case '2': $('textarea[name=seller_comment]').val('1)\n2)\n3)\n4)\n5)'); break; // Брюки
+                case '3': $('textarea[name=seller_comment]').val('1)\n2)\n3)\n4)\n5)'); break; // жилетка
+                case '7': $('textarea[name=seller_comment]').val('Размер шеи: см\n1)\n2)\n3)'); break; // Бабочка
+                case '6': $('textarea[name=seller_comment]').val('Брючная талия: см\n1)\n2)\n3)'); break; // Бабочка
+            }
+        }
+
+        $('textarea[name=seller_comment]').css('width','500px');
+        $('textarea[name=seller_comment]').css('height','200px');
+
+
+        <?php if($form->get('style_id')->getValue()==null){?>
+            resetStylesSelect();
+        <?php } ?>
+
         $('select[name=style_id]').prop('required', 'true');
 
         $('select[name=product_id]').prop('disabled', 'true');
@@ -193,5 +238,32 @@
 
     function changeCycleDate(){
         $('select[name=cycle_date]').val($('select[name=cycle_id]').val());
+    }
+
+    function resetStylesSelect(){
+        $.ajax({
+            url: '/order/resetstylestoselect',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: { cloth_type_id : $('select[name=product_id]').val() },
+            success: function (data) {
+                if(data.styles!='empty'){
+
+                    $('select[name=style_id] option').remove();
+                    $('select[name=style_id]').append($("<option></option>").attr("value",'0').text('Выберите номер стиля'));
+
+                    for(i=0; i<data.styles.length; i++){
+                        $('select[name=style_id]').append($("<option></option>").attr("value",data.styles[i]).text(data.styles[i]));
+                    }
+                } else {
+                    $('select[name=style_id] option').remove();
+                    $('select[name=style_id]').append($("<option></option>").attr("value",'0').text('Выберите номер стиля'));
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
     }
 </script>

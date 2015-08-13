@@ -18,10 +18,14 @@
         <tr>
             <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name" >Клиент</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="excel_order_id">HK_ID</th>
             <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
             <th data-column-id="fabric_class">Класс ткани</th>
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
-            <th data-column-id="seller_full_name">Продовец</th>
+            <th data-type="code" data-column-id="code_status">Code status</th>
+            <th data-type="fabric_status" data-column-id="fabric_status">Fabric status</th>
+            <th data-column-id="seller_full_name">Помощник</th>
 
             <th data-header-css-class="redactorColumnBtn4" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
@@ -33,8 +37,12 @@
     var test;
 
     $(function () {
+
+        hideMenu();
+
         function init() {
             var grid = $("#ordercloth-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -46,6 +54,46 @@
                     };
                 },
                 url: "/restorderclothes",
+                converters: {
+                    code: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){
+                                return 'New';
+                            } else if(value==1){
+                                return 'Some codes';
+                            } else if(value==2){
+                                return 'Waiting fabric';
+                            } else if(value==3){
+                                return 'Ready';
+                            } else if(value==4){
+                                return 'Returned by Seller';
+                            }  else if(value==5){
+                                return 'Waiting response';
+                            } else if(value==6){
+                                return 'Need to order fabric';
+                            } else if(value==111){
+                                return 'Аннулированный';
+                            } else if(value==7){
+                                return 'Returned by Assistant';
+                            }
+                        }
+                    },
+                    fabric_status: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){
+                                return 'New';
+                            } else if(value==2){
+                                return 'Waiting fabric';
+                            } else if(value==3){
+                                return 'Ready';
+                            } else if(value==6){
+                                return 'Need to order fabric';
+                            }
+                        }
+                    }
+                },
                 formatters: {
                     "commands": function(column, row)
                     {
@@ -65,7 +113,7 @@
                     window.location="redactor/watchcodes/"+$(this).data("row-id");
                 }).end().find(".compareCodes").on("click", function(e)
                 {
-                    window.location="compare/"+$(this).data("row-id");
+                    window.location="newcompare/"+$(this).data("row-id");
                 }).end().find(".presubmit").on("click", function(e)
                 {
                     myId=$(this).data("row-id");

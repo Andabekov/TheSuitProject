@@ -1,0 +1,99 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 22/06/2015
+ * Time: 17:20
+ */
+?>
+
+<div class="header">
+    Изменить данные клиентов
+</div>
+
+<div class="col-md-9">
+    <table id="customer-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="firstname">Имя</th>
+            <th data-column-id="lastname" data-order="desc">Фамилия</th>
+
+            <th data-type="money" data-column-id="total">Сумма</th>
+            <th data-type="membership" data-column-id="total">Мембершип</th>
+
+            <th data-column-id="mobilephone" data-order="desc">Телефон</th>
+            <th data-column-id="city" data-order="desc">Город</th>
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+<script>
+    $(function () {
+
+//        hideMenu();
+
+        function init() {
+            var grid = $("#customer-grid").bootgrid({
+                rowCount: [50, 25, 10],
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+                        bdmode: -1
+                    };
+                },
+                url: "/restcustomer",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value!=null){
+                                temp = value.split('-');
+                                return temp[2]+'/'+temp[1]+'/'+temp[0];
+                            }
+                        }
+                    },
+                    money:{
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            return value+' тг';
+                        }
+                    },
+                    membership: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value>3000000) return '5 star';
+                            else if(2000000<value && value<3000000) return '4 star';
+                            else if(1200000<value && value<2000000) return '3 star';
+                            else if(600000<value && value<1200000) return '2 star';
+                            else if(300000<value && value<600000) return '1 star';
+                            else if(0<value && value<300000) return '0 star';
+//                            return value;
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.my_id + "\"><span class=\"glyphicon glyphicon-pencil\"></span></button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".command-edit").on("click", function(e)
+                {
+                    window.location="editclient/"+$(this).data("row-id");
+                });
+            });
+        }
+        init();
+    })
+
+</script>

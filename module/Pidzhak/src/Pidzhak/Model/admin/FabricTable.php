@@ -33,7 +33,11 @@ class FabricTable
             else
                 $select->limit($rowCount)->offset($offset);
             if($searchPhrase)
-                $select->where->like('id', '%'.strtolower($searchPhrase).'%')->OR->like('fabric_class', '%'.strtolower($searchPhrase).'%');
+                $select->where
+                    ->like('id', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('fabric_class', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%');
+
             $select->order($orderby);
         });
 

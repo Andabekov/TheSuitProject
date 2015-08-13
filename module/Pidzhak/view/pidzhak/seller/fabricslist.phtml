@@ -28,6 +28,7 @@
     $(function () {
         function init() {
             var grid = $("#fabric-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */

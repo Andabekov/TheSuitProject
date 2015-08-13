@@ -6,7 +6,7 @@
  * Time: 17:09
  */
 
-namespace Pidzhak\Form\Seller;
+namespace Pidzhak\Form\seller;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
@@ -49,7 +49,7 @@ class PhoneCallForm extends Form
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Заметки записи',
+                'label' => 'Заметки записи (время записи, что подготовить ко встрече)',
             ),
         ));
 
@@ -71,7 +71,7 @@ class PhoneCallForm extends Form
                 'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'Заметки напоминания',
+                'label' => 'Заметки напоминания (время напоминания, о чем напомнить)',
             ),
         ));
 

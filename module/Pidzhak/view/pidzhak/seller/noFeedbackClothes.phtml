@@ -21,10 +21,9 @@
         <tr>
             <th data-column-id="customer_full_name" data-order="desc">Клиент</th>
             <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+            <th data-column-id="textile_id">Ткань</th>
             <th data-type="datetime"  data-column-id="dateofsale">Продажа</th>
             <th data-type="datetime"  data-column-id="finished_date">Выдача</th>
-<!--            <th data-type="datetime" data-column-id="fitting_date">Примерка</th>-->
-<!--            <th data-column-id="arrival_comment">Дост. комм</th>-->
             <th data-column-id="seller_full_name">Продавец</th>
 
             <th data-header-css-class="sellerColumnBtn5" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
@@ -65,6 +64,7 @@
 
         function init() {
             var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -115,7 +115,7 @@
 
         switch (tailorId){
             case 1: $('#tailorName').val('Ирина'); break;
-            case 2: $('#tailorName').val('Мая'); break;
+            case 2: $('#tailorName').val('Майя'); break;
         }
 
         $('#myModal').dialog({

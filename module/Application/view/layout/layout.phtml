@@ -68,8 +68,8 @@
                             <a class="menuBtn child" href="/seller/myday">Мой день</a>
 
                             <a class="menuBtn header" href="#">Звонки</a>
-                            <a class="menuBtn child" href="/seller/calls">Звонки</a>
                             <a class="menuBtn child" href="/seller/createcall">Создать новый звонок</a>
+                            <a class="menuBtn child" href="/seller/calls">Звонки</a>
 
                             <a class="menuBtn header" href="#">Мои заказы</a>
                             <a class="menuBtn child" href="/customer/firststep">1. Создать новый заказ</a>
@@ -85,6 +85,7 @@
                             <a class="menuBtn child" href="/seller/givencloth">5. Оставить отзыв клиента</a>
 
                             <a class="menuBtn header" href="#">Мои клиенты</a>
+                            <a class="menuBtn child" href="/seller/clients">Изменить данные клиентов</a>
                             <a class="menuBtn child" href="/order">Поиск клиентов и изделии</a>
                             <a class="menuBtn child" href="/seller/happybd">Поздравить клиента с Д.Р.</a>
 
@@ -92,6 +93,8 @@
                             <a class="menuBtn child" href="/seller/finance">Финансовые операции</a>
                             <a class="menuBtn child" href="/seller/cert">Сертификаты</a>
                             <a class="menuBtn child" href="/seller/profit">Мои продажи</a>
+                            <a class="menuBtn child" href="/seller/tasks">Поручения</a>
+                            <a class="menuBtn child" href="/seller/email">Запрос бухгалтеру</a>
 
                             <a class="menuBtn header" href="#">Мои документы</a>
                             <a class="menuBtn child" href="/seller/cycleslist">Список циклов</a>';
@@ -103,24 +106,44 @@
                              <a class="menuBtn child" href="/redactor/myday">Мой день</a>
 
                              <a class="menuBtn header" href="#">Мои заказы</a>
-                             <a class="menuBtn child" href="/redactor">1. Обработать изделия</a>
-                             <a class="menuBtn child" href="#">2. Сверка кодов изделия</a>
-                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/inseller">2.1. У продавца</a>
-                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/inredactor">2.2. У редактора</a>
+                             <a class="menuBtn child" href="#">1. Обработать изделия</a>
+                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/regcycles">1.1. Обычные циклы</a>
+                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/urgentcycles">1.2. Срочные циклы</a>
+                             <a class="menuBtn child" href="/redactor/failcodecheck">2. Не прошли сверку кодов</a>
                              <a class="menuBtn child" href="/redactor/readyforprod">3. Отправить на производство</a>
                              <a class="menuBtn child" href="/redactor/readyforshipping">4. Организовать доставку</a>
+
+                            <a class="menuBtn header" href="#">Меню помощника</a>
+                             <a class="menuBtn child" href="/redactor/copypaste">1. Copy & Paste (у помощника)</a>
+                             <a class="menuBtn child" href="#">2. Сверка кодов изделия</a>
+                              <a class="menuBtn child" style="padding-left: 25px" href="/redactor/inseller">2.1. У продавца</a>
+                             <a class="menuBtn child" style="padding-left: 25px" href="/redactor/inredactor">2.2. Excel проверка(у помощника)</a>
+
+                            <a class="menuBtn header" href="#">Ткани</a>
+                            <a class="menuBtn child" href="#">1. В корзине</a>
+                           <a class="menuBtn child" style="padding-left: 25px" href="/redactor/basketreg">1.1. Обычные</a>
+                           <a class="menuBtn child" style="padding-left: 25px" href="/redactor/basketurgent">1.2. Срочные</a>
+                           <a class="menuBtn child" href="#">2. В пути</a>
+                           <a class="menuBtn child" style="padding-left: 25px" href="/redactor/comingreg">2.1. Обычные</a>
+                           <a class="menuBtn child" style="padding-left: 25px" href="/redactor/comingurgent">2.2. Срочные</a>
+
+
+                            <a class="menuBtn header" href="#">Мои запросы</a>
+                             <a class="menuBtn child" href="/redactor/requests">Запрос бухгалтеру</a>
+                            <a class="menuBtn child" href="/redactor/tasks">Поручения</a>
 
                              <a class="menuBtn header" href="#">Мои клиенты</a>
                              <a class="menuBtn child" href="/redactor/search">Поиск клиентов и изделии</a>
 
                              <a class="menuBtn header" href="#">Мои документы</a>
-                             <a class="menuBtn child" href="/redactor">Список тканей</a>
-                             <a class="menuBtn child" href="/redactor">Список циклов</a>
-                             <a class="menuBtn child" href="/redactor">Инструкция пользывателя</a>';
+                             <a class="menuBtn child" href="/redactor/fabricurl">Список тканей</a>
+                             <a class="menuBtn child" href="/redactor/cycleslist">Список циклов</a>';
 
                     $accountantMenu = '
                                         <a class="menuBtn child" href="/accountant">Финансовые операции</a>
                                         <a class="menuBtn child" href="/accountant/cert">Сертификаты</a>
+                                        <a class="menuBtn child" href="/accountant/requests">Запросы сотрудников</a>
+                                        <a class="menuBtn child" href="/accountant/tasks">Поручения сотрудникам</a>
                     ';
 
                     $directorMenu = '
@@ -145,35 +168,54 @@
                             <a class="menuBtn child" href="/director">Изменить список циклов</a>
                             <a class="menuBtn child" href="/director">Изменить инструкцию пользывателя</a>';
 
-                    $deliveryMenu = '';
+                    $deliveryMenu = '
+                            <button id="hideBtn" class="btn btn-default" onclick="hideMenu();"><span style="top: 2px;" class="glyphicon glyphicon-arrow-left"></span> Скрыть меню </button>
+
+
+                            <a class="menuBtn header" href="#">Меню</a>
+                            <a class="menuBtn child" href="/delivery">1. Copy & Paste (у помощника)</a>
+                            <a class="menuBtn child" href="#">2. Сверка кодов изделия</a>
+                            <a class="menuBtn child" style="padding-left: 25px" href="/delivery/inseller">2.1. У продавца</a>
+                            <a class="menuBtn child" style="padding-left: 25px" href="/delivery/inredactor">3.2. Excel проверка(у помощника)</a>
+                    ';
 
                     $adminMenu = '
                         <button id="hideBtn" class="btn btn-default" onclick="hideMenu();"><span style="top: 2px;" class="glyphicon glyphicon-arrow-left"></span> Скрыть меню </button>
 
-                          <a class="menuBtn header" href="/admin">Управление пользывателями</a>
+                          <a class="menuBtn header" href="/admin">Пользыватели</a>
                           <a class="menuBtn child" href="/admin/add">Добавить нового пользывателя</a>
 
-                          <a class="menuBtn header" href="/clients">Управление клиентами</a>
+                          <a class="menuBtn header" href="/penalties">Штрафы</a>
+                          <a class="menuBtn child" href="/penalties/add">Добавить новый штраф</a>
+
+                          <a class="menuBtn header" href="/clients">Клиенты</a>
                           <a class="menuBtn child" href="/clients/add">Добавить нового клиента</a>
 
-                          <a class="menuBtn header" href="/admin">Управление заказами</a>
+                          <a class="menuBtn header" href="/tailors">Портные</a>
+                          <a class="menuBtn child" href="/tailors/add">Добавить нового портного</a>
+
+                          <a class="menuBtn header" href="/admin">Заказы</a>
                           <a class="menuBtn child" href="/admin">Измененить статуса заказа</a>
 
-                          <a class="menuBtn header" href="/cycles">Управление циклами</a>
+                          <a class="menuBtn header" href="/cycles">Циклы</a>
                           <a class="menuBtn child" href="/cycles/add">Добавить новый цикл</a>
 
-                          <a class="menuBtn header" href="/styles">Управление стилями</a>
+                          <a class="menuBtn header" href="/styles">Стили</a>
                           <a class="menuBtn child" href="/styles/add">Добавить новый стиль</a>
 
                           <a class="menuBtn header" href="/fabrics">Ткани</a>
                           <a class="menuBtn child" href="/fabrics/add">Добавить новую ткань</a>
 
-                          <a class="menuBtn header" href="/prices">Управление прайс-листом</a>
+                          <a class="menuBtn header" href="#">Поставщики/Связи</a>
+                          <a class="menuBtn child" href="/suppliers">Поставщики</a>
+                          <a class="menuBtn child" href="/suppliers/connections">Связи</a>
+
+                          <a class="menuBtn header" href="/prices">Прайс-лист</a>
                           <a class="menuBtn child" href="/prices/add">Добавить новый прайс</a>
 
                           <a class="menuBtn header" href="/sms">СМС</a>
 
-                          <a class="menuBtn header" href="/admin">Управление документы</a>
+                          <a class="menuBtn header" href="/admin">Документы</a>
                           <a class="menuBtn child" href="/admin">Изменить инструкцию пользывателя</a>';
 
                     if ($this->identity() != null) {
@@ -197,6 +239,18 @@
             </div>
 
             <script>
+
+                $(function() {
+
+                    $(window).keydown(function (event) {
+                        if (event.keyCode == 13) {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
+
+                });
+
 
                 containerWidth = $('.container').css('width');
 
@@ -228,7 +282,7 @@
 
             <hr>
             <footer>
-                <p style="float: right;">&copy; <?php echo date('Y') ?> Pidzhak. <?php echo $this->translate('All rights reserved.') ?></p>
+                <p style="float: right;">&copy; <?php echo date('Y') ?> Developed by Abu Andabekov, +77016538609. <?php echo $this->translate('All rights reserved.') ?></p>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>

@@ -86,6 +86,7 @@ $this->headTitle($title);
     $(function () {
         function init() {
             $("#customer-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */

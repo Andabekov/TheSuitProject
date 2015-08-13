@@ -5,7 +5,7 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 <div class="header">
-    Список изделии в обработке
+    Поиск клиентов и изделий
 </div>
 
 <div class="col-md-9">
@@ -15,7 +15,9 @@
         <tr>
             <th data-header-css-class="cycleCol" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name">Клиент</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID</th>
             <th data-header-css-class="clothCol" data-column-id="clother">Изделие</th>
+            <th data-column-id="textile_id">Ткань</th>
             <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="dateofsale">Продажа</th>
             <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="preferred_date">Wish date</th>
             <th data-type="datetime" data-header-css-class="wishDateCol" data-column-id="cycle_date">Доставка</th>
@@ -41,6 +43,7 @@
 
         function init() {
             grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -64,9 +67,7 @@
                 formatters: {
                     "commands": function(column, row)
                     {
-                        return "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary IrinaTook\" data-row-id=\"" + row.my_id + "\">Показать замеры</button><br />" +
-                            "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' data-row-fullname='"+row.lastname+" "+row.middlename+" "+row.firstname+"' type=\"button\" class=\"btn btn-xs btn-primary MayaTook\" data-row-id=\"" + row.my_id + "\">Показать стиль</button><br />" +
-                            "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' type=\"button\" class=\"btn btn-xs btn-primary showComment2\">Показать отчёт</button>";
+                        return "<button data-row-status='"+row.status_id+"' data-row-comment='"+row.arrival_comment+"' type=\"button\" class=\"btn btn-xs btn-primary showComment2\">Показать отчёт</button>";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()
@@ -77,7 +78,8 @@
                     if($(this).data("row-status")==11 || $(this).data("row-status")==14 || $(this).data("row-status")==15){
                         alert('У данного изделия еще нет замеров!');
                     } else{
-                        var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+//                        var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+                        var url="http://adminpidzhak.kz/seller/watchold/"+$(this).data("row-id")
                         window.open(url, 'Старые замеры', "height=800,width=800");
                     }
                 }).end().find(".MayaTook").on("click", function(e)
@@ -85,7 +87,8 @@
                     if($(this).data("row-status")==1 || $(this).data("row-status")==10 || $(this).data("row-status")==11 || $(this).data("row-status")==14 || $(this).data("row-status")==15){
                         alert('У данного изделия еще кодов!');
                     } else{
-                        var url="http://localhost:8080/seller/watcholdcodes/"+$(this).data("row-id")
+//                        var url="http://localhost:8080/seller/watcholdcodes/"+$(this).data("row-id")
+                        var url="http://adminpidzhak.kz/seller/watcholdcodes/"+$(this).data("row-id");
                         window.open(url, 'Старый стиль', "height=800,width=800");
                     }
                     openDlg($(this).data("row-id"), 2, $(this).data("row-comment"));

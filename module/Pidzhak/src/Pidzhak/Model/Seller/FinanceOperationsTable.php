@@ -6,9 +6,10 @@
  * Time: 16:48
  */
 
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Sql;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
@@ -28,11 +29,24 @@ class FinanceOperationsTable
         return $resultSet;
     }
 
-    public function fetchPage($rowCount, $offset)
+    public function fetchPage($rowCount, $offset, $orderby, $searchPhrase)
     {
-        $resultSet = $this->tableGateway->select(function (Select $select) use ($rowCount, $offset) {
-            $select->limit($rowCount)->offset($offset);
+        $resultSet = $this->tableGateway->select(function (Select $select) use ($rowCount, $offset, $orderby, $searchPhrase) {
+            $select
+                ->limit($rowCount)
+                ->offset($offset)
+                ->order($orderby)
+                ->where
+                ->like('id', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                ->or
+                ->like('oper_type', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                ->or
+                ->like('oper_comment', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                ->or
+                ->like('oper_status', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+            ;
         });
+
 
         return $resultSet;
     }
@@ -56,11 +70,38 @@ class FinanceOperationsTable
 
     public function saveFinanceOperations(FinanceOperations $financeOperations)
     {
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table)
+            ->columns(array(new Expression("SUM(oper_cost) as total_cost")
+            ))
+        ;
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        $cashbox = $resultSet->current()->total_cost;
+        if($cashbox==null) $cashbox=0;
+
+        $sign = '';
+        switch($financeOperations->oper_type){
+            case "Затраты": $sign='-'; break;
+            case "Перевод (из кассы)": $sign='-'; break;
+            case "Клиент заплатил карточкой": $sign='-'; break;
+            case "Клиент должен денег": $sign='-'; break;
+            case "Клиент взял рассрочку": $sign='-'; break;
+            case "Клиент заплатил сертификатом": $sign='-'; break;
+        }
+
         $data = array(
             'oper_date' => $financeOperations->oper_date,
             'oper_type' => $financeOperations->oper_type,
             'oper_comment' => $financeOperations->oper_comment,
             'oper_status' => $financeOperations->oper_status,
+            'oper_cost' => $sign.$financeOperations->oper_cost,
+            'cashbox' => (int)$cashbox+(int)($sign.$financeOperations->oper_cost),
         );
 
         $id = (int) $financeOperations->id;

@@ -23,8 +23,11 @@
            data-keep-selection="true">
         <thead>
         <tr>
+            <th data-column-id="id" data-order="desc">Номер</th>
             <th data-type="datetime" data-column-id="oper_date" data-order="desc">Дата операции</th>
             <th data-column-id="oper_type" data-order="desc">Тип операции</th>
+            <th data-type="oper_cost" data-column-id="oper_cost">Сумма операции</th>
+            <th data-type="oper_cost" data-column-id="cashbox">Итого в кассе</th>
 <!--            <th data-column-id="oper_comment">Комментарии</th>-->
             <th data-column-id="oper_status">Статус</th>
 
@@ -62,10 +65,13 @@
 <script>
     $(function () {
 
+        hideMenu();
+
         $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd'});
 
         function init() {
             var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -81,6 +87,13 @@
                             temp = value.split('-');
                             return temp[2]+'/'+temp[1]+'/'+temp[0];
                         }
+                    },
+                    oper_cost: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null) return '0 тг';
+                            else return value+' тг';
+                        }
                     }
                 },
                 formatters: {
@@ -94,7 +107,8 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".enterCodes").on("click", function(e)
                 {
-                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+//                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+                    var url="http://adminpidzhak.kz/seller/watchold/"+$(this).data("row-id");
                     window.open(url, 'Старые замеры', "height=800,width=800");
 //                    openDlg($(this).data("row-id"), $(this).data("row-comment"), $(this).data("row-tailor"));
                 }).end().find(".showComment").on("click", function(e)
@@ -114,7 +128,7 @@
 
         switch (tailorId){
             case 1: $('#tailorName').val('Ирина'); break;
-            case 2: $('#tailorName').val('Мая'); break;
+            case 2: $('#tailorName').val('Майя'); break;
         }
 
         $('#myModal').dialog({

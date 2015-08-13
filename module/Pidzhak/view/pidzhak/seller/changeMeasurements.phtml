@@ -58,7 +58,7 @@ if($measurement_type==1){
                 <?php if($cloth_type==2) $element = $bm_form->get('butt_position'); ?>
                 <?php if($cloth_type==2) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==2) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==2) echo $this->formSelect($element); ?></td>
         </tr>
         <tr>
             <td>
@@ -83,10 +83,10 @@ if($measurement_type==1){
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==2) $element = $bm_form->get('seat'); ?>
-                <?php if($cloth_type==2) echo $this->formLabel($element); ?>
+                <?php if($cloth_type!=3) $element = $bm_form->get('seat'); ?>
+                <?php if($cloth_type!=3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==2) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type!=3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
@@ -146,52 +146,52 @@ if($measurement_type==1){
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==2 || $cloth_type==4) $element = $bm_form->get('back_waist_height'); ?>
-                <?php if($cloth_type==2 || $cloth_type==4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==2 || $cloth_type==3) $element = $bm_form->get('back_waist_height'); ?>
+                <?php if($cloth_type==2 || $cloth_type==3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==2 || $cloth_type==4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==2 || $cloth_type==3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==2 || $cloth_type==4) $element = $bm_form->get('front_waist_height'); ?>
-                <?php if($cloth_type==2 || $cloth_type==4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==2 || $cloth_type==3) $element = $bm_form->get('front_waist_height'); ?>
+                <?php if($cloth_type==2 || $cloth_type==3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==2 || $cloth_type==4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==2 || $cloth_type==3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type!=2 && $cloth_type!=4) $element = $bm_form->get('biceps'); ?>
-                <?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) $element = $bm_form->get('biceps'); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type!=2 && $cloth_type!=4) $element = $bm_form->get('back_shoulder'); ?>
-                <?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) $element = $bm_form->get('back_shoulder'); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type!=2 && $cloth_type!=4) $element = $bm_form->get('right_sleeve'); ?>
-                <?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) $element = $bm_form->get('right_sleeve'); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type!=2 && $cloth_type!=4) $element = $bm_form->get('left_sleeve'); ?>
-                <?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) $element = $bm_form->get('left_sleeve'); ?>
+                <?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type!=2 && $cloth_type!=3) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type!=2 && $cloth_type!=4) $element = $bm_form->get('back_length'); ?>
-                <?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formLabel($element); ?>
+                <?php if($cloth_type!=5 && $cloth_type!=2) $element = $bm_form->get('back_length'); ?>
+                <?php if($cloth_type!=5 && $cloth_type!=2) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type!=2 && $cloth_type!=4) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type!=5 && $cloth_type!=2) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
@@ -209,17 +209,17 @@ if($measurement_type==1){
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==3) $element = $bm_form->get('right_wrist'); ?>
-                <?php if($cloth_type==3) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==4) $element = $bm_form->get('right_wrist'); ?>
+                <?php if($cloth_type==4) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==3) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==4) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==3) $element = $bm_form->get('left_wrist'); ?>
-                <?php if($cloth_type==3) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==4) $element = $bm_form->get('left_wrist'); ?>
+                <?php if($cloth_type==4) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==3) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==4) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
@@ -382,24 +382,24 @@ if($measurement_type==1){
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==3) $element = $cm_form->get('right_cuff'); ?>
-                <?php if($cloth_type==3) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==4) $element = $cm_form->get('right_cuff'); ?>
+                <?php if($cloth_type==4) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==3) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==4) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==3) $element = $cm_form->get('left_cuff'); ?>
-                <?php if($cloth_type==3) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==4) $element = $cm_form->get('left_cuff'); ?>
+                <?php if($cloth_type==4) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==3) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==4) echo $this->formText($element); ?></td>
         </tr>
         <tr>
             <td>
-                <?php if($cloth_type==3) $element = $cm_form->get('shirt_neck'); ?>
-                <?php if($cloth_type==3) echo $this->formLabel($element); ?>
+                <?php if($cloth_type==4) $element = $cm_form->get('shirt_neck'); ?>
+                <?php if($cloth_type==4) echo $this->formLabel($element); ?>
             </td>
-            <td><?php if($cloth_type==3) echo $this->formText($element); ?></td>
+            <td><?php if($cloth_type==4) echo $this->formText($element); ?></td>
         </tr>
     </table>
     <a class="btn btn-default" onclick="goBack()">Отмена</a>
@@ -414,4 +414,11 @@ if($measurement_type==1){
     function goBack(){
         window.location = '../changeorder';
     }
+
+    $('input[name=u_rise]').bind("change paste keyup", function() {
+        $('input[name=u_rise_auto]').val(parseInt($(this).val())-2);
+    });
+    $('input[name=u_rise_auto]').bind("change paste keyup", function() {
+        $('input[name=u_rise]').val(parseInt($(this).val())+2);
+    });
 </script>

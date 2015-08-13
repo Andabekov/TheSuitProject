@@ -1,0 +1,55 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 12/08/2015
+ * Time: 14:11
+ */
+?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="header">
+    Добавление нового поручения
+</div>
+
+<b>Тип поручения:</b>
+<select class="form-control" id="task_type" name="task_type">
+    <option value="0">Не выбрано</option>
+    <option value="Продавцы">Продавцы</option>
+    <option value="Редактор">Редактор</option>
+    <option value="Все сотрудники">Все сотрудники</option>
+    <option value="Ернар">Ернар</option>
+</select>
+<br />
+
+<b>Сроки выполнения:</b>
+<input id="task_due_date" name="task_due_date" class="form-control" />
+<br />
+
+<b>Комментарий:</b><br>
+<textarea id="task_body" name="task_body" class="form-control" style="height: 280px;"></textarea><br>
+
+<a href="tasks" class="btn btn-default">Отмена</a>
+<button class="btn btn-primary" onclick="sendTask()">Отправить</button>
+
+<script>
+    $(function () {
+        $("#task_due_date").datepicker({dateFormat: 'yy-mm-dd'});
+    });
+
+    function sendTask(){
+        if($('#task_type').val()==0){
+            alert('Выберите тип поручения!');
+        } else if($('#task_due_date').val()==''){
+            alert('Укажите сроки выполнения поручения!');
+        } else if($('#task_body').val()==''){
+            alert('Поручение не может быть пустым!');
+        } else{
+            $.post( "addtask", { task_body: $('#task_body').val(), task_due_date: $('#task_due_date').val(), task_type: $('#task_type').val() } ).done(function( data ) {
+                window.location='tasks';
+            });
+        }
+    }
+</script>

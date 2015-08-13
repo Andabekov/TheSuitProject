@@ -6,7 +6,7 @@
  * Time: 17:09
  */
 
-namespace Pidzhak\Form\Seller;
+namespace Pidzhak\Form\seller;
 
 use Zend\Form\Form;
 
@@ -33,6 +33,17 @@ class FinanceOperationsForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'oper_cost',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Сумма операции',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'oper_type',
             'type' => 'Select',
             'attributes' => array(
@@ -43,9 +54,15 @@ class FinanceOperationsForm extends Form
                 'empty_option' => 'Не выбрано',
                 'value_options' => array(
                     'Поступление' => 'Поступление',
-                    'Перевод' => 'Перевод',
                     'Затраты' => 'Затраты',
-                    'Бухгалтерия' => 'Бухгалтерия',
+                    'Перевод (из кассы)' => 'Перевод (из кассы)',
+                    'Перевод (на кассу)' => 'Перевод (на кассу)',
+                    'Клиент заплатил карточкой' => 'Клиент заплатил карточкой',
+                    'Клиент должен денег' => 'Клиент должен денег',
+                    'Клиент взял рассрочку' => 'Клиент взял рассрочку',
+                    'Клиент вернул долг' => 'Клиент вернул долг',
+                    'Клиент заплатил сертификатом' => 'Клиент заплатил сертификатом',
+                    'Штрафы/Бонусы' => 'Штрафы/Бонусы',
                 ),
             ),
         ));

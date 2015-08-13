@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Form\Seller;
+namespace Pidzhak\Form\seller;
 
 use Zend\Form\Form;
 use  Zend\Form\Element\Hidden;

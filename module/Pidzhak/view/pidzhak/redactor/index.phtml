@@ -13,17 +13,22 @@
     Изделия в обработке
 </div>
 
+<span style="float: right;">Поисковик работает только с помеченными (*) столбцами. Например: "14+Пиджак".</span>
+
 <div class="col-md-9">
     <table id="ordercloth-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
            data-keep-selection="true">
         <thead>
         <tr>
-            <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
-            <th data-column-id="customer_full_name" >Клиент</th>
-            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
+            <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл*</th>
+            <th data-column-id="customer_full_name" >Клиент*</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID*</th>
+            <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие*</th>
             <th data-column-id="fabric_class">Класс ткани</th>
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
-            <th data-column-id="seller_full_name">Продовец</th>
+            <th data-type="code" data-column-id="code_status">Code status</th>
+            <th data-type="fabric_status" data-column-id="fabric_status">Fabric status</th>
+            <th data-column-id="seller_full_name">Продовец*</th>
 
             <th data-header-css-class="redactorColumnBtn" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
@@ -34,10 +39,15 @@
 <script>
     var test;
 
+    var redactor_ids='';
+
     $(function () {
+
+        hideMenu();
 
         function init() {
             var grid = $("#ordercloth-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -49,13 +59,51 @@
                     };
                 },
                 url: "/restorderclothes",
+                converters: {
+                    code: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){
+                                return 'New';
+                            } else if(value==1){
+                                return 'Some codes';
+                            } else if(value==2){
+                                return 'Waiting fabric';
+                            } else if(value==3){
+                                return 'Ready';
+                            } else if(value==4){
+                                return 'Returned';
+                            }  else if(value==5){
+                                return 'Waiting response';
+                            } else if(value==6){
+                                return 'Need to order fabric';
+                            } else if(value==111){
+                                return 'Аннулированный';
+                            }
+                        }
+                    },
+                    fabric_status: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null || value==0){
+                                return 'New';
+                            } else if(value==2){
+                                return 'Waiting fabric';
+                            } else if(value==3){
+                                return 'Ready';
+                            } else if(value==6){
+                                return 'Need to order fabric';
+                            }
+                        }
+                    }
+                },
                 formatters: {
                     "commands": function(column, row)
                     {
                         return "<button type=\"button\" class=\"btn btn-xs btn-primary enterCodes\" data-row-id=\"" + row.my_id + "\">Ввести коды</button><br />" +
                             "<button type=\"button\" class=\"btn btn-xs btn-primary checkCodes\" data-row-id=\"" + row.my_id + "\">Просмотреть <br>коды</button> <br />"+
 //                            "<button type=\"button\" class=\"btn btn-xs btn-primary compareCodes\" data-row-id=\"" + row.my_id + "\">Сравнить коды</button> <br />"+
-                            "<button type=\"button\" class=\"btn btn-xs btn-success presubmit\" data-row-id=\"" + row.my_id + "\">Отправить <br>на проверку <br>продавцу</button><br>"+
+//                            "<button type=\"button\" class=\"btn btn-xs btn-success presubmit\" data-row-id=\"" + row.my_id + "\">Отправить <br>на проверку <br>продавцу</button><br>"+
                             "<button type=\"button\" class=\"btn btn-xs btn-danger denyCloth\" data-row-id=\"" + row.my_id + "\">Аннулировать</button>";
                     }
                 }
@@ -64,10 +112,22 @@
                 /* Executes after data is loaded and rendered */
                 grid.find(".enterCodes").on("click", function(e)
                 {
-                    window.location="redactor/entercodes/"+$(this).data("row-id");
+//                    window.location="redactor/entercodes/"+$(this).data("row-id");
+                    window.open("redactor/entercodes/"+$(this).data("row-id"), '_blank');
                 }).end().find(".checkCodes").on("click", function(e)
                 {
-                    window.location="redactor/watchcodes/"+$(this).data("row-id");
+                    if(redactor_ids=='') {
+                        <?php
+                            $js_array = json_encode($ids);
+                            echo "redactor_ids = ". $js_array . ";\n";
+                        ?>
+                    }
+
+                    if(redactor_ids.indexOf($(this).data("row-id"))==-1){
+                        alert('Введите коды, прежде чем просмотреть их!')
+                    } else{
+                        window.open("redactor/watchcodes/"+$(this).data("row-id"), '_blank');
+                    }
                 }).end().find(".compareCodes").on("click", function(e)
                 {
                     window.location="redactor/compare/"+$(this).data("row-id");
@@ -112,8 +172,25 @@
                         });
                 });
             });
+
+            $('button[title=Refresh]').click(function(){
+                $.ajax({
+                    url: '/redactor/idsajax',
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+                    data: {},
+                    success: function (data) {
+                        redactor_ids=data.message;
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
         }
         init();
+
     })
 
 </script>

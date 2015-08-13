@@ -1,0 +1,112 @@
+
+<div class="header">
+    Сверить КОДы
+</div>
+
+<?php
+if($xls_data!='' && $xls_data!='firsttime'){
+    ?>
+    <h3>
+        Сверка кодов прошла <span style="color: red">НЕ УСПЕШНО!</span>
+    </h3>
+    <h5>
+        <ul>
+            <li>Кол-во кодов в Гонконгской системе равняется кол-ву кодов в системе "Adminpidzhak" -
+                <?php
+                    if($xls_data['codesAmountError']!='')
+                        echo '<span style="color: red">НЕ УСПЕШНО</span>';
+                    else
+                        echo '<span style="color: green">УСПЕШНО</span>';?>
+            </li>
+            <li>Коды в Гонконгской системе идентичны кодам в системе "Adminpidzhak" -
+                <?php
+                    if($xls_data['codesError']!='')
+                        echo '<span style="color: red">НЕ УСПЕШНО</span>';
+                    else
+                        echo '<span style="color: green">УСПЕШНО</span>'?>
+            </li>
+            <li>Основная ткань в Гонконгской системе идентична основной такни в системе "Adminpidzhak" -
+                <?php
+                    if($xls_data['fabricNumberError']!='')
+                        echo '<span style="color: red">НЕ УСПЕШНО</span>';
+                    else
+                        echo '<span style="color: green">УСПЕШНО</span>';?>
+            </li>
+            <li>Дополнительные ткани в Гонконгской системе идентичны дополнительным тканям в системе "Adminpidzhak" -
+                <?php
+                    if($xls_data['systemOptionalFabricError']!='')
+                        echo '<span style="color: red">НЕ УСПЕШНО</span>';
+                    else
+                        echo '<span style="color: green">УСПЕШНО</span>';?>
+            </li>
+<!--            <li>Кол-во замеров в Гонконгской системе равняется кол-ву замеров в системе "Adminpidzhak" --->
+<!--                --><?php
+//                    if($xls_data['measurementsAmountError']!='')
+//                        echo '<span style="color: red">НЕ УСПЕШНО</span>';
+//                    else
+//                        echo '<span style="color: green">УСПЕШНО</span>';?>
+<!--            </li>-->
+            <li>Замеры в Гонконгской системе идентичны замерам в системе "Adminpidzhak" -
+                <?php
+                    if($xls_data['measurementsError']!='')
+                        echo '<span style="color: red">НЕ УСПЕШНО</span>';
+                    else
+                        echo '<span style="color: green">УСПЕШНО</span>';?>
+            </li>
+            <li>Текст монограммы в Гонконгской системе идентичен тексту монограммы в системе "Adminpidzhak" (не проверяет при наличии специальных символов) -
+                <?php
+                if($xls_data['monogramError1']!='' || $xls_data['monogramError2']!='')
+                    echo '<span style="color: red">НЕ УСПЕШНО</span>';
+                else
+                    echo '<span style="color: green">УСПЕШНО</span>';?>
+            </li>
+        </ul>
+    </h5>
+<?php
+} else if($xls_data==''){
+    ?>
+    <h3>
+        Сверка кодов прошла <span style="color: green">УСПЕШНО!</span>
+    </h3>
+    <h5>
+        <ul>
+            <li>Кол-во кодов в Гонконгской системе равняется кол-ву кодов в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+            <li>Коды в Гонконгской системе идентичны кодам в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+            <li>Основная ткань в Гонконгской системе идентична основной такни в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+            <li>Дополнительные ткани в Гонконгской системе идентичны дополнительным тканям в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+            <li>Кол-во замеров в Гонконгской системе равняется кол-ву замеров в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+            <li>Замеры в Гонконгской системе идентичны замерам в системе - "Adminpidzhak" -  <span style="color: green">УСПЕШНО</span></li>
+            <li>Тип замера в Гонконгской системе идентичен типу замера в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+            <li>Текст монограммы в Гонконгской системе идентичен тексту монограммы в системе "Adminpidzhak" - <span style="color: green">УСПЕШНО</span></li>
+        </ul>
+    </h5>
+    <h4>
+        Статус заказа был изменен!
+    </h4>
+<?php
+}
+?>
+
+
+<div style="padding-bottom: 10px;">
+    Для того чтобы <i>сверить коды</i>, введенные в систему редактором, с выгруженными кодами (с другой системы) выберите нужный <i>Exel файл</i>:
+</div>
+
+<?php
+$form->setAttribute('action', $this->url('redactor', array('action' => 'newcompare', 'id' => $id)));
+$form->setAttribute('class', 'form-horizontal');
+?>
+<?php $form->prepare(); // The correct enctype is set here ?>
+<?php echo $this->form()->openTag($form); ?>
+
+<div style="padding-bottom: 10px;">
+    <?php $fileElement = $form->get('excel-file');?>
+    <!--    --><?php //echo $this->formLabel($fileElement); ?>
+    <?php echo $this->formFile($fileElement);  ?>
+    <?php echo $this->formElementErrors($fileElement); ?>
+</div>
+
+<a class="btn btn-default" onclick="window.location='../inredactor'">Отмена</a>
+<button class="btn btn-primary">Сравнить</button>
+
+<?php echo $this->form()->closeTag(); ?>

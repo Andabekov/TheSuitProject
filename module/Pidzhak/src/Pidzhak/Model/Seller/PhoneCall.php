@@ -6,7 +6,7 @@
  * Time: 23:35
  */
 
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -92,10 +92,11 @@ class PhoneCall implements InputFilterAwareInterface
 
             $inputFilter->add(array(
                 'name'     => 'remind_comment',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
-                    array('name' => 'Int'),
-                ),
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                )
             ));
 
 

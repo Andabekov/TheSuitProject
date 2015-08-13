@@ -37,7 +37,25 @@ class CycleTable
                     $select->offset(0);
                 else
                     $select->limit($rowCount)->offset($offset);
+
                 $select->order($orderby);
+
+//                if($searchPhrase)
+//                    $select->where
+//                        ->like('cert_num', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                        ->OR
+//                        ->like('given_date', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                        ->OR
+//                        ->like('valid_date', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                        ->OR
+//                        ->like('cost', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                        ->OR
+//                        ->like('name', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                        ->OR
+//                        ->like('surname', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                        ->OR
+//                        ->like('status', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+//                    ;
 
             });
         } else{

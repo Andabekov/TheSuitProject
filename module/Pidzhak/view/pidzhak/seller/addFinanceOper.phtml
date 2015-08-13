@@ -32,14 +32,55 @@ echo $this->formHidden($form->get('id'));
             </td>
             <td><?php echo $this->formSelect($element); ?></td>
         </tr>
-
-        <tr>
+        <tr class="financeOper">
+            <td>
+                <?php $element = $form->get('oper_cost'); ?>
+                <?php echo $this->formLabel($element); ?>
+            </td>
+            <td><?php echo $this->formText($element); ?></td>
+        </tr>
+        <tr class="financeOper">
             <td>
                 <?php $element = $form->get('oper_comment'); ?>
                 <?php echo $this->formLabel($element); ?>
             </td>
             <td><?php echo $this->formTextArea($element); ?></td>
         </tr>
+
+        <tr class="penaltyRow" style="display: none;">
+            <td><b>Тип штрафа:</b></td>
+            <td>
+                <select id="penalty_name" name="penalty_name" class="form-control">
+                    <option value="">Не выбрано</option>
+                    <?php
+                        foreach($this->penalties as $key => $item){
+                            echo '<option value="'.$item.'">'.$key.'</option>';
+                        }
+                    ?>
+                </select>
+                <input id="penalty_type" name="penalty_type" style="display: none;"/>
+            </td>
+        </tr>
+        <tr class="penaltyRow" style="display: none;">
+            <td><b>Продавец:</b></td>
+            <td>
+                <select id="seller_id" name="seller_id" class="form-control">
+                    <option value="">Не выбрано</option>
+                    <?php
+                        foreach($this->sellers as $key => $item){
+                            echo '<option value="'.$item.'">'.$item.'</option>';
+                        }
+                    ?>
+                </select>
+            </td>
+        </tr>
+        <tr class="penaltyRow" style="display: none;">
+            <td><b>Комментарии</b></td>
+            <td>
+                <textarea class="form-control" disabled id="penalty_comment"></textarea>
+            </td>
+        </tr>
+
     </table>
 
     <br />
@@ -51,31 +92,253 @@ echo $this->formHidden($form->get('id'));
 
 <script>
     $(function() {
+
         $('textarea[name=oper_comment]').css('width', '320px');
         $('textarea[name=oper_comment]').css('height', '110px');
 
         $('select[name=oper_type]').change(function() {
             switch($(this).val()){
-                case 'Поступление': $('textarea[name=oper_comment]').val(
-                                                                            'Способ оплаты: \n' +
-                                                                            'Счет поступления: \n' +
-                                                                            'Итого оплачено: тенге \n' +
-                                                                            'Итого в кассе шоурума: тенге \n'
+                case 'Поступление':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                                                                            'Откуда поступило: \n' +
+                                                                            'Способ оплаты: наличные/карточка \n'
                 ); break;
-                case 'Перевод': $('textarea[name=oper_comment]').val(
-                                                                        'Счет списания: \n' +
-                                                                        'Счет поступления: \n' +
-                                                                        'Итого переведено: тенге \n' +
-                                                                        'Итого в кассе шоурума: тенге \n'
+                case 'Перевод (из кассы)':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                                                                        'Куда перевели: \n'
                 ); break;
-                case 'Затраты': $('textarea[name=oper_comment]').val(
-                                                                        'Счет списания: \n' +
-                                                                        'Итого затрат: тенге \n' +
-                                                                        'Итого в кассе шоурума: тенге \n'
+                case 'Перевод (на кассу)':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                                                                        'Откуда перевели: \n'
                 ); break;
+                case 'Затраты':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                                                                        'Куда потрачено: \n'
+                ); break;
+                case 'Клиент заплатил карточкой':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                    'Имя клиента: \n'
+                ); break;
+                case 'Клиент должен денег':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                    'Имя клиента: \n'
+                ); break;
+                case 'Клиент взял рассрочку':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                    'Имя клиента: \n'
+                ); break;
+                case 'Клиент вернул долг':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                    'Имя клиента: \n'
+                ); break;
+                case 'Клиент заплатил сертификатом':
+                    $('.financeOper').show(); $('.penaltyRow').hide();
+                    $('textarea[name=oper_comment]').val(
+                    'Имя клиента: \n'+
+                    'Номер сертификата: \n'
+                ); break;
+
+                case 'Штрафы/Бонусы':
+                    $('.financeOper').hide(); $('.penaltyRow').show();
+                    break;
+            }
+        });
+
+        $('#penalty_name').change(function(){
+            $('#penalty_comment').val($(this).val());
+        });
+
+        $('form').submit(function( event ) {
+            if($('select[name=oper_type]').val()=='Штрафы/Бонусы'){
+                if($('#penalty_name').val()==''){
+                    alert("Выберите тип штрафа!");
+                    event.preventDefault();
+                } else if($('#seller_id').val()==''){
+                    alert("Выберите продавца!");
+                    event.preventDefault();
+                } else{
+                    $('#penalty_type').val($("#penalty_name option:selected").text());
+                    $('form').submit();
+                }
+
+            } else {
+                $('form').submit();
             }
         });
     });
 
+</script>
 
+
+
+<div class="col-md-9">
+    <table id="order-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="id" data-order="desc">Номер</th>
+            <th data-type="datetime" data-column-id="oper_date" data-order="desc">Дата операции</th>
+            <th data-column-id="oper_type" data-order="desc">Тип операции</th>
+            <th data-type="oper_cost" data-column-id="oper_cost">Сумма операции</th>
+            <th data-type="oper_cost" data-column-id="cashbox">Итого в кассе</th>
+            <!--            <th data-column-id="oper_comment">Комментарии</th>-->
+            <th data-column-id="oper_status">Статус</th>
+
+            <th data-header-css-class="sellerColumnBtn5" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+
+        </tr>
+        </thead>
+
+    </table>
+    <!--/div-->
+</div>
+
+
+<div id="myModal" style="display: none; text-align: center">
+
+    <input style="display: none" id="order_cloth_id" />
+    <input style="display: none;" id="oldComment" />
+    <input style="display: none;" id="tailorName" />
+
+    <table style="width: 100%; text-align: left;">
+        <tr>
+            <td>Отзыв:</td>
+            <td><textarea required="true" id="comment" class="form-control" style="width: 350px;"></textarea></td>
+        </tr>
+    </table>
+
+    <button onclick="closeDlg()" class="btn btn-default" style="margin-top: 8px; margin-right:10px;">Отмена</button>
+    <button onclick="setArrived();" class="btn btn-primary" style="margin-top: 8px;">Отправить</button>
+
+</div>
+
+<div id="tracking" style="display: none;">
+</div>
+
+<script>
+    $(function () {
+
+        hideMenu();
+
+        function init() {
+            var grid = $("#order-grid").bootgrid({
+                rowCount: [50, 25, 10],
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                    };
+                },
+                url: "/restfinance",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    },
+                    oper_cost: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            if(value==null) return '0 тг';
+                            else return value+' тг';
+                        }
+                    }
+                },
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button data-row-comment='"+row.oper_comment+"' type=\"button\" class=\"btn btn-xs btn-primary showComment\">Подробности</button><br />";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".enterCodes").on("click", function(e)
+                {
+//                    var url="http://localhost:8080/seller/watchold/"+$(this).data("row-id")
+                    var url="http://adminpidzhak.kz/seller/watchold/"+$(this).data("row-id");
+                    window.open(url, 'Старые замеры', "height=800,width=800");
+//                    openDlg($(this).data("row-id"), $(this).data("row-comment"), $(this).data("row-tailor"));
+                }).end().find(".showComment").on("click", function(e)
+                {
+                    showCommentDlg($(this).data("row-comment"));
+                });
+            });
+        }
+        init();
+    });
+
+    function openDlg(id, comment, tailorId){
+
+        $('#order_cloth_id').val(id);
+        $('#comment').css('width','500px');
+        $('#oldComment').val(comment);
+
+        switch (tailorId){
+            case 1: $('#tailorName').val('Ирина'); break;
+            case 2: $('#tailorName').val('Майя'); break;
+        }
+
+        $('#myModal').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 600,
+            height: 200,
+            title: 'Оставить отзыв клиента'
+        });
+    }
+
+    function closeDlg(){
+        $('#myModal').dialog('close');
+    }
+
+    function setArrived(){
+        if($('#order_cloth_id').val()!='')
+            $.post( "feedback", { id: $('#order_cloth_id').val(), comment: $('#oldComment').val() +'<br>' +'Отзыв оставлен '+getToday()+': '+ $('#comment').val() } ).done(function( data ) {
+                closeDlg();
+                $('#order-grid').bootgrid('reload');
+            });
+    }
+
+    function showCommentDlg(comment){
+        $('#tracking').html(comment);
+
+        $('#tracking').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            width: 500,
+            height: 335,
+            title: 'Комментарий'
+        });
+    }
+
+    function getToday(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+        var today = dd+'/'+mm+'/'+yyyy;
+
+        return today;
+    }
 </script>

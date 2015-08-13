@@ -21,10 +21,13 @@
         <tr>
             <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name" >Клиент</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID</th>
             <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
-            <th data-column-id="fabric_class">Класс ткани</th>
+<!--            <th data-column-id="fabric_class">Класс ткани</th>-->
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
-            <th data-column-id="seller_full_name">Продовец</th>
+<!--            <th data-column-id="seller_full_name">Продовец</th>-->
+            <th data-type="datetime" data-column-id="production_start_date">Start date</th>
+            <th data-type="datetime" data-column-id="production_finish_date">Due date</th>
 
             <th data-header-css-class="redactorColumnBtn3" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
@@ -59,6 +62,7 @@
 
         function init() {
             var grid = $("#ordercloth-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -70,6 +74,15 @@
                     };
                 },
                 url: "/restorderclothes",
+                converters: {
+                    datetime: {
+                        from: function (value) { return value; },
+                        to: function (value) {
+                            temp = value.split('-');
+                            return temp[2]+'/'+temp[1]+'/'+temp[0];
+                        }
+                    }
+                },
                 formatters: {
                     "commands": function(column, row)
                     {

@@ -16,11 +16,12 @@ use Zend\Http\Client;
 class SmsXmlParser
 {
 
-    private static $uri = 'https://sms-yessms.com/xml/xml.php';
+//    private static $uri = 'https://sms-yessms.com/xml/xml.php';
+    private static $uri = 'https://62.210.102.43/xml/xml.php';
     private static $username = 'pidzhakkz';
     private static $password = 'eRywRApQ';
     private static $sender = 'MESSAGE';
-    private static $header = 'PIDZHAK.KZ';
+    private static $header = 'PIDZHAK.KZ ';
 
     public static function testXml()
     {

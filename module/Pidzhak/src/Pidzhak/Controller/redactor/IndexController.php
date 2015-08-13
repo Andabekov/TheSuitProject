@@ -10,25 +10,21 @@
 namespace Pidzhak\Controller\redactor;
 
 use PHPExcel_IOFactory;
-use Pidzhak\Form\admin\StyleForm;
-use Pidzhak\Form\Redactor\BodyMeasureForm;
-use Pidzhak\Form\Redactor\ClothMeasureForm;
-use Pidzhak\Form\Redactor\OrderClothesEnForm;
+use Pidzhak\Form\redactor\BodyMeasureForm;
+use Pidzhak\Form\redactor\ClothMeasureForm;
+use Pidzhak\Form\redactor\FileUploadForm;
+use Pidzhak\Form\redactor\OrderClothesEnForm;
 use Pidzhak\Form\redactor\TestModelForm;
-use Pidzhak\Form\Redactor\UploadForm;
-use Pidzhak\Form\Redactor\OrderClothesForm;
+use Pidzhak\Form\redactor\UploadForm;
+use Pidzhak\Form\redactor\OrderClothesForm;
 use Pidzhak\Model\redactor\OrderClothes;
 use Pidzhak\Model\redactor\SystemCode;
-use Pidzhak\Model\redactor\TestModel;
-use Pidzhak\Model\Seller\BodyMeasure;
-use Pidzhak\Model\Seller\ClotherMeasure;
-use Zend\Http\Client\Adapter\Test;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-
+    protected $cycleTable;
     protected $orderTable;
     protected $orderclothesTable;
     protected $orderclothesTableEn;
@@ -38,6 +34,73 @@ class IndexController extends AbstractActionController
     protected $clotherMeasureTable;
     protected $customerTable;
     protected $authservice;
+    protected $taskTable;
+
+    public function addrequestAction(){
+        $request_type = $this->params()->fromPost('request_type');
+        $request_body = $this->params()->fromPost('request_body');
+
+        if($request_body!='' && $request_type!=''){
+            $this->getOrderClothesTable()->addRequest($request_type, $request_body);
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/redactor/addRequest.phtml');
+        return $view;
+    }
+
+    public function requestsAction(){
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/redactor/requests.phtml');
+        return $view;
+    }
+
+    public function cycleslistAction()
+    {
+        $view = new ViewModel(array(
+            'cycle' => $this->getCycleTable()->fetchAll(),
+        ));
+        $view->setTemplate('pidzhak/redactor/cyclesList.phtml');
+        return $view;
+    }
+
+    public function fabricurlAction(){
+
+        $url = $this->params()->fromPost('url');
+        if($url!=''){
+            $this->getOrderClothesTable()->setFabricUrl($url);
+        }
+
+        $url = $this->getOrderClothesTable()->getFabricUrl()['url'];
+
+        $view = new ViewModel(array(
+            'url'=>$url
+        ));
+        $view->setTemplate('pidzhak/redactor/fabricurl.phtml');
+        return $view;
+    }
+
+    public function idsajaxAction(){
+
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $message = '';
+
+        if ($request->isPost()) {
+
+            $orderclothesEN = $this->getOrderClothesTableEn()->fetchAll();
+            $orderClothRedactorIds=array();
+
+            foreach ($orderclothesEN as $clothes) {
+                array_push($orderClothRedactorIds, (int) $clothes->order_cloth_id);
+            }
+
+            $message=$orderClothRedactorIds;
+        }
+
+        $response->setContent(\Zend\Json\Json::encode(array('success' => 1, 'message' => $message)));
+        return $response;
+    }
 
     public function searchAction(){
 
@@ -55,10 +118,67 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('pidzhak');
         }
 
-        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $orderclothesEN = $this->getOrderClothesTableEn()->fetchAll();
+        $orderClothRedactorIds=array();
+
+        foreach ($orderclothesEN as $clothes) {
+            array_push($orderClothRedactorIds, (int) $clothes->order_cloth_id);
+        }
+
+        $view = new ViewModel(array(
+            'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
+            'ids' => $orderClothRedactorIds
+        ));
         $view->setTemplate('pidzhak/redactor/index.phtml');
         return $view;
     }
+
+    public function regcyclesAction(){
+        if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
+            return $this->redirect()->toRoute('pidzhak');
+        }
+
+        $orderclothesEN = $this->getOrderClothesTableEn()->fetchAll();
+        $orderClothRedactorIds=array();
+
+        foreach ($orderclothesEN as $clothes) {
+            array_push($orderClothRedactorIds, (int) $clothes->order_cloth_id);
+        }
+
+        $assistants = $this->getOrderClothesTable()->getAssistantsList();
+
+        $view = new ViewModel(array(
+            'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
+            'ids' => $orderClothRedactorIds,
+            'assistants' => $assistants,
+        ));
+        $view->setTemplate('pidzhak/redactor/regcycles.phtml');
+        return $view;
+    }
+
+    public function urgentcyclesAction(){
+        if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
+            return $this->redirect()->toRoute('pidzhak');
+        }
+
+        $orderclothesEN = $this->getOrderClothesTableEn()->fetchAll();
+        $orderClothRedactorIds=array();
+
+        foreach ($orderclothesEN as $clothes) {
+            array_push($orderClothRedactorIds, (int) $clothes->order_cloth_id);
+        }
+
+        $assistants = $this->getOrderClothesTable()->getAssistantsList();
+
+        $view = new ViewModel(array(
+            'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
+            'ids' => $orderClothRedactorIds,
+            'assistants' => $assistants,
+        ));
+        $view->setTemplate('pidzhak/redactor/urgentcycles.phtml');
+        return $view;
+    }
+
 
     public function mydayAction(){
         $from_date = $this->params()->fromQuery('from_date');
@@ -88,6 +208,26 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
+    public function sendtosellerAction(){
+        $id = $this->params()->fromPost('id');
+        $excel_order_id = $this->params()->fromPost('order_id');
+
+        if($id!='' && $excel_order_id!='') {
+            $this->getOrderClothesTable()->sendToSeller($id, $excel_order_id);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'copypaste'));
+    }
+
+    public function backtoredactorAction(){
+        $id = $this->params()->fromPost('id');
+        $assist_comment = $this->params()->fromPost('assist_comment');
+
+        if($id!='' && $assist_comment!='') {
+            $this->getOrderClothesTable()->backToRedactor($id, $assist_comment);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'copypaste'));
+    }
+
     public function setstatus3Action(){
         $id = $this->params()->fromPost('id');
         if($id!=''){
@@ -113,24 +253,28 @@ class IndexController extends AbstractActionController
     }
 
     public function insellerAction(){
-        $view = new ViewModel(array(
-            //
-        ));
+        $view = new ViewModel();
         $view->setTemplate('pidzhak/redactor/inseller.phtml');
         return $view;
     }
 
     public function inredactorAction(){
-        $view = new ViewModel(array(
-            //
-        ));
+        $view = new ViewModel();
         $view->setTemplate('pidzhak/redactor/inredactor.phtml');
+        return $view;
+    }
+
+    public function failcodecheckAction(){
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/redactor/failExcelCodeCheck.phtml');
         return $view;
     }
 
     public function denyclothAction(){
         $id = (int) $this->params()->fromPost('id', 0);
         if($id) {
+
+            $this->getOrderClothesTable()->changeCodeStatus($id, 111);
             $this->getOrderClothesTable()->setStatus10redactor($id);
         }
 
@@ -147,6 +291,21 @@ class IndexController extends AbstractActionController
             $this->getOrderClothesTable()->sendToProd($id, $startDate, $endDate);
 
             return $this->redirect()->toRoute('redactor', array('action' => 'readyforprod'));
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/redactor/readyForProduction.phtml');
+        return $view;
+    }
+
+    public function readyforprodnewAction(){
+
+        $id = $this->params()->fromPost('id');
+        $startDate = $this->params()->fromPost('date1');
+        $endDate = $this->params()->fromPost('date2');
+
+        if($startDate!=null && $startDate!='' && $endDate!=null && $endDate!='' && $id!=null && $id!=''){
+            $this->getOrderClothesTable()->sendToProd($id, $startDate, $endDate);
         }
 
         $view = new ViewModel();
@@ -180,24 +339,55 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
+    public function successAction(){
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/successGoBack.phtml');
+        return $view;
+    }
+
+    public function copypasteAction(){
+
+        if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
+            return $this->redirect()->toRoute('pidzhak');
+        }
+
+        $orderclothesEN = $this->getOrderClothesTableEn()->fetchAll();
+        $orderClothRedactorIds=array();
+
+        foreach ($orderclothesEN as $clothes) {
+            array_push($orderClothRedactorIds, (int) $clothes->order_cloth_id);
+        }
+
+        $view = new ViewModel(array(
+            'info' => $this->getServiceLocator()->get('AuthService')->getStorage(),
+            'ids' => $orderClothRedactorIds
+        ));
+
+        $view->setTemplate('pidzhak/redactor/inassistant.phtml');
+        return $view;
+    }
+
+    public function sendtoassitantAction(){
+
+        $id = $this->params()->fromPost('id');
+        $assist_id = $this->params()->fromPost('assist_id');
+
+        if($id!=''){
+            $this->getOrderClothesTable()->sendToAssistant($id, $assist_id);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'regcycles'));
+    }
+
     public function entercodesAction(){
 
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
 
-        try {
-            $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id);
-        }
-        catch (\Exception $ex) {
-            return $this->redirect()->toRoute('redactor', array('action' => 'index'));
-        }
+        try { $orderclothes = $this->getOrderClothesTable()->getOrderClothes($id); }
+        catch (\Exception $ex) { return $this->redirect()->toRoute('redactor', array('action' => 'index')); }
 
-        try {
-            $orderclothesEN = $this->getOrderClothesTableEn()->getOrderClothes($id);
-        }
-        catch (\Exception $ex) {
-            $orderclothesEN = null;
-        }
+        try { $orderclothesEN = $this->getOrderClothesTableEn()->getOrderClothes($id); }
+        catch (\Exception $ex) { $orderclothesEN = null; }
 
         try {
             $systemCode1 = $this->getSystemCodesTable()->getSystemCode($id);
@@ -206,6 +396,9 @@ class IndexController extends AbstractActionController
         catch (\Exception $ex) {
             $systemCode1 = null;
         }
+
+//        $code_status = ;
+//        $fabric_status = ;
 
         if($systemCode1!=null){
             $style = $systemCodeList;
@@ -245,17 +438,22 @@ class IndexController extends AbstractActionController
 
         $en_form = new OrderClothesEnForm($dbAdapter);
 
+
+        $redactor_comment = '';
         if($orderclothesEN!=null){
             $en_form->bind($orderclothesEN);
+            $redactor_comment = $orderclothesEN->redactor_comment;
         }
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
             $sc_form->setData($request->getPost());
-            $en_form->setData($request->getPost());
+            $redactor_comment_2 =  $request->getPost()->redactor_comment_2;
 
-            if ($sc_form->isValid() && $en_form->isValid()) {
+//            $en_form->setData($request->getPost());
+
+            if ($sc_form->isValid()) { // here dont need to check $en_form
                 $systemCode = new SystemCode();
                 $tempCode = $sc_form->getData()['systemcode'];
 
@@ -268,20 +466,35 @@ class IndexController extends AbstractActionController
                     $systemCodeTable->saveSystemCode($systemCode);
                 }
 
-                if($orderclothesEN==null){
-                    $orderclothesEN = new OrderClothes();
-                    $orderclothesEN->exchangeArray($en_form->getData());
-                    $orderclothesEN->order_cloth_id=$id;
-                }
+//                if($orderclothesEN==null){
+                $orderclothesEN = new OrderClothes();
+                $orderclothesEN->order_cloth_id       = $id;
+                $orderclothesEN->cloth_type           = $orderclothes->product_id;
+                $orderclothesEN->fabric_id            = $orderclothes->textile_id;
+                $orderclothesEN->measurement_type     = $orderclothes->typeof_measure;
+                $orderclothesEN->brand_label          = $orderclothes->label_brand;
+                $orderclothesEN->monogram1_pos        = $orderclothes->first_monogram_location;
+                $orderclothesEN->monogram2_pos        = $orderclothes->second_monogram_location;
+                $orderclothesEN->monogram1_font       = $orderclothes->first_monogram_font;
+                $orderclothesEN->monogram2_font       = $orderclothes->second_monogram_font;
+                $orderclothesEN->monogram1_color_font = $orderclothes->first_monogram_font_color;
+                $orderclothesEN->monogram2_color_font = $orderclothes->second_monogram_font_color;
+                $orderclothesEN->monogram1_text       = $orderclothes->first_monogram_caption;
+                $orderclothesEN->monogram2_text       = $orderclothes->second_monogram_caption;
+                $orderclothesEN->redactor_comment     = $redactor_comment_2;
+//                }
+
 
                 $orderclothesENTable = $this->getOrderClothesTableEn();
                 $orderclothesENTable->deleteOrderClothes($id);
                 $orderclothesENTable->saveOrderClothes($orderclothesEN);
 
-                return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+                $this->getOrderClothesTable()->changeCodeStatus($id, $this->params()->fromPost('custom_status'));
+                $this->getOrderClothesTable()->changeFabricStatus($id, $this->params()->fromPost('fabric_status'));
+
+
+                return $this->redirect()->toRoute('redactor', array('action' => 'success'));
             } else {
-//                var_dump($en_form->getMessages());
-//                var_dump($sc_form->getMessages());
                 $sc_form->highlightErrorElements();
             }
         }
@@ -296,6 +509,9 @@ class IndexController extends AbstractActionController
                 'style_form'   => $style,
                 'orderClothId' => $id,
                 'clientName' => $clientName,
+                'redactor_comment' => $redactor_comment,
+                'code_status' => $orderclothes->code_status,
+                'fabric_status' => $orderclothes->fabric_status,
             )
         );
         $view->setTemplate('pidzhak/redactor/enterCodes.phtml');
@@ -347,8 +563,34 @@ class IndexController extends AbstractActionController
             $cm_form->bind($measurements);
         }
 
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $sc_form->setData($request->getPost());
+
+            if ($sc_form->isValid()) { // here dont need to check $en_form
+                $systemCode = new SystemCode();
+                $tempCode = $sc_form->getData()['systemcode'];
+
+                $systemCodeTable = $this->getSystemCodesTable();
+                $systemCodeTable->deleteSystemCode($id);
+
+                foreach($tempCode as $tempCode1){
+                    $temp = $tempCode1 + array("order_cloth_id" => $id);
+                    $systemCode->exchangeArray($temp);
+                    $systemCodeTable->saveSystemCode($systemCode);
+                }
+
+                return $this->redirect()->toRoute('redactor', array('action' => 'success'));
+            } else {
+                $sc_form->highlightErrorElements();
+            }
+        }
+
         $clientName = $this->getOrderClothesTable()->getClientName2($orderclothes->order_id);
         $clientName = $clientName->lastname.' '.$clientName->firstname.' '.$clientName->middlename;
+
+        $cloth_type = $orderclothes->product_id;
 
         $view = new ViewModel(array(
                 'en_form' => $en_form,
@@ -357,6 +599,8 @@ class IndexController extends AbstractActionController
                 'cm_form' => $cm_form,
                 'measurement_type' => $measurement_type,
                 'clientName' => $clientName,
+                'cloth_type' => $cloth_type,
+                'id'=>$id,
             )
         );
         $view->setTemplate('pidzhak/redactor/watchCodes.phtml');
@@ -369,6 +613,61 @@ class IndexController extends AbstractActionController
             )
         );
         $view->setTemplate('pidzhak/redactor/compareCodes.phtml');
+        return $view;
+    }
+
+    public function newcompareAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) return $this->redirect()->toRoute('redactor', array('action' => 'index'));
+        $xls_data='firsttime';
+        $tempFile = null;
+        $form = new FileUploadForm('upload-form');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            // Make certain to merge the files info!
+            $post = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+
+            $form->setData($post);
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                if($data['excel-file']['size']!=0){
+                    // Form is valid, save the form!
+    //                return $this->redirect()->toRoute('upload-form/success');
+                    $file_name = $data['excel-file']['tmp_name'];
+                    $xls_data = $this->excelReader($file_name, $id);
+
+                    if($xls_data==''){
+                        $this->getOrderClothesTable()->setStatus4($id);
+                    }
+                }
+            } else {
+                // Form not valid, but file uploads might be valid...
+                // Get the temporary file information to show the user in the view
+                $fileErrors = $form->get('excel-file')->getMessages();
+                if (empty($fileErrors)) {
+                    $tempFile = $form->get('excel-file')->getValue();
+                }
+            }
+
+        }
+
+//        var_dump($xls_data);
+
+        $view = new ViewModel(
+            array(
+                'form' => $form,
+                'tempFile' => $tempFile,
+                'id' => $id,
+                'xls_data' => $xls_data
+            )
+        );
+        $view->setTemplate('pidzhak/redactor/newCompareCodes.phtml');
         return $view;
     }
 
@@ -394,7 +693,7 @@ class IndexController extends AbstractActionController
                 $xls_data = $this->excelReader($file_name, $id);
 
                 if($xls_data==''){
-                    $this->getOrderClothesTable()->setStatus4($id);
+//                    $this->getOrderClothesTable()->setStatus4($id);
                 }
 
                 // change status to 4
@@ -439,88 +738,119 @@ class IndexController extends AbstractActionController
 
 
         $systemClientFullName = $client->lastname.' '.$client->firstname.' '.$client->middlename;
-        $clientNameCheck = false;
+        $systemClientLastname = $client->lastname;
+        $systemClientFirstname = $client->firstname;
+
+//        $clientNameCheck = false;
 
         $systemFabricNumber = $orderclothes->textile_id;
+//        var_dump('fabric_number before: '.$systemFabricNumber);
+        if(strpos($systemFabricNumber,'БД') !== false) $systemFabricNumber=substr($systemFabricNumber, 4);
+        if(strpos($systemFabricNumber,'СЭ') !== false) $systemFabricNumber=substr($systemFabricNumber, 4);
+//        var_dump('fabric_number after: '.$systemFabricNumber);
+
         $fabricNumberCheck = false;
 
-        $systemMeasurementType = $orderclothes->typeof_measure;
+        $systemMeasurementType = (int) $orderclothes->typeof_measure;
         $measurementTypeCheck = false;
 
         $fileCodesArray = array();
         $systemCodesArray = array();
+        $systemOptionalFabricArrays = array();
 
         $fileMeasurements = array();
         $systemMeasurements = array();
 
+        $systemMonogram1 = $orderclothes->first_monogram_caption;
+        $systemMonogram2 = $orderclothes->second_monogram_caption;
+
+//        var_dump($systemMonogram1);
+//        var_dump($systemMonogram1);
+
+        $codesAmountError = '';
         $codesError = '';
+        $fabricNumberError = '';
+        $systemOptionalFabricError='';
+        $measurementTypeError = '';
+        $measurementsAmountError = '';
         $measurementsError = '';
         $clientNameError = '';
-        $measurementTypeError = '';
-        $fabricNumberError = '';
+        $monogramError1 = '';
+        $monogramError2 = '';
+
 
         foreach($systemCodeList as $temp){
-            array_push($systemCodesArray, $temp->code);
-            if($temp->fabric_optional!=null)
-                array_push($systemCodesArray, $temp->fabric_optional);
+            array_push($systemCodesArray, trim($temp->code));
+            if($temp->fabric_optional!=null && $temp->fabric_optional!='no')
+                array_push($systemOptionalFabricArrays, $temp->fabric_optional);
         }
 
-        if($systemMeasurementType==1){
-            $measurements = $this->getBodyMeasureTable()->getMeasure($orderclothes->product_id, $orderclothes->order_id);
-            array_push($systemMeasurements, $measurements->growth);
-            array_push($systemMeasurements, $measurements->weight);
-            array_push($systemMeasurements, $measurements->arm_position);
-            array_push($systemMeasurements, $measurements->neck);
-            array_push($systemMeasurements, $measurements->chest);
-            array_push($systemMeasurements, $measurements->stomach);
-            array_push($systemMeasurements, $measurements->seat);
-            array_push($systemMeasurements, $measurements->thigh);
-            array_push($systemMeasurements, $measurements->knee_finished);
-            array_push($systemMeasurements, $measurements->pant_bottom_finished);
-            array_push($systemMeasurements, $measurements->otseam_l_and_r);
-            array_push($systemMeasurements, $measurements->nape_to_waist);
-            array_push($systemMeasurements, $measurements->front_waist_length);
-            array_push($systemMeasurements, $measurements->back_waist_height);
-            array_push($systemMeasurements, $measurements->front_waist_height);
-            array_push($systemMeasurements, $measurements->biceps);
-            array_push($systemMeasurements, $measurements->back_shoulder);
-            array_push($systemMeasurements, $measurements->right_sleeve);
-            array_push($systemMeasurements, $measurements->left_sleeve);
-            array_push($systemMeasurements, $measurements->back_length);
-            array_push($systemMeasurements, $measurements->overcoat_back_length);
-            array_push($systemMeasurements, $measurements->waist);
-            array_push($systemMeasurements, $measurements->right_wrist);
-            array_push($systemMeasurements, $measurements->left_wrist);
-            array_push($systemMeasurements, $measurements->butt_position);
-            array_push($systemMeasurements, $measurements->u_rise_auto);
-            array_push($systemMeasurements, 1);
+//        var_dump($systemOptionalFabricArrays);
+
+        if($orderclothes->product_id==1 || $orderclothes->product_id==2 || $orderclothes->product_id==3 || $orderclothes->product_id==4 || $orderclothes->product_id==5){
+            $withMesaurements = true;
         } else {
-            $measurements = $this->getClotherMeasureTable()->getMeasure($orderclothes->product_id, $orderclothes->order_id);
-            array_push($systemMeasurements, $measurements->growth);
-            array_push($systemMeasurements, $measurements->weight);
-            array_push($systemMeasurements, $measurements->chest_finished);
-            array_push($systemMeasurements, $measurements->stomach_finished);
-            array_push($systemMeasurements, $measurements->jacket_seat_finished);
-            array_push($systemMeasurements, $measurements->biceps_finished);
-            array_push($systemMeasurements, $measurements->left_sleeve_finished);
-            array_push($systemMeasurements, $measurements->right_sleeve_finished);
-            array_push($systemMeasurements, $measurements->back_length_finished);
-            array_push($systemMeasurements, $measurements->front_length_finished);
-            array_push($systemMeasurements, $measurements->shoulder_finished);
-            array_push($systemMeasurements, $measurements->waist_finished);
-            array_push($systemMeasurements, $measurements->seat_finished);
-            array_push($systemMeasurements, $measurements->thigh_finished);
-            array_push($systemMeasurements, $measurements->outsteam_l_and_r_finished);
-            array_push($systemMeasurements, $measurements->knee_finished);
-            array_push($systemMeasurements, $measurements->pant_bottom_finished);
-            array_push($systemMeasurements, $measurements->u_rise_finished);
-            array_push($systemMeasurements, $measurements->right_cuff);
-            array_push($systemMeasurements, $measurements->left_cuff);
-            array_push($systemMeasurements, $measurements->shirt_neck);
-            array_push($systemMeasurements, 1);
+            $withMesaurements = false;
         }
 
-        $systemMeasurements = $this->removeNulls($systemMeasurements);
+        if($withMesaurements){
+            if($systemMeasurementType==1){
+                $measurements = $this->getBodyMeasureTable()->getBMbyOCIDandClothType($id, $orderclothes->product_id);
+                array_push($systemMeasurements, $measurements->growth);
+                array_push($systemMeasurements, $measurements->weight);
+                array_push($systemMeasurements, $measurements->arm_position);
+                array_push($systemMeasurements, $measurements->neck);
+                array_push($systemMeasurements, $measurements->chest);
+                array_push($systemMeasurements, $measurements->stomach);
+                array_push($systemMeasurements, $measurements->seat);
+                array_push($systemMeasurements, $measurements->thigh);
+                array_push($systemMeasurements, $measurements->knee_finished);
+                array_push($systemMeasurements, $measurements->pant_bottom_finished);
+                array_push($systemMeasurements, $measurements->otseam_l_and_r);
+                array_push($systemMeasurements, $measurements->nape_to_waist);
+                array_push($systemMeasurements, $measurements->front_waist_length);
+                array_push($systemMeasurements, $measurements->back_waist_height);
+                array_push($systemMeasurements, $measurements->front_waist_height);
+                array_push($systemMeasurements, $measurements->biceps);
+                array_push($systemMeasurements, $measurements->back_shoulder);
+                array_push($systemMeasurements, $measurements->right_sleeve);
+                array_push($systemMeasurements, $measurements->left_sleeve);
+                array_push($systemMeasurements, $measurements->back_length);
+                array_push($systemMeasurements, $measurements->overcoat_back_length);
+                array_push($systemMeasurements, $measurements->waist);
+                array_push($systemMeasurements, $measurements->right_wrist);
+                array_push($systemMeasurements, $measurements->left_wrist);
+                array_push($systemMeasurements, $measurements->butt_position);
+                array_push($systemMeasurements, $measurements->u_rise_auto);
+                array_push($systemMeasurements, 1);
+            } else {
+                $measurements = $this->getClotherMeasureTable()->getCMbyOCIDandClothType($id, $orderclothes->product_id);
+                array_push($systemMeasurements, $measurements->growth);
+                array_push($systemMeasurements, $measurements->weight);
+                array_push($systemMeasurements, $measurements->chest_finished);
+                array_push($systemMeasurements, $measurements->stomach_finished);
+                array_push($systemMeasurements, $measurements->jacket_seat_finished);
+                array_push($systemMeasurements, $measurements->biceps_finished);
+                array_push($systemMeasurements, $measurements->left_sleeve_finished);
+                array_push($systemMeasurements, $measurements->right_sleeve_finished);
+                array_push($systemMeasurements, $measurements->back_length_finished);
+                array_push($systemMeasurements, $measurements->front_length_finished);
+                array_push($systemMeasurements, $measurements->shoulder_finished);
+                array_push($systemMeasurements, $measurements->waist_finished);
+                array_push($systemMeasurements, $measurements->seat_finished);
+                array_push($systemMeasurements, $measurements->thigh_finished);
+                array_push($systemMeasurements, $measurements->outseam_l_and_r_finished);
+                array_push($systemMeasurements, $measurements->knee_finished);
+                array_push($systemMeasurements, $measurements->pant_bottom_finished);
+                array_push($systemMeasurements, $measurements->u_rise_finished);
+                array_push($systemMeasurements, $measurements->right_cuff);
+                array_push($systemMeasurements, $measurements->left_cuff);
+                array_push($systemMeasurements, $measurements->shirt_neck);
+                array_push($systemMeasurements, 1);
+            }
+
+            $systemMeasurements = $this->removeNulls($systemMeasurements);
+        }
 
         $result_str = '';
         if (!file_exists($filename)){
@@ -541,24 +871,46 @@ class IndexController extends AbstractActionController
                             array_push($fileCodesArray, substr($cell->getCalculatedValue(), 0, 4));
                         }
 
-                        if(strpos($cell->getCalculatedValue(), 'Body Measurements') !== false){
-                            if($systemMeasurementType==1) $measurementTypeCheck = true;
+                        if($systemMonogram1!='' && $systemMonogram1!=null && strpos($cell->getCalculatedValue(), $systemMonogram1) == false){
+                            $monogramError1 = 'monogramerror1';
+//                            var_dump($systemMonogram1);
+//                            var_dump($systemMonogram2);
                         }
 
-                        if(strpos($cell->getCalculatedValue(), 'Finished Measurements') !== false){
-                            if($systemMeasurementType==2) $measurementTypeCheck = true;
+                        if($systemMonogram2!='' && $systemMonogram2!=null && strpos($cell->getCalculatedValue(), $systemMonogram2) == false){
+                            $monogramError2 = 'monogramerror2';
+//                            var_dump($systemMonogram1);
+//                            var_dump($systemMonogram2);
                         }
 
-                        if(is_numeric($cell->getCalculatedValue())){
-                            array_push($fileMeasurements, $cell->getCalculatedValue());
+                        if($withMesaurements) {
+                            if (strpos($cell->getCalculatedValue(), 'Body Measurements') !== false && $systemMeasurementType == 1) {
+                                $measurementTypeCheck = true;
+                            }
+                            if (strpos($cell->getCalculatedValue(), 'Finished Measurements') !== false && $systemMeasurementType == 2) {
+                                $measurementTypeCheck = true;
+                            }
                         }
 
-                        if($cell->getCalculatedValue()==$systemClientFullName){
-                            $clientNameCheck = true;
+                        if($withMesaurements) {
+                            if (is_numeric($cell->getCalculatedValue())) {
+                                array_push($fileMeasurements, $cell->getCalculatedValue());
+                            }
                         }
+
+//                        if (strpos($cell->getCalculatedValue(), $systemClientLastname) !== false && strpos($cell->getCalculatedValue(), $systemClientFirstname) !== false) {
+//                            $clientNameCheck = true;
+//                        }
 
                         if($cell->getCalculatedValue()==$systemFabricNumber){
                             $fabricNumberCheck = true;
+                        }
+
+                        if(sizeof($systemOptionalFabricArrays)>0){
+                            for($i=0; $i<sizeof($systemOptionalFabricArrays);$i++){
+                                if(strpos($cell->getCalculatedValue(), trim($systemOptionalFabricArrays[$i])) !== false)
+                                    $systemOptionalFabricArrays[$i]='deleted';
+                            }
                         }
 
                         $result_str = $result_str .$cell->getCalculatedValue()." ";
@@ -567,57 +919,148 @@ class IndexController extends AbstractActionController
             }
         }
 
-//        var_dump($fileCodesArray);
+
 //        var_dump($systemCodesArray);
-        $codesError = $this->compareArrays($fileCodesArray, $systemCodesArray);
-        if($codesError=='different amount'){
-            $codesError = 'Количества кодов в системе отличается от количества кодов в файле';
-        } else if($codesError=='different elements'){
+//        var_dump($fileCodesArray);
+//
+//        var_dump(array_diff($systemCodesArray, $fileCodesArray));
+//        var_dump(array_diff($fileCodesArray, $systemCodesArray));
+
+        $counter_for_SOPFA = 0;
+
+        for($i=0; $i<sizeof($systemOptionalFabricArrays);$i++){
+            if($systemOptionalFabricArrays[$i]!='deleted') $counter_for_SOPFA++;
+        }
+
+        $tempError = $this->compareArrays($fileCodesArray, $systemCodesArray);
+        if($tempError=='different amount'){
+            $codesAmountError = 'Количества кодов в системе отличается от количества кодов в файле';
+            $codesError = 'Коды в системе отличаются от кодов в файле';
+        } else if($tempError=='different elements'){
             $codesError = 'Коды в системе отличаются от кодов в файле';
         }
 
-//        var_dump($fileMeasurements);
-//        var_dump($systemMeasurements);
-        $measurementsError = $this->compareArrays($fileMeasurements, $systemMeasurements);
-        if($measurementsError=='different amount'){
-            $measurementsError = 'Количества замеров в системе отличается от количества замеров в файле';
-        } else if($codesError=='different elements'){
-            $measurementsError = 'Замеры в системе отличаются от замеров в файле';
+        if($withMesaurements) {
+//            $tempError = $this->compareArrays($fileMeasurements, $systemMeasurements);
+            if(count(array_diff($systemMeasurements, $fileMeasurements))>0){
+                $measurementsError = 'Замеры в системе отличаются от замеров в файле';
+            }
+//            if ($tempError == 'different amount') {
+////                $measurementsAmountError = 'Количества замеров в системе отличается от количества замеров в файле';
+////                $measurementsError = 'Замеры в системе отличаются от замеров в файле';
+//            } else if ($tempError == 'different elements') {
+//                $measurementsError = 'Замеры в системе отличаются от замеров в файле';
+//            }
         }
 
-        if(!$clientNameCheck){
-            $clientNameError='ФИО клиента в системе отличается от ФИО клиента в файле';
-        }
+//        if(!$clientNameCheck){
+//            $clientNameError='ФИО клиента в системе отличается от ФИО клиента в файле';
+//        }
 
         if(!$fabricNumberCheck){
             $fabricNumberError='Номер ткани в системе отличается от номера ткани в файле';
         }
 
-        if(!$measurementTypeCheck){
-            $measurementTypeError='Тип замера в системе отличается от типа замера в файле';
+//        if($withMesaurements) {
+//            if (!$measurementTypeCheck) {
+//                $measurementTypeError = 'Тип замера в системе отличается от типа замера в файле';
+//            }
+//        }
+
+        if($counter_for_SOPFA!=0){
+            $systemOptionalFabricError='Ткани в системных кодах отличаются';
         }
 
-//        var_dump($codesError);
-//        var_dump($measurementsError);
-//
-//        var_dump($systemMeasurementType);
-//        var_dump($clientNameCheck);
+        if($systemMonogram1!='' && $systemMonogram1!=null){
+            $monogramError1 = 'monogramerror1';
+        }
+        if($systemMonogram2!='' && $systemMonogram2!=null){
+            $monogramError2 = 'monogramerror2';
+        }
 
         $result_array = array(
             'codesError'=>$codesError,
+            'codesAmountError'=>$codesAmountError,
             'measurementsError'=>$measurementsError,
+            'measurementsAmountError'=>$measurementsAmountError,
             'clientNameError'=>$clientNameError,
             'measurementTypeError'=>$measurementTypeError,
-            'fabricNumberError'=>$fabricNumberError);
+            'fabricNumberError'=>$fabricNumberError,
+            'systemOptionalFabricError'=>$systemOptionalFabricError,
+            'monogramError1'=>$monogramError1,
+            'monogramError2'=>$monogramError2,
+        );
 
-        return $result_array;
+        if($codesError=='' && $measurementsError=='' && $clientNameError=='' && $measurementTypeError=='' && $fabricNumberError=='' && $systemOptionalFabricError=='')
+            return '';
+        else
+            return $result_array;
     }
+
+
+
+
+    public function tasksAction(){
+        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $view->setTemplate('pidzhak/redactor/tasks.phtml');
+        return $view;
+    }
+    public function taskstartedAction(){
+        $id = $this->params()->fromPost('id');
+
+        if($id){
+            $this->getTaskTable()->setTaskStarted($id);
+        }
+
+        return $this->redirect()->toRoute('redactor', array('action' => 'tasks'));
+    }
+    public function taskfinishedAction(){
+        $id = $this->params()->fromPost('id');
+
+        if($id){
+            $this->getTaskTable()->setTaskFinished($id);
+        }
+
+        return $this->redirect()->toRoute('redactor', array('action' => 'tasks'));
+    }
+
+
+    public function basketregAction(){
+        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $view->setTemplate('pidzhak/redactor/fabrics/basketRegular.phtml');
+        return $view;
+    }
+    public function basketurgentAction(){
+        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $view->setTemplate('pidzhak/redactor/fabrics/basketUrgent.phtml');
+        return $view;
+    }
+    public function comingregAction(){
+        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $view->setTemplate('pidzhak/redactor/fabrics/comingRegular.phtml');
+        return $view;
+    }
+    public function comingurgentAction(){
+        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $view->setTemplate('pidzhak/redactor/fabrics/comingUrgent.phtml');
+        return $view;
+    }
+    public function fabricreadyAction(){
+        $id = $this->params()->fromPost('id');
+
+        if($id!='' && $id!=null){
+            $this->getOrderClothesTable()->setFabricReady($id);
+        }
+        return $this->redirect()->toRoute('redactor', array('action' => 'comingreg'));
+    }
+
+
 
     public function getOrderClothesTable()
     {
         if (!$this->orderclothesTable) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\seller\OrderClothesTable');
         }
         return $this->orderclothesTable;
     }
@@ -642,7 +1085,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->orderclothesTableEn) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTableEn = $sm->get('Pidzhak\Model\Seller\OrderClothesTableEn');
+            $this->orderclothesTableEn = $sm->get('Pidzhak\Model\seller\OrderClothesTableEn');
         }
         return $this->orderclothesTableEn;
     }
@@ -651,7 +1094,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->bodyMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\Seller\BodyMeasureTable');
+            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\seller\BodyMeasureTable');
         }
         return $this->bodyMeasureTable;
     }
@@ -660,7 +1103,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->clotherMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\Seller\ClotherMeasureTable');
+            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\seller\ClotherMeasureTable');
         }
         return $this->clotherMeasureTable;
     }
@@ -669,7 +1112,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->orderTable) {
             $sm = $this->getServiceLocator();
-            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
+            $this->orderTable = $sm->get('Pidzhak\Model\seller\OrderTable');
         }
         return $this->orderTable;
     }
@@ -678,7 +1121,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\seller\CustomerTable');
         }
         return $this->customerTable;
     }
@@ -703,12 +1146,27 @@ class IndexController extends AbstractActionController
         return $result;
     }
 
-
     public function getAuthService()
     {
         if (!$this->authservice) {
             $this->authservice = $this->getServiceLocator()->get('AuthService');
         }
         return $this->authservice;
+    }
+
+    public function getCycleTable(){
+        if (!$this->cycleTable) {
+            $sm = $this->getServiceLocator();
+            $this->cycleTable = $sm->get('Pidzhak\Model\admin\CycleTable');
+        }
+        return $this->cycleTable;
+    }
+
+    public function getTaskTable(){
+        if (!$this->taskTable) {
+            $sm = $this->getServiceLocator();
+            $this->taskTable = $sm->get('Pidzhak\Model\accountant\TaskTable');
+        }
+        return $this->taskTable;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Sql;
@@ -73,7 +73,7 @@ class BodyMeasureTable
 
         $row = $resultSet->current();
 
-        return $this->getBodyMeasureByCustomerAndClother($row->customer_id, $cloth_type);
+        return $this->getBMbyOCIDandClothType($row->customer_id, $cloth_type);
     }
 
     public function getBodyMeasureByCustomerAndClother($customer_id, $clother_id)
@@ -84,6 +84,17 @@ class BodyMeasureTable
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $customer_id");
+        }
+        return $row;
+    }
+
+    public function getBMbyOCIDandClothType($order_cloth_id, $clother_id){
+        $order_cloth_id  = (int) $order_cloth_id;
+        $clother_id  = (int) $clother_id;
+        $rowset = $this->tableGateway->select(array('order_cloth_id'=> $order_cloth_id, 'clother_id' => $clother_id ));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $order_cloth_id");
         }
         return $row;
     }

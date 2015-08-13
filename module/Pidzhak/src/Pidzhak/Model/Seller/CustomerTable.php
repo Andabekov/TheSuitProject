@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Expression;
@@ -26,17 +26,90 @@ class CustomerTable
 
     public function fetchPage($rowCount, $offset, $orderby, $searchPhrase, $bdmode){
 
-        if($bdmode==-1){
-            $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
+
+        if($bdmode==-2){
+            $resultSet = $this->tableGateway->select(function (Select $select) use ($rowCount, $offset, $orderby, $searchPhrase) {
+                $select
+                    ->limit($rowCount)
+                    ->offset($offset)
+                    ->order($orderby)
+                    ->where
+                    ->like('firstname', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('lastname', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('city', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('country', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('email', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('address', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                    ->OR
+                    ->like('mobilephone', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                ;
+            });
+
+            return $resultSet;
+        }
+
+        else if($bdmode==-1){
+//            $resultSet = $this->tableGateway->select(function(Select $select) use ($rowCount, $offset, $orderby, $searchPhrase){
+
+//            select customer.firstname, sum(orderclothes.actual_amount) from customer
+//            join ordertable on customer.id = ordertable.customer_id
+//            join orderclothes on ordertable.id = orderclothes.order_id
+//            GROUP BY customer.id;
+
+            $sql = new Sql($this->tableGateway->adapter);
+            $select = $sql->select();
+            $select->from($this->tableGateway->table)
+                ->join('ordertable', 'customer.id = ordertable.customer_id')
+                ->join('orderclothes', 'ordertable.id = orderclothes.order_id')
+                ->columns(array(
+                    '*', new Expression("sum(orderclothes.actual_amount) as total, customer.id as my_id")
+                ))
+            ;
+            $select->group('customer.id');
+
                 if($rowCount<0)
                     $select->offset(0);
                 else
                     $select->limit($rowCount)->offset($offset);
+
                 $select->order($orderby);
 
-                if($searchPhrase)
-                    $select->where->like('firstname', '%'.strtolower($searchPhrase).'%')->OR->like('lastname', '%'.strtolower($searchPhrase).'%');
-            });
+                $where = new  Where();
+
+                if($searchPhrase){
+                    $where->NEST
+                        ->like('firstname', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->OR
+                        ->like('lastname', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->OR
+                        ->like('city', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->OR
+                        ->like('country', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->OR
+                        ->like('email', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->OR
+                        ->like('address', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->OR
+                        ->like('mobilephone', '%'.mb_strtolower($searchPhrase, 'UTF-8').'%')
+                        ->UNNEST;
+                }
+
+                $select->where($where);
+
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $result = $statement->execute();
+
+            $resultSet = new ResultSet();
+            $resultSet->initialize($result);
+
+            return $resultSet;
+
+//            });
         } else {
 
             $dbAdapter = $this->tableGateway->adapter;

@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Pidzhak\Model\seller\OrderClothes as OrderClothesSeller;
 use Zend\Db\ResultSet\ResultSet;
@@ -29,29 +29,93 @@ class OrderClothesTable
     {
         $sql = new Sql($this->tableGateway->adapter);
         $select = $sql->select();
-        $select->from($this->tableGateway->table)
-            ->join('clothers', 'orderclothes.product_id = clothers.id')
-            ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
-            ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id')
-            ->join('clothstatustable', 'orderclothes.status_id = clothstatustable.id')
-            ->join('ordertable', 'orderclothes.order_id = ordertable.id')
-            ->join('userstable', 'ordertable.seller_id = userstable.id')
-            ->join('customer', 'ordertable.customer_id = customer.id')
-            ->columns(array(
-                '*', new Expression("CONCAT(COALESCE(customer.firstname, ''), ' ' , COALESCE(customer.lastname, '')) as customer_full_name,
+        $select->from($this->tableGateway->table);
+
+        if($order_status==12){
+            $select->join('tailorstable', 'orderclothes.tailor_id = tailorstable.id')
+                ->join('clothers', 'orderclothes.product_id = clothers.id')
+                ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
+                ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id')
+                ->join('clothstatustable', 'orderclothes.status_id = clothstatustable.id')
+                ->join('ordertable', 'orderclothes.order_id = ordertable.id')
+                ->join('userstable', 'ordertable.seller_id = userstable.id')
+                ->join('customer', 'ordertable.customer_id = customer.id')
+                ->columns(array(
+                    '*', new Expression("CONCAT(COALESCE(customer.firstname, ''), ' ' , COALESCE(customer.lastname, '')) as customer_full_name,
                                     CONCAT(userstable.name, ' ' , userstable.surname) as seller_full_name,
                                     cyclestable.arrive_deadline_date as cycle_date,
-                                    orderclothes.id as my_id")
-            ))
-        ;
-
-        if ($rowCount < 0)
-            $select->offset(0);
-        else
-            $select->limit($rowCount)->offset($offset);
-        //$select->order($orderby);
+                                    orderclothes.id as my_id,
+                                    tailorstable.name as tailor_name
+                                    ")
+                ));
+        } else if($order_status==16 || $order_status==2 || $order_status==17){
+            $select->join('userstable', 'orderclothes.assist_id = userstable.id')
+                ->join('clothers', 'orderclothes.product_id = clothers.id')
+                ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
+                ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id')
+                ->join('clothstatustable', 'orderclothes.status_id = clothstatustable.id')
+                ->join('ordertable', 'orderclothes.order_id = ordertable.id')
+                ->join('customer', 'ordertable.customer_id = customer.id')
+                ->columns(array(
+                    '*', new Expression("CONCAT(COALESCE(customer.firstname, ''), ' ' , COALESCE(customer.lastname, '')) as customer_full_name,
+                                        CONCAT(userstable.name, ' ' , userstable.surname) as seller_full_name,
+                                        cyclestable.arrive_deadline_date as cycle_date,
+                                        orderclothes.id as my_id
+                                        ")
+                ));
+        } else {
+                $select->join('clothers', 'orderclothes.product_id = clothers.id')
+                    ->join('cyclestable', 'orderclothes.cycle_id = cyclestable.id')
+                    ->join('fabricstable', 'orderclothes.textile_id = fabricstable.id')
+                    ->join('clothstatustable', 'orderclothes.status_id = clothstatustable.id')
+                    ->join('ordertable', 'orderclothes.order_id = ordertable.id')
+                    ->join('userstable', 'ordertable.seller_id = userstable.id')
+                    ->join('customer', 'ordertable.customer_id = customer.id')
+                    ->columns(array(
+                        '*', new Expression("CONCAT(COALESCE(customer.firstname, ''), ' ' , COALESCE(customer.lastname, '')) as customer_full_name,
+                                        CONCAT(userstable.name, ' ' , userstable.surname) as seller_full_name,
+                                        cyclestable.arrive_deadline_date as cycle_date,
+                                        orderclothes.id as my_id")
+                    ))
+                ;
+            }
 
         $where = new  Where();
+
+        if($order_id==-1 && $order_status==-1 && $searchPhrase){
+
+            $searchArray = explode("+", $searchPhrase);
+
+            foreach($searchArray as $search){
+                $where->NEST
+                    ->like('firstname', '%'.mb_strtolower($search, 'UTF-8').'%')
+                    ->OR->like('lastname', '%'.mb_strtolower($search, 'UTF-8').'%')
+                    ->OR->like('clother', '%'.mb_strtolower($search, 'UTF-8').'%')
+                    ->OR->like('status_name', '%'.mb_strtolower($search, 'UTF-8').'%')
+                    ->OR->like('userstable.name', '%'.mb_strtolower($search, 'UTF-8').'%')
+                    ->OR->like('userstable.surname', '%'.mb_strtolower($search, 'UTF-8').'%')
+                    ->UNNEST;
+                ;
+                $where->and;
+            }
+
+        } else if($searchPhrase) {
+            $searchArray = explode("+", $searchPhrase);
+
+            foreach($searchArray as $search) {
+                $where->NEST
+                    ->like('firstname', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('lastname', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('clother', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('userstable.name', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('userstable.surname', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('cycle_id', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('orderclothes.id', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->OR->like('clothers.clother', '%' . mb_strtolower($search, 'UTF-8') . '%')
+                    ->UNNEST;;
+                $where->and;
+            }
+        }
 
         if ($order_id != -1 && $order_id!=0) {
             $where->equalTo('order_id', $order_id);
@@ -61,32 +125,63 @@ class OrderClothesTable
             $where->and;
         }
 
-//        if($seller_name!= ''){
-//            $where->equalTo('userstable.username', $seller_name);
-//            $where->and;
-//        }
-
         if($order_status==-1){
             $where->notEqualTo('status_id', $order_status);
             $where->and;
         } else if($order_status == 777){
             $where->equalTo('status_id', 9)
-                    ->or
-                    ->equalTo('status_id', 13);
+                ->or
+                ->equalTo('status_id', 13);
             $where->and;
             $where->equalTo('customer.id', $seller_name);
             $where->and;
-        } else {
+        } else if($order_status == 101){
+            $where->equalTo('orderclothes.status_id', 1);
+            $where->and;
+            $where->nest()
+                    ->equalTo('orderclothes.cycle_id', -10)
+                    ->or
+                    ->equalTo('orderclothes.cycle_id', -14)
+                    ->unnest();
+        }
+        else if($order_status==1) {
+            $where->equalTo('orderclothes.status_id', $order_status);
+            $where->and;
+            $where->notEqualTo('orderclothes.cycle_id', -10)
+                ->and
+                ->notEqualTo('orderclothes.cycle_id', -14);
+        } else if($order_status == 20){ // обычные ткани в корзине
+            $where->notEqualTo('orderclothes.cycle_id', -10)->and
+                  ->notEqualTo('orderclothes.cycle_id', -14)->and
+                  ->equalTo('orderclothes.fabric_status', 6);
+        } else if($order_status == 21){ // срочные ткани в корзине
+            $where->nest()
+                ->equalTo('orderclothes.cycle_id', -10)->or->equalTo('orderclothes.cycle_id', -14)
+                ->unnest();
+            $where->and;
+            $where->equalTo('orderclothes.fabric_status', 6);
+        } else if($order_status == 22){ // обычные ткани в пути
+            $where->notEqualTo('orderclothes.cycle_id', -10)->and
+                  ->notEqualTo('orderclothes.cycle_id', -14)->and
+                  ->equalTo('orderclothes.fabric_status', 2);
+        } else if($order_status == 23){ // срочные ткани в пути
+            $where->nest()
+                ->equalTo('orderclothes.cycle_id', -10)->or->equalTo('orderclothes.cycle_id', -14)
+                ->unnest();
+            $where->and;
+            $where->equalTo('orderclothes.fabric_status', 2);
+        }
+        else {
             $where->equalTo('orderclothes.status_id', $order_status);
         }
 
-        if($searchPhrase) {
-            $where->and;
-            $where->like('firstname', '%' . strtolower($searchPhrase) . '%')->OR->like('lastname', '%' . strtolower($searchPhrase) . '%');
-        }
-
         $select->where($where);
+        $select->order($orderby);
 
+        if ($rowCount < 0)
+            $select->offset(0);
+        else
+            $select->limit($rowCount)->offset($offset);
 
         //you can check your query by echo-ing :
         // echo $select->getSqlString();
@@ -97,6 +192,38 @@ class OrderClothesTable
         $resultSet->initialize($result);
 
         return $resultSet;
+    }
+
+    public function setFabricUrl($url){
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('fabricurl');
+        $update->set(array(
+            'url' => $url,
+        ));
+        $update->where(array('id' => 111));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function getFabricUrl(){
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('fabricurl');
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet->current();
     }
 
     public function getProfitSum($from_date, $to_date, $seller_id){
@@ -133,6 +260,7 @@ class OrderClothesTable
 
         $where->greaterThan('orderclothes.id','0');
         $select->where($where);
+        $select->group('orderclothes.id');
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
@@ -157,10 +285,10 @@ class OrderClothesTable
             ->join('ordertable', 'orderclothes.order_id = ordertable.id')
             ->join('userstable', 'ordertable.seller_id = userstable.id')
             ->join('customer', 'ordertable.customer_id = customer.id')
-            ->join('pricestable', 'fabricstable.fabric_class = pricestable.fabric_class')
+            ->join('pricestable', 'fabricstable.fabric_class = pricestable.fabric_class and orderclothes.product_id=pricestable.cloth_type')
             ->columns(array(
-                '*', new Expression("CONCAT(customer.firstname, ' ' , customer.lastname) as customer_full_name,
-                                    CONCAT(userstable.name, ' ' , userstable.surname) as seller_full_name,
+                '*', new Expression("CONCAT(COALESCE(customer.firstname,''), ' ' , COALESCE(customer.lastname,'')) as customer_full_name,
+                                    CONCAT(COALESCE(userstable.name,''), ' ' , COALESCE(userstable.surname,'')) as seller_full_name,
                                     cyclestable.arrive_deadline_date as cycle_date,
                                     orderclothes.id as my_id
                                     ")
@@ -184,6 +312,7 @@ class OrderClothesTable
 
         $where->greaterThan('orderclothes.id','0');
         $select->where($where);
+//        $select->group(array('orderclothes.id', 'price'));
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
@@ -231,7 +360,7 @@ class OrderClothesTable
         return $row;
     }
 
-    public function getFabric($fabric_id){
+    public function getFabric($fabric_id, $cloth_type){
         $sql = new Sql($this->tableGateway->adapter);
 
         $select = $sql->select();
@@ -250,6 +379,19 @@ class OrderClothesTable
         $row = $resultSet->current();
         if (!$row) {
             return 'nothing';
+        } else if($cloth_type!='' && $cloth_type!=0){
+
+                $dbAdapter = $this->tableGateway->adapter;
+                $sql2       = "select price from pricestable where cloth_type=".$cloth_type." and fabric_class in
+                                (select fabric_class from fabricstable where id='".$fabric_id."')";
+                $statement2 = $dbAdapter->query($sql2);
+                $result2    = $statement2->execute();
+
+                $resultSet2 = new ResultSet();
+                $resultSet2->initialize($result2);
+
+                $row2 = $resultSet2->current();
+                return $row2;
         }
         return $row;
     }
@@ -502,7 +644,7 @@ class OrderClothesTable
     public function rollBackOrder($id, $comment){
 
         $dbAdapter = $this->tableGateway->adapter;
-        $sql       = "update orderclothes set seller_comment=CONCAT(COALESCE(seller_comment), ' Проверка продавцом не успешна. Причина: ".$comment."'), status_id=1 where id=".$id;
+        $sql       = "update orderclothes set seller_comment=CONCAT(COALESCE(seller_comment, ''), ' Проверка продавцом не успешна. Причина: ".$comment."'), status_id=1 where id=".$id;
         $statement = $dbAdapter->query($sql);
         $result    = $statement->execute();
 
@@ -635,15 +777,14 @@ class OrderClothesTable
             switch($order_cloth['product_id']){
                 case '1': $cloth_type='Пиджак'; break;
                 case '2': $cloth_type='Брюки'; break;
-                case '3': $cloth_type='Сорочка'; break;
-                case '4': $cloth_type='Жилетка'; break;
+                case '4': $cloth_type='Сорочка'; break;
+                case '3': $cloth_type='Жилетка'; break;
                 case '5': $cloth_type='Пальто'; break;
-                case '6': $cloth_type='Бабочка'; break;
-                case '7': $cloth_type='Кушак'; break;
-                case '8': $cloth_type='Галстук'; break;
+                case '7': $cloth_type='Бабочка'; break;
+                case '6': $cloth_type='Кушак'; break;
+                case '8': $cloth_type='Плоточек'; break;
                 case '9': $cloth_type='Ворот'; break;
                 case '10': $cloth_type='Манжет'; break;
-                case '11': $cloth_type='Ткань/нить/подклад'; break;
             }
 
             $fabric_class=$this->getFabricClass($order_cloth['id']);
@@ -652,13 +793,12 @@ class OrderClothesTable
             $official_price=$order_cloth['official_price'];
 
             $max_discount=$this->getMaxDiscount($fabric_class, $order_cloth['product_id']);
-            $max_discount=$max_discount->max_discount;
 
-            $actual_discount=$order_cloth['discount_amount'];
             $actual_price=$order_cloth['actual_amount'];
             $details=$order_cloth['paytype_id'];
 
             $oper_comment = "
+                            Номер заказа:".$order_id."<br>
                             Дата продажи:".$date_od_sale."<br>
                             Дата операции:".$oper_date."<br>
                             Клиент:".$client_name."<br>
@@ -666,24 +806,39 @@ class OrderClothesTable
                             Тип изделия:".$cloth_type."<br>
                             Класс ткани:".$fabric_class."<br>
                             Официальная цена:".$official_price."<br>
-                            Максимальная скидка:".$max_discount."<br>
-                            Фактическая скидка:".$actual_discount."<br>
                             Фактическая сумма отплаты (со скидкой):".$actual_price."<br>
                             Подробности оплаты:".$details."
                             ";
 
+            $sql2 = new Sql($this->tableGateway->adapter);
+            $select2 = $sql2->select();
+            $select2->from('accounting')
+                ->columns(array(new Expression("SUM(oper_cost) as total_cost")
+                ))
+            ;
+            $statement2 = $sql2->prepareStatementForSqlObject($select2);
+            $result2 = $statement2->execute();
+            $resultSet2 = new ResultSet();
+            $resultSet2->initialize($result2);
+
+            $cashbox = $resultSet2->current()->total_cost;
+            if($cashbox==null) $cashbox=0;
+
+            $cost=(int)$cashbox+(int)$order_cloth['actual_amount'];
+
             $dbAdapter = $this->tableGateway->adapter;
-            $sql       = "insert into accounting (oper_date, oper_type, oper_comment) VALUES
+            $sql       = "insert into accounting (oper_date, oper_type, oper_comment, oper_cost, cashbox) VALUES
                           (
                             '".$oper_date."',
                             'Поступление',
-                            '".$oper_comment."'
+                            '".$oper_comment."',
+                            '".$order_cloth['actual_amount']."',
+                            '".$cost."'
                             )";
 
             $statement = $dbAdapter->query($sql);
             $statement->execute();
         }
-
     }
 
     public function changeStatusTo11($order_id){
@@ -757,6 +912,18 @@ class OrderClothesTable
 
         $result = $statement->execute();
 
+        $sql2 = new Sql($this->tableGateway->adapter);
+        $delete = $sql2->delete('orderclothsystemcodes');
+        $delete->where(array('order_cloth_id' => $id));
+        $statement2 = $sql2->prepareStatementForSqlObject($delete);
+        $statement2->execute();
+
+        $sql3 = new Sql($this->tableGateway->adapter);
+        $delete3 = $sql3->delete('orderclothredactor');
+        $delete3->where(array('order_cloth_id' => $id));
+        $statement3 = $sql3->prepareStatementForSqlObject($delete3);
+        $statement3->execute();
+
         $resultSet = new ResultSet();
         $resultSet->initialize($result);
 
@@ -771,20 +938,43 @@ class OrderClothesTable
     public function setStatus15($id){
         $id = (int)$id;
         $sql = new Sql($this->tableGateway->adapter);
-        $update = $sql->update();
-        $update->table('orderclothes');
-        $update->set(array(
-            'status_id' => 15
-        ));
+        $delete = $sql->delete('orderclothes')->where("id = $id");
 
-        $update->where(array('id' => $id));
-        $statement = $sql->prepareStatementForSqlObject($update);
+        $statement = $sql->prepareStatementForSqlObject($delete);
         $result = $statement->execute();
 
         $resultSet = new ResultSet();
         $resultSet->initialize($result);
 
         return $resultSet;
+    }
+
+    public function setStatus7($id){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 7
+        ));
+
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+        $statement->execute();
+    }
+
+    public function setStatus17($id){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 17
+        ));
+
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+        $statement->execute();
     }
 
     public function setStatus1($id){
@@ -804,6 +994,52 @@ class OrderClothesTable
         $resultSet->initialize($result);
 
         return $resultSet;
+    }
+
+    public function sendToSeller($id, $excel_order_id){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 3,
+            'excel_order_id' => $excel_order_id
+        ));
+
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function backToRedactor($id, $assist_comment){
+
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 1,
+            'code_status' => 7,
+        ));
+
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+        $statement->execute();
+
+//        orderclothredactor
+
+        $text = "\nПомошник вернул, причина: ";
+
+        $dbAdapter = $this->tableGateway->adapter;
+        $sql       = "update orderclothredactor set redactor_comment=CONCAT(COALESCE(redactor_comment, ''), '".$text.$assist_comment."') where order_cloth_id=".$id;
+        $statement = $dbAdapter->query($sql);
+        $statement->execute();
     }
 
     public function setStatus3($id){
@@ -968,6 +1204,22 @@ class OrderClothesTable
         return $row;
     }
 
+    public function setFabricReady($id){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'fabric_status' => 3
+        ));
+
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+        $statement->execute();
+    }
+
+
+
     //  FUNCTIONS FOR MY DAY
     public function getFittings($from_date, $to_date){
         $sql = new Sql($this->tableGateway->adapter);
@@ -985,6 +1237,8 @@ class OrderClothesTable
 
         $where = new Where();
 
+        $today = date('Y-m-d');
+
         if($from_date!=''){
             $where->greaterThanOrEqualTo('fitting_date', $from_date);
             $where->and;
@@ -994,6 +1248,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('fitting_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('fitting_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('fitting_date', date('Y-m-d'));
             $where->and;
         }
@@ -1032,6 +1290,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('appoint_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('appoint_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('appoint_date', date('Y-m-d'));
             $where->and;
         }
@@ -1070,6 +1332,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('remind_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('remind_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('remind_date', date('Y-m-d'));
             $where->and;
         }
@@ -1148,6 +1414,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('preferred_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('preferred_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('preferred_date', date('Y-m-d'));
             $where->and;
         }
@@ -1179,6 +1449,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('order_accept_start_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('order_accept_start_date', date_format(date_add(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d")); // date_add
+//            $where->and;
             $where->equalTo('order_accept_start_date', date('Y-m-d'));
             $where->and;
         }
@@ -1210,6 +1484,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('order_accept_finish_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('order_accept_finish_date', date_format(date_add(date_create(date('Y-m-d')),date_interval_create_from_date_string("10 days")),"Y-m-d"));
+//            $where->and;
             $where->equalTo('order_accept_finish_date', date('Y-m-d'));
             $where->and;
         }
@@ -1250,6 +1528,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('dateofsale', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("5 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('dateofsale', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('dateofsale', date('Y-m-d'));
             $where->and;
         }
@@ -1286,6 +1568,12 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+
+//            date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("5 days")),"Y-m-d");
+//            $where->greaterThanOrEqualTo('given_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("5 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('given_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('given_date', date('Y-m-d'));
             $where->and;
         }
@@ -1326,6 +1614,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('finished_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("5 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('finished_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('finished_date', date('Y-m-d'));
             $where->and;
         }
@@ -1364,6 +1656,10 @@ class OrderClothesTable
             $where->and;
         }
         if($from_date=='' && $to_date==''){
+//            $where->greaterThanOrEqualTo('call_date', date_format(date_sub(date_create(date('Y-m-d')),date_interval_create_from_date_string("5 days")),"Y-m-d"));
+//            $where->and;
+//            $where->lessThanOrEqualTo('call_date', date('Y-m-d'));
+//            $where->and;
             $where->equalTo('call_date', date('Y-m-d'));
             $where->and;
         }
@@ -1516,6 +1812,11 @@ class OrderClothesTable
         if($to_date!=''){
             $sql = $sql." and submit_deadline_date<='".$to_date."'";
         }
+        if($from_date=='' && $to_date==''){
+            // DATE_SUB(current_date(), INTERVAL 10 DAY)
+            $sql = $sql." and submit_deadline_date>=DATE_SUB(curdate(), INTERVAL 10 DAY) and submit_deadline_date<=DATE_ADD(curdate(), INTERVAL 10 DAY)";
+//            $sql = $sql." and submit_deadline_date=curdate()";
+        }
 
         $statement = $dbAdapter->query($sql);
         $result    = $statement->execute();
@@ -1525,7 +1826,6 @@ class OrderClothesTable
 
         return $resultSet;
     }
-
     public function getSlowShip($from_date, $to_date){
 
         $dbAdapter = $this->tableGateway->adapter;
@@ -1536,6 +1836,10 @@ class OrderClothesTable
         }
         if($to_date!=''){
             $sql = $sql." and ship_deadline_date<='".$to_date."'";
+        }
+        if($from_date=='' && $to_date==''){
+            $sql = $sql." and ship_deadline_date>=DATE_SUB(curdate(), INTERVAL 10 DAY) and ship_deadline_date<=DATE_ADD(curdate(), INTERVAL 10 DAY)";
+//            $sql = $sql." and ship_deadline_date=curdate()";
         }
 
         $statement = $dbAdapter->query($sql);
@@ -1549,4 +1853,241 @@ class OrderClothesTable
 
     // FUNCITONS FOR MY_DAY (REDACTOR)
 
+
+
+
+    // FUNCTIONS FOR SMS
+    public function getRedactorNums(){
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('userstable');
+
+        $where = new Where();
+        $where->equalTo('access_type_id', 2);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+    public function getDirectorNums(){
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('userstable');
+
+        $where = new Where();
+        $where->equalTo('access_type_id', 4);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+    // FUNCTIONS FOR SMS
+
+
+    public function getOrderSum($order_id){
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from($this->tableGateway->table);
+
+        $where = new Where();
+        $where->equalTo('order_id', $order_id);
+        $select->where($where);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function changeCodeStatus($id, $status){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'code_status' => $status
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function changeFabricStatus($id, $status){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'fabric_status' => $status
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function sendToAssistant($id, $assist_id){
+        $id = (int)$id;
+        $sql = new Sql($this->tableGateway->adapter);
+        $update = $sql->update();
+        $update->table('orderclothes');
+        $update->set(array(
+            'status_id' => 16,
+            'assist_id' => $assist_id
+        ));
+        $update->where(array('id' => $id));
+        $statement = $sql->prepareStatementForSqlObject($update);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
+    public function addRequest($request_type, $request_body){
+        $dbAdapter = $this->tableGateway->adapter;
+        $sql       = "insert into requests (request_date, request_type, request_body) VALUES
+                          (
+                            '".date('Y-m-d')."',
+                            '".$request_type."',
+                            '".$request_body."'
+                            )";
+
+        $statement = $dbAdapter->query($sql);
+        $statement->execute();
+    }
+
+    public function getTailorsList(){
+
+        $tailors=array();
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('tailorstable');
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        foreach($resultSet as $res) {
+            $tailors[$res['id']] = $res['name'];
+        }
+
+        return $tailors;
+    }
+
+
+    public function getAssistantsList(){
+
+        $assistants=array();
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('userstable');
+        $select->where(array('access_type_id'=>'5'));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        foreach($resultSet as $res) {
+            $assistants[$res['id']] = $res['name'];
+        }
+
+        return $assistants;
+    }
+
+    public function getSellersList(){
+
+        $sellers=array();
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('userstable');
+        $select->where(array('access_type_id'=>'1'));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        foreach($resultSet as $res) {
+            $sellers[$res['id']] = $res['name'].' '.$res['surname'];
+        }
+
+        return $sellers;
+    }
+
+    public function getPenaltiesList(){
+
+        $penalties=array();
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('penalties');
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        foreach($resultSet as $res) {
+            $penalties[$res['penalty_name']] = $res['penalty_comment'];
+        }
+
+        return $penalties;
+    }
+
+    public function getCyclesAndAcceptDates(){
+
+        $results=array();
+
+        $sql = new Sql($this->tableGateway->adapter);
+        $select = $sql->select();
+        $select->from('cyclestable');
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+
+        foreach($resultSet as $res) {
+            $results[$res['id']] = $res['order_accept_finish_date'];
+        }
+
+        return $results;
+    }
 }

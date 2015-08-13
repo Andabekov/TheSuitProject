@@ -1,0 +1,32 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 16/04/2015
+ * Time: 18:16
+ */
+?>
+    <div class="header">
+        Редактирование данных клиента
+    </div>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'seller',
+    array(
+        'action' => 'editclient',
+        'id'     => $this->id,
+    )
+));
+
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+<?= $this->render('/pidzhak/customer/fields.phtml') ?>
+<?php
+
+echo $this->form()->closeTag();

@@ -1,7 +1,7 @@
 <?php
 // File: UploadForm.php
 
-namespace Pidzhak\Form\Redactor;
+namespace Pidzhak\Form\redactor;
 
 use Zend\Form\Element;
 use Zend\Form\Form;

@@ -70,3 +70,9 @@
     echo $this->formSubmit($form->get('submit'));
     echo $this->form()->closeTag();
 ?>
+
+<script>
+    $('textarea[name=comment]').val('На имя: \nСпособ оплаты:');
+    $('textarea[name=comment]').css('height','100px');
+    $('textarea[name=comment]').css('width','250px');
+</script>

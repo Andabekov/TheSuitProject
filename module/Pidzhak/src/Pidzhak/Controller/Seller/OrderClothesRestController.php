@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Controller\Seller;
+namespace Pidzhak\Controller\seller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
@@ -43,7 +43,7 @@ class OrderClothesRestController extends AbstractRestfulController
     {
         if (!$this->orderclothesTable) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\seller\OrderClothesTable');
         }
         return $this->orderclothesTable;
     }

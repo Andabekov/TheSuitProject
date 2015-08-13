@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Form\Seller;
+namespace Pidzhak\Form\seller;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;
@@ -168,18 +168,23 @@ class OrderForm extends Form
             'options' => array(
                 'label' => 'Город продажи',
 //                'label_attributes' => array('class' => 'control-label col-xs-2'),
-                'empty_option' => 'Выберите город',
+                'empty_option' => 'Не выбрано',
                 'value_options' => $this->getTableForSelect('citiestable', 'id', 'city_name'),
             ),
         ));
         $this->add(array(
             'name' => 'pointofsale',
-            'type' => 'Text',
+            'type' => 'Select',
             'attributes' => array(
                 'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Место продажи',
+                'empty_option' => 'Не выбрано',
+                'value_options' => array(
+                    'Офис'=>'Офис',
+                    'Выездной сервис'=>'Выездной сервис'
+                )
 //                'label_attributes' => array('class' => 'control-label col-xs-2')
             ),
         ));
@@ -193,7 +198,7 @@ class OrderForm extends Form
             'options' => array(
                 'label' => 'Продавец',
 //                'label_attributes' => array('class' => 'control-label col-xs-2'),
-                'empty_option' => 'Выберите продовца',
+                'empty_option' => 'Не выбрано',
                 'value_options' => $this->getSellersForSelect(),
             )
         ));

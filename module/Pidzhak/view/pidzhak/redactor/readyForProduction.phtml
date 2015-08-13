@@ -21,12 +21,13 @@
         <tr>
             <th data-header-css-class="redactorNumColumns2" data-type="numeric" data-column-id="cycle_id" data-order="desc">Цикл</th>
             <th data-column-id="customer_full_name" >Клиент</th>
+            <th data-header-css-class="redactorNumColumns2" data-column-id="my_id">ID</th>
             <th data-header-css-class="redactorClothColumn" data-column-id="clother">Изделие</th>
             <th data-column-id="fabric_class">Класс ткани</th>
             <th data-header-css-class="redactorNumColumns" data-type="numeric" data-column-id="textile_id">Ткань</th>
             <th data-column-id="seller_full_name">Продовец</th>
 
-            <th data-header-css-class="redactorColumnBtn2" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+            <th data-header-css-class="redactorColumnBtn3" data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
         </tr>
         </thead>
     </table>
@@ -74,6 +75,7 @@
 
         function init() {
             var grid = $("#ordercloth-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -132,7 +134,12 @@
             $('#dateError1').text('');
             $('#dateError2').text('Выберите дату');
         } else{
-            window.location = 'readyforprod?id='+$('#hiddenId').val()+'&date1='+$('#datepicker1').val()+'&date2='+$('#datepicker2').val();
+//            window.location = 'readyforprod?id='+$('#hiddenId').val()+'&date1='+$('#datepicker1').val()+'&date2='+$('#datepicker2').val();
+            $.post( "readyforprodnew", { id: $('#hiddenId').val(), date1: $('#datepicker1').val(), date2: $('#datepicker2').val()} ).done(function( data ) {
+                closeDlg();
+                $('button[title=Refresh]').trigger( "click" );
+            });
+
         }
     }
 </script>

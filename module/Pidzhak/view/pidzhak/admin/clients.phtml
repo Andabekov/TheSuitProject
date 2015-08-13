@@ -36,6 +36,7 @@
     $(function () {
         function init() {
             var grid = $("#customer-grid").bootgrid({
+                rowCount: [50, 25, 10],
                 ajax: true,
                 post: function () {
                     /* To accumulate custom parameter with the request object */
@@ -48,8 +49,8 @@
                 formatters: {
                     "commands": function(column, row)
                     {
-                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-pencil\"></span></button> " +
-                            "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.my_id + "\"><span class=\"glyphicon glyphicon-pencil\"></span></button> " +
+                            "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.my_id + "\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
                     }
                 }
             }).on("loaded.rs.jquery.bootgrid", function()

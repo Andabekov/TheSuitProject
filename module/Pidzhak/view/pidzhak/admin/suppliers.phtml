@@ -1,0 +1,79 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 12/08/2015
+ * Time: 17:23
+ */
+?>
+
+<div class="header">
+    Список Поставщиков
+</div>
+
+<a class="btn btn-primary" href="/suppliers/add">Добавить нового поставщика</a>
+
+<div class="col-md-9">
+    <table id="penalty-grid" class="table table-condensed table-hover table-striped" data-row-select="true"
+           data-keep-selection="true">
+        <thead>
+        <tr>
+            <th data-column-id="id" data-order="desc">ID</th>
+            <th data-column-id="supplier_name">Имя поставщика</th>
+            <th data-column-id="supplier_email">Емайл поставщика</th>
+
+            <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+        </tr>
+        </thead>
+
+    </table>
+</div>
+
+
+<script>
+    $(function () {
+        function init() {
+            var grid = $("#penalty-grid").bootgrid({
+                rowCount: [50, 25, 10],
+                ajax: true,
+                post: function () {
+                    /* To accumulate custom parameter with the request object */
+                    return {
+                        id: "b0df282a-0d67-40e5-8558-c9e93b7befed"
+                    };
+                },
+                url: "/restsupplier",
+                formatters: {
+                    "commands": function(column, row)
+                    {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-pencil\"></span></button> " +
+                            "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function()
+            {
+                /* Executes after data is loaded and rendered */
+                grid.find(".command-edit").on("click", function(e)
+                {
+                    window.location="suppliers/edit/"+$(this).data("row-id");
+                }).end().find(".command-delete").on("click", function(e)
+                {
+                    myId=$(this).data("row-id");
+                    bootbox.setDefaults({
+                        locale: "ru",
+                        className: "my-modal"
+                    });
+                    bootbox.confirm("Вы действительно хотите удалить выбранную запись?", function(result) {
+                        if(result){
+                            $.post("suppliers/delete/"+myId, {id: myId}).done(function(data) {
+                                $('#penalty-grid').bootgrid('reload');
+                            });
+                        };
+                    });
+                });
+            });
+        }
+        init();
+    })
+
+</script>

@@ -2,9 +2,9 @@
     $cform->setAttribute('id', 'addClothForm');
 ?>
 
+<input style="display: none;" name="actual_amount" value=""/>
+
 <table class="myTable">
-
-
 
     <tr>
         <td>
@@ -53,30 +53,11 @@
 
     <tr>
         <td>
-            <?php $element = $cform->get('actual_amount'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formText($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-    <tr>
-        <td>
             <?php $element = $cform->get('discount_amount'); ?>
             <?php echo $this->formLabel($element); ?>
         </td>
         <td><?php echo $this->formText($element); ?></td>
         <td><span id="discount_error" class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
-    </tr>
-
-
-    <tr>
-        <td>
-            <?php $element = $cform->get('paytype_id'); ?>
-            <?php echo $this->formLabel($element); ?>
-        </td>
-        <td><?php echo $this->formTextArea($element); ?></td>
-        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
     <tr>
@@ -88,6 +69,22 @@
         <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
     </tr>
 
+    <tr id="payment_details" style="display: none;">
+        <td>
+            <?php $element = $cform->get('paytype_id'); ?>
+            <?php echo $this->formLabel($element); ?>
+        </td>
+        <td><?php echo $this->formTextArea($element); ?></td>
+        <td><span class="help-block" style="color:red"><?php echo $this->formElementErrors($element); ?></span></td>
+    </tr>
+
+    <tr id="payment_btn">
+        <td><a style="cursor: pointer;" onclick="showPayment()"><b><i>Описать подробности оплаты <br>(только для 1-го изделия)</i></b></a></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+
     <select style="display: none;" name="style_id" value="0"> </select>
 
     <select id="testsuka" style="display: none;" name="label_brand" value="2">
@@ -96,7 +93,15 @@
 
     <span style="font-style: italic; margin-bottom: 10px;">
         В пункте <b>подробности оплаты</b> заполняется вся информация о заказе, и пишется только на первое изделие.
-    </span><br><br>
+    </span><br>
+    <span style="font-style: italic; margin-bottom: 10px;">
+        В пункте <b>номер ткани</b> если быстрая доставка, то префикс - "БД" (пример: БДDBN807A).
+    </span><br>
+    <span style="font-style: italic; margin-bottom: 10px;">
+        В пункте <b>номер ткани</b> если супер экпресс доставка, то префикс - "СЭ" (пример: СЭDBN807A).
+    </span><br>
+    <a target="_blank" href="<?= $url?>"><i>Список доступных ткани</i></a>
+    <br><br>
 
     <tr>
         <td></td>
@@ -108,8 +113,6 @@
     </tr>
 
 </table>
-
-
 
 <script>
 
@@ -146,6 +149,21 @@
     }
 
     $(function() {
+
+        $('input[name=discount_amount]').val(0);
+
+        $('select[name=product_id]').change(function() {
+            fabricAjax();
+        });
+
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        $('select[name=cycle_id]').val('');
         $($('select[name=style_id] option')[0]).val('0');
         $($('select[name=product_id] option')[0]).val('0');
         $('input[name=textile_id]').val('');
@@ -155,12 +173,7 @@
         $('textarea[name=paytype_id]').css('height', '100px');
         $('textarea[name=paytype_id]').css('width', '300px');
 
-        $('textarea[name=paytype_id]').val('1 часть суммы: сумма - тенге \n' +
-                                            '1 часть суммы: способ оплаты - \n' +
-                                            '2 часть суммы: сумма - тенге \n' +
-                                            '2 часть суммы: способ оплаты - \n' +
-                                            'Итого в кассе шоурума: тенге \n'
-        );
+        $('textarea[name=paytype_id]').val('нет');
     });
 
     $('input[name=textile_id]').focusout(function() {
@@ -203,29 +216,43 @@
                 console.log(data);
             }
         });
+
+        checkFlags();
     }
 
     function fabricAjax(){
-        $.ajax({
-            url: '/order/fabricajax',
-            type: 'POST',
-            dataType: 'json',
-            async: true,
-            data: {fabric_id: $('input[name=textile_id]').val()},
-            success: function (data) {
-                if(data.message=='false'){
-                    $('#fabric_error').text('Такой ткани не существует');
-                    fabricFlag = false;
-                } else{
-                    $('#fabric_error').text('');
-                    fabricFlag = true;
+
+        if($('select[name=cycle_id]').val()==-14 && $('input[name=textile_id]').val().indexOf('БД')==-1){
+            $('#fabric_error').text('При цикле "-14" ткань должна начинаться с "БД"');
+            fabricFlag = false;
+        } else if($('select[name=cycle_id]').val()==-10 && $('input[name=textile_id]').val().indexOf('СЭ')==-1){
+            $('#fabric_error').text('При цикле "-10" ткань должна начинаться с "СЭ"');
+            fabricFlag = false;
+        } else {
+            $('#fabric_error').text('');
+            $.ajax({
+                url: '/order/fabricajax',
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                data: {fabric_id: $('input[name=textile_id]').val(), cloth_type: $('select[name=product_id]').val()},
+                success: function (data) {
+                    if(data.message=='false'){
+                        $('#fabric_error').text('Такой ткани не существует');
+                        fabricFlag = false;
+                    } else{
+                        $('#fabric_error').text('Цена: '+data.message+' тенге');
+                        fabricFlag = true;
+
+                    }
+                    checkFlags();
+                },
+                error: function (data) {
+                    console.log(data);
                 }
-                checkFlags();
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        });
+            });
+        }
+        checkFlags();
     }
 
     function checkFlags(){
@@ -234,6 +261,18 @@
         } else{
             $('#orderclothessubmit').prop('disabled',true);
         }
+    }
+
+    function showPayment(){
+        $('#payment_details').show();
+        $('#payment_btn').hide();
+        $('textarea[name=paytype_id]').css('width', '400px');
+        $('textarea[name=paytype_id]').css('height', '150px');
+        $('textarea[name=paytype_id]').val('1 часть суммы: сумма - тенге \n' +
+            '1 часть суммы: способ оплаты - \n' +
+            '2 часть суммы: сумма - тенге \n' +
+            '2 часть суммы: способ оплаты - \n'
+        );
     }
 
 </script>

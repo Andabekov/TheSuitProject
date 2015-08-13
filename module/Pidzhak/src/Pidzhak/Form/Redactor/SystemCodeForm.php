@@ -39,7 +39,8 @@ class SystemCodeForm extends Fieldset implements InputFilterProviderInterface
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'true'
+                'required' => 'true',
+                'style' => 'width: 150px'
             ),
             'options' => array(
                 'label' => 'Системный код',
@@ -49,7 +50,8 @@ class SystemCodeForm extends Fieldset implements InputFilterProviderInterface
             'name' => 'fabric_optional',
             'type' => 'Text',
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'style' => 'width: 150px'
             ),
             'options' => array(
                 'label' => 'Номер ткани',
@@ -57,10 +59,11 @@ class SystemCodeForm extends Fieldset implements InputFilterProviderInterface
         ));
         $this->add(array(
             'name' => 'description',
-            'type' => 'Text',
+            'type' => 'text',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'true'
+                'required' => 'true',
+                'style' => 'width: 360px'
             ),
             'options' => array(
                 'label' => 'Описание',
@@ -70,11 +73,11 @@ class SystemCodeForm extends Fieldset implements InputFilterProviderInterface
             'name' => 'deleteBtn',
             'type' => 'Button',
             'attributes' => array(
-                'class' => 'btn btn-danger',
+                'class' => 'glyphicon glyphicon-trash',
                 'onclick' => 'deleteRowClick($(this))'
             ),
             'options' => array(
-                'label' => 'Удалить строку',
+                'label' => ' ',
             ),
         ));
     }

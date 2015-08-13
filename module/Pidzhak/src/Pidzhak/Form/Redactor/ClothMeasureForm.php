@@ -6,7 +6,7 @@
  * Time: 19:53
  */
 
-namespace Pidzhak\Form\Redactor;
+namespace Pidzhak\Form\redactor;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Form\Form;

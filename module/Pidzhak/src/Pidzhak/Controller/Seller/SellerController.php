@@ -1,30 +1,27 @@
 <?php
-namespace Pidzhak\Controller\Seller;
+namespace Pidzhak\Controller\seller;
 
 use Pidzhak\Form\accountant\CertificateForm;
-use Pidzhak\Form\Redactor\BodyMeasureForm;
-use Pidzhak\Form\Redactor\ClothMeasureForm;
-use Pidzhak\Form\Redactor\OrderClothesEnForm;
+use Pidzhak\Form\redactor\BodyMeasureForm;
+use Pidzhak\Form\redactor\ClothMeasureForm;
+use Pidzhak\Form\redactor\OrderClothesEnForm;
 use Pidzhak\Form\redactor\TestModelForm;
-use Pidzhak\Form\Seller\CustomerForm;
-use Pidzhak\Form\Seller\FinanceOperationsForm;
-use Pidzhak\Form\Seller\MeasureForm;
-use Pidzhak\Form\Seller\OrderClothesForm;
-use Pidzhak\Form\Seller\PhoneCallForm;
+use Pidzhak\Form\seller\CustomerForm;
+use Pidzhak\Form\seller\FinanceOperationsForm;
+use Pidzhak\Form\seller\MeasureForm;
+use Pidzhak\Form\seller\OrderClothesForm;
+use Pidzhak\Form\seller\PhoneCallForm;
 use Pidzhak\GoogleContact\GoogleContactXmlParser;
 use Pidzhak\Model\accountant\Certificate;
 use Pidzhak\Model\admin\Sms;
-use Pidzhak\Model\Seller\BodyMeasure;
-use Pidzhak\Model\Seller\ClotherMeasure;
-use Pidzhak\Model\Seller\Customer;
-use Pidzhak\Model\Seller\FinanceOperations;
-use Pidzhak\Model\Seller\OrderClothes;
-use Pidzhak\Model\Seller\PhoneCall;
+use Pidzhak\Model\seller\BodyMeasure;
+use Pidzhak\Model\seller\ClotherMeasure;
+use Pidzhak\Model\seller\Customer;
+use Pidzhak\Model\seller\FinanceOperations;
+use Pidzhak\Model\seller\PhoneCall;
 use Pidzhak\Sms\SmsUtil;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\Seller\Seller;
-use Pidzhak\Form\Seller\SellerForm;
 
 class SellerController extends AbstractActionController
 {
@@ -42,11 +39,105 @@ class SellerController extends AbstractActionController
     protected $certificateTable;
     protected $customerTable;
     protected $phoneCallTable;
+    protected $taskTable;
+
+    public function emailAction(){
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/requests.phtml');
+        return $view;
+    }
+
+    public function addrequestAction(){
+        $request_type = $this->params()->fromPost('request_type');
+        $request_body = $this->params()->fromPost('request_body');
+
+        if($request_body!='' && $request_type!=''){
+            $this->getOrderClothesTable()->addRequest($request_type, $request_body);
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/addRequest.phtml');
+        return $view;
+    }
+
+    public function callsmsAction(){
+        $phone = $this->params()->fromPost('phone');
+        $text = $this->params()->fromPost('text');
+
+        if($phone!='' && $text!=''){
+            $sms = new Sms();
+            $sms->number=$phone;
+            $sms->text=$text;
+            SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/myday.phtml');
+        return $view;
+    }
+
+    public function editclientAction(){
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('seller', array('action' => 'clients'));
+        }
+
+        try {
+            $customer = $this->getCustomerTable()->getCustomer($id);
+        }
+        catch (\Exception $ex) {
+            return $this->redirect()->toRoute('seller', array('action' => 'clients'));
+        }
+
+        $form  = new CustomerForm();
+        $form->bind($customer);
+        $form->get('submit')->setAttribute('value', 'Сохранить');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getCustomerTable()->saveCustomer($customer);
+                return $this->redirect()->toRoute('seller', array('action' => 'clients'));
+            }
+        }
+
+        $view = new ViewModel(array(
+                'id' => $id,
+                'form' => $form,
+                'back' => '/seller/clients',
+            )
+        );
+        $view->setTemplate('pidzhak/seller/editClient.phtml');
+        return $view;
+    }
+
+    public function clientsAction(){
+
+        $view = new ViewModel(array());
+        $view->setTemplate('pidzhak/seller/clients.phtml');
+        return $view;
+
+    }
 
     public function setstatus15Action(){
         $id = $this->params()->fromPost('id');
         if($id!=''){
             $this->getOrderClothesTable()->setStatus15($id);
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/myday.phtml');
+        return $view;
+    }
+
+    public function setstatus7Action(){
+        $id = $this->params()->fromPost('id');
+        if($id!=''){
+            $this->getOrderClothesTable()->setStatus7($id);
         }
 
         $view = new ViewModel();
@@ -204,7 +295,6 @@ class SellerController extends AbstractActionController
         $to_date   = $this->params()->fromQuery('to_date');
         $seller_id = (int) $this->params()->fromQuery('seller_id');
 
-        $profitSum    = $this->getOrderClothesTable()->getProfitSum($from_date, $to_date, $seller_id);
         $orderclothes = $this->getOrderClothesTable()->getByDateAndSeller($from_date, $to_date, $seller_id);
 
         $sellers = $this->getOrderClothesTable()->getSellers();
@@ -215,7 +305,6 @@ class SellerController extends AbstractActionController
             'from_date' => $from_date,
             'to_date' => $to_date,
             'seller_id' => $seller_id,
-            'profitSum' => $profitSum
         ));
         $view->setTemplate('pidzhak/seller/profit.phtml');
         return $view;
@@ -242,7 +331,19 @@ class SellerController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+
                 $certificate->exchangeArray($form->getData());
+
+                $directors = $this->getOrderClothesTable()->getDirectorNums();
+
+                foreach($directors as $director){
+                    $sms = new Sms();
+                    $sms->number=$director['phone'];
+
+                    $sms->text='Купили подарочный сертификат на сумму: '.$certificate->cost.' тенге';
+                    SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
+                }
+
                 $this->getCertificateTable()->saveCertificate($certificate);
 
                 return $this->redirect()->toRoute('seller', array('action' => 'cert'));
@@ -269,18 +370,37 @@ class SellerController extends AbstractActionController
             $form->setInputFilter($finance->getInputFilter());
             $form->setData($request->getPost());
 
-            if ($form->isValid()) {
-                $finance->exchangeArray($form->getData());
-                $this->getFinanceOperationsTable()->saveFinanceOperations($finance);
+            if($request->getPost()['oper_type']=='Штрафы/Бонусы'){
+                $oper = new FinanceOperations();
+                $oper->oper_type=$request->getPost()['oper_type'];
+                $oper->oper_cost=0;
+                $oper->oper_date=$request->getPost()['oper_date'];
+                $oper->oper_status=0;
+                $oper->oper_comment='Штраф <br>Тип штрафа: '.$request->getPost()['penalty_type'].'<br>Продавец: '.$request->getPost()['seller_id']."<br>Комментарии: ".$request->getPost()['penalty_name'];
+
+
+                $this->getFinanceOperationsTable()->saveFinanceOperations($oper);
 
                 return $this->redirect()->toRoute('seller', array('action' => 'finance'));
-            }else {
-                $form->highlightErrorElements();
+            } else{
+                if ($form->isValid()) {
+                    $finance->exchangeArray($form->getData());
+                    $this->getFinanceOperationsTable()->saveFinanceOperations($finance);
+
+                    return $this->redirect()->toRoute('seller', array('action' => 'finance'));
+                }else {
+                    $form->highlightErrorElements();
+                }
             }
         }
 
+        $sellers = $this->getOrderClothesTable()->getSellersList();
+        $penalties = $this->getOrderClothesTable()->getPenaltiesList();
+
         $view = new ViewModel(array(
-            'form' => $form
+            'form' => $form,
+            'sellers' => $sellers,
+            'penalties' => $penalties,
         ));
         $view->setTemplate('pidzhak/seller/addFinanceOper.phtml');
         return $view;
@@ -365,20 +485,34 @@ class SellerController extends AbstractActionController
         $form->get('customer_id_5') ->setValue((int)$clientId);
         $form->get('c_customer_id_1') ->setValue((int)$clientId);
         $form->get('c_customer_id_2') ->setValue((int)$clientId);
+        $form->get('c_customer_id_3') ->setValue((int)$clientId);
 
         foreach($orderclothes as $ordercloth){
             if($ordercloth['typeof_measure']==1)
                 switch($ordercloth['product_id']){
                     case 1: $form->get('order_cloth_id_1') ->setValue($ordercloth['id']); break;
                     case 2: $form->get('order_cloth_id_2') ->setValue($ordercloth['id']); break;
-                    case 3: $form->get('order_cloth_id_3') ->setValue($ordercloth['id']); break;
-                    case 4: $form->get('order_cloth_id_4') ->setValue($ordercloth['id']); break;
+                    case 4: $form->get('order_cloth_id_3') ->setValue($ordercloth['id']); break;
+                    case 3: $form->get('order_cloth_id_4') ->setValue($ordercloth['id']); break;
                     case 5: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+
+                    case 6: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 7: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 8: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 9: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 10: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
                 }
             else
                 switch($ordercloth['product_id']){
                     case 1: $form->get('c_order_cloth_id_1') ->setValue($ordercloth['id']); break;
                     case 2: $form->get('c_order_cloth_id_2') ->setValue($ordercloth['id']); break;
+                    case 4: $form->get('c_order_cloth_id_3') ->setValue($ordercloth['id']); break;
+
+                    case 6: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 7: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 8: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 9: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
+                    case 10: $form->get('order_cloth_id_5') ->setValue($ordercloth['id']); break;
                 }
         }
 
@@ -389,36 +523,129 @@ class SellerController extends AbstractActionController
             $form_edited->setData($request->getPost());
 
             if ($form_edited->isValid()) {
-                $bodymeasure->setPostfix('_1');
-                $bodymeasure->exchangeArray($form_edited->getData());
-                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
 
-                $bodymeasure->setPostfix('_2');
-                $bodymeasure->exchangeArray($form_edited->getData());
-                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
-
-                $bodymeasure->setPostfix('_3');
-                $bodymeasure->exchangeArray($form_edited->getData());
-                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
-
-                $bodymeasure->setPostfix('_4');
-                $bodymeasure->exchangeArray($form_edited->getData());
-                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
-
-                $bodymeasure->setPostfix('_5');
-                $bodymeasure->exchangeArray($form_edited->getData());
-                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
-
-                $clothermeasure->setPostfix('_1');
-                $clothermeasure->setPrefix('c_');
-                $clothermeasure->exchangeArray($form_edited->getData());
-                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
-
-                $clothermeasure->setPostfix('_2');
-                $clothermeasure->setPrefix('c_');
-                $clothermeasure->exchangeArray($form_edited->getData());
-                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
-
+                foreach($orderclothes as $ordercloth){
+                    if($ordercloth['typeof_measure']==1)
+                        switch($ordercloth['product_id']){
+                            case 1:
+                                $bodymeasure->setPostfix('_1');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 2:
+                                $bodymeasure->setPostfix('_2');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 4:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->clother_id=4;
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+//                                var_dump($bodymeasure);
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 3:
+                                $bodymeasure->setPostfix('_4');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->clother_id=3;
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 5:
+                                $bodymeasure->setPostfix('_5');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 6:
+                                $bodymeasure->setPostfix('_2');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 7:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 8:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 9:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 10:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                        }
+                    else
+                        switch($ordercloth['product_id']){
+                            case 1:
+                                $clothermeasure->setPostfix('_1');
+                                $clothermeasure->setPrefix('c_');
+                                $clothermeasure->exchangeArray($form_edited->getData());
+                                $clothermeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
+                                break;
+                            case 2:
+                                $clothermeasure->setPostfix('_2');
+                                $clothermeasure->setPrefix('c_');
+                                $clothermeasure->exchangeArray($form_edited->getData());
+                                $clothermeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
+                                break;
+                            case 4:
+                                $clothermeasure->setPostfix('_3');
+                                $clothermeasure->setPrefix('c_');
+                                $clothermeasure->exchangeArray($form_edited->getData());
+                                $clothermeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getClotherMeasureTable()->saveClotherMeasure($clothermeasure);
+                                break;
+                            case 6:
+                                $bodymeasure->setPostfix('_2');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 7:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 8:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 9:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                            case 10:
+                                $bodymeasure->setPostfix('_3');
+                                $bodymeasure->exchangeArray($form_edited->getData());
+                                $bodymeasure->order_cloth_id = $ordercloth['id'];
+                                $this->getBodyMeasureTable()->saveBodyMeasure($bodymeasure);
+                                break;
+                        }
+                }
                 $this->getOrderClothesTable()->setStatus10($id);
 
                 return $this->redirect()->toRoute('seller', array('action' => 'fillmeasure'));
@@ -449,10 +676,23 @@ class SellerController extends AbstractActionController
     }
 
     public function sendredAction(){
-        $id = (int)$this->params()->fromPost('id', 0);
+        $id = (int)$this->params()->fromPost('id');
+        $cycle_id = (int)$this->params()->fromPost('cycle_id');
 
         if(!$id) {
             return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
+        }
+
+        if($cycle_id==-10 || $cycle_id==-14){
+            $redactors = $this->getOrderClothesTable()->getRedactorNums();
+
+            foreach($redactors as $redactor){
+                $sms = new Sms();
+                $sms->number=$redactor['phone'];
+
+                $sms->text='Поступил срочный заказ!';
+                SmsUtil::sendSmsWithDbWrite($sms, $this->getSmsTable());
+            }
         }
 
         $this->getOrderClothesTable()->sendClothToRedactor($id);
@@ -467,6 +707,7 @@ class SellerController extends AbstractActionController
             return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
         }
 
+        $this->getOrderClothesTable()->changeCodeStatus($id, 111);
         $this->getOrderClothesTable()->changeCloth($id);
 
         return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
@@ -478,6 +719,12 @@ class SellerController extends AbstractActionController
             'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
         ));
         $view->setTemplate('pidzhak/seller/changeOrder.phtml');
+        return $view;
+    }
+
+    public function successAction(){
+        $view = new ViewModel();
+        $view->setTemplate('pidzhak/seller/successGoBack.phtml');
         return $view;
     }
 
@@ -509,10 +756,9 @@ class SellerController extends AbstractActionController
 
             if ($form->isValid()) {
                 $this->getOrderClothesTable()->saveOrderClothes($orderclothes);
-                return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
+                return $this->redirect()->toRoute('seller', array('action' => 'success'));
             } else{
                 $form->highlightErrorElements();
-                var_dump($form->getMessages());
             }
         }
 
@@ -639,7 +885,7 @@ class SellerController extends AbstractActionController
             'bm_form' => $bm_form,
             'cm_form' => $cm_form,
             'clientName' => $clientName,
-            'cloth_type' => $cloth_type,
+            'cloth_type' => (int) $cloth_type,
         ));
         $view->setTemplate('pidzhak/seller/watchOldMeasurements.phtml');
         return $view;
@@ -682,11 +928,13 @@ class SellerController extends AbstractActionController
 
             if ($measurement_type==1 && $bm_form->isValid()) {
                 $this->getBodyMeasureTable()->saveBodyMeasure($measurements);
-                return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
-            }
-            if ($measurement_type==2 && $cm_form->isValid()) {
+                return $this->redirect()->toRoute('seller', array('action' => 'success'));
+            } else if ($measurement_type==2 && $cm_form->isValid()) {
                 $this->getClotherMeasureTable()->saveClotherMeasure($measurements);
-                return $this->redirect()->toRoute('seller', array('action' => 'changeorder'));
+                return $this->redirect()->toRoute('seller', array('action' => 'success'));
+            } else {
+                var_dump($bm_form->getMessages());
+                var_dump($cm_form->getMessages());
             }
         }
 
@@ -699,7 +947,7 @@ class SellerController extends AbstractActionController
             'bm_form' => $bm_form,
             'cm_form' => $cm_form,
             'clientName' => $clientName,
-            'cloth_type' => $cloth_type,
+            'cloth_type' => (int) $cloth_type,
         ));
         $view->setTemplate('pidzhak/seller/changeMeasurements.phtml');
         return $view;
@@ -710,7 +958,7 @@ class SellerController extends AbstractActionController
         $view = new ViewModel(array(
             'cycle' => $this->getCycleTable()->fetchAll(),
         ));
-        $view->setTemplate('pidzhak/seller/cycleslist.phtml');
+        $view->setTemplate('pidzhak/seller/cyclesList.phtml');
         return $view;
     }
 
@@ -783,6 +1031,8 @@ class SellerController extends AbstractActionController
                     ));
             }
 
+            $cloth_type = $orderclothes->product_id;
+
             $sc_form = new TestModelForm();
             $sc_form->populateValues(array("systemcode"=>$arrayMy));
 
@@ -793,6 +1043,7 @@ class SellerController extends AbstractActionController
                 'cm_form' => $cm_form,
                 'measurement_type' => $measurement_type,
                 'sc_form' => $sc_form,
+                'cloth_type' => (int) $cloth_type
             ));
             $view->setTemplate('pidzhak/seller/orderCheck.phtml');
             return $view;
@@ -936,9 +1187,13 @@ class SellerController extends AbstractActionController
     }
 
     public function infittingAction(){
+
+        $tailors = $this->getOrderClothesTable()->getTailorsList();
+
         $view = new ViewModel(array(
             'orders' => $this->getOrderTable()->fetchAll(),
-            'current_user_id' => $this->getAuthService()->getStorage()->read()['username']
+            'current_user_id' => $this->getAuthService()->getStorage()->read()['username'],
+            'tailors'=>$tailors
         ));
         $view->setTemplate('pidzhak/seller/ordersInFitting.phtml');
         return $view;
@@ -996,7 +1251,10 @@ class SellerController extends AbstractActionController
         $comment = $this->params()->fromQuery('comment');
 
         if($id!=null && $id!='' && $comment!=null && $comment!=''){
+
+            $this->getOrderClothesTable()->changeCodeStatus($id, 4);
             $this->getOrderClothesTable()->rollBackOrder($id, $comment);
+
         }
 
         return $this->redirect()->toRoute('seller', array('action' => 'orderstocheck'));
@@ -1051,6 +1309,32 @@ class SellerController extends AbstractActionController
         return $this->redirect()->toRoute('seller', array('action' => 'infitting'));
     }
 
+
+    public function tasksAction(){
+        $view = new ViewModel(array('info' => $this->getServiceLocator()->get('AuthService')->getStorage()));
+        $view->setTemplate('pidzhak/seller/tasks.phtml');
+        return $view;
+    }
+    public function taskstartedAction(){
+        $id = $this->params()->fromPost('id');
+
+        if($id){
+            $this->getTaskTable()->setTaskStarted($id);
+        }
+
+        return $this->redirect()->toRoute('seller', array('action' => 'tasks'));
+    }
+    public function taskfinishedAction(){
+        $id = $this->params()->fromPost('id');
+
+        if($id){
+            $this->getTaskTable()->setTaskFinished($id);
+        }
+
+        return $this->redirect()->toRoute('seller', array('action' => 'tasks'));
+    }
+
+
     public function getSmsTable()
     {
         if (!$this->smsTable) {
@@ -1064,7 +1348,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->orderTable) {
             $sm = $this->getServiceLocator();
-            $this->orderTable = $sm->get('Pidzhak\Model\Seller\OrderTable');
+            $this->orderTable = $sm->get('Pidzhak\Model\seller\OrderTable');
         }
         return $this->orderTable;
     }
@@ -1081,7 +1365,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->orderclothesTable) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\seller\OrderClothesTable');
         }
         return $this->orderclothesTable;
     }
@@ -1090,7 +1374,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->orderclothesTableEn) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTableEn = $sm->get('Pidzhak\Model\Seller\OrderClothesTableEn');
+            $this->orderclothesTableEn = $sm->get('Pidzhak\Model\seller\OrderClothesTableEn');
         }
         return $this->orderclothesTableEn;
     }
@@ -1107,7 +1391,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->bodyMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\Seller\BodyMeasureTable');
+            $this->bodyMeasureTable = $sm->get('Pidzhak\Model\seller\BodyMeasureTable');
         }
         return $this->bodyMeasureTable;
     }
@@ -1116,7 +1400,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->clotherMeasureTable) {
             $sm = $this->getServiceLocator();
-            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\Seller\ClotherMeasureTable');
+            $this->clotherMeasureTable = $sm->get('Pidzhak\Model\seller\ClotherMeasureTable');
         }
         return $this->clotherMeasureTable;
     }
@@ -1125,7 +1409,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->financeOperationsTable) {
             $sm = $this->getServiceLocator();
-            $this->financeOperationsTable = $sm->get('Pidzhak\Model\Seller\FinanceOperationsTable');
+            $this->financeOperationsTable = $sm->get('Pidzhak\Model\seller\FinanceOperationsTable');
         }
         return $this->financeOperationsTable;
     }
@@ -1143,7 +1427,7 @@ class SellerController extends AbstractActionController
     {
         if (!$this->customerTable) {
             $sm = $this->getServiceLocator();
-            $this->customerTable = $sm->get('Pidzhak\Model\Seller\CustomerTable');
+            $this->customerTable = $sm->get('Pidzhak\Model\seller\CustomerTable');
         }
         return $this->customerTable;
     }
@@ -1152,8 +1436,17 @@ class SellerController extends AbstractActionController
     {
         if (!$this->phoneCallTable) {
             $sm = $this->getServiceLocator();
-            $this->phoneCallTable = $sm->get('Pidzhak\Model\Seller\PhoneCallTable');
+            $this->phoneCallTable = $sm->get('Pidzhak\Model\seller\PhoneCallTable');
         }
         return $this->phoneCallTable;
+    }
+
+
+    public function getTaskTable(){
+        if (!$this->taskTable) {
+            $sm = $this->getServiceLocator();
+            $this->taskTable = $sm->get('Pidzhak\Model\accountant\TaskTable');
+        }
+        return $this->taskTable;
     }
 }

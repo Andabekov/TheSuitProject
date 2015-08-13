@@ -1,10 +1,10 @@
 <?php
-namespace Pidzhak\Controller\Seller;
+namespace Pidzhak\Controller\seller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Pidzhak\Model\Seller\OrderClothes;
-use Pidzhak\Form\Seller\OrderClothesForm;
+use Pidzhak\Model\seller\OrderClothes;
+use Pidzhak\Form\seller\OrderClothesForm;
 
 class OrderClothesController extends AbstractActionController
 {
@@ -117,7 +117,7 @@ class OrderClothesController extends AbstractActionController
     {
         if (!$this->orderclothesTable) {
             $sm = $this->getServiceLocator();
-            $this->orderclothesTable = $sm->get('Pidzhak\Model\Seller\OrderClothesTable');
+            $this->orderclothesTable = $sm->get('Pidzhak\Model\seller\OrderClothesTable');
         }
         return $this->orderclothesTable;
     }

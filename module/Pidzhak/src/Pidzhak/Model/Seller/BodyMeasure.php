@@ -1,5 +1,5 @@
 <?php
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -116,6 +116,18 @@ class BodyMeasure  implements InputFilterAwareInterface
                     array('name' => 'Int'),
                 ),
             ));
+
+            $inputFilter->add(array(
+                'name'     => 'arm_position',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'butt_position',
+                'required' => false,
+            ));
+
+
 
             $this->inputFilter = $inputFilter;
         }

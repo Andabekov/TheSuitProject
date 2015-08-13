@@ -11,6 +11,8 @@
     Ввести замеры
 </div>
 
+<hr>
+
 <?php
     $form->setAttribute('action', $this->url('seller', array('action' => 'insertmeasure', 'id' => $id)));
     $form->setAttribute('class', 'form-horizontal');
@@ -47,6 +49,7 @@
 
     echo $this->formHidden($form->get('c_order_cloth_id_1'));
     echo $this->formHidden($form->get('c_order_cloth_id_2'));
+    echo $this->formHidden($form->get('c_order_cloth_id_3'));
 
 ?>
 
@@ -60,12 +63,15 @@
 <?php
     echo $this->formHidden($form->get('c_id_1'));
     echo $this->formHidden($form->get('c_id_2'));
+    echo $this->formHidden($form->get('c_id_3'));
 
     echo $this->formHidden($form->get('c_clother_id_1')->setValue(1));
     echo $this->formHidden($form->get('c_clother_id_2')->setValue(2));
+    echo $this->formHidden($form->get('c_clother_id_3')->setValue(3));
 
     echo $this->formHidden($form->get('c_customer_id_1'));
     echo $this->formHidden($form->get('c_customer_id_2'));
+    echo $this->formHidden($form->get('c_customer_id_3'));
 ?>
 
 <hr>

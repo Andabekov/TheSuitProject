@@ -64,6 +64,12 @@ class IndexController extends AbstractActionController
         return new ViewModel();
     }
 
+    public function trackingAction(){
+        $view = new ViewModel(array());
+        $view->setTemplate('pidzhak/tracking/index.phtml');
+        return $view;
+    }
+
     public function loginAction()
     {
         $accessTypeIdParam = (int) $this->params()->fromRoute('accessTypeId', 0);
@@ -86,6 +92,10 @@ class IndexController extends AbstractActionController
         $form       = $this->getForm();
 
         $form->get('access_type_id')->setValue($accessTypeIdParam);
+
+//        var_dump('test');
+//        var_dump($accessTypeIdParam);
+//        var_dump($this->params()->fromRoute('pwd'));
 
         return array(
             'form'      => $form,

@@ -17,6 +17,8 @@ return array(
             'Pidzhak\delivery\Index' => 'Pidzhak\Controller\delivery\IndexController',
             'Pidzhak\admin\Index' => 'Pidzhak\Controller\admin\UserController',
             'Pidzhak\admin\Clients' => 'Pidzhak\Controller\admin\ClientController',
+            'Pidzhak\admin\Tailors' => 'Pidzhak\Controller\admin\TailorController',
+            'Pidzhak\admin\TailorRest' => 'Pidzhak\Controller\admin\TailorRestController',
             'Pidzhak\admin\Cycles' => 'Pidzhak\Controller\admin\CycleController',
             'Pidzhak\admin\CycleRest' => 'Pidzhak\Controller\admin\CycleRestController',
             'Pidzhak\admin\Fabrics' => 'Pidzhak\Controller\admin\FabricController',
@@ -28,16 +30,23 @@ return array(
             'Pidzhak\admin\Sms' => 'Pidzhak\Controller\admin\SmsController',
             'Pidzhak\admin\SmsRest' => 'Pidzhak\Controller\admin\SmsRestController',
             'Pidzhak\admin\AdminRest' => 'Pidzhak\Controller\admin\UserRestController',
-            'Pidzhak\Controller\Seller\Seller' => 'Pidzhak\Controller\Seller\SellerController',
-            'Pidzhak\Controller\Seller\Customer' => 'Pidzhak\Controller\Seller\CustomerController',
-            'Pidzhak\Controller\Seller\CustomerRest' => 'Pidzhak\Controller\Seller\CustomerRestController',
-            'Pidzhak\Controller\Seller\Measure' => 'Pidzhak\Controller\Seller\MeasureController',
-            'Pidzhak\Controller\Seller\Order' => 'Pidzhak\Controller\Seller\OrderController',
-            'Pidzhak\Controller\Seller\OrderClothes' => 'Pidzhak\Controller\Seller\OrderClothesController',
-			'Pidzhak\Controller\Seller\OrderClothesRest' => 'Pidzhak\Controller\Seller\OrderClothesRestController',
-			'Pidzhak\Controller\Seller\OrderRest' => 'Pidzhak\Controller\Seller\OrderRestController',
-			'Pidzhak\Controller\Seller\Finance' => 'Pidzhak\Controller\Seller\FinanceOperationsRest',
+            'Pidzhak\admin\Penalties' => 'Pidzhak\Controller\admin\PenaltyController',
+            'Pidzhak\admin\PenaltyRest' => 'Pidzhak\Controller\admin\PenaltyRestController',
+            'Pidzhak\admin\Suppliers' => 'Pidzhak\Controller\admin\SupplierController',
+            'Pidzhak\admin\SupplierRest' => 'Pidzhak\Controller\admin\SupplierRestController',
+            'Pidzhak\admin\ConnectionRest' => 'Pidzhak\Controller\admin\ConnectionRestController',
+            'Pidzhak\Controller\seller\seller' => 'Pidzhak\Controller\seller\SellerController',
+            'Pidzhak\Controller\seller\Customer' => 'Pidzhak\Controller\seller\CustomerController',
+            'Pidzhak\Controller\seller\CustomerRest' => 'Pidzhak\Controller\seller\CustomerRestController',
+            'Pidzhak\Controller\seller\Measure' => 'Pidzhak\Controller\seller\MeasureController',
+            'Pidzhak\Controller\seller\Order' => 'Pidzhak\Controller\seller\OrderController',
+            'Pidzhak\Controller\seller\OrderClothes' => 'Pidzhak\Controller\seller\OrderClothesController',
+			'Pidzhak\Controller\seller\OrderClothesRest' => 'Pidzhak\Controller\seller\OrderClothesRestController',
+			'Pidzhak\Controller\seller\OrderRest' => 'Pidzhak\Controller\seller\OrderRestController',
+			'Pidzhak\Controller\seller\Finance' => 'Pidzhak\Controller\seller\FinanceOperationsRest',
 			'Pidzhak\Controller\accountant\Cert' => 'Pidzhak\Controller\accountant\CertificateRest',
+			'Pidzhak\Controller\accountant\Request' => 'Pidzhak\Controller\accountant\RequestRest',
+			'Pidzhak\Controller\accountant\Task' => 'Pidzhak\Controller\accountant\TaskRest',
 		)    ),
 
     'router' => array(
@@ -66,7 +75,7 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\Seller',
+                        'controller' => 'Pidzhak\Controller\seller\seller',
                         'action' => 'index',
                     ),
                 ),
@@ -81,7 +90,7 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\Customer',
+                        'controller' => 'Pidzhak\Controller\seller\Customer',
                         'action' => 'index',
                     ),
                 ),
@@ -96,7 +105,7 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\Order',
+                        'controller' => 'Pidzhak\Controller\seller\Order',
                         'action' => 'index',
                     ),
                 ),
@@ -111,7 +120,7 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\OrderClothes',
+                        'controller' => 'Pidzhak\Controller\seller\OrderClothes',
                         'action' => 'index',
                     ),
                 ),
@@ -126,7 +135,7 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\Measure',
+                        'controller' => 'Pidzhak\Controller\seller\Measure',
                         'action' => 'index',
                     ),
                 ),
@@ -137,7 +146,7 @@ return array(
                 'options' => array(
                     'route' => '/restorderclothes',
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\OrderClothesRest',
+                        'controller' => 'Pidzhak\Controller\seller\OrderClothesRest',
                     ),
                 ),
             ),
@@ -147,7 +156,7 @@ return array(
                 'options' => array(
                     'route' => '/restfinance',
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\Finance',
+                        'controller' => 'Pidzhak\Controller\seller\Finance',
                     ),
                 ),
             ),
@@ -162,12 +171,32 @@ return array(
                 ),
             ),
 
+            'request-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restrequest',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\accountant\Request',
+                    ),
+                ),
+            ),
+
+            'task-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/resttask',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\Controller\accountant\Task',
+                    ),
+                ),
+            ),
+
             'order-rest' => array(
                 'type' => 'segment',
                 'options' => array(
                     'route' => '/restorder',
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\OrderRest',
+                        'controller' => 'Pidzhak\Controller\seller\OrderRest',
                     ),
                 ),
             ),
@@ -177,7 +206,7 @@ return array(
                 'options' => array(
                     'route' => '/restcustomer[/:id]',
                     'defaults' => array(
-                        'controller' => 'Pidzhak\Controller\Seller\CustomerRest',
+                        'controller' => 'Pidzhak\Controller\seller\CustomerRest',
                     ),
                 ),
             ),
@@ -306,6 +335,31 @@ return array(
                 'may_terminate' => true,
             ),
 
+            'tailors' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/tailors[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Tailors',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'tailor-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/resttailor',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\TailorRest',
+                    ),
+                ),
+            ),
+
             'cycles' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -427,6 +481,66 @@ return array(
                     'route' => '/restsms[/:id]',
                     'defaults' => array(
                         'controller' => 'Pidzhak\admin\SmsRest',
+                    ),
+                ),
+            ),
+
+            'penalties' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/penalties[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Penalties',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'penalty-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restpenalty',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\PenaltyRest',
+                    ),
+                ),
+            ),
+
+            'suppliers' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/suppliers[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\Suppliers',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+
+            'supplier-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restsupplier',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\SupplierRest',
+                    ),
+                ),
+            ),
+
+            'connection-rest' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/restconnection',
+                    'defaults' => array(
+                        'controller' => 'Pidzhak\admin\ConnectionRest',
                     ),
                 ),
             ),

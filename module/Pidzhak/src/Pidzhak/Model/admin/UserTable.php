@@ -75,7 +75,7 @@ class UserTable
     {
         $data = array(
             'username' => $user->username,
-            'password' => $user->password,
+            'password' => md5($user->password),
             'name' => $user->name,
             'surname' => $user->surname,
             'access_type_id' => $user->access_type_id,

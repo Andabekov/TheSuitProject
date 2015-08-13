@@ -6,7 +6,7 @@
  * Time: 16:47
  */
 
-namespace Pidzhak\Model\Seller;
+namespace Pidzhak\Model\seller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -19,6 +19,8 @@ class FinanceOperations implements InputFilterAwareInterface
     public $oper_type;
     public $oper_comment;
     public $oper_status;
+    public $oper_cost;
+    public $cashbox;
 
     public function exchangeArray($data)
     {
@@ -26,6 +28,8 @@ class FinanceOperations implements InputFilterAwareInterface
         $this->oper_date = (!empty($data['oper_date'])) ? $data['oper_date'] : null;
         $this->oper_type = (!empty($data['oper_type'])) ? $data['oper_type'] : null;
         $this->oper_comment = (!empty($data['oper_comment'])) ? $data['oper_comment'] : null;
+        $this->oper_cost = (!empty($data['oper_cost'])) ? $data['oper_cost'] : null;
+        $this->cashbox = (!empty($data['cashbox'])) ? $data['cashbox'] : null;
 
         if($data['oper_status']==0){
             $this->oper_status = 'Не подтвержден';
@@ -81,6 +85,24 @@ class FinanceOperations implements InputFilterAwareInterface
             $inputFilter->add(array(
                 'name' => 'oper_comment',
                 'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'oper_cost',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'cashbox',
+                'required' => false,
                 'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),

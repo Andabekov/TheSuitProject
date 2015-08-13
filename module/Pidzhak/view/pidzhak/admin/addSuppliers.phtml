@@ -1,0 +1,44 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Abu Andabekov
+ * Date: 12/08/2015
+ * Time: 17:24
+ */
+?>
+
+<div class="header">
+    Добавление нового Поставщика
+</div>
+
+<b>Имя поставщика:</b>
+<input class="form-control" id="supllier_name" />
+<br>
+
+<b>Email поставщика:</b>
+<input class="form-control" id="supllier_email" type="email" />
+<br>
+
+<b>Текст емайла:</b>
+<textarea class="form-control" id="email_content" style="height: 280px;"></textarea>
+<br>
+
+<a href="/suppliers" class="btn btn-default">Отмена</a>
+<button class="btn btn-primary" onclick="addSupplier()">Добавить</button>
+
+<script>
+
+    function addSupplier(){
+        if($('#supllier_name').val()==''){
+            alert('Имя поставщика не может быть пустым!');
+        } else if($('#supllier_email').val()==''){
+            alert('Email поставщика не может быть пустым!');
+        } else if($('#email_content').val()==''){
+            alert('Текст емайла не может быть пустым!');
+        } else{
+            $.post( "add", { supplier_name: $('#supllier_name').val(), supplier_email: $('#supllier_email').val(), email_content: $('#email_content').val() } ).done(function( data ) {
+                window.location='/suppliers';
+            });
+        }
+    }
+</script>
